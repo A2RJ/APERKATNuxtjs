@@ -10,7 +10,7 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
               </div>
-              <form class="user">
+              <form class="user" @submit.prevent="login">
                 <div class="form-group">
                   <input
                     type="email"
@@ -42,17 +42,17 @@
                     >
                   </div>
                 </div>
-                <a href="javascript:void(0)" @click="submit" class="btn btn-primary btn-user btn-block">
-                  Login
-                </a>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-user btn-block"
+                >
+                  Submit
+                </button>
                 <hr />
                 <a href="/" class="btn btn-google btn-user btn-block">
                   <i class="fab fa-google fa-fw"></i> Login with Google
                 </a>
-                <a
-                  href="/"
-                  class="btn btn-facebook btn-user btn-block"
-                >
+                <a href="/" class="btn btn-facebook btn-user btn-block">
                   <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                 </a>
               </form>
@@ -74,20 +74,44 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
-    data() {
-        return {
-            auth: {
-                email: null,
-                password: null
-            }
-        }
-    },
-    methods: {
-        submit() {
-            console.log(this.auth);
-        }
+  auth: false,
+  data() {
+    return {
+      auth: {
+        email: null,
+        password: null,
+      },
+    };
+  },
+  mounted() {
+    if (this.$auth.$state.loggedIn) {
+      this.$router.push("/");
     }
+  },
+  methods: {
+    ...mapMutations(["SET_IS_AUTH"]),
+    async login() {
+      try {
+        await this.$auth.loginWith("laravelJWT", {
+            data: {
+              email: this.auth.email,
+              password: this.auth.password,
+            },
+          })
+          .then(() => {
+            this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
+            console.log(this.$store.state.auth.user.token);
+            console.log(this.$store.state.auth.loggedIn);
+            this.$router.push("/");
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
 };
 </script>
 

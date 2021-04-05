@@ -12,13 +12,16 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
+          <h6>{{ isAuth }} {{ token }}</h6>
+          <button @click="logout">Logout</button>
+
           <Nuxt />
         </div>
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
       <!-- Footer -->
-      <Footer />
+      <Footer></Footer>
     </div>
     <!-- End of Content Wrapper -->
   </div>
@@ -29,12 +32,29 @@
 import Sidebar from "@/components/Sidebar.vue";
 import Topbar from "@/components/Topbar.vue";
 import Footer from "@/components/Footer.vue";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      isAuth: false,
+      // isAuth: this.$auth.loggedIn
     };
+  },
+  computed: {
+    ...mapState(["isAuth", "token"]),
+  },
+  methods: {
+    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN"]),
+    async logout() {
+      try {
+        await this.$auth.logout();
+        this.SET_IS_AUTH(false);
+        this.SET_API_TOKEN(null);
+        window.location.replace("http://localhost:3000/login");
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
   components: {
     Sidebar: Sidebar,
@@ -42,6 +62,11 @@ export default {
     Footer: Footer,
   },
   mounted() {
+    if (this.$store.state.auth.loggedIn) {
+      this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
+      this.SET_API_TOKEN(this.$store.state.auth.user.token);
+      console.log(this.$auth.loggedIn, this.$auth.user);
+    }
     !(function (t) {
       "use strict";
       t("#sidebarToggle, #sidebarToggleTop").on("click", function (o) {
@@ -49,36 +74,7 @@ export default {
           t(".sidebar").toggleClass("toggled"),
           t(".sidebar").hasClass("toggled") &&
             t(".sidebar .collapse").collapse("hide");
-      }),
-        t(window).resize(function () {
-          t(window).width() < 768 && t(".sidebar .collapse").collapse("hide");
-        }),
-        t("body.fixed-nav .sidebar").on(
-          "mousewheel DOMMouseScroll wheel",
-          function (o) {
-            if (768 < t(window).width()) {
-              var e = o.originalEvent,
-                l = e.wheelDelta || -e.detail;
-              (this.scrollTop += 30 * (l < 0 ? 1 : -1)), o.preventDefault();
-            }
-          }
-        ),
-        t(document).on("scroll", function () {
-          100 < t(this).scrollTop()
-            ? t(".scroll-to-top").fadeIn()
-            : t(".scroll-to-top").fadeOut();
-        }),
-        t(document).on("click", "a.scroll-to-top", function (o) {
-          var e = t(this);
-          t("html, body")
-            .stop()
-            .animate(
-              { scrollTop: t(e.attr("href")).offset().top },
-              1e3,
-              "easeInOutExpo"
-            ),
-            o.preventDefault();
-        });
+      });
     })(jQuery);
   },
 };

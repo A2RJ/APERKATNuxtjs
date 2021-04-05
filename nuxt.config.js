@@ -23,12 +23,13 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '@/assets/vendor/fontawesome-free/css/all.css',
+    '@/assets/vendor/fontawesome-free/css/all.min.css',
     '@/assets/css/sb-admin-2.min.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '@/plugins/axios.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -41,8 +42,43 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    'bootstrap-vue/nuxt'
   ],
+
+  axios: {
+    baseURL: 'http://localhost:8000/'
+  },
+
+  auth: {
+    strategies: {
+      'laravelJWT': {
+        provider: 'laravel/jwt',
+        url: 'http://localhost:8000/',
+        endpoints: {
+          login: { url: '/api/login', method: 'post' },
+          logout: false,
+          refresh: { url: '/api/refresh', method: 'post' },
+          user: { url: '/api/me', method: 'get' }
+        },
+        // user: {
+        //   property: 'user',
+        //  // autoFetch: true
+        // },
+        token: {
+          property: 'access_token',
+          maxAge: 60 * 60
+        },
+        refreshToken: {
+          maxAge: 20160 * 60
+        },
+      },
+    }
+},
+
+  router: {
+    middleware: ['auth']
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
