@@ -47,24 +47,30 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost:8000/'
+    baseURL: 'http://localhost:8000',
+    proxy: true
   },
-
+  proxy: {
+    '/laravel': {
+      target: 'http://localhost:8000',
+      pathRewrite: { '^/laravel': '/' }
+    }
+  },
   auth: {
     strategies: {
       'laravelJWT': {
         provider: 'laravel/jwt',
-        url: 'http://localhost:8000/',
+        url: 'http://localhost:8000',
         endpoints: {
           login: { url: '/api/login', method: 'post' },
           logout: false,
           refresh: { url: '/api/refresh', method: 'post' },
           user: { url: '/api/me', method: 'get' }
         },
-        // user: {
-        //   property: 'user',
-        //  // autoFetch: true
-        // },
+        user: {
+          property: false,
+         autoFetch: true
+        },
         token: {
           property: 'access_token',
           maxAge: 60 * 60

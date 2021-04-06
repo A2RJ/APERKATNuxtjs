@@ -60,12 +60,18 @@
     </li>
     <!-- Nav Item - Charts -->
     <li class="nav-item">
-      <a class="nav-link" href="charts.html">
+      <NuxtLink class="nav-link" to="/dashboard">
         <i class="fas fa-fw fa-chart-area"></i>
-        <span>Charts</span></a
-      >
+        <span>Home page</span>
+      </NuxtLink>
     </li>
 
+    <li class="nav-item">
+      <NuxtLink class="nav-link" to="/">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>Home page</span>
+      </NuxtLink>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />
 

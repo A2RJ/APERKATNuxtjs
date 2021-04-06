@@ -12,7 +12,7 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h6>{{ isAuth }} {{ token }}</h6>
+          <!-- <h6>{{ isAuth }} {{ token }} {{ ardi }}</h6> -->
           <button @click="logout">Logout</button>
 
           <Nuxt />
@@ -41,15 +41,16 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isAuth", "token"]),
+    ...mapState(["isAuth", "token", "ardi"]),
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN"]),
+    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
     async logout() {
       try {
         await this.$auth.logout();
         this.SET_IS_AUTH(false);
         this.SET_API_TOKEN(null);
+        this.SET_USER_DATA(null);
         window.location.replace("http://localhost:3000/login");
       } catch (err) {
         console.log(err);
@@ -64,8 +65,8 @@ export default {
   mounted() {
     if (this.$store.state.auth.loggedIn) {
       this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
+      this.SET_USER_DATA(this.$store.state.auth.user);
       this.SET_API_TOKEN(this.$store.state.auth.user.token);
-      console.log(this.$auth.loggedIn, this.$auth.user);
     }
     !(function (t) {
       "use strict";

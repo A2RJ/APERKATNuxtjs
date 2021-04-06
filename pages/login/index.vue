@@ -92,10 +92,11 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH"]),
+    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
     async login() {
       try {
-        await this.$auth.loginWith("laravelJWT", {
+        await this.$auth
+          .loginWith("laravelJWT", {
             data: {
               email: this.auth.email,
               password: this.auth.password,
@@ -103,8 +104,8 @@ export default {
           })
           .then(() => {
             this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-            console.log(this.$store.state.auth.user.token);
-            console.log(this.$store.state.auth.loggedIn);
+            this.SET_USER_DATA(this.$store.state.auth.user);
+            this.SET_API_TOKEN(this.$store.state.auth.user.token);
             this.$router.push("/");
           });
       } catch (err) {
