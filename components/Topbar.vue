@@ -267,15 +267,9 @@
             Activity Log
           </a>
           <div class="dropdown-divider"></div>
-          <!-- <a
-            class="dropdown-item"
-            href="#"
-            data-toggle="modal"
-            data-target="#logoutModal"
-          >
-            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            Logout
-          </a> -->
+           <button @click="logout"> <i
+              class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
+            ></i> Logout</button>
         </div>
       </li>
     </ul>
@@ -284,7 +278,27 @@
 </template>
 
 <script>
-export default {};
+import { mapState, mapMutations } from "vuex";
+
+export default {
+  computed: {
+    ...mapState(["isAuth", "token", "ardi"]),
+  },
+  methods: {
+    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
+    async logout() {
+      try {
+        await this.$auth.logout();
+        this.SET_IS_AUTH(false);
+        this.SET_API_TOKEN(null);
+        this.SET_USER_DATA(null);
+        window.location.replace('http://localhost:3000/login')
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+};
 </script>
 
 <style>

@@ -37,6 +37,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxt/components'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -47,15 +48,16 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost:8000',
-    proxy: true
+    baseURL: 'http://localhost:8000/',
+    browserBaseURL: 'http://localhost:8000/',
+    // proxy: true
   },
-  proxy: {
-    '/laravel': {
-      target: 'http://localhost:8000',
-      pathRewrite: { '^/laravel': '/' }
-    }
-  },
+  // proxy: {
+  //   '/laravel': {
+  //     target: 'http://localhost:8000',
+  //     pathRewrite: { '^/laravel': '/' }
+  //   }
+  // },
   auth: {
     strategies: {
       'laravelJWT': {

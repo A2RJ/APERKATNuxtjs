@@ -1,12 +1,12 @@
 export const state = () => ({
-    rkat: [],
+    user: [],
     data: [],
     errors: []
 })
 
 export const mutations = {
-    SET_RKAT_DATA(state, payload) {
-        state.rkat = payload
+    SET_USER_DATA(state, payload) {
+        state.user = payload
     },
 
     SET_DATA(state, payload) {
@@ -19,26 +19,26 @@ export const mutations = {
 }
 
 export const actions = {
-    getrkat({ commit }) {
+    getuser({ commit }) {
         return new Promise((resolve, reject) => {
-            this.$axios.get('/rkat/').then((response) => {
-                commit('SET_RKAT_DATA', response.data.data.data)
+            this.$axios.get('/user/').then((response) => {
+                commit('SET_USER_DATA', response.data.data.data)
                 resolve()
             })
         })
     },
-    getrkatID({ commit }, payload) {
+    getuserID({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(`/rkat/${payload}`).then((response) => {
+            this.$axios.get(`/user/${payload}`).then((response) => {
                 commit('SET_DATA', response.data.data)
                 resolve()
             })
         })
     },
-    storerkat({ dispatch, commit }, payload) {
+    storeuser({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.post('/rkat/', payload).then((response) => {
-                dispatch('getrkat')
+            this.$axios.post('/user/', payload).then((response) => {
+                dispatch('getuser')
                 resolve()
             })
             .catch((e) => {
@@ -46,10 +46,10 @@ export const actions = {
             })
         })
     },
-    updaterkat({ dispatch, commit }, payload) {
+    updateuser({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.put(`/rkat/${payload.id}`, payload).then((response) => {
-                dispatch('getrkat')
+            this.$axios.put(`/user/${payload.id}`, payload).then((response) => {
+                dispatch('getuser')
                 resolve()
             })
             .catch((e) => {
@@ -57,10 +57,10 @@ export const actions = {
             })
         })
     },
-    deleterkat({ dispatch, commit }, payload) {
+    deleteuser({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.delete(`/rkat/${payload}`).then((response) => {
-                dispatch('getrkat')
+            this.$axios.delete(`/user/${payload}`).then((response) => {
+                dispatch('getuser')
                 resolve()
             })
             .catch((e) => {

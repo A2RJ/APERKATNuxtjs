@@ -30,18 +30,8 @@ export const actions = {
         if (context.app.$auth.strategy.token.status().valid()) {
             commit('SET_IS_AUTH', true);
             // console.log(context.app.$auth.$state);
-            // console.log(context.app.$auth.user);
+            // console.log(context.app.$auth._token.laravelJWT);
         }
         
-    },
-    // getUsersData({ commit }) {
-    //     return new Promise((resolve, reject) => {
-    //         //DIMANA KITA MELAKUKAN REQUEST DENGAN METHOD GET KE URL /USERS
-    //         this.$axios.get('/api/me').then((response) => {
-    //             //DAN MENYIMPAN DATANYA KE STATE USERS MELALUI MUTATIONS
-    //             commit('SET_USER_DATA', response)
-    //             resolve()
-    //         })
-    //     })
-    // },
+    }
 }

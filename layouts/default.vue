@@ -13,9 +13,10 @@
         <div class="container-fluid">
           <!-- Page Heading -->
           <!-- <h6>{{ isAuth }} {{ token }} {{ ardi }}</h6> -->
-          <button @click="logout">Logout</button>
-
-          <Nuxt />
+          <!-- <button @click="logout">Logout</button> -->
+          <KeepAlive>
+            <Nuxt />
+          </KeepAlive>
         </div>
         <!-- /.container-fluid -->
       </div>
@@ -45,17 +46,6 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
-    async logout() {
-      try {
-        await this.$auth.logout();
-        this.SET_IS_AUTH(false);
-        this.SET_API_TOKEN(null);
-        this.SET_USER_DATA(null);
-        window.location.replace("http://localhost:3000/login");
-      } catch (err) {
-        console.log(err);
-      }
-    },
   },
   components: {
     Sidebar: Sidebar,

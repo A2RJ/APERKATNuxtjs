@@ -20,20 +20,19 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-      <a class="nav-link" href="/">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a
-      >
+      <NuxtLink class="nav-link" to="/">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>Dashboard</span>
+      </NuxtLink>
     </li>
-
     <!-- Divider -->
     <hr class="sidebar-divider" />
 
     <!-- Heading -->
-    <div class="sidebar-heading">Interface</div>
+    <div class="sidebar-heading">Submission</div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a
         class="nav-link collapsed"
         href="#"
@@ -57,7 +56,7 @@
           <a class="collapse-item" href="cards.html">Cards</a>
         </div>
       </div>
-    </li>
+    </li> -->
     <!-- Nav Item - Charts -->
     <li class="nav-item">
       <NuxtLink class="nav-link" to="/dashboard">
@@ -67,9 +66,16 @@
     </li>
 
     <li class="nav-item">
-      <NuxtLink class="nav-link" to="/">
+      <NuxtLink class="nav-link" to="/rkat">
         <i class="fas fa-fw fa-chart-area"></i>
-        <span>Home page</span>
+        <span>RKAT</span>
+      </NuxtLink>
+    </li>
+
+    <li class="nav-item">
+      <NuxtLink class="nav-link" to="/user">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>USER</span>
       </NuxtLink>
     </li>
     <!-- Divider -->
@@ -84,7 +90,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  
+};
 </script>
 
 <style>
