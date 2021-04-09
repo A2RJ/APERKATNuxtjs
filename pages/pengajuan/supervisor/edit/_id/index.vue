@@ -1,5 +1,5 @@
 <template>
-<div class="row">
+  <div class="row">
     <!-- Area Chart -->
     <div class="col-xl-12 col-lg-12">
       <div class="card shadow mb-4">
@@ -38,20 +38,15 @@
           </div>
         </div>
         <!-- Card Body -->
-        <div class="card-body">
-          
-        </div>
+        <div class="card-body"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

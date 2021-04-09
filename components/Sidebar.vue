@@ -31,8 +31,24 @@
     <!-- Heading -->
     <div class="sidebar-heading">Submission</div>
 
+    <!-- Nav Item -->
+
+    <li class="nav-item">
+      <NuxtLink class="nav-link" to="/rkat">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>RKAT</span>
+      </NuxtLink>
+    </li>
+
+    <li class="nav-item">
+      <NuxtLink class="nav-link" to="/pengajuan/subordinate">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>PENGAJUAN</span>
+      </NuxtLink>
+    </li>
+
     <!-- Nav Item - Pages Collapse Menu -->
-    <!-- <li class="nav-item">
+    <li class="nav-item">
       <a
         class="nav-link collapsed"
         href="#"
@@ -42,7 +58,7 @@
         aria-controls="collapseTwo"
       >
         <i class="fas fa-fw fa-cog"></i>
-        <span>Components</span>
+        <span>PENGAJUAN</span>
       </a>
       <div
         id="collapseTwo"
@@ -51,27 +67,16 @@
         data-parent="#accordionSidebar"
       >
         <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Custom Components:</h6>
-          <a class="collapse-item" href="buttons.html">Buttons</a>
-          <a class="collapse-item" href="cards.html">Cards</a>
+          <h6 class="collapse-header">Daftar Pengajuan</h6>
+          <NuxtLink class="collapse-item" to="/pengajuan/supervisor"
+            >Pengajuan Supervisor</NuxtLink
+          >
+          <NuxtLink class="collapse-item" to="/pengajuan/subordinate"
+            >Pengajuan Subordinate</NuxtLink
+          >
         </div>
       </div>
-    </li> -->
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-      <NuxtLink class="nav-link" to="/dashboard">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>Home page</span>
-      </NuxtLink>
     </li>
-
-    <li class="nav-item">
-      <NuxtLink class="nav-link" to="/rkat">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>RKAT</span>
-      </NuxtLink>
-    </li>
-
     <li class="nav-item">
       <NuxtLink class="nav-link" to="/user">
         <i class="fas fa-fw fa-chart-area"></i>
@@ -90,9 +95,7 @@
 </template>
 
 <script>
-export default {
-  
-};
+export default {};
 </script>
 
 <style>

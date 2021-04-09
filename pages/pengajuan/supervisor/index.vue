@@ -1,5 +1,5 @@
 <template>
-<div class="row">
+  <div class="row">
     <!-- Area Chart -->
     <div class="col-xl-12 col-lg-12">
       <div class="card shadow mb-4">
