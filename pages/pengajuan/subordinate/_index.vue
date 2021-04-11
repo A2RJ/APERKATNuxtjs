@@ -1,5 +1,4 @@
 <template>
-  <!-- <button @click="getrkat">getrkat</button> -->
   <div class="row">
     <!-- Area Chart -->
     <div class="col-xl-12 col-lg-12">
@@ -8,7 +7,7 @@
         <div
           class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
         >
-          <h6 class="m-0 font-weight-bold text-primary">Data RKAT</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Data Pengajuan</h6>
           <div class="dropdown no-arrow">
             <a
               class="dropdown-toggle"
@@ -27,7 +26,9 @@
               style=""
             >
               <div class="dropdown-header">Opsi:</div>
-              <NuxtLink class="dropdown-item" to="/rkat/add">Add RKAT</NuxtLink>
+              <NuxtLink class="dropdown-item" to="subordinate/add"
+                >Add RKAT</NuxtLink
+              >
               <NuxtLink class="dropdown-item" to="/rkat/reset"
                 >Reset RKAT</NuxtLink
               >
@@ -36,15 +37,18 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <b-table responsive striped hover :items="rkat" :fields="fields">
+          <b-table responsive striped hover :items="pengajuan" :fields="fields">
             <template v-slot:cell(actions)="row">
               <NuxtLink
                 class="btn-sm btn-warning mb-2"
-                :to="'rkat/edit/' + row.item.id_rkat"
+                :to="'edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Update</NuxtLink
               >
-              <button class="btn-sm btn-danger mt-2" @click="destroyrkat(row)">
+              <button
+                class="btn-sm btn-danger mt-2"
+                @click="destroypengajuan(row)"
+              >
                 Hapus
               </button>
             </template>
@@ -56,50 +60,29 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  async asyncData({ store }) {
-    await Promise.all([store.dispatch("rkat/getrkat")]);
+  async asyncData({ store, params }) {
+    await Promise.all([store.dispatch("subordinate/getpengajuan", params.index)]);
     return;
   },
   data() {
     return {
-      fields: [
-        "id_user",
-        "sasaran_strategi",
-        "indikator_sasaran_strategi",
-        "nama_program",
-        "program_kerja",
-        "deskripsi",
-        "tujuan",
-        "mulai_program",
-        "selesai_program",
-        "tempat",
-        "sumber_anggaran",
-        "rencara_anggaran",
-        "total_anggaran",
-        "actions",
-      ],
-      delete: null,
+      fields: ["id_rkat", "tanggal", "actions"]
     };
   },
   computed: {
-    ...mapState("rkat", {
-      rkat: (state) => state.rkat,
+    ...mapState("subordinate", {
+      pengajuan: (state) => state.pengajuan,
     }),
   },
-  mounted() {
-    this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-    this.SET_USER_DATA(this.$store.state.auth.user);
-    this.SET_API_TOKEN(this.$store.state.auth.user.token);
-  },
+  mounted() {},
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
-    ...mapActions("rkat", ["getrkat", "deleterkat"]),
+    ...mapActions("subordinate", ["getpengajuan", "deletepengajuan"]),
 
-    destroyrkat(row) {
-      this.deleterkat(row.item.id_rkat).catch((e) => {
+    destroypengajuan(row) {
+      this.deletepengajuan(row.item.id_pengajuan).catch((e) => {
         console.log(e);
       });
     },

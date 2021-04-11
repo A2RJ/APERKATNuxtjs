@@ -39,7 +39,7 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          
+          <subordinate />
         </div>
       </div>
     </div>
@@ -47,8 +47,22 @@
 </template>
 
 <script>
-export default {
+import { mapActions, mapState, mapMutations } from "vuex";
+import subordinate from "~/components/form/subordinate.vue";
 
+export default {
+  components: {
+      'subordinate': subordinate
+  },
+  mounted() {
+    this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
+    this.SET_USER_DATA(this.$store.state.auth.user);
+    this.SET_API_TOKEN(this.$store.state.auth.user.token);
+  },
+  methods: {
+    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
+    ...mapActions("subordinate", ["getpengajuan"]),
+  },
 }
 </script>
 

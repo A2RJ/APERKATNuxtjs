@@ -27,13 +27,7 @@
             >
               <div class="dropdown-header">Opsi:</div>
               <NuxtLink class="dropdown-item" to="/rkat/add">Add RKAT</NuxtLink>
-              <NuxtLink class="dropdown-item" to="/rkat/reset"
-                >Reset RKAT</NuxtLink
-              >
-              <!-- <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a> -->
-              <!-- <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a> -->
+              <NuxtLink class="dropdown-item" to="/rkat/reset">Reset RKAT</NuxtLink>
             </div>
           </div>
         </div>

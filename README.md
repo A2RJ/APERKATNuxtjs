@@ -1,4 +1,9 @@
 # SubmissionNuxtJS
+- Server Lumen API PHP V.8
+- ambil status
+- ambil history
+- Untuk hari ini implementasi menu atasan yakni mengambil semua pengajuan bawahan
+
 
 ## Build Setup
 

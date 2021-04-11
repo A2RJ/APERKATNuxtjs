@@ -40,8 +40,8 @@
       </NuxtLink>
     </li>
 
-    <li class="nav-item">
-      <NuxtLink class="nav-link" to="/pengajuan/subordinate">
+    <li class="nav-item" v-if="this.$store.state.auth.user.id_user">
+      <NuxtLink class="nav-link" :to="'/pengajuan/subordinate/'+ this.$store.state.auth.user.id_user">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>PENGAJUAN</span>
       </NuxtLink>
@@ -71,7 +71,7 @@
           <NuxtLink class="collapse-item" to="/pengajuan/supervisor"
             >Pengajuan Supervisor</NuxtLink
           >
-          <NuxtLink class="collapse-item" to="/pengajuan/subordinate"
+          <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/'+ this.$store.state.auth.user.id_user"
             >Pengajuan Subordinate</NuxtLink
           >
         </div>

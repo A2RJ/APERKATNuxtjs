@@ -1,5 +1,5 @@
 <template>
-<div class="row">
+  <div class="row">
     <!-- Area Chart -->
     <div class="col-xl-12 col-lg-12">
       <div class="card shadow mb-4">
@@ -7,7 +7,7 @@
         <div
           class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
         >
-          <h6 class="m-0 font-weight-bold text-primary">Data RKAT</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Ubah Pengajuan</h6>
           <div class="dropdown no-arrow">
             <a
               class="dropdown-toggle"
@@ -39,7 +39,7 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          
+          <subordinate />
         </div>
       </div>
     </div>
@@ -47,11 +47,28 @@
 </template>
 
 <script>
-export default {
+import { mapActions, mapMutations } from "vuex";
+import subordinate from "~/components/form/subordinate.vue";
 
-}
+export default {
+  async asyncData({ store, params }) {
+    await Promise.all([store.dispatch("subordinate/getpengajuanID", params.id)]);
+    return;
+  },
+    components: {
+      'subordinate': subordinate
+  },
+    mounted() {
+    this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
+    this.SET_USER_DATA(this.$store.state.auth.user);
+    this.SET_API_TOKEN(this.$store.state.auth.user.token);
+  },
+  methods: {
+    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA", "SET_STATUS", "SET_HISTORY"]),
+    ...mapActions("subordinate", ["getpengajuanID"]),
+  }
+};
 </script>
 
 <style>
-
 </style>

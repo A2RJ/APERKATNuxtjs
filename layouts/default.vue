@@ -57,6 +57,11 @@ export default {
       this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
       this.SET_USER_DATA(this.$store.state.auth.user);
       this.SET_API_TOKEN(this.$store.state.auth.user.token);
+    } else {
+      this.SET_IS_AUTH(false)
+      this.SET_USER_DATA(null)
+      this.SET_API_TOKEN(null)
+      this.$router.push("/login");
     }
     !(function (t) {
       "use strict";
