@@ -37,7 +37,7 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <b-table responsive striped hover :items="pengajuan" :fields="fields" show-empty>
+          <b-table responsive head-variant="light" sticky-header hover :items="pengajuan" :fields="fields" show-empty>
             <template v-slot:cell(actions)="row">
               <NuxtLink
                 class="btn-sm btn-warning mb-2"
