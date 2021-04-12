@@ -107,8 +107,8 @@ export default {
           })
           .then(() => {
             this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-            this.SET_USER_DATA(this.$store.state.auth.user);
-            this.SET_API_TOKEN(this.$store.state.auth.user.token);
+            this.SET_USER_DATA(this.$store.state.auth.user[0]);
+            this.SET_API_TOKEN(this.$store.state.auth.user[0].token);
             this.$router.push("/");
           });
       } catch (err) {

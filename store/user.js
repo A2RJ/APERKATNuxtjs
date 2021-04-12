@@ -1,6 +1,7 @@
 export const state = () => ({
     user: [],
     data: [],
+    dataLogin: [],
     errors: []
 })
 
@@ -13,6 +14,10 @@ export const mutations = {
         state.data = payload
     },
 
+    SET_DATA_LOGIN(state, payload) {
+        state.dataLogin = payload
+    },
+
     SET_ERRORS(state, payload) {
         state.errors = payload
     }
@@ -23,6 +28,14 @@ export const actions = {
         return new Promise((resolve, reject) => {
             this.$axios.get('/user/').then((response) => {
                 commit('SET_USER_DATA', response.data.data.data)
+                resolve()
+            })
+        })
+    },
+    dataLogin({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/user/dataLogin/${payload}`).then((response) => {
+                commit('SET_DATA_LOGIN', response.data.data)
                 resolve()
             })
         })

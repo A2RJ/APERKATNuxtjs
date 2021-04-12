@@ -22,7 +22,8 @@ export const actions = {
     getrkat({ commit }) {
         return new Promise((resolve, reject) => {
             this.$axios.get('/rkat/').then((response) => {
-                commit('SET_RKAT_DATA', response.data.data.data)
+                // console.log(response.data.data);
+                commit('SET_RKAT_DATA', response.data.data)
                 resolve()
             })
         })

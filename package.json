@@ -15,8 +15,11 @@
     "cookie": "^0.4.1",
     "core-js": "^3.9.1",
     "js-cookie": "^2.2.1",
+    "laravel-vue-pagination": "^2.3.1",
     "nuxt": "^2.15.3",
-    "nuxt-sweetalert2": "^1.0.0"
+    "nuxt-sweetalert2": "^1.0.0",
+    "vuejs-paginate": "^2.1.0",
+    "vueye-table": "^1.4.1"
   },
   "devDependencies": {
     "@nuxt/components": "^2.1.6"

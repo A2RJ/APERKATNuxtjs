@@ -1,5 +1,6 @@
 # SubmissionNuxtJS
 - Server Lumen API PHP V.8
+- Pengajuan join user Untuk ambil data rekening user
 - ambil status
 - ambil history
 - Untuk hari ini implementasi menu atasan yakni mengambil semua pengajuan bawahan

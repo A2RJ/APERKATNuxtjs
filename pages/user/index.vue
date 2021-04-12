@@ -1,38 +1,20 @@
 <template>
-  <div class="row">
-    <!-- Area Chart -->
-    <div class="col-xl-12 col-lg-12">
-      <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div
-          class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
-        >
-          <h6 class="m-0 font-weight-bold text-primary">Data RKAT</h6>
-          <div class="dropdown no-arrow">
-            <a
-              class="dropdown-toggle"
-              href="#"
-              role="button"
-              id="dropdownMenuLink"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <b-table responsive striped hover :items="user" :fields="fields">
+          <template v-slot:cell(Detail)="row">
+            <NuxtLink
+              class="btn-sm btn-warning mb-2"
+              :to="'rkat/edit/' + row.item.id_rkat"
+              :key="'edit' + row.index"
+              >Detail</NuxtLink
             >
-              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-              aria-labelledby="dropdownMenuLink"
-              style=""
-            >
-              <div class="dropdown-header">Opsi:</div>
-              <NuxtLink class="dropdown-item" to="/rkat/add">Add RKAT</NuxtLink>
-              <NuxtLink class="dropdown-item" to="/rkat/reset">Reset RKAT</NuxtLink>
-            </div>
-          </div>
-        </div>
-        <!-- Card Body -->
-        <div class="card-body"></div>
+          </template>
+        </b-table>
       </div>
     </div>
   </div>
@@ -47,8 +29,16 @@ export default {
     return;
   },
   data() {
-    return {};
+    return {
+      fields: [
+        { key: "fullname", label: "User" },
+        { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
+        { key: "created_at", label: "Register Date" },
+        "Detail",
+      ],
+    };
   },
+  components: {},
   computed: {
     ...mapState("user", {
       user: (state) => state.user,
@@ -57,8 +47,7 @@ export default {
   mounted() {},
   methods: {
     ...mapActions("user", ["getuser", "deleteuser"]),
-
-    destroyrkat(row) {
+    destroyrkat() {
       // this.deleterkat(row.item.id_rkat).catch((e) => {
       //   console.log(e);
       // });

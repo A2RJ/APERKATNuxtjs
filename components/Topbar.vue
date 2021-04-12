@@ -158,7 +158,7 @@
             <div class="dropdown-list-image mr-3">
               <img
                 class="rounded-circle"
-                src="img/undraw_profile_1.svg"
+                src="~/assets/img/undraw_profile_1.svg"
                 alt=""
               />
               <div class="status-indicator bg-success"></div>
@@ -175,7 +175,7 @@
             <div class="dropdown-list-image mr-3">
               <img
                 class="rounded-circle"
-                src="img/undraw_profile_2.svg"
+                src="~/assets/img/undraw_profile_2.svg"
                 alt=""
               />
               <div class="status-indicator"></div>
@@ -192,7 +192,7 @@
             <div class="dropdown-list-image mr-3">
               <img
                 class="rounded-circle"
-                src="img/undraw_profile_3.svg"
+                src="~/assets/img/undraw_profile_3.svg"
                 alt=""
               />
               <div class="status-indicator bg-warning"></div>
@@ -246,7 +246,7 @@
           >
           <img
             class="img-profile rounded-circle"
-            src="img/undraw_profile.svg"
+            src="~/assets/img/undraw_profile.svg"
           />
         </a>
         <!-- Dropdown - User Information -->
@@ -267,9 +267,10 @@
             Activity Log
           </a>
           <div class="dropdown-divider"></div>
-           <button @click="logout"> <i
-              class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
-            ></i> Logout</button>
+          <a class="dropdown-item" href="#" @click="logout">
+            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+            Logout
+          </a>
         </div>
       </li>
     </ul>

@@ -66,18 +66,9 @@ export default {
   data() {
     return {
       fields: [
-        "id_user",
-        "sasaran_strategi",
-        "indikator_sasaran_strategi",
-        "nama_program",
-        "program_kerja",
-        "deskripsi",
-        "tujuan",
+        { key: 'nama_struktur_child1', label: 'Fakultas/Unit Pelaksana' },
         "mulai_program",
-        "selesai_program",
-        "tempat",
-        "sumber_anggaran",
-        "rencara_anggaran",
+        { key: 'created_at', label: 'Waktu Pengajuan' },
         "total_anggaran",
         "actions",
       ],
@@ -91,8 +82,8 @@ export default {
   },
   mounted() {
     this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-    this.SET_USER_DATA(this.$store.state.auth.user);
-    this.SET_API_TOKEN(this.$store.state.auth.user.token);
+    this.SET_USER_DATA(this.$store.state.auth.user[0]);
+    this.SET_API_TOKEN(this.$store.state.auth.user[0].token);
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),

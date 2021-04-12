@@ -40,12 +40,12 @@
       </NuxtLink>
     </li>
 
-    <li class="nav-item" v-if="this.$store.state.auth.user.id_user">
-      <NuxtLink class="nav-link" :to="'/pengajuan/subordinate/'+ this.$store.state.auth.user.id_user">
+    <!-- <li class="nav-item" v-show="this.$store.state.auth.user[0]">
+      <NuxtLink class="nav-link" :to="'/pengajuan/subordinate/'+ this.$store.state.auth.user[0].id_user">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>PENGAJUAN</span>
       </NuxtLink>
-    </li>
+    </li> -->
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
@@ -66,18 +66,36 @@
         aria-labelledby="headingTwo"
         data-parent="#accordionSidebar"
       >
-        <div class="bg-white py-2 collapse-inner rounded">
+        <div
+          class="bg-white py-2 collapse-inner rounded"
+          v-if="this.$store.state.auth.user"
+        >
           <h6 class="collapse-header">Daftar Pengajuan</h6>
-          <NuxtLink class="collapse-item" to="/pengajuan/supervisor"
+          <NuxtLink
+            class="collapse-item"
+            v-show="fakultas"
+            :to="
+              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
+            "
             >Pengajuan Supervisor</NuxtLink
           >
-          <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/'+ this.$store.state.auth.user.id_user"
+          <NuxtLink
+            class="collapse-item"
+            :to="
+              '/pengajuan/subordinate/' + this.$store.state.auth.user[0].id_user
+            "
             >Pengajuan Subordinate</NuxtLink
           >
         </div>
       </div>
     </li>
     <li class="nav-item">
+      <NuxtLink class="nav-link" to="/user">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>USER</span>
+      </NuxtLink>
+    </li>
+    <li class="nav-item" v-show="fakultas">
       <NuxtLink class="nav-link" to="/user">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>USER</span>
@@ -95,7 +113,24 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      fakultas: false,
+    };
+  },
+  computed: {},
+  methods: {},
+  mounted() {
+    if (this.$store.state.auth.loggedIn) {
+      let data = this.$store.state.auth.user[1].level;
+      console.log(data);
+      if (data != "prodi") {
+        this.fakultas = true;
+      }
+    }
+  },
+};
 </script>
 
 <style>

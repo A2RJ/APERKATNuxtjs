@@ -122,16 +122,15 @@ export const actions = {
     gethistory({ commit }, payload) {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/pengajuan/history/${payload}`).then((response) => {
-                commit('SET_HISTORY ', response.data.data)
+                commit('SET_HISTORY', response.data.data)
                 resolve()
             })
         })
     },
     getsubordinates({ commit }, payload) {
-        // id_user = payload
         return new Promise((resolve, reject) => {
             this.$axios.get(`/pengajuan/pengajuanSubordinate/${payload}`).then((response) => {
-                commit('SET_SUBORDINATE ', response.data.data)
+                commit('SET_SUBORDINATE', response.data)
                 resolve()
             })
         })

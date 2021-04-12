@@ -5,12 +5,12 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="id rkat"
-      label-for="id_rkat"
+      label="Kode RKAT"
+      label-for="kode_rkat"
     >
       <b-form-input
-        v-model="form.id_rkat"
-        id="id_rkat"
+        v-model="form.kode_rkat"
+        id="kode_rkat"
         size="sm"
       ></b-form-input>
     </b-form-group>
@@ -103,7 +103,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="iku child1"
+      label=""
       label-for="id_iku_child1"
     >
       <b-form-input
@@ -117,7 +117,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="iku child2"
+      label=""
       label-for="id_iku_child2"
     >
       <b-form-input
@@ -140,7 +140,20 @@
         size="sm"
       ></b-form-input>
     </b-form-group>
-    
+
+    <b-form-group
+      label-cols="4"
+      label-cols-lg="2"
+      label-size="sm"
+      label="No.Rek Penerima"
+      label-for="norek"
+    >
+      <b-form-input
+        v-model="form.norek"
+        id="norek"
+        size="sm"
+      ></b-form-input>
+    </b-form-group>
     <b-form-group
       label-cols="4"
       label-cols-lg="2"
@@ -154,8 +167,9 @@
         size="sm"
       ></b-form-input>
     </b-form-group>
+    
 
-    {{ status }}
+    {{ status }} <br>
     {{ history }}
     <button class="btn-sm btn-info float-right" @click="submit">Save</button>
   </div>
@@ -168,7 +182,7 @@ export default {
   created() {
     if (this.$route.name === "pengajuan-subordinate-edit-id") {
       this.form = {
-        id_rkat: this.forms.id_rkat,
+        kode_rkat: this.forms.kode_rkat,
         target_capaian: this.forms.target_capaian,
         bentuk_pelaksanaan_program: this.forms.bentuk_pelaksanaan_program,
         tempat_program: this.forms.tempat_program,
@@ -180,14 +194,14 @@ export default {
         biaya_program: this.forms.biaya_program,
         rab: this.forms.rab,
         status_pengajuan: "progress",
-        token: this.$store.state.auth.user.token
+        token: this.$store.state.auth.user[0].token
       };
     }
   },
   data() {
     return {
       form: {
-        id_rkat: null,
+        kode_rkat: null,
         target_capaian: null,
         bentuk_pelaksanaan_program: null,
         tempat_program: null,
@@ -199,7 +213,7 @@ export default {
         biaya_program: null,
         rab: null,
         status_pengajuan: "progress",
-        token: this.$store.state.auth.user.token
+        token: this.$store.state.auth.user[0].token
       },
     };
   },
@@ -221,11 +235,11 @@ export default {
       if (this.$route.name === "pengajuan-subordinate-edit-id") {
         let form = Object.assign({ id: this.$route.params.id }, this.form);
         this.updatepengajuan(form).then(() => {
-          this.$router.push("/pengajuan/subordinate/" + this.$store.state.auth.user.id_user);
+          this.$router.push("/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user);
         });
       } else {
         this.storepengajuan(this.form).then(() => {
-          this.$router.push("/pengajuan/subordinate/" + this.$store.state.auth.user.id_user);
+          this.$router.push("/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user);
         });
       }
     },

@@ -4,12 +4,26 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="id user"
+      label="Fakultas/Unit Pelaksana"
       label-for="id_user"
     >
       <b-form-input
         v-model="form.id_user"
         id="id_user"
+        size="sm"
+      ></b-form-input>
+    </b-form-group>
+
+    <b-form-group
+      label-cols="4"
+      label-cols-lg="2"
+      label-size="sm"
+      label="Kode RKAT"
+      label-for="kode_rkat"
+    >
+      <b-form-input
+        v-model="form.kode_rkat"
+        id="kode_rkat"
         size="sm"
       ></b-form-input>
     </b-form-group>
@@ -173,7 +187,7 @@
         size="sm"
       ></b-form-input>
     </b-form-group>
-    {{ errors }}
+    <!-- {{ errors }} -->
     <button class="btn-sm btn-info float-right" @click="submit">Save</button>
   </div>
 </template>
@@ -186,6 +200,7 @@ export default {
     if (this.$route.name === "rkat-edit-id") {
       this.form = {
         id_user: this.forms.id_user,
+        kode_rkat: this.forms.kode_rkat,
         sasaran_strategi: this.forms.sasaran_strategi,
         indikator_sasaran_strategi: this.forms.indikator_sasaran_strategi,
         nama_program: this.forms.nama_program,
@@ -198,6 +213,7 @@ export default {
         sumber_anggaran: this.forms.sumber_anggaran,
         rencara_anggaran: this.forms.rencara_anggaran,
         total_anggaran: this.forms.total_anggaran,
+        token: this.$store.state.auth.user[0].token
       };
     }
   },
@@ -205,6 +221,7 @@ export default {
     return {
       form: {
         id_user: null,
+        kode_rkat: null,
         sasaran_strategi: null,
         indikator_sasaran_strategi: null,
         nama_program: null,
@@ -217,6 +234,7 @@ export default {
         sumber_anggaran: null,
         rencara_anggaran: null,
         total_anggaran: null,
+        token: this.$store.state.auth.user[0].token
       },
     };
   },

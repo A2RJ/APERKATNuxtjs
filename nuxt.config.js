@@ -17,7 +17,7 @@ export default {
       { src: "/vendor/jquery/jquery.min.js" },
       { src: "/vendor/bootstrap/js/bootstrap.bundle.min.js" },
       { src: "/vendor/jquery-easing/jquery.easing.min.js" },
-      { src: "/js/sb-admin-2.min.js" }
+      { src: "/js/sb-admin-2.min.js" },
     ],
   },
 
@@ -49,15 +49,8 @@ export default {
 
   axios: {
     baseURL: 'http://localhost:8000/',
-    browserBaseURL: 'http://localhost:8000/',
-    // proxy: true
+    browserBaseURL: 'http://localhost:8000/'
   },
-  // proxy: {
-  //   '/laravel': {
-  //     target: 'http://localhost:8000',
-  //     pathRewrite: { '^/laravel': '/' }
-  //   }
-  // },
   auth: {
     strategies: {
       'laravelJWT': {
@@ -71,18 +64,18 @@ export default {
         },
         user: {
           property: false,
-         autoFetch: true
+          autoFetch: true
         },
         token: {
           property: 'access_token',
-          maxAge: 60 * 60
+          maxAge: 120 * 60
         },
         refreshToken: {
           maxAge: 20160 * 60
         },
       },
     }
-},
+  },
 
   router: {
     middleware: ['auth']
