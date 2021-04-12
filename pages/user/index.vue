@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <b-table responsive striped hover :items="user" :fields="fields">
+        <b-table responsive striped hover :items="user" :fields="fields" show-empty>
           <template v-slot:cell(Detail)="row">
             <NuxtLink
               class="btn-sm btn-warning mb-2"

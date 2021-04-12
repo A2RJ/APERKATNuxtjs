@@ -33,19 +33,12 @@
 
     <!-- Nav Item -->
 
-    <li class="nav-item">
+    <li class="nav-item" v-show="rektor">
       <NuxtLink class="nav-link" to="/rkat">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>RKAT</span>
       </NuxtLink>
     </li>
-
-    <!-- <li class="nav-item" v-show="this.$store.state.auth.user[0]">
-      <NuxtLink class="nav-link" :to="'/pengajuan/subordinate/'+ this.$store.state.auth.user[0].id_user">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>PENGAJUAN</span>
-      </NuxtLink>
-    </li> -->
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
@@ -73,13 +66,14 @@
           <h6 class="collapse-header">Daftar Pengajuan</h6>
           <NuxtLink
             class="collapse-item"
-            v-show="fakultas"
+            v-show="fakultas || dirKeuangan || warek || rektor"
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
             >Pengajuan Supervisor</NuxtLink
           >
           <NuxtLink
+            v-show="prodi || fakultas || dirKeuangan || warek || rektor"
             class="collapse-item"
             :to="
               '/pengajuan/subordinate/' + this.$store.state.auth.user[0].id_user
@@ -89,13 +83,8 @@
         </div>
       </div>
     </li>
-    <li class="nav-item">
-      <NuxtLink class="nav-link" to="/user">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>USER</span>
-      </NuxtLink>
-    </li>
-    <li class="nav-item" v-show="fakultas">
+
+    <li class="nav-item" v-show="rektor">
       <NuxtLink class="nav-link" to="/user">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>USER</span>
@@ -116,7 +105,11 @@
 export default {
   data() {
     return {
+      prodi: false,
       fakultas: false,
+      dirKeuangan: false,
+      warek: false,
+      rektor: false,
     };
   },
   computed: {},
@@ -125,8 +118,16 @@ export default {
     if (this.$store.state.auth.loggedIn) {
       let data = this.$store.state.auth.user[1].level;
       console.log(data);
-      if (data != "prodi") {
+      if (data == "prodi") {
+        this.prodi = true;
+      }else if (data == "fakultas") {
         this.fakultas = true;
+      }else if (data == "dirKeuangan") {
+        this.dirKeuangan = true;
+      }else if (data == "warek") {
+        this.warek = true;
+      }else if (data == "rektor") {
+        this.rektor = true;
       }
     }
   },
