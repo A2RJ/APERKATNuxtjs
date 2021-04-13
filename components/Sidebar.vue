@@ -64,21 +64,51 @@
           v-if="this.$store.state.auth.user"
         >
           <h6 class="collapse-header">Daftar Pengajuan</h6>
-          <NuxtLink
+          <!-- <NuxtLink
             class="collapse-item"
-            v-show="fakultas || dirKeuangan || warek || rektor"
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
             >Pengajuan Supervisor</NuxtLink
-          >
+          > -->
           <NuxtLink
-            v-show="prodi || fakultas || dirKeuangan || warek || rektor"
             class="collapse-item"
             :to="
               '/pengajuan/subordinate/' + this.$store.state.auth.user[0].id_user
             "
             >Pengajuan Subordinate</NuxtLink
+          >
+          <NuxtLink
+            class="collapse-item"
+            v-show="fakultas"
+            :to="
+              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
+            "
+            >Pengajuan supervisor</NuxtLink
+          >
+          <NuxtLink
+            class="collapse-item"
+            v-show="dirKeuangan"
+            :to="
+              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
+            "
+            >Pengajuan supervisor</NuxtLink
+          >
+          <NuxtLink
+            class="collapse-item"
+            v-show="warek"
+            :to="
+              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
+            "
+            >Pengajuan supervisor</NuxtLink
+          >
+          <NuxtLink
+            class="collapse-item"
+            v-show="rektor"
+            :to="
+              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
+            "
+            >Pengajuan supervisor</NuxtLink
           >
         </div>
       </div>

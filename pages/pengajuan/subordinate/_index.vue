@@ -7,7 +7,7 @@
         <div
           class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
         >
-          <h6 class="m-0 font-weight-bold text-primary">Data Pengajuan</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Data User</h6>
           <div class="dropdown no-arrow">
             <a
               class="dropdown-toggle"
@@ -37,7 +37,18 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <b-table responsive head-variant="light" sticky-header hover :items="pengajuan" :fields="fields" show-empty>
+          <b-table
+            responsive
+            head-variant="light"
+            sticky-header
+            hover
+            id="my-table"
+            :items="pengajuan"
+            :fields="fields"
+            :per-page="perPage"
+            :current-page="currentPage"
+            show-empty
+          >
             <template v-slot:cell(actions)="row">
               <NuxtLink
                 class="btn-sm btn-warning mb-2"
@@ -53,6 +64,16 @@
               </button>
             </template>
           </b-table>
+          <div class="overflow-auto">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              aria-controls="my-table"
+            ></b-pagination>
+
+            <p class="mt-3">Current Page: {{ currentPage }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -64,22 +85,32 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   async asyncData({ store, params }) {
-    await Promise.all([store.dispatch("subordinate/getpengajuan", params.index)]);
+    await Promise.all([
+      store.dispatch("subordinate/getpengajuan", params.index),
+    ]);
     return;
   },
   data() {
     return {
       fields: [
-        { key: 'fullname', label: 'User' },
-        { key: 'nama_struktur_child1', label: 'Fakultas/Unit Pelaksana' },
-        { key: 'created_at', label: 'Waktu Pengajuan' },
-        "actions"]
+        { key: "fullname", label: "User" },
+        { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
+        { key: "created_at", label: "Waktu Pengajuan" },
+        "actions",
+      ],
+
+      perPage: 3,
+      currentPage: 1,
+      items: this.pengajuan,
     };
   },
   computed: {
     ...mapState("subordinate", {
       pengajuan: (state) => state.pengajuan,
     }),
+    rows() {
+      return this.pengajuan.length;
+    },
   },
   mounted() {},
   methods: {
