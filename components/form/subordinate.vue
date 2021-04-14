@@ -220,7 +220,6 @@
               {{ history.created_at }}
               {{ history.status_validasi == 0 ? "Proccess" : "Approved" }} -
               {{ history.message }}
-              <!-- {{ history }} -->
             </li>
           </ul>
         </div>
@@ -248,7 +247,24 @@ export default {
         biaya_program: this.forms.biaya_program,
         rab: this.forms.rab,
         status_pengajuan: "progress",
-        token: this.$store.state.auth.user[0].token,
+        id_user: this.form.id_user,
+      };
+    }
+    if (this.$route.name === "pengajuan-supervisor-edit-id") {
+      this.form = {
+        kode_rkat: this.forms.kode_rkat,
+        target_capaian: this.forms.target_capaian,
+        bentuk_pelaksanaan_program: this.forms.bentuk_pelaksanaan_program,
+        tempat_program: this.forms.tempat_program,
+        tanggal: this.forms.tanggal,
+        bidang_terkait: this.forms.bidang_terkait,
+        id_iku_parent: this.forms.id_iku_parent,
+        id_iku_child1: this.forms.id_iku_child1,
+        id_iku_child2: this.forms.id_iku_child2,
+        biaya_program: this.forms.biaya_program,
+        rab: this.forms.rab,
+        status_pengajuan: "progress",
+        id_user: this.form.id_user,
       };
     }
   },
@@ -267,7 +283,7 @@ export default {
         biaya_program: null,
         rab: null,
         status_pengajuan: "progress",
-        token: this.$store.state.auth.user[0].token,
+        id_user: this.$store.state.auth.user[0].id_user,
       },
     };
   },
