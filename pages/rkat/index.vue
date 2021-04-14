@@ -36,7 +36,18 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <b-table responsive head-variant="light" sticky-header hover :items="rkat" :fields="fields" show-empty>
+          <b-table
+            responsive
+            head-variant="light"
+            sticky-header
+            hover
+            id="my-table"
+            :items="rkat"
+            :fields="fields"
+            :per-page="perPage"
+            :current-page="currentPage"
+            show-empty
+          >
             <template v-slot:cell(actions)="row">
               <NuxtLink
                 class="btn-sm btn-warning mb-2"
@@ -49,6 +60,15 @@
               </button>
             </template>
           </b-table>
+
+          <div class="overflow-auto">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              aria-controls="my-table"
+            ></b-pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -66,12 +86,15 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'nama_struktur_child1', label: 'Fakultas/Unit Pelaksana' },
+        { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
         "mulai_program",
-        { key: 'created_at', label: 'Waktu Pengajuan' },
+        { key: "created_at", label: "Waktu Pengajuan" },
         "total_anggaran",
         "actions",
       ],
+      perPage: 3,
+      currentPage: 1,
+      items: this.rkat,
       delete: null,
     };
   },
@@ -79,6 +102,9 @@ export default {
     ...mapState("rkat", {
       rkat: (state) => state.rkat,
     }),
+    rows() {
+      return this.rkat.length;
+    },
   },
   mounted() {
     this.SET_IS_AUTH(this.$store.state.auth.loggedIn);

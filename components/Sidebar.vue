@@ -64,13 +64,6 @@
           v-if="this.$store.state.auth.user"
         >
           <h6 class="collapse-header">Daftar Pengajuan</h6>
-          <!-- <NuxtLink
-            class="collapse-item"
-            :to="
-              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
-            "
-            >Pengajuan Supervisor</NuxtLink
-          > -->
           <NuxtLink
             class="collapse-item"
             :to="
@@ -84,7 +77,7 @@
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan supervisor</NuxtLink
+            >Pengajuan Supervisor</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -92,7 +85,7 @@
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan supervisor</NuxtLink
+            >Pengajuan Supervisor</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -100,7 +93,7 @@
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan supervisor</NuxtLink
+            >Pengajuan Supervisor</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -108,7 +101,7 @@
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan supervisor</NuxtLink
+            >Pengajuan Supervisor</NuxtLink
           >
         </div>
       </div>

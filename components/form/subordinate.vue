@@ -309,6 +309,13 @@ export default {
             "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user
           );
         });
+      } else if (this.$route.name === "pengajuan-supervisor-edit-id") {
+        let form = Object.assign({ id: this.$route.params.id }, this.form);
+        this.updatepengajuan(form).then(() => {
+          this.$router.push(
+            "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
+          );
+        });
       } else {
         this.storepengajuan(this.form).then(() => {
           this.$router.push(

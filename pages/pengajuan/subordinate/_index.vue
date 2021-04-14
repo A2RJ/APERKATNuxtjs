@@ -64,6 +64,7 @@
               </button>
             </template>
           </b-table>
+
           <div class="overflow-auto">
             <b-pagination
               v-model="currentPage"
@@ -71,8 +72,6 @@
               :per-page="perPage"
               aria-controls="my-table"
             ></b-pagination>
-
-            <p class="mt-3">Current Page: {{ currentPage }}</p>
           </div>
         </div>
       </div>

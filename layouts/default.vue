@@ -1,31 +1,35 @@
 <template>
-  <!-- Page Wrapper -->
-  <div id="wrapper">
-    <!-- Sidebar -->
-    <Sidebar v-show="isAuth"></Sidebar>
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-      <!-- Main Content -->
-      <div id="content">
-        <!-- Topbar -->
-        <Topbar v-show="isAuth"></Topbar>
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-          <!-- Page Heading -->
-          <!-- <h6>{{ isAuth }} {{ token }} {{ ardi }}</h6> -->
-          <!-- <button @click="logout">Logout</button> -->
-          <KeepAlive>
-            <Nuxt />
-          </KeepAlive>
+  <div>
+    <!-- Page Wrapper -->
+    <div id="wrapper" v-if="isAuth">
+      <!-- Sidebar -->
+      <Sidebar></Sidebar>
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <!-- Topbar -->
+          <Topbar></Topbar>
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <!-- Page Heading -->
+            <KeepAlive>
+              <Nuxt />
+            </KeepAlive>
+          </div>
+          <!-- /.container-fluid -->
         </div>
-        <!-- /.container-fluid -->
+        <!-- End of Main Content -->
+        <!-- Footer -->
       </div>
-      <!-- End of Main Content -->
-      <!-- Footer -->
+      <!-- End of Content Wrapper -->
     </div>
-    <!-- End of Content Wrapper -->
+
+    <div v-else>
+      <Nuxt />
+    </div>
+    <!-- End of Page Wrapper -->
   </div>
-  <!-- End of Page Wrapper -->
 </template>
 
 <script>
@@ -44,7 +48,12 @@ export default {
     ...mapState(["isAuth", "token", "ardi", "level"]),
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA", "SET_LEVEL"]),
+    ...mapMutations([
+      "SET_IS_AUTH",
+      "SET_API_TOKEN",
+      "SET_USER_DATA",
+      "SET_LEVEL",
+    ]),
   },
   components: {
     Sidebar: Sidebar,

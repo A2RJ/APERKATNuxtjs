@@ -242,7 +242,7 @@
           aria-expanded="false"
         >
           <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-            >Douglas McGee</span
+            >{{ data.fullname}}</span
           >
           <img
             class="img-profile rounded-circle"
@@ -282,6 +282,11 @@
 import { mapState, mapMutations } from "vuex";
 
 export default {
+  data() {
+    return {
+      data: this.$store.state.auth.user[0]
+    }
+  },
   computed: {
     ...mapState(["isAuth", "token", "ardi"]),
   },
@@ -293,7 +298,9 @@ export default {
         this.SET_IS_AUTH(false);
         this.SET_API_TOKEN(null);
         this.SET_USER_DATA(null);
-        window.location.replace('http://localhost:3000/login')
+        this.$router.push("/login");
+
+        // window.location.replace('http://localhost:3000/login')
       } catch (err) {
         console.log(err);
       }
