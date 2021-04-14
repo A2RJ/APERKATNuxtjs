@@ -21,6 +21,12 @@
       label="Kode RKAT"
       label-for="kode_rkat"
     >
+      <!-- <b-form-select
+        v-model="selected"
+        :options="options"
+        size="sm"
+        class="mt-3"
+      ></b-form-select> -->
       <b-form-input
         v-model="form.kode_rkat"
         id="kode_rkat"
@@ -213,7 +219,7 @@ export default {
         sumber_anggaran: this.forms.sumber_anggaran,
         rencara_anggaran: this.forms.rencara_anggaran,
         total_anggaran: this.forms.total_anggaran,
-        token: this.$store.state.auth.user[0].token
+        token: this.$store.state.auth.user[0].token,
       };
     }
   },
@@ -234,8 +240,16 @@ export default {
         sumber_anggaran: null,
         rencara_anggaran: null,
         total_anggaran: null,
-        token: this.$store.state.auth.user[0].token
+        token: this.$store.state.auth.user[0].token,
       },
+      selected: null,
+      options: [
+        { value: null, text: "Please select an option" },
+        { value: "a", text: "This is First option" },
+        { value: "b", text: "Selected Option" },
+        { value: { C: "3PO" }, text: "This is an option with object value" },
+        { value: "d", text: "This one is disabled", disabled: true },
+      ],
     };
   },
   computed: {

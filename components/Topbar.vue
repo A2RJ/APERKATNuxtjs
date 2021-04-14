@@ -242,7 +242,7 @@
           aria-expanded="false"
         >
           <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-            >{{ data.fullname}}</span
+            v-show="user">{{ user.fullname }}</span
           >
           <img
             class="img-profile rounded-circle"
@@ -284,11 +284,13 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      data: this.$store.state.auth.user[0]
+      data: null,
     }
   },
   computed: {
-    ...mapState(["isAuth", "token", "ardi"]),
+    ...mapState(["isAuth", "token", "ardi", 'user']),
+  },
+  mounted(){
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),

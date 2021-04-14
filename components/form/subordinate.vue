@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-xl-12 col-lg-12">
+    <div class="col-xl-12 col-lg-12" v-if="this.$route.params.id">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">Status</h6>
@@ -33,7 +33,11 @@
       </div>
     </div>
 
-    <div class="col-xl-8 col-lg-7">
+    <div
+      :class="
+        this.$route.params.id ? 'col-xl-8 col-lg-7' : 'col-xl-12 col-lg-12'
+      "
+    >
       <div class="card shadow mb-4">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">Pengajuan</h6>
@@ -135,6 +139,12 @@
               id="id_iku_parent"
               size="sm"
             ></b-form-input>
+            <!-- <b-form-select
+              v-model="selected"
+              :options="iku"
+              size="sm"
+              class="mt-3"
+            ></b-form-select> -->
           </b-form-group>
 
           <b-form-group
@@ -202,14 +212,18 @@
             <b-form-input v-model="form.rab" id="rab" size="sm"></b-form-input>
           </b-form-group>
 
-          <button class="btn-sm btn-info float-right" @click="submit">
+          <button
+            class="btn-sm btn-info float-right"
+            v-show="button"
+            @click="submit"
+          >
             Save
           </button>
         </div>
       </div>
     </div>
 
-    <div class="col-xl-4 col-lg-5">
+    <div class="col-xl-4 col-lg-5" v-if="this.$route.params.id">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">History</h6>
@@ -229,11 +243,12 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
+
   created() {
-    if (this.$route.name === "pengajuan-subordinate-edit-id") {
+    if (this.$route.name == "pengajuan-subordinate-edit-id") {
       this.form = {
         kode_rkat: this.forms.kode_rkat,
         target_capaian: this.forms.target_capaian,
@@ -249,8 +264,8 @@ export default {
         status_pengajuan: "progress",
         id_user: this.form.id_user,
       };
-    }
-    if (this.$route.name === "pengajuan-supervisor-edit-id") {
+    } else if (this.$route.name == "pengajuan-supervisor-edit-id") {
+      this.button = false;
       this.form = {
         kode_rkat: this.forms.kode_rkat,
         target_capaian: this.forms.target_capaian,
@@ -266,7 +281,11 @@ export default {
         status_pengajuan: "progress",
         id_user: this.form.id_user,
       };
-    }
+    } 
+    // else {
+    //   this.SET_STATUS([]);
+    //   this.SET_HISTORY([]);
+    // }
   },
   data() {
     return {
@@ -285,6 +304,9 @@ export default {
         status_pengajuan: "progress",
         id_user: this.$store.state.auth.user[0].id_user,
       },
+      button: true,
+      selected: null,
+      options: this.iku,
     };
   },
   computed: {
@@ -293,6 +315,7 @@ export default {
       status: (state) => state.status,
       history: (state) => state.history,
       errors: (state) => state.errors,
+      iku: (state) => state.iku,
     }),
   },
   methods: {
@@ -301,6 +324,7 @@ export default {
       "getpengajuanID",
       "updatepengajuan",
     ]),
+    ...mapMutations(["SET_STATUS", "SET_HISTORY"]),
     submit() {
       if (this.$route.name === "pengajuan-subordinate-edit-id") {
         let form = Object.assign({ id: this.$route.params.id }, this.form);

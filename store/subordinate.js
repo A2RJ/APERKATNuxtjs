@@ -6,7 +6,8 @@ export const state = () => ({
     decline: [],
     history: [],
     subordinate: [],
-    errors: []
+    errors: [],
+    iku: [],
 })
 
 export const mutations = {
@@ -40,6 +41,10 @@ export const mutations = {
 
     SET_ERRORS(state, payload) {
         state.errors = payload
+    },
+
+    SET_IKU(state, payload) {
+        state.iku = payload
     }
 }
 
@@ -131,6 +136,15 @@ export const actions = {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/pengajuan/pengajuanSubordinate/${payload}`).then((response) => {
                 commit('SET_SUBORDINATE', response.data)
+                resolve()
+            })
+        })
+    },
+    iku({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get('/iku').then((response) => {
+                console.log(response);
+                commit('SET_IKU', response.data)
                 resolve()
             })
         })
