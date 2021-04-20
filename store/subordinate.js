@@ -5,9 +5,12 @@ export const state = () => ({
     history: [],
     subordinate: [],
     errors: [],
-    iku: [],
+    kodeRKAT: [],
     approve: null,
     decline: null,
+    ikuParent: null,
+    ikuChild: null
+
 })
 
 export const mutations = {
@@ -43,9 +46,17 @@ export const mutations = {
         state.errors = payload
     },
 
-    SET_IKU(state, payload) {
-        state.iku = payload
-    }
+    SET_KODE_RKAT(state, payload) {
+        state.kodeRKAT = payload
+    },
+
+    SET_IKU_PARENT(state, payload) {
+        state.ikuParent = payload
+    },
+
+    SET_IKU_CHILD(state, payload) {
+        state.ikuChild = payload
+    },
 }
 
 export const actions = {
@@ -73,9 +84,9 @@ export const actions = {
                 dispatch('getpengajuan')
                 resolve()
             })
-            .catch((e) => {
-                commit('SET_ERRORS', e.response.data)
-            })
+                .catch((e) => {
+                    commit('SET_ERRORS', e.response.data)
+                })
         })
     },
     updatepengajuan({ dispatch, commit }, payload) {
@@ -84,9 +95,9 @@ export const actions = {
                 dispatch('getpengajuan')
                 resolve()
             })
-            .catch((e) => {
-                commit('SET_ERRORS', e.response.data)
-            })
+                .catch((e) => {
+                    commit('SET_ERRORS', e.response.data)
+                })
         })
     },
     deletepengajuan({ dispatch, commit }, payload) {
@@ -95,9 +106,9 @@ export const actions = {
                 dispatch('getpengajuan')
                 resolve()
             })
-            .catch((e) => {
-                commit('SET_ERRORS', e.response.data)
-            })
+                .catch((e) => {
+                    commit('SET_ERRORS', e.response.data)
+                })
         })
     },
     getstatus({ commit }, payload) {
@@ -144,13 +155,31 @@ export const actions = {
             })
         })
     },
-    iku({ commit }, payload) {
+    kodeRKAT({ commit }) {
         return new Promise((resolve, reject) => {
-            this.$axios.get('/iku').then((response) => {
+            this.$axios.get('/rkat/kodeRKAT').then((response) => {
                 console.log(response);
-                commit('SET_IKU', response.data)
+                commit('SET_KODE_RKAT', response.data)
                 resolve()
             })
         })
-    }
+    },
+    ikuParent({ commit }) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get('/iku').then((response) => {
+                console.log(response);
+                commit('SET_IKU_PARENT', response.data)
+                resolve()
+            })
+        })
+    },
+    ikuChild1({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/iku/child1/${payload}`).then((response) => {
+                console.log(response);
+                commit('SET_IKU_CHILD', response.data)
+                resolve()
+            })
+        })
+    },
 }

@@ -43,11 +43,18 @@
             label="Kode RKAT"
             label-for="kode_rkat"
           >
-            <b-form-input
+            <!-- <b-form-input
               v-model="form.kode_rkat"
               id="kode_rkat"
               size="sm"
-            ></b-form-input>
+            ></b-form-input> -->
+            <b-form-select
+              v-model="form.kode_rkat"
+              :options="options"
+              size="sm"
+              class="mt-3"
+              name="unit"
+            ></b-form-select>
           </b-form-group>
 
           <b-form-group
@@ -99,11 +106,22 @@
             label="tanggal"
             label-for="tanggal"
           >
-            <b-form-input
+            <!-- <b-form-input
               v-model="form.tanggal"
               id="tanggal"
               size="sm"
-            ></b-form-input>
+            ></b-form-input> -->
+            <b-form-datepicker
+              id="tanggal"
+              v-model="form.tanggal"
+              class="mb-2"
+              size="sm"
+              today-button
+              reset-button
+              close-button
+              date-format-options
+              locale="IDN"
+            ></b-form-datepicker>
           </b-form-group>
 
           <b-form-group
@@ -133,10 +151,12 @@
               size="sm"
             ></b-form-input>
             <!-- <b-form-select
-              v-model="selected"
-              :options="iku"
+              v-model="form.id_iku_parent"
+              :options="iku_parent"
               size="sm"
               class="mt-3"
+              name="unit"
+              @change="iku_parent"
             ></b-form-select> -->
           </b-form-group>
 
@@ -152,6 +172,14 @@
               id="id_iku_child1"
               size="sm"
             ></b-form-input>
+            <!-- <b-form-select
+              v-model="form.id_iku_child1"
+              :options="iku_child1"
+              size="sm"
+              class="mt-3"
+              name="unit"
+              @change="iku_child1"
+            ></b-form-select> -->
           </b-form-group>
 
           <b-form-group
@@ -166,6 +194,13 @@
               id="id_iku_child2"
               size="sm"
             ></b-form-input>
+            <!-- <b-form-select
+              v-model="form.id_iku_child2"
+              :options="iku_child2"
+              size="sm"
+              class="mt-3"
+              name="unit"
+            ></b-form-select> -->
           </b-form-group>
 
           <b-form-group
@@ -292,10 +327,12 @@ export default {
         status_pengajuan: "progress",
         id_user: this.$store.state.auth.user[0].id_user,
       },
-      statusku: this.status,
       button: true,
       selected: null,
-      options: this.iku,
+      options: this.kodeRKAT,
+      iku_parent: this.iku_parent,
+      iku_child1: this.id_child1,
+      iku_child2: this.id_child2,
       option: false,
       redirects:
         "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user,
@@ -307,13 +344,14 @@ export default {
       status: (state) => state.status,
       history: (state) => state.history,
       errors: (state) => state.errors,
-      iku: (state) => state.iku,
+      kodeRKAT: (state) => state.kodeRKAT,
       approve: (state) => state.approve,
       decline: (state) => state.decline,
     }),
   },
   mounted() {
     this.load();
+    this.options = this.kodeRKAT.data;
   },
   methods: {
     ...mapActions("subordinate", [
@@ -322,21 +360,25 @@ export default {
       "updatepengajuan",
       "approved",
       "declined",
+      "ikuParent",
+      "ikuChild1"
     ]),
     ...mapMutations(["SET_STATUS", "SET_HISTORY"]),
     load() {
       // let data = this.status.filter((data) => data.id_user == this.form.id_user);
-      for (let index = 0; index < this.status.length; index++) {
-        if (this.status[index]["id_user"] == this.form.id_user) {
-          if (
-            this.status[index - 1]["status"] == false ||
-            this.status[index - 1]["status"] == null
-          ) {
-            this.option = false;
-          } else if (this.status[index]["status"]) {
-            this.option = false;
-          } else {
-            this.option = true;
+      if (this.$route.name == "pengajuan-supervisor-edit-id") {
+        for (let index = 0; index < this.status.length; index++) {
+          if (this.status[index]["id_user"] == this.form.id_user) {
+            if (
+              this.status[index - 1]["status"] == false ||
+              this.status[index - 1]["status"] == null
+            ) {
+              this.option = false;
+            } else if (this.status[index]["status"]) {
+              this.option = false;
+            } else {
+              this.option = true;
+            }
           }
         }
       }
@@ -353,7 +395,12 @@ export default {
         this.$router.push(this.redirects);
       });
     },
+    iku_parent() {
 
+    },
+    iku_child1() {
+
+    },
     submit() {
       if (this.$route.name === "pengajuan-subordinate-edit-id") {
         let form = Object.assign({ id: this.$route.params.id }, this.form);

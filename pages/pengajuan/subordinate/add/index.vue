@@ -9,10 +9,10 @@ import { mapActions, mapState, mapMutations } from "vuex";
 import subordinate from "~/components/form/subordinate.vue";
 
 export default {
-  // async asyncData({ store }) {
-  //   await Promise.all([store.dispatch("subordinate/iku")]);
-  //   return;
-  // },
+  async asyncData({ store }) {
+    await Promise.all([store.dispatch("subordinate/kodeRKAT")]);
+    return;
+  },
   components: {
     subordinate: subordinate,
   },
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
-    ...mapActions("subordinate", ["getpengajuan", "iku"]),
+    ...mapActions("subordinate", ["getpengajuan", "kodeRKAT"]),
   },
 };
 </script>
