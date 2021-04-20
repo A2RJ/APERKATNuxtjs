@@ -148,7 +148,6 @@
                 >Register Here</span
               >
             </p>
-            <button @click="showAlert">Hello world</button>
           </div>
         </div>
       </div>
@@ -189,33 +188,6 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
-    showAlert() {
-      // Use sweetalert2
-      this.$swal.fire({
-  title: 'Are you sure?',
-  text: 'You will not be able to recover this imaginary file!',
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonText: 'Yes, delete it!',
-  cancelButtonText: 'No, keep it'
-}).then((result) => {
-  if (result.value) {
-    this.$swal.fire(
-      'Deleted!',
-      'Your imaginary file has been deleted.',
-      'success'
-    )
-  // For more information about handling dismissals please visit
-  // https://sweetalert2.github.io/#handling-dismissals
-  } else if (result.dismiss === this.$swal.DismissReason.cancel) {
-    this.$swal.fire(
-      'Cancelled',
-      'Your imaginary file is safe :)',
-      'error'
-    )
-  }
-})
-    },
     async login() {
       try {
         await this.$auth

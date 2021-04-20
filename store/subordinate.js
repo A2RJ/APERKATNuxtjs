@@ -2,12 +2,12 @@ export const state = () => ({
     pengajuan: [],
     data: [],
     status: [],
-    approve: [],
-    decline: [],
     history: [],
     subordinate: [],
     errors: [],
     iku: [],
+    approve: null,
+    decline: null,
 })
 
 export const mutations = {
@@ -108,19 +108,23 @@ export const actions = {
             })
         })
     },
-    getapprove({ commit }, payload) {
+    approved({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(`/pengajuan/approve/${payload}`).then((response) => {
-                commit('SET_APPROVE', response.data.data)
+            this.$axios.post(`/pengajuan/approve/${payload.id}`, payload).then((response) => {
+                dispatch('getpengajuan')
                 resolve()
+            }).catch((e) => {
+                commit('SET_ERRORS', e.response.data)
             })
         })
     },
-    getdecline({ commit }, payload) {
+    declined({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(`/pengajuan/decline/${payload}`).then((response) => {
-                commit('SET_DECLINE', response.data.data)
+            this.$axios.post(`/pengajuan/decline/${payload.id}`, payload).then((response) => {
+                dispatch('getpengajuan')
                 resolve()
+            }).catch((e) => {
+                commit('SET_ERRORS', e.response.data)
             })
         })
     },

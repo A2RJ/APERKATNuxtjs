@@ -1,6 +1,6 @@
 <template>
   <div>
-    <subordinate />
+    <components />
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
     return;
   },
   components: {
-    subordinate: subordinate,
+    'components': subordinate,
   },
   mounted() {
     this.SET_IS_AUTH(this.$store.state.auth.loggedIn);

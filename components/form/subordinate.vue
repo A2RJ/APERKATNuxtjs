@@ -6,10 +6,7 @@
           <h6 class="m-0 font-weight-bold text-primary">Status</h6>
         </div>
         <div class="card-body">
-          <ul
-            v-for="(status, index) in status"
-            :key="index"
-          >
+          <ul v-for="(status, index) in status" :key="index">
             <li
               :class="status.status ? 'text-success' : 'text-warning'"
               style="
@@ -21,6 +18,10 @@
               {{ status.nama_struktur }}
             </li>
           </ul>
+          <div>
+            <button v-show="option" @click="terima">Hello world</button>
+            <button v-show="option" @click="tolak">Hello world</button>
+          </div>
         </div>
       </div>
     </div>
@@ -272,12 +273,7 @@ export default {
         status_pengajuan: "progress",
         id_user: this.form.id_user,
       };
-      for (let index = 0; index < status.length; index++) {
-        if (status[index]['id_user'] == this.form.id_user) {
-          
-        }
-      }
-    } 
+    }
   },
   data() {
     return {
@@ -296,9 +292,13 @@ export default {
         status_pengajuan: "progress",
         id_user: this.$store.state.auth.user[0].id_user,
       },
+      statusku: this.status,
       button: true,
       selected: null,
       options: this.iku,
+      option: false,
+      redirects:
+        "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user,
     };
   },
   computed: {
@@ -308,15 +308,52 @@ export default {
       history: (state) => state.history,
       errors: (state) => state.errors,
       iku: (state) => state.iku,
+      approve: (state) => state.approve,
+      decline: (state) => state.decline,
     }),
+  },
+  mounted() {
+    this.load();
   },
   methods: {
     ...mapActions("subordinate", [
       "storepengajuan",
       "getpengajuanID",
       "updatepengajuan",
+      "approved",
+      "declined",
     ]),
     ...mapMutations(["SET_STATUS", "SET_HISTORY"]),
+    load() {
+      // let data = this.status.filter((data) => data.id_user == this.form.id_user);
+      for (let index = 0; index < this.status.length; index++) {
+        if (this.status[index]["id_user"] == this.form.id_user) {
+          if (
+            this.status[index - 1]["status"] == false ||
+            this.status[index - 1]["status"] == null
+          ) {
+            this.option = false;
+          } else if (this.status[index]["status"]) {
+            this.option = false;
+          } else {
+            this.option = true;
+          }
+        }
+      }
+    },
+    terima() {
+      let form = Object.assign({ id: this.$route.params.id }, this.form);
+      this.approved(form).then(() => {
+        this.$router.push(this.redirects);
+      });
+    },
+    tolak() {
+      let form = Object.assign({ id: this.$route.params.id }, this.form);
+      this.declined(form).then(() => {
+        this.$router.push(this.redirects);
+      });
+    },
+
     submit() {
       if (this.$route.name === "pengajuan-subordinate-edit-id") {
         let form = Object.assign({ id: this.$route.params.id }, this.form);
@@ -328,9 +365,7 @@ export default {
       } else if (this.$route.name === "pengajuan-supervisor-edit-id") {
         let form = Object.assign({ id: this.$route.params.id }, this.form);
         this.updatepengajuan(form).then(() => {
-          this.$router.push(
-            "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
-          );
+          this.$router.push(this.redirects);
         });
       } else {
         this.storepengajuan(this.form).then(() => {
