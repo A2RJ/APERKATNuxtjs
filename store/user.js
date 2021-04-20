@@ -27,7 +27,7 @@ export const actions = {
     getuser({ commit }) {
         return new Promise((resolve, reject) => {
             this.$axios.get('/user/').then((response) => {
-                commit('SET_USER_DATA', response.data.data.data)
+                commit('SET_USER_DATA', response.data.data)
                 resolve()
             })
         })

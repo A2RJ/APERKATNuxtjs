@@ -9,14 +9,6 @@
           <ul
             v-for="(status, index) in status"
             :key="index"
-            style="
-              display: flex;
-              align-items: stretch; /* Default */
-              justify-content: space-between;
-              width: 100%;
-              margin: 0;
-              padding: 0;
-            "
           >
             <li
               :class="status.status ? 'text-success' : 'text-warning'"
@@ -246,7 +238,6 @@
 import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
-
   created() {
     if (this.$route.name == "pengajuan-subordinate-edit-id") {
       this.form = {
@@ -281,11 +272,12 @@ export default {
         status_pengajuan: "progress",
         id_user: this.form.id_user,
       };
+      for (let index = 0; index < status.length; index++) {
+        if (status[index]['id_user'] == this.form.id_user) {
+          
+        }
+      }
     } 
-    // else {
-    //   this.SET_STATUS([]);
-    //   this.SET_HISTORY([]);
-    // }
   },
   data() {
     return {

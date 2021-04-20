@@ -7,11 +7,19 @@
       label="Fakultas/Unit Pelaksana"
       label-for="id_user"
     >
-      <b-form-input
+      <!-- <b-form-input
         v-model="form.id_user"
         id="id_user"
         size="sm"
-      ></b-form-input>
+      ></b-form-input> -->
+      <b-form-select
+        v-model="form.id_user"
+        :options="options"
+        size="sm"
+        class="mt-3"
+        name="unit"
+      ></b-form-select>
+      <!-- @change="loadFakultas" -->
     </b-form-group>
 
     <b-form-group
@@ -21,12 +29,6 @@
       label="Kode RKAT"
       label-for="kode_rkat"
     >
-      <!-- <b-form-select
-        v-model="selected"
-        :options="options"
-        size="sm"
-        class="mt-3"
-      ></b-form-select> -->
       <b-form-input
         v-model="form.kode_rkat"
         id="kode_rkat"
@@ -121,11 +123,22 @@
       label="mulai program"
       label-for="mulai_program"
     >
-      <b-form-input
+      <!-- <b-form-input
         v-model="form.mulai_program"
         id="mulai_program"
         size="sm"
-      ></b-form-input>
+      ></b-form-input> -->
+      <b-form-datepicker
+        id="mulai_program"
+        v-model="form.mulai_program"
+        class="mb-2"
+        size="sm"
+        today-button
+        reset-button
+        close-button
+        locale="IDN"
+        date-format-options
+      ></b-form-datepicker>
     </b-form-group>
 
     <b-form-group
@@ -135,11 +148,22 @@
       label="selesai program"
       label-for="selesai_program"
     >
-      <b-form-input
+      <!-- <b-form-input
         v-model="form.selesai_program"
         id="selesai_program"
         size="sm"
-      ></b-form-input>
+      ></b-form-input> -->
+      <b-form-datepicker
+        id="selesai_program"
+        v-model="form.selesai_program"
+        class="mb-2"
+        size="sm"
+        today-button
+        reset-button
+        close-button
+        date-format-options
+        locale="IDN"
+      ></b-form-datepicker>
     </b-form-group>
 
     <b-form-group
@@ -243,19 +267,17 @@ export default {
         token: this.$store.state.auth.user[0].token,
       },
       selected: null,
-      options: [
-        { value: null, text: "Please select an option" },
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Selected Option" },
-        { value: { C: "3PO" }, text: "This is an option with object value" },
-        { value: "d", text: "This one is disabled", disabled: true },
-      ],
+      options: null,
     };
+  },
+  mounted() {
+    this.options = this.rkatUser;
   },
   computed: {
     ...mapState("rkat", {
       forms: (state) => state.data,
       errors: (state) => state.errors,
+      rkatUser: (state) => state.rkatUser,
     }),
   },
   methods: {
@@ -271,6 +293,12 @@ export default {
           this.$router.push("/rkat");
         });
       }
+    },
+    loadFakultas() {
+      console.log("Fakultas");
+    },
+    loadProdi() {
+      console.log("Prodi");
     },
   },
 };

@@ -41,7 +41,12 @@
               Please log in using that account has<br />
               registered on the website.
             </p>
-            <form style="margin-top: 1.5rem" action="" method="post" @submit.prevent="login">
+            <form
+              style="margin-top: 1.5rem"
+              action=""
+              method="post"
+              @submit.prevent="login"
+            >
               <div style="margin-bottom: 1.75rem">
                 <label for="" class="d-block input-label-content-3-5"
                   >Email Address</label
@@ -66,8 +71,8 @@
                   <input
                     class="input-field-content-3-5"
                     type="email"
-                    name=""
-                    id=""
+                    name="email"
+                    id="email"
                     placeholder="Your Email Address"
                     autocomplete="on"
                     required
@@ -99,8 +104,8 @@
                   <input
                     class="input-field-content-3-5"
                     type="password"
-                    name=""
-                    id=""
+                    name="password"
+                    id="password"
                     placeholder="Your Password"
                     minlength="4"
                     required
@@ -143,11 +148,12 @@
                 >Register Here</span
               >
             </p>
+            <button @click="showAlert">Hello world</button>
           </div>
         </div>
       </div>
     </section>
-    <footer />
+    <footers />
   </section>
 </template>
 
@@ -156,7 +162,7 @@ import { mapMutations } from "vuex";
 import navbar from "~/components/buildwith/navbar.vue";
 import benefit from "~/components/buildwith/benefit.vue";
 import login from "~/components/buildwith/login.vue";
-import footer from "~/components/buildwith/footer.vue";
+import footers from "~/components/buildwith/footer.vue";
 export default {
   auth: false,
   data() {
@@ -171,7 +177,7 @@ export default {
     navbar: navbar,
     benefit: benefit,
     login: login,
-    footer: footer,
+    footers: footers,
   },
   mounted() {
     if (this.$auth.$state.loggedIn) {
@@ -183,6 +189,33 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
+    showAlert() {
+      // Use sweetalert2
+      this.$swal.fire({
+  title: 'Are you sure?',
+  text: 'You will not be able to recover this imaginary file!',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonText: 'Yes, delete it!',
+  cancelButtonText: 'No, keep it'
+}).then((result) => {
+  if (result.value) {
+    this.$swal.fire(
+      'Deleted!',
+      'Your imaginary file has been deleted.',
+      'success'
+    )
+  // For more information about handling dismissals please visit
+  // https://sweetalert2.github.io/#handling-dismissals
+  } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+    this.$swal.fire(
+      'Cancelled',
+      'Your imaginary file is safe :)',
+      'error'
+    )
+  }
+})
+    },
     async login() {
       try {
         await this.$auth

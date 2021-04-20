@@ -12,9 +12,7 @@
       style="font-family: Poppins, sans-serif"
     >
       <div class="container">
-        <a class="navbar-brand" href="#">
-          APERKAT
-        </a>
+        <a class="navbar-brand" href="#"> APERKAT </a>
         <button
           class="navbar-toggler"
           type="button"

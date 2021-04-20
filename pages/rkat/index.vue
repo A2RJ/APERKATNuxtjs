@@ -28,9 +28,9 @@
             >
               <div class="dropdown-header">Opsi:</div>
               <NuxtLink class="dropdown-item" to="/rkat/add">Add RKAT</NuxtLink>
-              <NuxtLink class="dropdown-item" to="/rkat/reset"
+              <!-- <NuxtLink class="dropdown-item" to="/rkat/reset"
                 >Reset RKAT</NuxtLink
-              >
+              > -->
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default {
   data() {
     return {
       fields: [
-        { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
+        { key: "fullname", label: "Fakultas/Unit Pelaksana" },
         "mulai_program",
         { key: "created_at", label: "Waktu Pengajuan" },
         "total_anggaran",

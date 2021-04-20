@@ -46,21 +46,21 @@
       </b-row>
       <b-table
         responsive
-            head-variant="light"
-            sticky-header
-            hover
-            id="my-table"
-            :items="user"
-            :fields="fields"
-            :filter="filter"
-            :per-page="perPage"
-            :current-page="currentPage"
-            show-empty
+        head-variant="light"
+        sticky-header
+        hover
+        id="my-table"
+        :items="user"
+        :fields="fields"
+        :filter="filter"
+        :per-page="perPage"
+        :current-page="currentPage"
+        show-empty
       >
         <template v-slot:cell(Detail)="row">
           <NuxtLink
             class="btn-sm btn-warning mb-2"
-            :to="'rkat/edit/' + row.item.id_rkat"
+            :to="'edit/' + row.item.id_user"
             :key="'edit' + row.index"
             >Detail</NuxtLink
           >
@@ -82,7 +82,8 @@ export default {
     return {
       fields: [
         { key: "fullname", label: "User" },
-        { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
+        { key: "nama_struktur_child1", label: "Unit Pelaksana" },
+        { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "created_at", label: "Register Date" },
         "Detail",
       ],

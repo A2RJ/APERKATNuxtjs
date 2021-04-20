@@ -59,7 +59,7 @@
             sticky-header
             hover
             id="my-table"
-            :items="subordinate.data"
+            :items="subordinate"
             :fields="fields"
             :filter="filter"
             :per-page="perPage"
@@ -128,7 +128,7 @@ export default {
       subordinate: (state) => state.subordinate,
     }),
     rows() {
-      return this.subordinate.data.length;
+      return this.subordinate.length;
     },
   },
   mounted() {},
