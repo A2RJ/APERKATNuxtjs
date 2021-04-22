@@ -301,8 +301,6 @@ export default {
         this.SET_API_TOKEN(null);
         this.SET_USER_DATA(null);
         this.$router.push("/login");
-
-        // window.location.replace('http://localhost:3000/login')
       } catch (err) {
         console.log(err);
       }

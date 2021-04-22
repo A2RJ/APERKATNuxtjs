@@ -202,7 +202,6 @@ export default {
             this.SET_USER_DATA(this.$store.state.auth.user[0]);
             this.SET_API_TOKEN(this.$store.state.auth.user[0].token);
             this.$router.push("/");
-            // window.location.replace("http://localhost:3000/");
           });
       } catch (err) {
         console.log(err);
