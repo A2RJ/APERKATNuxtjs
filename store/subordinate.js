@@ -9,7 +9,8 @@ export const state = () => ({
     approve: null,
     decline: null,
     ikuParent: null,
-    ikuChild: null
+    ikuChild1: null,
+    ikuChild2: null
 
 })
 
@@ -54,8 +55,12 @@ export const mutations = {
         state.ikuParent = payload
     },
 
-    SET_IKU_CHILD(state, payload) {
-        state.ikuChild = payload
+    SET_IKU_CHILD1(state, payload) {
+        state.ikuChild1 = payload
+    },
+
+    SET_IKU_CHILD2(state, payload) {
+        state.ikuChild2 = payload
     },
 }
 
@@ -164,20 +169,26 @@ export const actions = {
             })
         })
     },
-    parent({ commit }) {
+    ikuParent({ commit }) {
         return new Promise((resolve, reject) => {
             this.$axios.get('/iku').then((response) => {
-                console.log(response);
                 commit('SET_IKU_PARENT', response.data)
                 resolve()
             })
         })
     },
-    ikuChild1({ commit }, payload) {
+    getIkuChild1({ commit }, payload) {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/iku/child1/${payload}`).then((response) => {
-                console.log(response);
-                commit('SET_IKU_CHILD', response.data)
+                commit('SET_IKU_CHILD1', response.data)
+                resolve()
+            })
+        })
+    },
+    getIkuChild2({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/iku/child2/${payload}`).then((response) => {
+                commit('SET_IKU_CHILD2', response.data)
                 resolve()
             })
         })
