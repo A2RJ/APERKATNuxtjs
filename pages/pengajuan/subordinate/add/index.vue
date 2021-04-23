@@ -11,6 +11,7 @@ import subordinate from "~/components/form/subordinate.vue";
 export default {
   async asyncData({ store }) {
     await Promise.all([store.dispatch("subordinate/kodeRKAT")]);
+    await Promise.all([store.dispatch("subordinate/parent")]);
     return;
   },
   components: {

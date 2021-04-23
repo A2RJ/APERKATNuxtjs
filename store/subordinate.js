@@ -164,7 +164,7 @@ export const actions = {
             })
         })
     },
-    ikuParent({ commit }) {
+    parent({ commit }) {
         return new Promise((resolve, reject) => {
             this.$axios.get('/iku').then((response) => {
                 console.log(response);

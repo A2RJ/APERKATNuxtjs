@@ -76,7 +76,6 @@ export const actions = {
     getUser({ commit }) {
         return new Promise((resolve, reject) => {
             this.$axios.get('/user/rkatUser').then((response) => {
-                // console.log(response.data.data);
                 commit('SET_RKAT_USER', response.data.data)
                 resolve()
             })

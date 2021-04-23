@@ -7,11 +7,6 @@
       label="Fakultas/Unit Pelaksana"
       label-for="id_user"
     >
-      <!-- <b-form-input
-        v-model="form.id_user"
-        id="id_user"
-        size="sm"
-      ></b-form-input> -->
       <b-form-select
         v-model="form.id_user"
         :options="options"
@@ -19,7 +14,6 @@
         class="mt-3"
         name="unit"
       ></b-form-select>
-      <!-- @change="loadFakultas" -->
     </b-form-group>
 
     <b-form-group
@@ -123,11 +117,6 @@
       label="mulai program"
       label-for="mulai_program"
     >
-      <!-- <b-form-input
-        v-model="form.mulai_program"
-        id="mulai_program"
-        size="sm"
-      ></b-form-input> -->
       <b-form-datepicker
         id="mulai_program"
         v-model="form.mulai_program"
@@ -137,7 +126,6 @@
         reset-button
         close-button
         locale="IDN"
-        date-format-options
       ></b-form-datepicker>
     </b-form-group>
 
@@ -148,11 +136,6 @@
       label="selesai program"
       label-for="selesai_program"
     >
-      <!-- <b-form-input
-        v-model="form.selesai_program"
-        id="selesai_program"
-        size="sm"
-      ></b-form-input> -->
       <b-form-datepicker
         id="selesai_program"
         v-model="form.selesai_program"
@@ -161,7 +144,6 @@
         today-button
         reset-button
         close-button
-        date-format-options
         locale="IDN"
       ></b-form-datepicker>
     </b-form-group>
@@ -258,8 +240,8 @@ export default {
         program_kerja: null,
         deskripsi: null,
         tujuan: null,
-        mulai_program: null,
-        selesai_program: null,
+        mulai_program: '',
+        selesai_program: '',
         tempat: null,
         sumber_anggaran: null,
         rencara_anggaran: null,

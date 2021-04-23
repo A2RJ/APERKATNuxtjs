@@ -44,11 +44,6 @@
             label="Kode RKAT"
             label-for="kode_rkat"
           >
-            <!-- <b-form-input
-              v-model="form.kode_rkat"
-              id="kode_rkat"
-              size="sm"
-            ></b-form-input> -->
             <b-form-select
               v-model="form.kode_rkat"
               :options="options"
@@ -107,11 +102,6 @@
             label="tanggal"
             label-for="tanggal"
           >
-            <!-- <b-form-input
-              v-model="form.tanggal"
-              id="tanggal"
-              size="sm"
-            ></b-form-input> -->
             <b-form-datepicker
               id="tanggal"
               v-model="form.tanggal"
@@ -120,7 +110,6 @@
               today-button
               reset-button
               close-button
-              date-format-options
               locale="IDN"
             ></b-form-datepicker>
           </b-form-group>
@@ -146,18 +135,19 @@
             label="IKU"
             label-for="id_iku_parent"
           >
-            <b-form-input
+           <b-form-input
               v-model="form.id_iku_parent"
               id="id_iku_parent"
               size="sm"
-            ></b-form-input>
+            ></b-form-input> 
             <!-- <b-form-select
+              id="id_iku_parent"
               v-model="form.id_iku_parent"
-              :options="iku_parent"
+              :options="parent"
               size="sm"
               class="mt-3"
               name="unit"
-              @change="iku_parent"
+              @change="getChild1"
             ></b-form-select> -->
           </b-form-group>
 
@@ -172,15 +162,7 @@
               v-model="form.id_iku_child1"
               id="id_iku_child1"
               size="sm"
-            ></b-form-input>
-            <!-- <b-form-select
-              v-model="form.id_iku_child1"
-              :options="iku_child1"
-              size="sm"
-              class="mt-3"
-              name="unit"
-              @change="iku_child1"
-            ></b-form-select> -->
+            ></b-form-input>    
           </b-form-group>
 
           <b-form-group
@@ -195,13 +177,6 @@
               id="id_iku_child2"
               size="sm"
             ></b-form-input>
-            <!-- <b-form-select
-              v-model="form.id_iku_child2"
-              :options="iku_child2"
-              size="sm"
-              class="mt-3"
-              name="unit"
-            ></b-form-select> -->
           </b-form-group>
 
           <b-form-group
@@ -331,9 +306,9 @@ export default {
       button: true,
       selected: null,
       options: this.kodeRKAT,
-      iku_parent: this.iku_parent,
-      iku_child1: this.id_child1,
-      iku_child2: this.id_child2,
+      parent: this.iku_parent,
+      child1: this.id_child1,
+      child2: this.id_child2,
       option: false,
       redirects:
         "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user,
@@ -366,7 +341,6 @@ export default {
     ]),
     ...mapMutations(["SET_STATUS", "SET_HISTORY"]),
     load() {
-      // let data = this.status.filter((data) => data.id_user == this.form.id_user);
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
         for (let index = 0; index < this.status.length; index++) {
           if (this.status[index]["id_user"] == this.form.id_user) {
@@ -397,7 +371,9 @@ export default {
         this.$router.push(this.redirects);
       });
     },
-    iku_parent() {},
+    getChild1() {
+      console.log("HAHAHAHAHAHHAHAHHAHAHA");
+    },
     iku_child1() {},
     submit() {
       if (this.$route.name === "pengajuan-subordinate-edit-id") {
