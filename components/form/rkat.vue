@@ -93,11 +93,13 @@
       label="deskripsi"
       label-for="deskripsi"
     >
-      <b-form-input
-        v-model="form.deskripsi"
-        id="deskripsi"
-        size="sm"
-      ></b-form-input>
+      <b-form-textarea
+      id="textarea"
+      v-model="form.deskripsi"
+      placeholder="Enter something..."
+      rows="3"
+      max-rows="6"
+    ></b-form-textarea>
     </b-form-group>
 
     <b-form-group
@@ -199,7 +201,7 @@
         size="sm"
       ></b-form-input>
     </b-form-group>
-    <!-- {{ errors }} -->
+    
     <button class="btn-sm btn-info float-right" @click="submit">Save</button>
   </div>
 </template>
@@ -277,10 +279,10 @@ export default {
       }
     },
     loadFakultas() {
-      console.log("Fakultas");
+      // console.log("Fakultas");
     },
     loadProdi() {
-      console.log("Prodi");
+      // console.log("Prodi");
     },
   },
 };

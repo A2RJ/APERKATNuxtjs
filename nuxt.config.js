@@ -51,14 +51,14 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost:8000/',
-    browserBaseURL: 'http://localhost:8000/'
+    baseURL: 'https://api.aperkat.uts.ac.id',
+    browserBaseURL: 'https://api.aperkat.uts.ac.id'
   },
   auth: {
     strategies: {
       'laravelJWT': {
         provider: 'laravel/jwt',
-        url: 'http://localhost:8000',
+        url: 'https://api.aperkat.uts.ac.id',
         endpoints: {
           login: { url: '/api/login', method: 'post' },
           logout: false,

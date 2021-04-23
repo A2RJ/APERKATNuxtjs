@@ -135,11 +135,6 @@
             label="IKU"
             label-for="id_iku_parent"
           >
-            <!-- <b-form-input
-              v-model="form.id_iku_parent"
-              id="id_iku_parent"
-              size="sm"
-            ></b-form-input>  -->
             <b-form-select
               id="id_iku_parent"
               v-model="form.id_iku_parent"
@@ -158,11 +153,6 @@
             label=""
             label-for="id_iku_child1"
           >
-            <!-- <b-form-input
-              v-model="form.id_iku_child1"
-              id="id_iku_child1"
-              size="sm"
-            ></b-form-input> -->
             <b-form-select
               id="id_iku_child1"
               v-model="form.id_iku_child1"
@@ -171,7 +161,13 @@
               class="mt-3"
               name="unit"
               @change="getIku2(form.id_iku_child1)"
-            ></b-form-select>
+            >
+              <template #first v-if="this.$route.params.id">
+                <b-form-select-option :value="selectChild1.value">{{
+                  selectChild1.name
+                }}</b-form-select-option>
+              </template>
+            </b-form-select>
           </b-form-group>
 
           <b-form-group
@@ -181,11 +177,6 @@
             label=""
             label-for="id_iku_child2"
           >
-            <!-- <b-form-input
-              v-model="form.id_iku_child2"
-              id="id_iku_child2"
-              size="sm"
-            ></b-form-input> -->
             <b-form-select
               id="id_iku_child2"
               v-model="form.id_iku_child2"
@@ -193,7 +184,13 @@
               size="sm"
               class="mt-3"
               name="unit"
-            ></b-form-select>
+            >
+              <template #first v-if="this.$route.params.id">
+                <b-form-select-option :value="selectChild2.value">{{
+                  selectChild2.name
+                }}</b-form-select-option>
+              </template>
+            </b-form-select>
           </b-form-group>
 
           <b-form-group
@@ -268,24 +265,25 @@ import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   created() {
-    if (this.$route.name == "pengajuan-subordinate-edit-id") {
-      this.form = {
-        kode_rkat: this.forms.kode_rkat,
-        target_capaian: this.forms.target_capaian,
-        bentuk_pelaksanaan_program: this.forms.bentuk_pelaksanaan_program,
-        tempat_program: this.forms.tempat_program,
-        tanggal: this.forms.tanggal,
-        bidang_terkait: this.forms.bidang_terkait,
-        id_iku_parent: this.forms.id_iku_parent,
-        id_iku_child1: this.forms.id_iku_child1,
-        id_iku_child2: this.forms.id_iku_child2,
-        biaya_program: this.forms.biaya_program,
-        rab: this.forms.rab,
-        status_pengajuan: "progress",
-        id_user: this.form.id_user,
-      };
-    } else if (this.$route.name == "pengajuan-supervisor-edit-id") {
-      this.button = false;
+    if (this.$route.params.id) {
+      this.$route.name == "pengajuan-supervisor-edit-id"
+        ? (this.button = false)
+        : "";
+
+      this.$axios
+        .get(`iku/child1ByID/${this.forms.id_iku_child1}`)
+        .then((res) => {
+          (this.selectChild1.value = res.data.data.value),
+            (this.selectChild1.name = res.data.data.text);
+        });
+
+      this.$axios
+        .get(`iku/child2ByID/${this.forms.id_iku_child2}`)
+        .then((res) => {
+          (this.selectChild2.value = res.data.data.value),
+            (this.selectChild2.name = res.data.data.text);
+        });
+
       this.form = {
         kode_rkat: this.forms.kode_rkat,
         target_capaian: this.forms.target_capaian,
@@ -329,6 +327,14 @@ export default {
       option: false,
       redirects:
         "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user,
+      selectChild1: {
+        name: "",
+        value: "",
+      },
+      selectChild2: {
+        name: "",
+        value: "",
+      },
     };
   },
   computed: {
@@ -360,7 +366,7 @@ export default {
       "approved",
       "declined",
       "getIkuChild1",
-      "getIkuChild2"
+      "getIkuChild2",
     ]),
     ...mapMutations(["SET_STATUS", "SET_HISTORY"]),
     load() {
@@ -394,13 +400,13 @@ export default {
     },
     getIku1(params) {
       this.getIkuChild1(params).then(() => {
-        this.child1 = this.ikuChild1.data
-      })
+        this.child1 = this.ikuChild1.data;
+      });
     },
     getIku2(params) {
       this.getIkuChild2(params).then(() => {
-        this.child2 = this.ikuChild2.data
-      })
+        this.child2 = this.ikuChild2.data;
+      });
     },
     submit() {
       if (this.$route.name === "pengajuan-subordinate-edit-id") {

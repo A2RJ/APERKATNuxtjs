@@ -163,7 +163,6 @@ export const actions = {
     kodeRKAT({ commit }) {
         return new Promise((resolve, reject) => {
             this.$axios.get('/rkat/kodeRKAT').then((response) => {
-                console.log(response);
                 commit('SET_KODE_RKAT', response.data)
                 resolve()
             })
