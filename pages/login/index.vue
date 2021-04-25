@@ -38,6 +38,13 @@
             </div>
             <h3 class="title-text-content-3-5">Log In to continue</h3>
             <p class="caption-text-content-3-5">
+              <!-- {{ 69696969 | numFormat }} -->
+              <chart
+                ref="skills_chart"
+                :chart-data="chartData"
+                :options="options"
+              >
+              </chart>
               Please log in using that account has<br />
               registered on the website.
             </p>
@@ -169,6 +176,16 @@ export default {
       auth: {
         email: null,
         password: null,
+      },
+      options: null,
+      chartData: {
+        labels: ["skill1", "skill2", "skill3"],
+        datasets: [
+          {
+            backgroundColor: ['rgb(255,73,93)', 'rgb(255,244,93)', 'rgb(23,244,255)'],
+            data: [100, 50, 50],
+          },
+        ],
       },
     };
   },

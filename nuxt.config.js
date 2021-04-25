@@ -31,7 +31,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/axios.js',
-    // '@/plugins/plugins.js'
+    '@/plugins/numeral.js',
+    // '@/plugins/chart.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -51,14 +52,15 @@ export default {
   ],
 
   axios: {
-    baseURL: 'https://api.aperkat.uts.ac.id',
-    browserBaseURL: 'https://api.aperkat.uts.ac.id'
+    withCredentials: true,
+    baseURL: 'https://aperkat.uts.ac.id/api',
+    browserBaseURL: 'https://aperkat.uts.ac.id/api'
   },
   auth: {
     strategies: {
       'laravelJWT': {
         provider: 'laravel/jwt',
-        url: 'https://api.aperkat.uts.ac.id',
+        url: 'https://aperkat.uts.ac.id/api',
         endpoints: {
           login: { url: '/api/login', method: 'post' },
           logout: false,
