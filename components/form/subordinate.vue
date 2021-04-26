@@ -37,6 +37,7 @@
           <h6 class="m-0 font-weight-bold text-primary">Pengajuan</h6>
         </div>
         <div class="card-body">
+          <!-- <form enctype="multipart/form-data"> -->
           <b-form-group
             label-cols="4"
             label-cols-lg="2"
@@ -227,7 +228,28 @@
             label="rab"
             label-for="rab"
           >
-            <b-form-input v-model="form.rab" id="rab" size="sm"></b-form-input>
+            <b-form-file
+              v-model="file"
+              :state="Boolean(file)"
+              ref="file"
+              @change="onSelect"
+              placeholder="Choose a file or drop it here..."
+              drop-placeholder="Drop file here..."
+            ></b-form-file>
+            <!-- accept=".xls, .xlsx, .doc, .docx, .jpg, .png" -->
+            <!-- <div class="mt-3">Selected file: {{ file ? file.name : "" }}</div> -->
+            <div class="mt-3">
+              Current file:
+              <a v-if="rab"
+                :href="
+                  require('../../../Submission-Lumen/public/storage/files/' +
+                    rab)
+                "
+                download
+              >
+                Download Current File RAB
+              </a>
+            </div>
           </b-form-group>
 
           <button
@@ -237,6 +259,7 @@
           >
             Save
           </button>
+          <!-- </form> -->
         </div>
       </div>
     </div>
@@ -286,6 +309,7 @@ export default {
 
       this.form = {
         kode_rkat: this.forms.kode_rkat,
+        id_user: this.form.id_user,
         target_capaian: this.forms.target_capaian,
         bentuk_pelaksanaan_program: this.forms.bentuk_pelaksanaan_program,
         tempat_program: this.forms.tempat_program,
@@ -297,7 +321,6 @@ export default {
         biaya_program: this.forms.biaya_program,
         rab: this.forms.rab,
         status_pengajuan: "progress",
-        id_user: this.form.id_user,
       };
     }
   },
@@ -305,6 +328,7 @@ export default {
     return {
       form: {
         kode_rkat: null,
+        id_user: this.$store.state.auth.user[0].id_user,
         target_capaian: null,
         bentuk_pelaksanaan_program: null,
         tempat_program: null,
@@ -316,7 +340,6 @@ export default {
         biaya_program: null,
         rab: null,
         status_pengajuan: "progress",
-        id_user: this.$store.state.auth.user[0].id_user,
       },
       button: true,
       selected: null,
@@ -326,7 +349,7 @@ export default {
       child2: null,
       option: false,
       redirects:
-        "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user,
+        "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user,
       selectChild1: {
         name: "",
         value: "",
@@ -335,6 +358,8 @@ export default {
         name: "",
         value: "",
       },
+      file: [],
+      rab: false,
     };
   },
   computed: {
@@ -357,6 +382,7 @@ export default {
     }
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
+    this.rab = this.form.rab
   },
   methods: {
     ...mapActions("subordinate", [
@@ -369,6 +395,10 @@ export default {
       "getIkuChild2",
     ]),
     ...mapMutations(["SET_STATUS", "SET_HISTORY"]),
+    onSelect() {
+      const file = this.$refs.file.files[0];
+      this.file = file;
+    },
     load() {
       for (let index = 0; index < this.status.length; index++) {
         if (this.status[index]["id_user"] == this.form.id_user) {
@@ -389,13 +419,17 @@ export default {
     terima() {
       let form = Object.assign({ id: this.$route.params.id }, this.form);
       this.approved(form).then(() => {
-        this.$router.push(this.redirects);
+        this.$router.push(
+          "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
+        );
       });
     },
     tolak() {
       let form = Object.assign({ id: this.$route.params.id }, this.form);
       this.declined(form).then(() => {
-        this.$router.push(this.redirects);
+        this.$router.push(
+          "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
+        );
       });
     },
     getIku1(params) {
@@ -408,25 +442,33 @@ export default {
         this.child2 = this.ikuChild2.data;
       });
     },
-    submit() {
+    async submit() {
       if (this.$route.name === "pengajuan-subordinate-edit-id") {
+        if (this.file.length != 0) {
+          await this.upload();
+        }
         let form = Object.assign({ id: this.$route.params.id }, this.form);
-        this.updatepengajuan(form).then(() => {
-          this.$router.push(
-            "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user
-          );
-        });
-      } else if (this.$route.name === "pengajuan-supervisor-edit-id") {
-        let form = Object.assign({ id: this.$route.params.id }, this.form);
-        this.updatepengajuan(form).then(() => {
-          this.$router.push(this.redirects);
-        });
+        await this.updatepengajuan(form);
+        this.$router.push(this.redirects);
       } else {
-        this.storepengajuan(this.form).then(() => {
-          this.$router.push(
-            "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user
-          );
+        await this.upload();
+        await this.storepengajuan(this.form).then((res) => {
+          console.log(res);
         });
+        this.$router.push(this.redirects);
+      }
+    },
+    async upload() {
+      const form = new FormData();
+      form.append("file", this.file);
+      try {
+        await this.$axios
+          .post("/pengajuan/upload", form)
+          .then((res) => {
+            this.form.rab = res.data;
+          });
+      } catch (e) {
+        console.log("Whoops Server Error");
       }
     },
   },

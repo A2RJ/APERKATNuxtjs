@@ -227,7 +227,7 @@ export default {
         sumber_anggaran: this.forms.sumber_anggaran,
         rencara_anggaran: this.forms.rencara_anggaran,
         total_anggaran: this.forms.total_anggaran,
-        token: this.$store.state.auth.user[0].token,
+        sisa_anggaran: this.forms.sisa_anggaran
       };
     }
   },
@@ -248,7 +248,7 @@ export default {
         sumber_anggaran: null,
         rencara_anggaran: null,
         total_anggaran: null,
-        token: this.$store.state.auth.user[0].token,
+        sisa_anggaran: 0
       },
       selected: null,
       options: null,
@@ -277,13 +277,7 @@ export default {
           this.$router.push("/rkat");
         });
       }
-    },
-    loadFakultas() {
-      // console.log("Fakultas");
-    },
-    loadProdi() {
-      // console.log("Prodi");
-    },
+    }
   },
 };
 </script>

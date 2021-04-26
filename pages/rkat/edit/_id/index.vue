@@ -26,7 +26,8 @@ import { mapActions, mapMutations } from "vuex";
 export default {
   async asyncData({ store, params }) {
     await Promise.all([
-      store.dispatch("rkat/getrkatID", params.id)
+      store.dispatch("rkat/getrkatID", params.id),
+      store.dispatch("rkat/getUser")
     ]);
     return;
   },
@@ -36,10 +37,9 @@ export default {
   mounted() {
     this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
     this.SET_USER_DATA(this.$store.state.auth.user[0]);
-    this.SET_API_TOKEN(this.$store.state.auth.user[0].token);
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
+    ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
     ...mapActions("rkat", ["getrkatID"]),
   }
 };

@@ -129,7 +129,10 @@ export default {
       fields: [
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
         "mulai_program",
+        { key: "mulai_program", label: "Waktu Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },
+        { key: "total_anggaran", label: "Total Anggaran" },
+        { key: "sisa_anggaran", label: "Sisa Anggaran" },
         "total_anggaran",
         "actions",
       ],
@@ -151,10 +154,9 @@ export default {
   mounted() {
     this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
     this.SET_USER_DATA(this.$store.state.auth.user[0]);
-    this.SET_API_TOKEN(this.$store.state.auth.user[0].token);
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
+    ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
     ...mapActions("rkat", ["getrkat", "deleterkat"]),
 
     destroyrkat(row) {

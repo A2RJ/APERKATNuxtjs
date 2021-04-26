@@ -7,9 +7,7 @@
         <div
           class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
         >
-          <h6 class="m-0 font-weight-bold text-primary">
-            Data Pengajuan Bawahan
-          </h6>
+          <h6 class="m-0 font-weight-bold text-primary">Pengajuan Bawahan</h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
@@ -73,12 +71,6 @@
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
-              <button
-                class="btn-sm btn-danger mt-2"
-                @click="destroypengajuan(row)"
-              >
-                Hapus
-              </button>
             </template>
           </b-table>
 
@@ -133,8 +125,7 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapMutations(["SET_SUBORDINATE"]),
-    ...mapActions("subordinate", ["getsubordinates"]),
+    ...mapActions("subordinate", ["getpengajuan"]),
   },
 };
 </script>

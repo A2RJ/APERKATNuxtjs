@@ -45,12 +45,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isAuth", "token", "ardi", "level"]),
+    ...mapState(["isAuth","ardi", "level"]),
   },
   methods: {
     ...mapMutations([
       "SET_IS_AUTH",
-      "SET_API_TOKEN",
       "SET_USER_DATA",
       "SET_LEVEL",
     ]),
@@ -64,12 +63,10 @@ export default {
     if (this.$store.state.auth.loggedIn) {
       this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
       this.SET_USER_DATA(this.$store.state.auth.user[0]);
-      this.SET_API_TOKEN(this.$store.state.auth.user[0].token);
       this.SET_LEVEL(this.$store.state.auth.user[1].level);
     } else {
       this.SET_IS_AUTH(false);
       this.SET_USER_DATA(null);
-      this.SET_API_TOKEN(null);
       this.SET_LEVEL(null);
       this.$router.push("/login");
     }

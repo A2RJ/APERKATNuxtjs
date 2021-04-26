@@ -39,12 +39,12 @@
             <h3 class="title-text-content-3-5">Log In to continue</h3>
             <p class="caption-text-content-3-5">
               <!-- {{ 69696969 | numFormat }} -->
-              <chart
+              <!-- <chart
                 ref="skills_chart"
                 :chart-data="chartData"
                 :options="options"
               >
-              </chart>
+              </chart> -->
               Please log in using that account has<br />
               registered on the website.
             </p>
@@ -204,7 +204,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_API_TOKEN", "SET_USER_DATA"]),
+    ...mapMutations(["SET_IS_AUTH","SET_USER_DATA"]),
     async login() {
       try {
         await this.$auth
@@ -217,7 +217,6 @@ export default {
           .then(() => {
             this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
             this.SET_USER_DATA(this.$store.state.auth.user[0]);
-            this.SET_API_TOKEN(this.$store.state.auth.user[0].token);
             this.$router.push("/");
           });
       } catch (err) {
