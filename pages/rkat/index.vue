@@ -89,6 +89,12 @@
             :filter="filter"
             show-empty
           >
+            <template v-slot:cell(total_anggaran)="row">
+              {{ row.item.total_anggaran | numFormat }}
+            </template>
+            <template v-slot:cell(sisa_anggaran)="row">
+              {{ row.item.sisa_anggaran | numFormat }}
+            </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
                 class="btn-sm btn-warning mb-2"
