@@ -12,7 +12,7 @@
       <div class="sidebar-brand-icon rotate-n-15">
         <i class="fas fa-laugh-wink"></i>
       </div>
-      <div class="sidebar-brand-text mx-3">APRKAT</div>
+      <div class="sidebar-brand-text mx-3">APERKAT</div>
     </a>
 
     <!-- Divider -->
@@ -69,7 +69,7 @@
             :to="
               '/pengajuan/subordinate/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan Subordinate</NuxtLink
+            >Pengajuan</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -77,7 +77,7 @@
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan Supervisor</NuxtLink
+            >Pengajuan Sub Divisi</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -85,7 +85,7 @@
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan Supervisor</NuxtLink
+            >Pengajuan Sub Divisi</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -93,7 +93,7 @@
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan Supervisor</NuxtLink
+            >Pengajuan Sub Divisi</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -101,7 +101,7 @@
             :to="
               '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
             "
-            >Pengajuan Supervisor</NuxtLink
+            >Pengajuan Sub Divisi</NuxtLink
           >
         </div>
       </div>

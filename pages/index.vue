@@ -42,7 +42,14 @@
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Info</h6>
                 </div>
-                <div class="card-body"></div>
+                <div class="card-body">
+                  <chart
+                    ref="skills_chart"
+                    :chart-data="chartData"
+                    :options="options"
+                  >
+                  </chart>
+                </div>
               </div>
             </div>
             <div class="col-lg-12">
@@ -87,7 +94,9 @@
         <div class="col-xl-4 col-lg-5">
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">History Pengajuan</h6>
+              <h6 class="m-0 font-weight-bold text-primary">
+                History Pengajuan
+              </h6>
             </div>
             <div class="card-body">
               <ul>
@@ -106,7 +115,38 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: false,
+              },
+            },
+          ],
+        },
+      },
+      chartData: {
+        labels: ["skill1", "skill2", "skill3"],
+        datasets: [
+          {
+            backgroundColor: [
+              "rgb(255,73,93)",
+              "rgb(255,244,93)",
+              "rgb(23,244,255)",
+            ],
+            data: [100, 50, 50],
+          },
+        ],
+      },
+    };
+  },
+};
 </script>
 
 <style>

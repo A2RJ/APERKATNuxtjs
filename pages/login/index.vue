@@ -1,7 +1,7 @@
 <template>
   <section>
-    <navbar />
-    <benefit />
+    <!-- <navbar />
+    <benefit /> -->
     <section
       style="
         height: 100%;
@@ -36,15 +36,8 @@
                 alt=""
               />
             </div>
-            <h3 class="title-text-content-3-5">Log In to continue</h3>
+            <h3 class="title-text-content-3-5">APERKAT-Universitas Teknologi Sumbawa</h3>
             <p class="caption-text-content-3-5">
-              <!-- {{ 69696969 | numFormat }} -->
-              <!-- <chart
-                ref="skills_chart"
-                :chart-data="chartData"
-                :options="options"
-              >
-              </chart> -->
               Please log in using that account has<br />
               registered on the website.
             </p>
@@ -55,9 +48,9 @@
               @submit.prevent="login"
             >
               <div style="margin-bottom: 1.75rem">
-                <label for="" class="d-block input-label-content-3-5"
+                <!-- <label for="" class="d-block input-label-content-3-5"
                   >Email Address</label
-                >
+                > -->
                 <div class="d-flex w-100 div-input-content-3-5">
                   <svg
                     class="icon-content-3-5"
@@ -88,9 +81,9 @@
                 </div>
               </div>
               <div style="margin-top: 1rem">
-                <label for="" class="d-block input-label-content-3-5"
+                <!-- <label for="" class="d-block input-label-content-3-5"
                   >Password</label
-                >
+                > -->
                 <div class="d-flex w-100 div-input-content-3-5">
                   <svg
                     class="icon-content-3-5"
@@ -152,14 +145,14 @@
             <p class="text-center bottom-caption-content-3-5">
               Don't have an account yet?
               <span class="green-bottom-caption-content-3-5"
-                >Register Here</span
+                >Contact your cs</span
               >
             </p>
           </div>
         </div>
       </div>
     </section>
-    <footers />
+    <!-- <footers /> -->
   </section>
 </template>
 
@@ -177,16 +170,7 @@ export default {
         email: null,
         password: null,
       },
-      options: null,
-      chartData: {
-        labels: ["skill1", "skill2", "skill3"],
-        datasets: [
-          {
-            backgroundColor: ['rgb(255,73,93)', 'rgb(255,244,93)', 'rgb(23,244,255)'],
-            data: [100, 50, 50],
-          },
-        ],
-      },
+      
     };
   },
   components: {

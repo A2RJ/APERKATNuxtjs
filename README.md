@@ -1,10 +1,33 @@
 # SubmissionNuxtJS
-- Server Lumen API PHP V.8
-- Pengajuan join user Untuk ambil data rekening user
-- ambil status
-- ambil history
-- Untuk hari ini implementasi menu atasan yakni mengambil semua pengajuan bawahan
+- Administrator = SEKNIV
 
+- Aksi Tolak dan Terima tambah catatan
+
+- Hanya bisa ubah pengajuan ketika status ditolak
+
+- Login Form saja
+
+- Atas Nama Pemerima
+
+- Pengajuan 
+- Nama Program Kerja
+- Total Anggaran
+- Status
+
+- Ubah nama menu
+- Subordinate = List Pengajuan
+- Supervisor = List Pengajuan Sub Divisi
+
+- Tambah notif sudah direvisi atau belum 
+- berdasarkan warna merah belum direvisi
+- kuning kalau sudah direvisi
+- hijau sudah disetujui
+
+- Laporan per Pengajuan
+
+- LPJ (Aksi Terima dan tolak oleh sekniv)
+    - LPJ Kegiatan
+    - LPJ Keuangan
 
 ## Build Setup
 

@@ -17,6 +17,19 @@
           </ul>
         </div>
         <div v-show="option" class="pl-2 my-3">
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="Pesan"
+            label-for="message"
+          >
+            <b-form-input
+              v-model="message"
+              id="message"
+              size="sm"
+            ></b-form-input>
+          </b-form-group>
           <button class="btn btn-sm btn-outline-success" @click="terima">
             Approve
           </button>
@@ -240,15 +253,7 @@
             <!-- <div class="mt-3">Selected file: {{ file ? file.name : "" }}</div> -->
             <div class="mt-3">
               Current file:
-              <a v-if="rab"
-                :href="
-                  require('../../../Submission-Lumen/public/storage/files/' +
-                    rab)
-                "
-                download
-              >
-                Download Current File RAB
-              </a>
+              <a v-if="rab" :href="'../../../' + rab" target="_blank">RAB </a>
             </div>
           </b-form-group>
 
@@ -292,6 +297,14 @@ export default {
       this.$route.name == "pengajuan-supervisor-edit-id"
         ? (this.button = false)
         : "";
+
+      this.$axios
+        .get(`/pengajuan/validasi/${this.$route.params.id}`)
+        .then((res) => {
+          if (res.data == 0) {
+            this.options = true
+          }
+        });
 
       this.$axios
         .get(`iku/child1ByID/${this.forms.id_iku_child1}`)
@@ -360,6 +373,7 @@ export default {
       },
       file: [],
       rab: false,
+      message: "",
     };
   },
   computed: {
@@ -382,7 +396,7 @@ export default {
     }
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
-    this.rab = this.form.rab
+    this.rab = this.form.rab;
   },
   methods: {
     ...mapActions("subordinate", [
@@ -417,7 +431,10 @@ export default {
       }
     },
     terima() {
-      let form = Object.assign({ id: this.$route.params.id }, this.form);
+      let form = Object.assign(
+        { id: this.$route.params.id, message: this.message },
+        this.form
+      );
       this.approved(form).then(() => {
         this.$router.push(
           "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
@@ -425,7 +442,10 @@ export default {
       });
     },
     tolak() {
-      let form = Object.assign({ id: this.$route.params.id }, this.form);
+      let form = Object.assign(
+        { id: this.$route.params.id, message: this.message },
+        this.form
+      );
       this.declined(form).then(() => {
         this.$router.push(
           "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
@@ -462,11 +482,9 @@ export default {
       const form = new FormData();
       form.append("file", this.file);
       try {
-        await this.$axios
-          .post("/pengajuan/upload", form)
-          .then((res) => {
-            this.form.rab = res.data;
-          });
+        await this.$axios.post("/pengajuan/upload", form).then((res) => {
+          this.form.rab = res.data;
+        });
       } catch (e) {
         console.log("Whoops Server Error");
       }
