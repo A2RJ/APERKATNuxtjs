@@ -1,6 +1,5 @@
 # SubmissionNuxtJS
-- Administrator = SEKNIV
-
+# Done
 - Aksi Tolak dan Terima tambah catatan
 
 - Hanya bisa ubah pengajuan ketika status ditolak
@@ -9,25 +8,33 @@
 
 - Atas Nama Pemerima
 
-- Pengajuan 
-- Nama Program Kerja
-- Total Anggaran
-- Status
-
 - Ubah nama menu
 - Subordinate = List Pengajuan
 - Supervisor = List Pengajuan Sub Divisi
+
+# On Progress
+
+- Pengajuan
+- Nama Program Kerja
+- Total Anggaran
+- Status
+    - Solusi adalah dengan lakukan join dengan table lain
 
 - Tambah notif sudah direvisi atau belum 
 - berdasarkan warna merah belum direvisi
 - kuning kalau sudah direvisi
 - hijau sudah disetujui
+    - Solusi adalah dengan lakukan join dengan table lain
 
 - Laporan per Pengajuan
+
+- Administrator = SEKNIV
 
 - LPJ (Aksi Terima dan tolak oleh sekniv)
     - LPJ Kegiatan
     - LPJ Keuangan
+
+# DONE
 
 ## Build Setup
 

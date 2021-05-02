@@ -276,9 +276,11 @@
         </div>
         <div class="card-body">
           <ul v-for="(history, index) in history" :key="index">
-            <li :class="history.status_validasi ? 'text-primary' : 'text-info'">
+            <li
+              :class="history.status_validasi ? 'text-success' : 'text-warning'"
+            >
               {{ history.created_at }}
-              {{ history.status_validasi == 0 ? "Proccess" : "Approved" }} -
+              {{ history.status_validasi ? "Diterima" : "Ditolak" }} -
               {{ history.message }}
             </li>
           </ul>
@@ -294,18 +296,6 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   created() {
     if (this.$route.params.id) {
-      this.$route.name == "pengajuan-supervisor-edit-id"
-        ? (this.button = false)
-        : "";
-
-      this.$axios
-        .get(`/pengajuan/validasi/${this.$route.params.id}`)
-        .then((res) => {
-          if (res.data == 0) {
-            this.options = true
-          }
-        });
-
       this.$axios
         .get(`iku/child1ByID/${this.forms.id_iku_child1}`)
         .then((res) => {
@@ -322,7 +312,7 @@ export default {
 
       this.form = {
         kode_rkat: this.forms.kode_rkat,
-        id_user: this.form.id_user,
+        id_user: this.$store.state.auth.user[0].id_user,
         target_capaian: this.forms.target_capaian,
         bentuk_pelaksanaan_program: this.forms.bentuk_pelaksanaan_program,
         tempat_program: this.forms.tempat_program,
@@ -391,9 +381,8 @@ export default {
     }),
   },
   mounted() {
-    if (this.$route.name == "pengajuan-supervisor-edit-id") {
-      this.load();
-    }
+    this.load();
+
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
     this.rab = this.form.rab;
@@ -414,20 +403,33 @@ export default {
       this.file = file;
     },
     load() {
-      for (let index = 0; index < this.status.length; index++) {
-        if (this.status[index]["id_user"] == this.form.id_user) {
-          if (
-            this.status[index - 1]["status"] == false ||
-            this.status[index - 1]["status"] == "0" ||
-            this.status[index - 1]["status"] == null
-          ) {
-            this.option = false;
-          } else if (this.status[index]["status"]) {
-            this.option = false;
-          } else {
-            this.option = true;
+      if (this.$route.name == "pengajuan-supervisor-edit-id") {
+        this.button = false;
+        for (let index = 0; index < this.status.length; index++) {
+          if (this.status[index]["id_user"] == this.form.id_user) {
+            if (
+              this.status[index - 1]["status"] == false ||
+              this.status[index - 1]["status"] == "0" ||
+              this.status[index - 1]["status"] == null
+            ) {
+              this.option = false;
+            } else if (this.status[index]["status"]) {
+              this.option = false;
+            } else {
+              this.option = true;
+            }
           }
         }
+      } else if (this.$route.name == "pengajuan-subordinate-edit-id") {
+        this.$axios
+          .get(`/pengajuan/validasi/${this.$route.params.id}`)
+          .then((res) => {
+            if (res.data) {
+              this.button = false;
+            } else {
+              this.button = true;
+            }
+          });
       }
     },
     terima() {
@@ -467,12 +469,19 @@ export default {
         if (this.file.length != 0) {
           await this.upload();
         }
-        let form = Object.assign({ id: this.$route.params.id }, this.form);
+        let form = Object.assign(
+          { id: this.$route.params.id, message: "Update pengajuan" },
+          this.form
+        );
         await this.updatepengajuan(form);
         this.$router.push(this.redirects);
       } else {
         await this.upload();
-        await this.storepengajuan(this.form).then((res) => {
+        let form = Object.assign(
+          { id: this.$route.params.id, message: "Input pengajuan" },
+          this.form
+        );
+        await this.storepengajuan(form).then((res) => {
           console.log(res);
         });
         this.$router.push(this.redirects);
