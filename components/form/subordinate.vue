@@ -16,6 +16,37 @@
             </li>
           </ul>
         </div>
+        <div v-show="formPencairan">
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="Pencairan"
+            label-for="Pencairan"
+          >
+            <b-form-file
+              id="Pencairan"
+              v-model="pencairan"
+              :state="Boolean(pencairan)"
+              ref="pencairan"
+              @change="onSelectPencairan"
+              placeholder="Choose a file or drop it here..."
+              drop-placeholder="Drop file here..."
+            ></b-form-file>
+            <div class="mt-3">
+              Current file:
+              <a
+                v-if="form.pencairan"
+                :href="'../../../' + form.pencairan"
+                target="_blank"
+                >Bukti Pencairan</a
+              >
+            </div>
+          </b-form-group>
+          <button class="btn btn-sm btn-outline-success" @click="buktiTF">
+            Upload Bukti Transfer
+          </button>
+        </div>
         <div v-show="option" class="pl-2 my-3">
           <b-form-group
             label-cols="4"
@@ -312,7 +343,7 @@ export default {
 
       this.form = {
         kode_rkat: this.forms.kode_rkat,
-        id_user: this.$store.state.auth.user[0].id_user,
+        id_user: this.forms.id_user,
         target_capaian: this.forms.target_capaian,
         bentuk_pelaksanaan_program: this.forms.bentuk_pelaksanaan_program,
         tempat_program: this.forms.tempat_program,
@@ -324,6 +355,7 @@ export default {
         biaya_program: this.forms.biaya_program,
         rab: this.forms.rab,
         status_pengajuan: "progress",
+        pencairan: this.forms.pencairan,
       };
     }
   },
@@ -343,6 +375,7 @@ export default {
         biaya_program: null,
         rab: null,
         status_pengajuan: "progress",
+        pencairan: null,
       },
       button: true,
       selected: null,
@@ -364,6 +397,8 @@ export default {
       file: [],
       rab: false,
       message: "",
+      formPencairan: false,
+      pencairan: [],
     };
   },
   computed: {
@@ -397,27 +432,36 @@ export default {
       "getIkuChild1",
       "getIkuChild2",
     ]),
-    ...mapMutations(["SET_STATUS", "SET_HISTORY"]),
-    onSelect() {
-      const file = this.$refs.file.files[0];
-      this.file = file;
-    },
+
     load() {
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
         this.button = false;
         for (let index = 0; index < this.status.length; index++) {
-          if (this.status[index]["id_user"] == this.form.id_user) {
-            if (
-              this.status[index - 1]["status"] == false ||
-              this.status[index - 1]["status"] == "0" ||
-              this.status[index - 1]["status"] == null
-            ) {
-              this.option = false;
-            } else if (this.status[index]["status"]) {
-              this.option = false;
-            } else {
-              this.option = true;
+          if (
+            this.status[index]["id_user"] ==
+            this.$store.state.auth.user[0].id_user
+          ) {
+            if (index != 0) {
+              if (
+                this.status[index - 1]["status"] == false ||
+                this.status[index - 1]["status"] == "0" ||
+                this.status[index - 1]["status"] == null
+              ) {
+                console.log(false);
+                this.option = false;
+              } else {
+                console.log(true);
+                this.option = true;
+              }
             }
+          }
+
+          if (
+            this.status[index]["nama_struktur"] == "Rektor" &&
+            this.status[index]["status"] == 1 &&
+            this.$store.state.auth.user[0].id_user == 7
+          ) {
+            this.formPencairan = true;
           }
         }
       } else if (this.$route.name == "pengajuan-subordinate-edit-id") {
@@ -431,6 +475,14 @@ export default {
             }
           });
       }
+    },
+    onSelect() {
+      const file = this.$refs.file.files[0];
+      this.file = file;
+    },
+    onSelectPencairan() {
+      const pencairan = this.$refs.pencairan.files[0];
+      this.pencairan = pencairan;
     },
     terima() {
       let form = Object.assign(
@@ -493,6 +545,27 @@ export default {
       try {
         await this.$axios.post("/pengajuan/upload", form).then((res) => {
           this.form.rab = res.data;
+        });
+      } catch (e) {
+        console.log("Whoops Server Error");
+      }
+    },
+    async buktiTF() {
+      await this.uploadBuktiTF();
+      let form = Object.assign(
+        { id: this.$route.params.id, message: "Sudah dilakukan pencairan" },
+        this.form
+      );
+      await this.updatepengajuan(form);
+      // this.$router.push(this.redirects);
+    },
+    async uploadBuktiTF() {
+      const form = new FormData();
+      form.append("file", this.pencairan);
+      try {
+        await this.$axios.post("/pengajuan/upload", form).then((res) => {
+          this.form.pencairan = res.data;
+          console.log(res.data);
         });
       } catch (e) {
         console.log("Whoops Server Error");

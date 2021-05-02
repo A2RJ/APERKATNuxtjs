@@ -17,11 +17,11 @@
         <div
           class="position-relative d-none d-lg-block h-100 width-left-content-3-5"
         >
-          <img
+          <!-- <img
             class="position-absolute img-fluid centered-content-3-5"
             src="http://api.elements.buildwithangga.com/storage/files/2/assets/Empty%20State/EmptyState3/Empty-3-5.png"
             alt=""
-          />
+          /> -->
         </div>
         <div
           class="d-flex mx-auto align-items-left justify-content-left width-right-content-3-5"
@@ -30,11 +30,11 @@
             <div
               class="align-items-center justify-content-center d-lg-none d-flex"
             >
-              <img
+              <!-- <img
                 class="img-fluid"
                 src="http://api.elements.buildwithangga.com/storage/files/2/assets/Empty%20State/EmptyState3/Empty-3-5.png"
                 alt=""
-              />
+              /> -->
             </div>
             <h3 class="title-text-content-3-5">APERKAT-Universitas Teknologi Sumbawa</h3>
             <p class="caption-text-content-3-5">
@@ -158,10 +158,10 @@
 
 <script>
 import { mapMutations } from "vuex";
-import navbar from "~/components/buildwith/navbar.vue";
-import benefit from "~/components/buildwith/benefit.vue";
-import login from "~/components/buildwith/login.vue";
-import footers from "~/components/buildwith/footer.vue";
+// import navbar from "~/components/buildwith/navbar.vue";
+// import benefit from "~/components/buildwith/benefit.vue";
+// import login from "~/components/buildwith/login.vue";
+// import footers from "~/components/buildwith/footer.vue";
 export default {
   auth: false,
   data() {
@@ -174,10 +174,10 @@ export default {
     };
   },
   components: {
-    navbar: navbar,
-    benefit: benefit,
-    login: login,
-    footers: footers,
+    // navbar: navbar,
+    // benefit: benefit,
+    // login: login,
+    // footers: footers,
   },
   mounted() {
     if (this.$auth.$state.loggedIn) {

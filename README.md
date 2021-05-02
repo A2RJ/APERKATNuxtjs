@@ -12,19 +12,18 @@
 - Subordinate = List Pengajuan
 - Supervisor = List Pengajuan Sub Divisi
 
+
 # On Progress
+- Upload bukti TF (Dir Keuangan yang bisa upload)
+- Untuk kolom rkat setelah select tinggal ambil data
 
 - Pengajuan
 - Nama Program Kerja
 - Total Anggaran
-- Status
-    - Solusi adalah dengan lakukan join dengan table lain
-
-- Tambah notif sudah direvisi atau belum 
-- berdasarkan warna merah belum direvisi
-- kuning kalau sudah direvisi
-- hijau sudah disetujui
-    - Solusi adalah dengan lakukan join dengan table lain
+- Status notif sudah direvisi atau belum 
+    - berdasarkan warna merah belum direvisi
+    - kuning kalau sudah direvisi
+    - hijau sudah disetujui
 
 - Laporan per Pengajuan
 

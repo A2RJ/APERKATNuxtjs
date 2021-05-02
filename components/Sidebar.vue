@@ -33,7 +33,7 @@
 
     <!-- Nav Item -->
 
-    <li class="nav-item" v-show="rektor">
+    <li class="nav-item" v-show="sekniv">
       <NuxtLink class="nav-link" to="/rkat">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>RKAT</span>
@@ -64,7 +64,7 @@
           v-if="this.$store.state.auth.user"
         >
           <h6 class="collapse-header">Daftar Pengajuan</h6>
-          <NuxtLink
+          <NuxtLink v-show="!sekniv"
             class="collapse-item"
             :to="
               '/pengajuan/subordinate/' + this.$store.state.auth.user[0].id_user
@@ -103,11 +103,19 @@
             "
             >Pengajuan Sub Divisi</NuxtLink
           >
+          <NuxtLink
+            class="collapse-item"
+            v-show="sekniv"
+            :to="
+              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
+            "
+            >Pengajuan Sub Divisi</NuxtLink
+          >
         </div>
       </div>
     </li>
 
-    <li class="nav-item" v-show="rektor">
+    <li class="nav-item" v-show="sekniv">
       <NuxtLink class="nav-link" to="/user">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>USER</span>
@@ -133,6 +141,7 @@ export default {
       dirKeuangan: false,
       warek: false,
       rektor: false,
+      sekniv: false,
     };
   },
   computed: {},
@@ -151,6 +160,8 @@ export default {
         this.warek = true;
       }else if (data == "rektor") {
         this.rektor = true;
+      }else if (data == "sekniv") {
+        this.sekniv = true;
       }
     }
   },

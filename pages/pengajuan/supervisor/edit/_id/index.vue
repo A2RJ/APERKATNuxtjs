@@ -12,6 +12,8 @@ export default {
   async asyncData({ store, params }) {
     await Promise.all([
       store.dispatch("subordinate/getpengajuanID", params.id),
+      store.dispatch("subordinate/getstatus", params.id),
+      store.dispatch("subordinate/gethistory", params.id),
       store.dispatch("subordinate/kodeRKAT"),
       store.dispatch("subordinate/ikuParent"),
     ]);
@@ -31,7 +33,7 @@ export default {
       "SET_STATUS",
       "SET_HISTORY",
     ]),
-    ...mapActions("subordinate", ["getpengajuanID"]),
+    ...mapActions("subordinate", ["getpengajuanID", "getstatus", "gethistory"]),
   },
 };
 </script>

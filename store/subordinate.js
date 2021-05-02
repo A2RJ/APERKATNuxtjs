@@ -77,8 +77,6 @@ export const actions = {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/pengajuan/${payload}`).then((response) => {
                 commit('SET_DATA', response.data.data)
-                commit('SET_STATUS', response.data.status)
-                commit('SET_HISTORY', response.data.history.data)
                 resolve()
             })
         })
@@ -124,6 +122,14 @@ export const actions = {
             })
         })
     },
+    gethistory({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/pengajuan/history/${payload}`).then((response) => {
+                commit('SET_HISTORY', response.data.data)
+                resolve()
+            })
+        })
+    },
     approved({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
             this.$axios.post(`/pengajuan/approve/${payload.id}`, payload).then((response) => {
@@ -133,7 +139,7 @@ export const actions = {
                 commit('SET_ERRORS', e.response.data)
             })
         })
-    },
+    },    
     declined({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
             this.$axios.post(`/pengajuan/decline/${payload.id}`, payload).then((response) => {
@@ -141,14 +147,6 @@ export const actions = {
                 resolve()
             }).catch((e) => {
                 commit('SET_ERRORS', e.response.data)
-            })
-        })
-    },
-    gethistory({ commit }, payload) {
-        return new Promise((resolve, reject) => {
-            this.$axios.get(`/pengajuan/history/${payload}`).then((response) => {
-                commit('SET_HISTORY', response.data.data)
-                resolve()
             })
         })
     },
