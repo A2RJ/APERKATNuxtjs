@@ -16,7 +16,7 @@
             </li>
           </ul>
         </div>
-        <div v-show="formPencairan">
+        <div v-show="formPencairan" class="m-3">
           <b-form-group
             label-cols="4"
             label-cols-lg="2"
@@ -26,11 +26,12 @@
           >
             <b-form-file
               id="Pencairan"
+              class="col-4"
               v-model="pencairan"
               :state="Boolean(pencairan)"
               ref="pencairan"
               @change="onSelectPencairan"
-              placeholder="Choose a file or drop it here..."
+              placeholder="Choose or drop it here..."
               drop-placeholder="Drop file here..."
             ></b-form-file>
             <div class="mt-3">
@@ -47,26 +48,87 @@
             Upload Bukti Transfer
           </button>
         </div>
-        <div v-show="option" class="pl-2 my-3">
+        <div v-show="formLPJ" class="m-3 col-4">
           <b-form-group
             label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="LPJKeuangan"
+            label-for="LPJKeuangan"
+          >
+            <b-form-file
+              id="LPJKeuangan"
+              class="col-4"
+              v-model="LPJKeuangan"
+              :state="Boolean(LPJKeuangan)"
+              ref="LPJKeuangan"
+              @change="onSelectLPJKeuangan"
+              placeholder="Choose or drop it here..."
+              drop-placeholder="Drop file here..."
+            ></b-form-file>
+            <div class="mt-3">
+              <small><a :href="'../../../' + forms.lpj_keuangan"
+                target="_blank">Current file</a></small>
+            </div>
+          </b-form-group>
+          <button
+            class="btn btn-sm btn-outline-success"
+            @click="uploadLPJKeuangan"
+          >
+            LPJ Keuangan
+          </button>
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="LPJKegiatan"
+            label-for="LPJKegiatan"
+          >
+            <b-form-file
+              id="LPJKegiatan"
+              class="col-4"
+              v-model="LPJKegiatan"
+              :state="Boolean(LPJKegiatan)"
+              ref="LPJKegiatan"
+              @change="onSelectLPJKegiatan"
+              placeholder="Choose or drop it here..."
+              drop-placeholder="Drop file here..."
+            ></b-form-file>
+            <div class="mt-3">
+              <small><a :href="'../../../' + forms.lpj_kegiatan"
+                target="_blank">Current file</a></small>
+            </div>
+          </b-form-group>
+          <button
+            class="btn btn-sm btn-outline-success"
+            @click="uploadLPJKegiatan"
+          >
+            LPJ Kegiatan
+          </button>
+        </div>
+        <div v-show="option" class="m-3">
+          <b-form-group
+            label-cols="2"
             label-cols-lg="2"
             label-size="sm"
             label="Pesan"
             label-for="message"
           >
-            <b-form-input
-              v-model="message"
-              id="message"
-              size="sm"
-            ></b-form-input>
+            <div class="col-6">
+              <b-form-input
+                id="message"
+                size="sm"
+                class="mb-3"
+                v-model="message"
+              ></b-form-input>
+              <button class="btn btn-sm btn-outline-success" @click="terima">
+                Approve
+              </button>
+              <button class="btn btn-sm btn-outline-danger" @click="tolak">
+                Decline
+              </button>
+            </div>
           </b-form-group>
-          <button class="btn btn-sm btn-outline-success" @click="terima">
-            Approve
-          </button>
-          <button class="btn btn-sm btn-outline-danger" @click="tolak">
-            Decline
-          </button>
         </div>
       </div>
     </div>
@@ -277,7 +339,7 @@
               :state="Boolean(file)"
               ref="file"
               @change="onSelect"
-              placeholder="Choose a file or drop it here..."
+              placeholder="Choose or drop it here..."
               drop-placeholder="Drop file here..."
             ></b-form-file>
             <!-- accept=".xls, .xlsx, .doc, .docx, .jpg, .png" -->
@@ -356,6 +418,9 @@ export default {
         rab: this.forms.rab,
         status_pengajuan: "progress",
         pencairan: this.forms.pencairan,
+        id_atasan: this.$store.state.auth.user[0].id_user,
+        lpj_keuangan: this.forms.lpj_keuangan,
+        lpj_kegiatan: this.forms.lpj_kegiatan,
       };
     }
   },
@@ -376,6 +441,9 @@ export default {
         rab: null,
         status_pengajuan: "progress",
         pencairan: null,
+        id_atasan: null,
+        lpj_keuangan: null,
+        lpj_kegiatan: null,
       },
       button: true,
       selected: null,
@@ -399,6 +467,9 @@ export default {
       message: "",
       formPencairan: false,
       pencairan: [],
+      formLPJ: false,
+      LPJKeuangan: [],
+      LPJKegiatan: [],
     };
   },
   computed: {
@@ -434,7 +505,9 @@ export default {
     ]),
 
     load() {
+      // console.log(this.status, this.$store.state.auth.user[0].id_user);
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
+        this.form.id_user = this.$store.state.auth.user[0].id_user;
         this.button = false;
         for (let index = 0; index < this.status.length; index++) {
           if (
@@ -447,10 +520,10 @@ export default {
                 this.status[index - 1]["status"] == "0" ||
                 this.status[index - 1]["status"] == null
               ) {
-                console.log(false);
+                this.option = false;
+              } else if (this.status[index]["status"]) {
                 this.option = false;
               } else {
-                console.log(true);
                 this.option = true;
               }
             }
@@ -475,6 +548,20 @@ export default {
             }
           });
       }
+      for (let index = 0; index < this.status.length; index++) {
+        if (
+          this.status[index]["nama_struktur"] == "Sekniv" &&
+          this.status[index]["status"] !== 1 &&
+          this.status[index - 1]["status"]
+        ) {
+          if (
+            this.status[0]["id_user"] == this.$store.state.auth.user[0].id_user
+          ) {
+            console.log("LPJ True");
+            this.formLPJ = true;
+          }
+        }
+      }
     },
     onSelect() {
       const file = this.$refs.file.files[0];
@@ -483,6 +570,12 @@ export default {
     onSelectPencairan() {
       const pencairan = this.$refs.pencairan.files[0];
       this.pencairan = pencairan;
+    },
+    onSelectLPJKeuangan() {
+      this.LPJKeuangan = this.$refs.LPJKeuangan.files[0];
+    },
+    onSelectLPJKegiatan() {
+      this.LPJKegiatan = this.$refs.LPJKegiatan.files[0];
     },
     terima() {
       let form = Object.assign(
@@ -500,6 +593,7 @@ export default {
         { id: this.$route.params.id, message: this.message },
         this.form
       );
+      console.log(form);
       this.declined(form).then(() => {
         this.$router.push(
           "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
@@ -529,10 +623,8 @@ export default {
         this.$router.push(this.redirects);
       } else {
         await this.upload();
-        let form = Object.assign(
-          { id: this.$route.params.id, message: "Input pengajuan" },
-          this.form
-        );
+        let form = Object.assign({ message: "Input pengajuan" }, this.form);
+        console.log(form);
         await this.storepengajuan(form).then((res) => {
           console.log(res);
         });
@@ -556,8 +648,12 @@ export default {
         { id: this.$route.params.id, message: "Sudah dilakukan pencairan" },
         this.form
       );
+      console.log(form);
+
       await this.updatepengajuan(form);
-      // this.$router.push(this.redirects);
+      this.$router.push(
+        "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
+      );
     },
     async uploadBuktiTF() {
       const form = new FormData();
@@ -565,10 +661,49 @@ export default {
       try {
         await this.$axios.post("/pengajuan/upload", form).then((res) => {
           this.form.pencairan = res.data;
-          console.log(res.data);
+          this.form.id_atasan = this.$store.state.auth.user[0].id_user;
+          this.form.id_user = this.forms.id_user;
         });
       } catch (e) {
         console.log("Whoops Server Error");
+      }
+    },
+    uploadLPJKeuangan() {
+      if (this.LPJKeuangan.length != 0) {
+        const form = new FormData();
+        form.append("file", this.LPJKeuangan);
+        try {
+          this.$axios.post("/pengajuan/upload", form).then((res) => {
+            this.form.lpj_keuangan = res.data;
+            let form = Object.assign(
+              { id: this.$route.params.id, message: "Upload LPJ Keuangan" },
+              this.form
+            );
+            this.updatepengajuan(form);
+            this.$router.push("/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user);
+          });
+        } catch (e) {
+          console.log("Whoops Server Error");
+        }
+      }
+    },
+    uploadLPJKegiatan() {
+      if (this.LPJKegiatan.length != 0) {
+        const form = new FormData();
+        form.append("file", this.LPJKegiatan);
+        try {
+          this.$axios.post("/pengajuan/upload", form).then((res) => {
+            this.form.lpj_kegiatan = res.data;
+            let form = Object.assign(
+              { id: this.$route.params.id, message: "Upload LPJ Kegiatan" },
+              this.form
+            );
+            this.updatepengajuan(form);
+            this.$router.push("/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user);
+          });
+        } catch (e) {
+          console.log("Whoops Server Error");
+        }
       }
     },
   },

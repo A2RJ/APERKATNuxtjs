@@ -1,5 +1,5 @@
 export default {
-  // target: 'static',
+  target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'SubmissionNuxtJS',
@@ -50,7 +50,7 @@ export default {
     'bootstrap-vue/nuxt',
     'vue-sweetalert2/nuxt',
   ],
-
+// https://aperkat.uts.ac.id/api
   axios: {
     withCredentials: true,
     baseURL: 'http://localhost:8000',

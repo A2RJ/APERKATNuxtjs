@@ -94,7 +94,7 @@ export const actions = {
     },
     updatepengajuan({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.put(`/pengajuan/${payload.id}`, payload).then((response) => {
+            this.$axios.post(`/pengajuan/${payload.id}`, payload).then((response) => {
                 dispatch('getpengajuan')
                 resolve()
             })

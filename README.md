@@ -14,7 +14,9 @@
 
 
 # On Progress
+- vueladite (Validasi required)
 - Upload bukti TF (Dir Keuangan yang bisa upload)
+
 - Untuk kolom rkat setelah select tinggal ambil data
 
 - Pengajuan
