@@ -299,7 +299,8 @@ export default {
         await this.$auth.logout();
         this.SET_IS_AUTH(false);
         this.SET_USER_DATA(null);
-        this.$router.push("/login");
+        // this.$router.push("/login");
+        window.location.href = "/login"
       } catch (err) {
         console.log(err);
       }

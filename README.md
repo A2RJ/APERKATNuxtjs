@@ -12,10 +12,16 @@
 - Subordinate = List Pengajuan
 - Supervisor = List Pengajuan Sub Divisi
 
+- Upload bukti TF (Dir Keuangan yang bisa upload)
+
+- LPJ (Aksi Terima dan tolak oleh sekniv)
+    - LPJ Kegiatan
+    - LPJ Keuangan
 
 # On Progress
+
+- Fixing ui
 - vueladite (Validasi required)
-- Upload bukti TF (Dir Keuangan yang bisa upload)
 
 - Untuk kolom rkat setelah select tinggal ambil data
 
@@ -30,10 +36,6 @@
 - Laporan per Pengajuan
 
 - Administrator = SEKNIV
-
-- LPJ (Aksi Terima dan tolak oleh sekniv)
-    - LPJ Kegiatan
-    - LPJ Keuangan
 
 # DONE
 

@@ -16,119 +16,140 @@
             </li>
           </ul>
         </div>
-        <div v-show="formPencairan" class="m-3">
-          <b-form-group
-            label-cols="4"
-            label-cols-lg="2"
-            label-size="sm"
-            label="Pencairan"
-            label-for="Pencairan"
-          >
-            <b-form-file
-              id="Pencairan"
-              class="col-4"
-              v-model="pencairan"
-              :state="Boolean(pencairan)"
-              ref="pencairan"
-              @change="onSelectPencairan"
-              placeholder="Choose or drop it here..."
-              drop-placeholder="Drop file here..."
-            ></b-form-file>
-            <div class="mt-3">
-              Current file:
-              <a
-                v-if="form.pencairan"
-                :href="'../../../' + form.pencairan"
-                target="_blank"
-                >Bukti Pencairan</a
+      </div>
+    </div>
+
+    <div
+      class="col-xl-12 col-lg-12"
+      v-show="formPencairan || formLPJ || option"
+    >
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Upload File</h6>
+        </div>
+        <div class="card-body">
+          <div v-show="formPencairan" class="m-3">
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label-size="sm"
+              label="Pencairan"
+              label-for="Pencairan"
+            >
+              <b-form-file
+                id="Pencairan"
+                v-model="pencairan"
+                :state="Boolean(pencairan)"
+                ref="pencairan"
+                @change="onSelectPencairan"
+                placeholder="Choose or drop it here..."
+                drop-placeholder="Drop file here..."
+              ></b-form-file>
+            </b-form-group>
+            <div>
+              <button
+                class="btn btn-sm btn-outline-success float-right"
+                @click="buktiTF"
+              >
+                Upload Bukti Transfer
+              </button>
+              <small>
+                <a
+                  v-show="form.pencairan"
+                  :href="'../../../' + form.pencairan"
+                  target="_blank"
+                  >Bukti Pencairan</a
+                >
+              </small>
+            </div>
+          </div>
+          <div v-show="formLPJ" class="m-3">
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label-size="sm"
+              label="LPJ Keuangan"
+              label-for="LPJKeuangan"
+            >
+              <b-form-file
+                id="LPJKeuangan"
+                v-model="LPJKeuangan"
+                :state="Boolean(LPJKeuangan)"
+                ref="LPJKeuangan"
+                @change="onSelectLPJKeuangan"
+                placeholder="Choose or drop it here..."
+                drop-placeholder="Drop file here..."
+              ></b-form-file>
+            </b-form-group>
+            <div>
+              <button
+                class="btn btn-sm btn-outline-success float-right"
+                @click="uploadLPJKeuangan"
+              >
+                LPJ Keuangan
+              </button>
+              <small v-show="form.lpj_keuangan"
+                ><a :href="'../../../' + form.lpj_keuangan" target="_blank"
+                  >Current file</a
+                ></small
               >
             </div>
-          </b-form-group>
-          <button class="btn btn-sm btn-outline-success" @click="buktiTF">
-            Upload Bukti Transfer
-          </button>
-        </div>
-        <div v-show="formLPJ" class="m-3 col-4">
-          <b-form-group
-            label-cols="4"
-            label-cols-lg="2"
-            label-size="sm"
-            label="LPJKeuangan"
-            label-for="LPJKeuangan"
-          >
-            <b-form-file
-              id="LPJKeuangan"
-              class="col-4"
-              v-model="LPJKeuangan"
-              :state="Boolean(LPJKeuangan)"
-              ref="LPJKeuangan"
-              @change="onSelectLPJKeuangan"
-              placeholder="Choose or drop it here..."
-              drop-placeholder="Drop file here..."
-            ></b-form-file>
-            <div class="mt-3">
-              <small><a :href="'../../../' + forms.lpj_keuangan"
-                target="_blank">Current file</a></small>
+            <br />
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label-size="sm"
+              label="LPJ Kegiatan"
+              label-for="LPJKegiatan"
+            >
+              <b-form-file
+                id="LPJKegiatan"
+                v-model="LPJKegiatan"
+                :state="Boolean(LPJKegiatan)"
+                ref="LPJKegiatan"
+                @change="onSelectLPJKegiatan"
+                placeholder="Choose or drop it here..."
+                drop-placeholder="Drop file here..."
+              ></b-form-file>
+            </b-form-group>
+            <div>
+              <button
+                class="btn btn-sm btn-outline-success float-right"
+                @click="uploadLPJKegiatan"
+              >
+                LPJ Kegiatan
+              </button>
+              <small v-show="form.lpj_kegiatan"
+                ><a :href="'../../../' + form.lpj_kegiatan" target="_blank"
+                  >Current file</a
+                ></small
+              >
             </div>
-          </b-form-group>
-          <button
-            class="btn btn-sm btn-outline-success"
-            @click="uploadLPJKeuangan"
-          >
-            LPJ Keuangan
-          </button>
-          <b-form-group
-            label-cols="4"
-            label-cols-lg="2"
-            label-size="sm"
-            label="LPJKegiatan"
-            label-for="LPJKegiatan"
-          >
-            <b-form-file
-              id="LPJKegiatan"
-              class="col-4"
-              v-model="LPJKegiatan"
-              :state="Boolean(LPJKegiatan)"
-              ref="LPJKegiatan"
-              @change="onSelectLPJKegiatan"
-              placeholder="Choose or drop it here..."
-              drop-placeholder="Drop file here..."
-            ></b-form-file>
-            <div class="mt-3">
-              <small><a :href="'../../../' + forms.lpj_kegiatan"
-                target="_blank">Current file</a></small>
-            </div>
-          </b-form-group>
-          <button
-            class="btn btn-sm btn-outline-success"
-            @click="uploadLPJKegiatan"
-          >
-            LPJ Kegiatan
-          </button>
-        </div>
-        <div v-show="option" class="m-3">
-          <b-form-group
-            label-cols="2"
-            label-cols-lg="2"
-            label-size="sm"
-            label="Pesan"
-            label-for="message"
-          >
-            <div class="col-6">
+          </div>
+          <div v-show="option" class="m-3">
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label-size="sm"
+              label="Pesan"
+              label-for="message"
+            >
               <b-form-input
                 id="message"
                 size="sm"
                 class="mb-3"
                 v-model="message"
               ></b-form-input>
-              <button class="btn btn-sm btn-outline-success" @click="terima">
-                Approve
-              </button>
-              <button class="btn btn-sm btn-outline-danger" @click="tolak">
-                Decline
-              </button>
-            </div>
-          </b-form-group>
+              <div class="float-right">
+                <button class="btn btn-sm btn-outline-danger" @click="tolak">
+                  Tolak
+                </button>
+                <button class="btn btn-sm btn-outline-success" @click="terima">
+                  Terima
+                </button>
+              </div>
+            </b-form-group>
+          </div>
         </div>
       </div>
     </div>
@@ -505,7 +526,6 @@ export default {
     ]),
 
     load() {
-      // console.log(this.status, this.$store.state.auth.user[0].id_user);
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
         this.form.id_user = this.$store.state.auth.user[0].id_user;
         this.button = false;
@@ -528,13 +548,12 @@ export default {
               }
             }
           }
-
           if (
             this.status[index]["nama_struktur"] == "Rektor" &&
             this.status[index]["status"] == 1 &&
-            this.$store.state.auth.user[0].id_user == 7
+            this.$store.state.auth.user[0].id_struktur != 4
           ) {
-            this.formPencairan = true;
+            this.option = true;
           }
         }
       } else if (this.$route.name == "pengajuan-subordinate-edit-id") {
@@ -557,9 +576,15 @@ export default {
           if (
             this.status[0]["id_user"] == this.$store.state.auth.user[0].id_user
           ) {
-            console.log("LPJ True");
             this.formLPJ = true;
           }
+        }
+        if (
+          this.status[index]["nama_struktur"] == "Rektor" &&
+          this.status[index]["status"] == 1 &&
+          this.$store.state.auth.user[0].id_user == this.status[0]["id_user"]
+        ) {
+          this.formPencairan = true;
         }
       }
     },
@@ -680,7 +705,9 @@ export default {
               this.form
             );
             this.updatepengajuan(form);
-            this.$router.push("/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user);
+            this.$router.push(
+              "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user
+            );
           });
         } catch (e) {
           console.log("Whoops Server Error");
@@ -699,7 +726,9 @@ export default {
               this.form
             );
             this.updatepengajuan(form);
-            this.$router.push("/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user);
+            this.$router.push(
+              "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user
+            );
           });
         } catch (e) {
           console.log("Whoops Server Error");
