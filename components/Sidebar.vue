@@ -149,7 +149,7 @@ export default {
   mounted() {
     if (this.$store.state.auth.loggedIn) {
       let data = this.$store.state.auth.user[1].level;
-      console.log(data);
+      // console.log(data);
       if (data == "prodi") {
         this.prodi = true;
       }else if (data == "fakultas") {

@@ -3,7 +3,7 @@
     <div class="col-xl-12 col-lg-12" v-if="this.$route.params.id">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Status</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Status Pengajuan</h6>
         </div>
         <div class="container-timeline pl-3 pt-3">
           <ul>
@@ -21,13 +21,51 @@
 
     <div
       class="col-xl-12 col-lg-12"
-      v-show="formPencairan || formLPJ || option"
+      v-show="
+        formPencairan ||
+        formLPJ ||
+        option ||
+        form.pencairan ||
+        form.lpj_keuangan ||
+        form.lpj_kegiatan
+      "
     >
       <div class="card shadow mb-4">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Upload File</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
         </div>
         <div class="card-body">
+          <button class="btn btn-sm btn-outline-success m-1" @click="print">
+            Print pengajuan
+          </button>
+          <a
+            :href="'../../../' + form.pencairan"
+            target="_blank"
+            v-show="form.pencairan"
+          >
+            <button class="btn btn-sm btn-outline-success m-1">
+              Bukti Pencairan
+            </button>
+          </a>
+          <a
+            v-show="form.lpj_keuangan"
+            :href="'../../../' + form.lpj_keuangan"
+            target="_blank"
+          >
+            <button class="btn btn-sm btn-outline-success m-1">
+              LPJ Keuangan
+            </button>
+          </a>
+          <a
+            v-show="form.lpj_kegiatan"
+            :href="'../../../' + form.lpj_kegiatan"
+            target="_blank"
+          >
+            <button class="btn btn-sm btn-outline-success m-1">
+              LPJ Kegiatan
+            </button>
+          </a>
+          <br />
           <div v-show="formPencairan" class="m-3">
             <b-form-group
               label-cols="4"
@@ -53,14 +91,6 @@
               >
                 Upload Bukti Transfer
               </button>
-              <small>
-                <a
-                  v-show="form.pencairan"
-                  :href="'../../../' + form.pencairan"
-                  target="_blank"
-                  >Bukti Pencairan</a
-                >
-              </small>
             </div>
           </div>
           <div v-show="formLPJ" class="m-3">
@@ -81,20 +111,15 @@
                 drop-placeholder="Drop file here..."
               ></b-form-file>
             </b-form-group>
-            <div>
-              <button
-                class="btn btn-sm btn-outline-success float-right"
-                @click="uploadLPJKeuangan"
-              >
-                LPJ Keuangan
-              </button>
-              <small v-show="form.lpj_keuangan"
-                ><a :href="'../../../' + form.lpj_keuangan" target="_blank"
-                  >Current file</a
-                ></small
-              >
-            </div>
-            <br />
+            <button
+              class="btn btn-sm btn-outline-success float-right"
+              @click="uploadLPJKeuangan"
+            >
+              LPJ Keuangan
+            </button>
+          </div>
+          <br />
+          <div v-show="formLPJ" class="m-3">
             <b-form-group
               label-cols="4"
               label-cols-lg="2"
@@ -112,19 +137,12 @@
                 drop-placeholder="Drop file here..."
               ></b-form-file>
             </b-form-group>
-            <div>
-              <button
-                class="btn btn-sm btn-outline-success float-right"
-                @click="uploadLPJKegiatan"
-              >
-                LPJ Kegiatan
-              </button>
-              <small v-show="form.lpj_kegiatan"
-                ><a :href="'../../../' + form.lpj_kegiatan" target="_blank"
-                  >Current file</a
-                ></small
-              >
-            </div>
+            <button
+              class="btn btn-sm btn-outline-success float-right"
+              @click="uploadLPJKegiatan"
+            >
+              LPJ Kegiatan
+            </button>
           </div>
           <div v-show="option" class="m-3">
             <b-form-group
@@ -491,6 +509,11 @@ export default {
       formLPJ: false,
       LPJKeuangan: [],
       LPJKegiatan: [],
+      view: {
+        pencairan: false,
+        keuangan: false,
+        kegiatan: false,
+      },
     };
   },
   computed: {
@@ -550,10 +573,11 @@ export default {
           }
           if (
             this.status[index]["nama_struktur"] == "Rektor" &&
-            this.status[index]["status"] == 1 &&
-            this.$store.state.auth.user[0].id_struktur != 4
+            this.status[index]["status"] == "1" &&
+            this.$store.state.auth.user[0].id_user == 7
           ) {
-            this.option = true;
+            this.formPencairan = true;
+            return;
           }
         }
       } else if (this.$route.name == "pengajuan-subordinate-edit-id") {
@@ -576,6 +600,7 @@ export default {
           if (
             this.status[0]["id_user"] == this.$store.state.auth.user[0].id_user
           ) {
+            this.formPencairan = false;
             this.formLPJ = true;
           }
         }
@@ -618,7 +643,6 @@ export default {
         { id: this.$route.params.id, message: this.message },
         this.form
       );
-      console.log(form);
       this.declined(form).then(() => {
         this.$router.push(
           "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
@@ -649,10 +673,7 @@ export default {
       } else {
         await this.upload();
         let form = Object.assign({ message: "Input pengajuan" }, this.form);
-        console.log(form);
-        await this.storepengajuan(form).then((res) => {
-          console.log(res);
-        });
+        await this.storepengajuan(form);
         this.$router.push(this.redirects);
       }
     },
@@ -673,8 +694,6 @@ export default {
         { id: this.$route.params.id, message: "Sudah dilakukan pencairan" },
         this.form
       );
-      console.log(form);
-
       await this.updatepengajuan(form);
       this.$router.push(
         "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
@@ -734,6 +753,9 @@ export default {
           console.log("Whoops Server Error");
         }
       }
+    },
+    print() {
+      console.log("Printing");
     },
   },
 };
