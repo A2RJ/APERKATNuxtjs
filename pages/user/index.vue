@@ -2,6 +2,27 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+      <div class="dropdown no-arrow">
+            <a
+              class="dropdown-toggle"
+              href="#"
+              role="button"
+              id="dropdownMenuLink"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div
+              class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+              aria-labelledby="dropdownMenuLink"
+              style=""
+            >
+              <div class="dropdown-header">Opsi:</div>
+              <NuxtLink class="dropdown-item" to="/user/add">Add RKAT</NuxtLink>
+            </div>
+          </div>
     </div>
     <div class="card-body">
       <b-row>
@@ -57,15 +78,29 @@
         :current-page="currentPage"
         show-empty
       >
-        <template v-slot:cell(Detail)="row">
+        <template v-slot:cell(Action)="row">
           <NuxtLink
-            class="btn-sm btn-warning mb-2"
-            :to="'edit/' + row.item.id_user"
+            class="btn-sm btn-warning m-2"
+            :to="'user/edit/' + row.item.id_user"
             :key="'edit' + row.index"
             >Detail</NuxtLink
           >
+          <button
+                class="btn-sm btn-danger mt-2"
+                @click="deleteUser(row)"
+              >
+                Hapus
+              </button>
         </template>
       </b-table>
+      <div class="overflow-auto">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              aria-controls="my-table"
+            ></b-pagination>
+          </div>
     </div>
   </div>
 </template>
@@ -85,7 +120,7 @@ export default {
         { key: "nama_struktur_child1", label: "Unit Pelaksana" },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "created_at", label: "Register Date" },
-        "Detail",
+        "Action",
       ],
       perPage: 5,
       pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
@@ -102,10 +137,8 @@ export default {
   mounted() {},
   methods: {
     ...mapActions("user", ["getuser", "deleteuser"]),
-    destroyrkat() {
-      // this.deleterkat(row.item.id_rkat).catch((e) => {
-      //   console.log(e);
-      // });
+    deleteUser(row) {
+      this.deleteuser(row.item.id_user)
     },
   },
 };

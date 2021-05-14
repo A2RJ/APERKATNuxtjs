@@ -51,6 +51,7 @@ export default {
     'vue-sweetalert2/nuxt',
   ],
 // https://aperkat.uts.ac.id/api
+// http://localhost:8000
   axios: {
     withCredentials: true,
     baseURL: 'http://localhost:8000',
