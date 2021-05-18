@@ -6,14 +6,19 @@
       label-size="sm"
       label="Fakultas/Unit Pelaksana"
       label-for="id_user"
+      :class="{ 'form-group--error': $v.form.id_user.$error }"
     >
+      <!-- :state="$v.form.id_user.required" -->
       <b-form-select
-        v-model="form.id_user"
+        v-model.trim="$v.form.id_user.$model"
         :options="options"
         size="sm"
         class="mt-3"
         name="unit"
       ></b-form-select>
+      <b-form-text id="id_user" v-if="!$v.form.id_user.required">
+        <i class="text-danger">Fakultas/Unit Pelaksana harus diisi</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -22,12 +27,16 @@
       label-size="sm"
       label="Kode RKAT"
       label-for="kode_rkat"
+      :class="{ 'form-group--error': $v.form.kode_rkat.$error }"
     >
       <b-form-input
-        v-model="form.kode_rkat"
+        v-model.trim="$v.form.kode_rkat.$model"
         id="kode_rkat"
         size="sm"
       ></b-form-input>
+      <b-form-text id="kode_rkat" v-if="!$v.form.kode_rkat.required">
+        <i class="text-danger">Kode RKAT harus diisi</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -36,12 +45,19 @@
       label-size="sm"
       label="sasaran strategi"
       label-for="sasaran_strategi"
+      :class="{ 'form-group--error': $v.form.sasaran_strategi.$error }"
     >
       <b-form-input
-        v-model="form.sasaran_strategi"
+        v-model.trim="$v.form.sasaran_strategi.$model"
         id="sasaran_strategi"
         size="sm"
       ></b-form-input>
+      <b-form-text
+        id="sasaran_strategi"
+        v-if="!$v.form.sasaran_strategi.required"
+      >
+        <i class="text-danger">Sasaran Strategi</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -50,12 +66,21 @@
       label-size="sm"
       label="indikator sasaran strategi"
       label-for="indikator_sasaran_strategi"
+      :class="{
+        'form-group--error': $v.form.indikator_sasaran_strategi.$error,
+      }"
     >
       <b-form-input
-        v-model="form.indikator_sasaran_strategi"
+        v-model.trim="$v.form.indikator_sasaran_strategi.$model"
         id="indikator_sasaran_strategi"
         size="sm"
       ></b-form-input>
+      <b-form-text
+        id="indikator_sasaran_strategi"
+        v-if="!$v.form.indikator_sasaran_strategi.required"
+      >
+        <i class="text-danger">indikator_sasaran_strategi</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -64,12 +89,16 @@
       label-size="sm"
       label="nama program"
       label-for="nama_program"
+      :class="{ 'form-group--error': $v.form.nama_program.$error }"
     >
       <b-form-input
-        v-model="form.nama_program"
+        v-model.trim="$v.form.nama_program.$model"
         id="nama_program"
         size="sm"
       ></b-form-input>
+      <b-form-text id="nama_program" v-if="!$v.form.nama_program.required">
+        <i class="text-danger">nama_program</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -78,12 +107,16 @@
       label-size="sm"
       label="program kerja"
       label-for="program_kerja"
+      :class="{ 'form-group--error': $v.form.program_kerja.$error }"
     >
       <b-form-input
-        v-model="form.program_kerja"
+        v-model.trim="$v.form.program_kerja.$model"
         id="program_kerja"
         size="sm"
       ></b-form-input>
+      <b-form-text id="program_kerja" v-if="!$v.form.program_kerja.required">
+        <i class="text-danger">program_kerja</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -92,14 +125,18 @@
       label-size="sm"
       label="deskripsi"
       label-for="deskripsi"
+      :class="{ 'form-group--error': $v.form.deskripsi.$error }"
     >
       <b-form-textarea
-      id="textarea"
-      v-model="form.deskripsi"
-      placeholder="Enter something..."
-      rows="3"
-      max-rows="6"
-    ></b-form-textarea>
+        v-model.trim="$v.form.deskripsi.$model"
+        id="textarea"
+        placeholder="Enter something..."
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
+      <b-form-text id="deskripsi" v-if="!$v.form.deskripsi.required">
+        <i class="text-danger">deskripsi</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -108,8 +145,16 @@
       label-size="sm"
       label="tujuan"
       label-for="tujuan"
+      :class="{ 'form-group--error': $v.form.tujuan.$error }"
     >
-      <b-form-input v-model="form.tujuan" id="tujuan" size="sm"></b-form-input>
+      <b-form-input
+        v-model.trim="$v.form.tujuan.$model"
+        id="tujuan"
+        size="sm"
+      ></b-form-input>
+      <b-form-text id="tujuan" v-if="!$v.form.tujuan.required">
+        <i class="text-danger">tujuan</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -118,10 +163,11 @@
       label-size="sm"
       label="mulai program"
       label-for="mulai_program"
+      :class="{ 'form-group--error': $v.form.mulai_program.$error }"
     >
       <b-form-datepicker
         id="mulai_program"
-        v-model="form.mulai_program"
+        v-model.trim="$v.form.mulai_program.$model"
         class="mb-2"
         size="sm"
         today-button
@@ -129,6 +175,9 @@
         close-button
         locale="IDN"
       ></b-form-datepicker>
+      <b-form-text id="mulai_program" v-if="!$v.form.mulai_program.required">
+        <i class="text-danger">mulai_program</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -137,10 +186,11 @@
       label-size="sm"
       label="selesai program"
       label-for="selesai_program"
+      :class="{ 'form-group--error': $v.form.selesai_program.$error }"
     >
       <b-form-datepicker
         id="selesai_program"
-        v-model="form.selesai_program"
+        v-model.trim="$v.form.selesai_program.$model"
         class="mb-2"
         size="sm"
         today-button
@@ -148,6 +198,12 @@
         close-button
         locale="IDN"
       ></b-form-datepicker>
+      <b-form-text
+        id="selesai_program"
+        v-if="!$v.form.selesai_program.required"
+      >
+        <i class="text-danger">selesai_program</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -156,8 +212,16 @@
       label-size="sm"
       label="tempat"
       label-for="tempat"
+      :class="{ 'form-group--error': $v.form.tempat.$error }"
     >
-      <b-form-input v-model="form.tempat" id="tempat" size="sm"></b-form-input>
+      <b-form-input
+        v-model.trim="$v.form.tempat.$model"
+        id="tempat"
+        size="sm"
+      ></b-form-input>
+      <b-form-text id="tempat" v-if="!$v.form.tempat.required">
+        <i class="text-danger">tempat</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -166,12 +230,19 @@
       label-size="sm"
       label="sumber anggaran"
       label-for="sumber_anggaran"
+      :class="{ 'form-group--error': $v.form.sumber_anggaran.$error }"
     >
       <b-form-input
-        v-model="form.sumber_anggaran"
+        v-model.trim="$v.form.sumber_anggaran.$model"
         id="sumber_anggaran"
         size="sm"
       ></b-form-input>
+      <b-form-text
+        id="sumber_anggaran"
+        v-if="!$v.form.sumber_anggaran.required"
+      >
+        <i class="text-danger">sumber_anggaran</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -180,12 +251,19 @@
       label-size="sm"
       label="rencara anggaran"
       label-for="rencara_anggaran"
+      :class="{ 'form-group--error': $v.form.rencara_anggaran.$error }"
     >
       <b-form-input
-        v-model="form.rencara_anggaran"
+        v-model.trim="$v.form.rencara_anggaran.$model"
         id="rencara_anggaran"
         size="sm"
       ></b-form-input>
+      <b-form-text
+        id="rencara_anggaran"
+        v-if="!$v.form.rencara_anggaran.required"
+      >
+        <i class="text-danger">rencara_anggaran</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -194,20 +272,29 @@
       label-size="sm"
       label="total anggaran"
       label-for="total_anggaran"
+      :class="{ 'form-group--error': $v.form.total_anggaran.$error }"
     >
       <b-form-input
-        v-model="form.total_anggaran"
+        v-model.trim="$v.form.total_anggaran.$model"
         id="total_anggaran"
         size="sm"
       ></b-form-input>
+      <b-form-text id="total_anggaran" v-if="!$v.form.total_anggaran.required">
+        <i class="text-danger">total_anggaran</i>
+      </b-form-text>
     </b-form-group>
-    
+    <p :class="warnaStatus + ' float-right'" v-if="submitStatus">
+      {{ submitStatus }}
+    </p>
+    <br />
+    <br />
     <button class="btn-sm btn-info float-right" @click="submit">Save</button>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { required } from "vuelidate/lib/validators";
 
 export default {
   created() {
@@ -227,32 +314,83 @@ export default {
         sumber_anggaran: this.forms.sumber_anggaran,
         rencara_anggaran: this.forms.rencara_anggaran,
         total_anggaran: this.forms.total_anggaran,
-        sisa_anggaran: this.forms.sisa_anggaran
+        sisa_anggaran: this.forms.sisa_anggaran,
       };
     }
   },
   data() {
     return {
       form: {
-        id_user: null,
-        kode_rkat: null,
-        sasaran_strategi: null,
-        indikator_sasaran_strategi: null,
-        nama_program: null,
-        program_kerja: null,
-        deskripsi: null,
-        tujuan: null,
-        mulai_program: '',
-        selesai_program: '',
-        tempat: null,
-        sumber_anggaran: null,
-        rencara_anggaran: null,
-        total_anggaran: null,
-        sisa_anggaran: 0
+        id_user: "",
+        kode_rkat: "",
+        sasaran_strategi: "",
+        indikator_sasaran_strategi: "",
+        nama_program: "",
+        program_kerja: "",
+        deskripsi: "",
+        tujuan: "",
+        mulai_program: "",
+        selesai_program: "",
+        tempat: "",
+        sumber_anggaran: "",
+        rencara_anggaran: "",
+        total_anggaran: "",
+        sisa_anggaran: 0,
       },
       selected: null,
       options: null,
+      submitStatus: null,
+      warnaStatus: null,
     };
+  },
+  validations: {
+    form: {
+      id_user: {
+        required
+      },
+      kode_rkat: {
+        required,
+      },
+      sasaran_strategi: {
+        required,
+      },
+      indikator_sasaran_strategi: {
+        required,
+      },
+      nama_program: {
+        required,
+      },
+      program_kerja: {
+        required,
+      },
+      deskripsi: {
+        required,
+      },
+      tujuan: {
+        required,
+      },
+      mulai_program: {
+        required,
+      },
+      selesai_program: {
+        required,
+      },
+      tempat: {
+        required,
+      },
+      sumber_anggaran: {
+        required,
+      },
+      rencara_anggaran: {
+        required,
+      },
+      total_anggaran: {
+        required,
+      },
+      sisa_anggaran: {
+        required,
+      },
+    },
   },
   mounted() {
     this.options = this.rkatUser;
@@ -267,17 +405,43 @@ export default {
   methods: {
     ...mapActions("rkat", ["storerkat", "getrkatID", "updaterkat"]),
     submit() {
-      if (this.$route.name === "rkat-edit-id") {
-        let form = Object.assign({ id: this.$route.params.id }, this.form);
-        this.updaterkat(form).then(() => {
-          this.$router.push("/rkat");
-        });
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.warnaStatus = "text-danger";
+        this.submitStatus = "ERROR: Semua harus diisi";
       } else {
-        this.storerkat(this.form).then(() => {
-          this.$router.push("/rkat");
-        });
+        // do your submit logic here
+        this.submitStatus = "Sedang menyimpan data";
+        this.warnaStatus = "text-info";
+        setTimeout(() => {}, 1500);
+        if (this.$route.name === "rkat-edit-id") {
+          let form = Object.assign({ id: this.$route.params.id }, this.form);
+          this.updaterkat(form)
+            .then(() => {
+              this.warnaStatus = "text-success";
+              this.submitStatus = "Thanks for your submission!";
+              setTimeout(() => {}, 1500);
+              this.$router.push("/rkat");
+            })
+            .catch((e) => {
+              this.warnaStatus = "text-danger";
+              this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
+            });
+        } else {
+          this.storerkat(this.form)
+            .then(() => {
+              this.warnaStatus = "text-success";
+              this.submitStatus = "Thanks for your submission!";
+              setTimeout(() => {}, 1500);
+              this.$router.push("/rkat");
+            })
+            .catch((e) => {
+              this.warnaStatus = "text-danger";
+              this.submitStatus = "ERROR";
+            });
+        }
       }
-    }
+    },
   },
 };
 </script>

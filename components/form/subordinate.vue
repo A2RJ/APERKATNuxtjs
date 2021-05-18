@@ -182,21 +182,24 @@
           <h6 class="m-0 font-weight-bold text-primary">Pengajuan</h6>
         </div>
         <div class="card-body">
-          <!-- <form enctype="multipart/form-data"> -->
           <b-form-group
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
             label="Kode RKAT"
             label-for="kode_rkat"
+            :class="{ 'form-group--error': $v.form.kode_rkat.$error }"
           >
             <b-form-select
-              v-model="form.kode_rkat"
+              v-model.trim="$v.form.kode_rkat.$model"
               :options="options"
               size="sm"
               class="mt-3"
               name="unit"
             ></b-form-select>
+            <b-form-text id="kode_rkat" v-if="!$v.form.kode_rkat.required">
+              <i class="text-danger">Kode RKAT harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -205,12 +208,19 @@
             label-size="sm"
             label="target capaian"
             label-for="target_capaian"
+            :class="{ 'form-group--error': $v.form.target_capaian.$error }"
           >
             <b-form-input
-              v-model="form.target_capaian"
+              v-model.trim="$v.form.target_capaian.$model"
               id="target_capaian"
               size="sm"
             ></b-form-input>
+            <b-form-text
+              id="target_capaian"
+              v-if="!$v.form.target_capaian.required"
+            >
+              <i class="text-danger">target_capaian harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -219,12 +229,21 @@
             label-size="sm"
             label="bentuk pelaksanaan program"
             label-for="bentuk_pelaksanaan_program"
+            :class="{
+              'form-group--error': $v.form.bentuk_pelaksanaan_program.$error,
+            }"
           >
             <b-form-input
-              v-model="form.bentuk_pelaksanaan_program"
+              v-model.trim="$v.form.bentuk_pelaksanaan_program.$model"
               id="bentuk_pelaksanaan_program"
               size="sm"
             ></b-form-input>
+            <b-form-text
+              id="bentuk_pelaksanaan_program"
+              v-if="!$v.form.bentuk_pelaksanaan_program.required"
+            >
+              <i class="text-danger">bentuk_pelaksanaan_program harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -233,12 +252,19 @@
             label-size="sm"
             label="tempat program"
             label-for="tempat_program"
+            :class="{ 'form-group--error': $v.form.tempat_program.$error }"
           >
             <b-form-input
-              v-model="form.tempat_program"
+              v-model.trim="$v.form.tempat_program.$model"
               id="tempat_program"
               size="sm"
             ></b-form-input>
+            <b-form-text
+              id="tempat_program"
+              v-if="!$v.form.tempat_program.required"
+            >
+              <i class="text-danger">tempat_program harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -247,10 +273,11 @@
             label-size="sm"
             label="tanggal"
             label-for="tanggal"
+            :class="{ 'form-group--error': $v.form.tanggal.$error }"
           >
             <b-form-datepicker
               id="tanggal"
-              v-model="form.tanggal"
+              v-model.trim="$v.form.tanggal.$model"
               class="mb-2"
               size="sm"
               today-button
@@ -258,6 +285,9 @@
               close-button
               locale="IDN"
             ></b-form-datepicker>
+            <b-form-text id="tanggal" v-if="!$v.form.tanggal.required">
+              <i class="text-danger">tanggal harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -266,12 +296,19 @@
             label-size="sm"
             label="bidang terkait"
             label-for="bidang_terkait"
+            :class="{ 'form-group--error': $v.form.bidang_terkait.$error }"
           >
             <b-form-input
-              v-model="form.bidang_terkait"
+              v-model.trim="$v.form.bidang_terkait.$model"
               id="bidang_terkait"
               size="sm"
             ></b-form-input>
+            <b-form-text
+              id="bidang_terkait"
+              v-if="!$v.form.bidang_terkait.required"
+            >
+              <i class="text-danger">bidang_terkait harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -280,16 +317,23 @@
             label-size="sm"
             label="IKU"
             label-for="id_iku_parent"
+            :class="{ 'form-group--error': $v.form.id_iku_parent.$error }"
           >
             <b-form-select
               id="id_iku_parent"
-              v-model="form.id_iku_parent"
+              v-model.trim="$v.form.id_iku_parent.$model"
               :options="parent"
               size="sm"
               class="mt-3"
               name="unit"
               @change="getIku1(form.id_iku_parent)"
             ></b-form-select>
+            <b-form-text
+              id="id_iku_parent"
+              v-if="!$v.form.id_iku_parent.required"
+            >
+              <i class="text-danger">id_iku_parent harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -298,10 +342,11 @@
             label-size="sm"
             label=""
             label-for="id_iku_child1"
+            :class="{ 'form-group--error': $v.form.id_iku_child1.$error }"
           >
             <b-form-select
               id="id_iku_child1"
-              v-model="form.id_iku_child1"
+              v-model.trim="$v.form.id_iku_child1.$model"
               :options="child1"
               size="sm"
               class="mt-3"
@@ -314,6 +359,12 @@
                 }}</b-form-select-option>
               </template>
             </b-form-select>
+            <b-form-text
+              id="id_iku_child1"
+              v-if="!$v.form.id_iku_child1.required"
+            >
+              <i class="text-danger">id_iku_child1 harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -322,10 +373,11 @@
             label-size="sm"
             label=""
             label-for="id_iku_child2"
+            :class="{ 'form-group--error': $v.form.id_iku_child2.$error }"
           >
             <b-form-select
               id="id_iku_child2"
-              v-model="form.id_iku_child2"
+              v-model.trim="$v.form.id_iku_child2.$model"
               :options="child2"
               size="sm"
               class="mt-3"
@@ -337,6 +389,12 @@
                 }}</b-form-select-option>
               </template>
             </b-form-select>
+            <b-form-text
+              id="id_iku_child2"
+              v-if="!$v.form.id_iku_child2.required"
+            >
+              <i class="text-danger">id_iku_child2 harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -345,12 +403,19 @@
             label-size="sm"
             label="biaya program"
             label-for="biaya_program"
+            :class="{ 'form-group--error': $v.form.biaya_program.$error }"
           >
             <b-form-input
-              v-model="form.biaya_program"
+              v-model.trim="$v.form.biaya_program.$model"
               id="biaya_program"
               size="sm"
             ></b-form-input>
+            <b-form-text
+              id="biaya_program"
+              v-if="!$v.form.biaya_program.required"
+            >
+              <i class="text-danger">Nama lengkap harus diisi</i>
+            </b-form-text>
           </b-form-group>
 
           <b-form-group
@@ -382,13 +447,16 @@
               drop-placeholder="Drop file here..."
             ></b-form-file>
             <!-- accept=".xls, .xlsx, .doc, .docx, .jpg, .png" -->
-            <!-- <div class="mt-3">Selected file: {{ file ? file.name : "" }}</div> -->
             <div class="mt-3">
               Current file:
               <a v-if="rab" :href="'../../../' + rab" target="_blank">RAB </a>
             </div>
           </b-form-group>
-
+          <p :class="warnaStatus + ' float-right'" v-if="submitStatus">
+            {{ submitStatus }}
+          </p>
+          <br />
+          <br />
           <button
             class="btn-sm btn-info float-right"
             v-show="button"
@@ -396,7 +464,6 @@
           >
             Save
           </button>
-          <!-- </form> -->
         </div>
       </div>
     </div>
@@ -423,7 +490,8 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
+import { required } from "vuelidate/lib/validators";
 
 export default {
   created() {
@@ -514,7 +582,49 @@ export default {
         keuangan: false,
         kegiatan: false,
       },
+      submitStatus: null,
+      warnaStatus: null,
     };
+  },
+  validations: {
+    form: {
+      kode_rkat: {
+        required,
+      },
+      id_user: {
+        required,
+      },
+      target_capaian: {
+        required,
+      },
+      bentuk_pelaksanaan_program: {
+        required,
+      },
+      tempat_program: {
+        required,
+      },
+      tanggal: {
+        required,
+      },
+      bidang_terkait: {
+        required,
+      },
+      id_iku_parent: {
+        required,
+      },
+      id_iku_child1: {
+        required,
+      },
+      id_iku_child2: {
+        required,
+      },
+      biaya_program: {
+        required,
+      },
+      rab: {
+        required,
+      },
+    },
   },
   computed: {
     ...mapState("subordinate", {
@@ -660,21 +770,43 @@ export default {
       });
     },
     async submit() {
-      if (this.$route.name === "pengajuan-subordinate-edit-id") {
-        if (this.file.length != 0) {
-          await this.upload();
-        }
-        let form = Object.assign(
-          { id: this.$route.params.id, message: "Update pengajuan" },
-          this.form
-        );
-        await this.updatepengajuan(form);
-        this.$router.push(this.redirects);
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.warnaStatus = "text-danger";
+        this.submitStatus = "ERROR: Semua harus diisi";
       } else {
-        await this.upload();
-        let form = Object.assign({ message: "Input pengajuan" }, this.form);
-        await this.storepengajuan(form);
-        this.$router.push(this.redirects);
+        // do your submit logic here
+        this.submitStatus = "Sedang menyimpan data";
+        this.warnaStatus = "text-info";
+        setTimeout(() => {}, 1500);
+        if (this.$route.name === "pengajuan-subordinate-edit-id") {
+          if (this.file.length != 0) {
+            await this.upload();
+          }
+          let form = Object.assign(
+            { id: this.$route.params.id, message: "Update pengajuan" },
+            this.form
+          );
+          await this.updatepengajuan(form).catch((e) => {
+            this.warnaStatus = "text-danger";
+            this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
+          });
+          this.warnaStatus = "text-success";
+          this.submitStatus = "Thanks for your submission!";
+          setTimeout(() => {}, 1500);
+          this.$router.push(this.redirects);
+        } else {
+          await this.upload();
+          let form = Object.assign({ message: "Input pengajuan" }, this.form);
+          await this.storepengajuan(form).catch((e) => {
+            this.warnaStatus = "text-danger";
+            this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
+          });
+          this.warnaStatus = "text-success";
+          this.submitStatus = "Thanks for your submission!";
+          setTimeout(() => {}, 1500);
+          this.$router.push(this.redirects);
+        }
       }
     },
     async upload() {

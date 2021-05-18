@@ -32,7 +32,7 @@ export default {
   plugins: [
     '@/plugins/axios.js',
     '@/plugins/numeral.js',
-    // '@/plugins/chart.js'
+    '@/plugins/vuelidate.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

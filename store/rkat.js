@@ -53,7 +53,7 @@ export const actions = {
     },
     updaterkat({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.put(`/rkat/${payload.id}`, payload).then((response) => {
+            this.$axios.post(`/rkat/${payload.id}`, payload).then((response) => {
                 dispatch('getrkat')
                 resolve()
             })
