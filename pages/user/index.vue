@@ -3,28 +3,43 @@
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
       <div class="dropdown no-arrow">
-            <a
-              class="dropdown-toggle"
-              href="#"
-              role="button"
-              id="dropdownMenuLink"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-              aria-labelledby="dropdownMenuLink"
-              style=""
-            >
-              <div class="dropdown-header">Opsi:</div>
-              <NuxtLink class="dropdown-item" to="/user/add">Add RKAT</NuxtLink>
-            </div>
-          </div>
+        <a
+          class="dropdown-toggle"
+          href="#"
+          role="button"
+          id="dropdownMenuLink"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+        </a>
+        <div
+          class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+          aria-labelledby="dropdownMenuLink"
+          style=""
+        >
+          <div class="dropdown-header">Opsi:</div>
+          <NuxtLink class="dropdown-item" to="/user/add">Add RKAT</NuxtLink>
+        </div>
+      </div>
     </div>
     <div class="card-body">
+      <b-alert
+        :show="dismissCountDown"
+        dismissible
+        :variant="alertNotif.color"
+        @dismissed="dismissCountDown = 0"
+        @dismiss-count-down="countDownChanged"
+      >
+        <p>{{ alertNotif.message }}</p>
+        <b-progress
+          variant="warning"
+          :max="dismissSecs"
+          :value="dismissCountDown"
+          height="4px"
+        ></b-progress>
+      </b-alert>
       <b-row>
         <b-col sm="5" md="6" class="my-1">
           <b-form-group
@@ -65,10 +80,10 @@
           </b-form-group>
         </b-col>
       </b-row>
+      <!-- sticky-header -->
       <b-table
         responsive
         head-variant="light"
-        sticky-header
         hover
         id="my-table"
         :items="user"
@@ -85,22 +100,19 @@
             :key="'edit' + row.index"
             >Detail</NuxtLink
           >
-          <button
-                class="btn-sm btn-danger mt-2"
-                @click="deleteUser(row)"
-              >
-                Hapus
-              </button>
+          <button class="btn-sm btn-danger mt-2" @click="deleteUser(row)">
+            Hapus
+          </button>
         </template>
       </b-table>
       <div class="overflow-auto">
-            <b-pagination
-              v-model="currentPage"
-              :total-rows="rows"
-              :per-page="perPage"
-              aria-controls="my-table"
-            ></b-pagination>
-          </div>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          aria-controls="my-table"
+        ></b-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -122,10 +134,17 @@ export default {
         { key: "created_at", label: "Register Date" },
         "Action",
       ],
-      perPage: 5,
+      perPage: 10,
       pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
+      dismissSecs: 10,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
+      alertNotif: {
+        color: null,
+        message: null,
+      },
     };
   },
   components: {},
@@ -138,7 +157,17 @@ export default {
   methods: {
     ...mapActions("user", ["getuser", "deleteuser"]),
     deleteUser(row) {
-      this.deleteuser(row.item.id_user)
+      this.deleteuser(row.item.id_user).catch((e) => {
+        this.alertNotif.color = "warning";
+        this.alertNotif.message = e.data;
+        this.dismissCountDown = this.dismissSecs;
+      });
+      this.alertNotif.color = "success";
+      this.alertNotif.message = "User data was deleted";
+      this.dismissCountDown = this.dismissSecs;
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
     },
   },
 };

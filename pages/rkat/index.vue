@@ -36,6 +36,21 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
+          <b-alert
+            :show="dismissCountDown"
+            dismissible
+            :variant="alertNotif.color"
+            @dismissed="dismissCountDown = 0"
+            @dismiss-count-down="countDownChanged"
+          >
+            <p>{{ alertNotif.message }}</p>
+            <b-progress
+              variant="warning"
+              :max="dismissSecs"
+              :value="dismissCountDown"
+              height="4px"
+            ></b-progress>
+          </b-alert>
           <b-row>
             <b-col sm="5" md="6" class="my-1">
               <b-form-group
@@ -147,6 +162,13 @@ export default {
       filter: null,
       currentPage: 1,
       items: this.rkat,
+      dismissSecs: 10,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
+      alertNotif: {
+        color: null,
+        message: null,
+      },
     };
   },
   computed: {
@@ -167,8 +189,16 @@ export default {
 
     destroyrkat(row) {
       this.deleterkat(row.item.id_rkat).catch((e) => {
-        console.log(e);
+        this.alertNotif.color = "warning";
+        this.alertNotif.message = e.data;
+        this.dismissCountDown = this.dismissSecs;
       });
+      this.alertNotif.color = "success";
+      this.alertNotif.message = "RKAT data was deleted";
+      this.dismissCountDown = this.dismissSecs;
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
     },
   },
 };

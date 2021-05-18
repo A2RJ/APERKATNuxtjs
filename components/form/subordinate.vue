@@ -414,7 +414,7 @@
               id="biaya_program"
               v-if="!$v.form.biaya_program.required"
             >
-              <i class="text-danger">Nama lengkap harus diisi</i>
+              <i class="text-danger">Biaya program harus diisi</i>
             </b-form-text>
           </b-form-group>
 
@@ -437,15 +437,20 @@
             label-size="sm"
             label="rab"
             label-for="rab"
+            :class="{ 'form-group--error': $v.file.$error }"
           >
             <b-form-file
-              v-model="file"
+              id="rab"
+              v-model.trim="$v.file.$model"
               :state="Boolean(file)"
               ref="file"
               @change="onSelect"
               placeholder="Choose or drop it here..."
               drop-placeholder="Drop file here..."
             ></b-form-file>
+            <b-form-text id="rab" v-if="!$v.file.required">
+              <i class="text-danger">Upload file RAB</i>
+            </b-form-text>
             <!-- accept=".xls, .xlsx, .doc, .docx, .jpg, .png" -->
             <div class="mt-3">
               Current file:
@@ -621,9 +626,9 @@ export default {
       biaya_program: {
         required,
       },
-      rab: {
-        required,
-      },
+    },
+    file: {
+      required,
     },
   },
   computed: {
