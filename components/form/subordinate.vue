@@ -193,12 +193,82 @@
             <b-form-select
               v-model.trim="$v.form.kode_rkat.$model"
               :options="options"
+              @change="getDataRKAT(form.kode_rkat)"
               size="sm"
               class="mt-3"
               name="unit"
             ></b-form-select>
             <b-form-text id="kode_rkat" v-if="!$v.form.kode_rkat.required">
-              <i class="text-danger">Kode RKAT harus diisi</i>
+              <i class="text-danger">Kode RKAT is required</i>
+            </b-form-text>
+          </b-form-group>
+
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="Nama Kegiatan"
+            label-for="nama_kegiatan"
+          >
+            <b-form-input
+              v-model="rkat.nama_kegiatan"
+              id="nama_kegiatan"
+              size="sm"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="Latar belakang pelaksanaan kegiatan"
+            label-for="latar_belakang"
+            :class="{ 'form-group--error': $v.form.latar_belakang.$error }"
+          >
+            <b-form-input
+              v-model.trim="$v.form.latar_belakang.$model"
+              id="latar_belakang"
+              size="sm"
+            ></b-form-input>
+            <b-form-text
+              id="latar_belakang"
+              v-if="!$v.form.latar_belakang.required"
+            >
+              <i class="text-danger"
+                >Latar belakang pelaksanaan kegiatan is required</i
+              >
+            </b-form-text>
+          </b-form-group>
+
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="Tujuan Kegiatan"
+            label-for="tujuan"
+          >
+            <b-form-input
+              v-model="rkat.tujuan"
+              id="tujuan"
+              size="sm"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="Sasaran"
+            label-for="sasaran"
+            :class="{ 'form-group--error': $v.form.sasaran.$error }"
+          >
+            <b-form-input
+              v-model.trim="$v.form.sasaran.$model"
+              id="sasaran"
+              size="sm"
+            ></b-form-input>
+            <b-form-text id="sasaran" v-if="!$v.form.sasaran.required">
+              <i class="text-danger">Sasaran is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -219,7 +289,7 @@
               id="target_capaian"
               v-if="!$v.form.target_capaian.required"
             >
-              <i class="text-danger">target_capaian harus diisi</i>
+              <i class="text-danger">Target capaian is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -242,7 +312,7 @@
               id="bentuk_pelaksanaan_program"
               v-if="!$v.form.bentuk_pelaksanaan_program.required"
             >
-              <i class="text-danger">bentuk_pelaksanaan_program harus diisi</i>
+              <i class="text-danger">Bentuk pelaksanaan program is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -263,7 +333,7 @@
               id="tempat_program"
               v-if="!$v.form.tempat_program.required"
             >
-              <i class="text-danger">tempat_program harus diisi</i>
+              <i class="text-danger">Tempat program is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -286,7 +356,7 @@
               locale="IDN"
             ></b-form-datepicker>
             <b-form-text id="tanggal" v-if="!$v.form.tanggal.required">
-              <i class="text-danger">tanggal harus diisi</i>
+              <i class="text-danger">Tanggal is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -307,7 +377,7 @@
               id="bidang_terkait"
               v-if="!$v.form.bidang_terkait.required"
             >
-              <i class="text-danger">bidang_terkait harus diisi</i>
+              <i class="text-danger">Bidang terkait is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -332,7 +402,7 @@
               id="id_iku_parent"
               v-if="!$v.form.id_iku_parent.required"
             >
-              <i class="text-danger">id_iku_parent harus diisi</i>
+              <i class="text-danger">IKU is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -340,7 +410,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label=""
+            label="Sub IKU"
             label-for="id_iku_child1"
             :class="{ 'form-group--error': $v.form.id_iku_child1.$error }"
           >
@@ -363,7 +433,7 @@
               id="id_iku_child1"
               v-if="!$v.form.id_iku_child1.required"
             >
-              <i class="text-danger">id_iku_child1 harus diisi</i>
+              <i class="text-danger">Sub IKU is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -371,7 +441,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label=""
+            label="Sub Sub IKU"
             label-for="id_iku_child2"
             :class="{ 'form-group--error': $v.form.id_iku_child2.$error }"
           >
@@ -393,7 +463,7 @@
               id="id_iku_child2"
               v-if="!$v.form.id_iku_child2.required"
             >
-              <i class="text-danger">id_iku_child2 harus diisi</i>
+              <i class="text-danger">Sub Sub is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -414,7 +484,7 @@
               id="biaya_program"
               v-if="!$v.form.biaya_program.required"
             >
-              <i class="text-danger">Biaya program harus diisi</i>
+              <i class="text-danger">Biaya program is required</i>
             </b-form-text>
           </b-form-group>
 
@@ -425,11 +495,7 @@
             label="No.Rek Penerima"
             label-for="norek"
           >
-            <b-form-input
-              v-model="form.norek"
-              id="norek"
-              size="sm"
-            ></b-form-input>
+            <b-form-input v-model="norek" id="norek" size="sm"></b-form-input>
           </b-form-group>
           <b-form-group
             label-cols="4"
@@ -518,6 +584,8 @@ export default {
       this.form = {
         kode_rkat: this.forms.kode_rkat,
         id_user: this.forms.id_user,
+        latar_belakang: this.forms.latar_belakang,
+        sasaran: this.forms.sasaran,
         target_capaian: this.forms.target_capaian,
         bentuk_pelaksanaan_program: this.forms.bentuk_pelaksanaan_program,
         tempat_program: this.forms.tempat_program,
@@ -541,6 +609,8 @@ export default {
       form: {
         kode_rkat: null,
         id_user: this.$store.state.auth.user[0].id_user,
+        latar_belakang: null,
+        sasaran: null,
         target_capaian: null,
         bentuk_pelaksanaan_program: null,
         tempat_program: null,
@@ -557,6 +627,11 @@ export default {
         lpj_keuangan: null,
         lpj_kegiatan: null,
       },
+      rkat: {
+        nama_kegiatan: null,
+        tujuan: null,
+      },
+      norek: null,
       button: true,
       selected: null,
       options: null,
@@ -597,6 +672,12 @@ export default {
         required,
       },
       id_user: {
+        required,
+      },
+      latar_belakang: {
+        required,
+      },
+      sasaran: {
         required,
       },
       target_capaian: {
@@ -651,6 +732,12 @@ export default {
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
     this.rab = this.form.rab;
+
+    this.$axios.get(`user/${this.form.id_user}`).then((res) => {
+      this.norek = res.data.data.no_rek;
+    });
+    
+    this.getDataRKAT(this.form.kode_rkat)
   },
   methods: {
     ...mapActions("subordinate", [
@@ -797,7 +884,7 @@ export default {
             this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
           });
           this.warnaStatus = "text-success";
-          this.submitStatus = "Thanks for your submission!";
+          this.submitStatus = "Data pengajuan telah diupdate!";
           setTimeout(() => {}, 1500);
           this.$router.push(this.redirects);
         } else {
@@ -808,7 +895,7 @@ export default {
             this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
           });
           this.warnaStatus = "text-success";
-          this.submitStatus = "Thanks for your submission!";
+          this.submitStatus = "Data pengajuan telah disimpan!";
           setTimeout(() => {}, 1500);
           this.$router.push(this.redirects);
         }
@@ -893,6 +980,12 @@ export default {
     },
     print() {
       console.log("Printing");
+    },
+    getDataRKAT(params) {
+      this.$axios.get(`rkat/byKode/${params}`).then((res) => {
+        this.rkat.nama_kegiatan = res.data.data.nama_program;
+        this.rkat.tujuan = res.data.data.tujuan;
+      });
     },
   },
 };

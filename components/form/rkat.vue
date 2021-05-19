@@ -17,7 +17,7 @@
         name="unit"
       ></b-form-select>
       <b-form-text id="id_user" v-if="!$v.form.id_user.required">
-        <i class="text-danger">Fakultas/Unit Pelaksana harus diisi</i>
+        <i class="text-danger">Fakultas/Unit Pelaksana is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -56,7 +56,7 @@
         id="sasaran_strategi"
         v-if="!$v.form.sasaran_strategi.required"
       >
-        <i class="text-danger">Sasaran Strategi</i>
+        <i class="text-danger">Sasaran strategi is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -79,7 +79,7 @@
         id="indikator_sasaran_strategi"
         v-if="!$v.form.indikator_sasaran_strategi.required"
       >
-        <i class="text-danger">indikator_sasaran_strategi</i>
+        <i class="text-danger">Indikator sasaran strategi is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -97,7 +97,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="nama_program" v-if="!$v.form.nama_program.required">
-        <i class="text-danger">nama_program</i>
+        <i class="text-danger">Nama program is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -115,7 +115,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="program_kerja" v-if="!$v.form.program_kerja.required">
-        <i class="text-danger">program_kerja</i>
+        <i class="text-danger">Program kerja is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -135,7 +135,7 @@
         max-rows="6"
       ></b-form-textarea>
       <b-form-text id="deskripsi" v-if="!$v.form.deskripsi.required">
-        <i class="text-danger">deskripsi</i>
+        <i class="text-danger">Deskripsi is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -153,7 +153,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="tujuan" v-if="!$v.form.tujuan.required">
-        <i class="text-danger">tujuan</i>
+        <i class="text-danger">Tujuan is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -176,7 +176,7 @@
         locale="IDN"
       ></b-form-datepicker>
       <b-form-text id="mulai_program" v-if="!$v.form.mulai_program.required">
-        <i class="text-danger">mulai_program</i>
+        <i class="text-danger">Mulai program is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -202,7 +202,7 @@
         id="selesai_program"
         v-if="!$v.form.selesai_program.required"
       >
-        <i class="text-danger">selesai_program</i>
+        <i class="text-danger">Selesai program is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -220,7 +220,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="tempat" v-if="!$v.form.tempat.required">
-        <i class="text-danger">tempat</i>
+        <i class="text-danger">Tempat is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -241,7 +241,7 @@
         id="sumber_anggaran"
         v-if="!$v.form.sumber_anggaran.required"
       >
-        <i class="text-danger">sumber_anggaran</i>
+        <i class="text-danger">Sumber anggaran is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -262,7 +262,7 @@
         id="rencara_anggaran"
         v-if="!$v.form.rencara_anggaran.required"
       >
-        <i class="text-danger">rencara_anggaran</i>
+        <i class="text-danger">Rencara anggaran is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -280,7 +280,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="total_anggaran" v-if="!$v.form.total_anggaran.required">
-        <i class="text-danger">total_anggaran</i>
+        <i class="text-danger">Total anggaran is required</i>
       </b-form-text>
     </b-form-group>
     <p :class="warnaStatus + ' float-right'" v-if="submitStatus">
@@ -419,7 +419,7 @@ export default {
           this.updaterkat(form)
             .then(() => {
               this.warnaStatus = "text-success";
-              this.submitStatus = "Thanks for your submission!";
+              this.submitStatus = "Data RKAT telah diupdate!";
               setTimeout(() => {}, 1500);
               this.$router.push("/rkat");
             })
@@ -431,7 +431,7 @@ export default {
           this.storerkat(this.form)
             .then(() => {
               this.warnaStatus = "text-success";
-              this.submitStatus = "Thanks for your submission!";
+              this.submitStatus = "Data RKAT telah disimpan!";
               setTimeout(() => {}, 1500);
               this.$router.push("/rkat");
             })

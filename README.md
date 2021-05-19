@@ -1,29 +1,13 @@
 # SubmissionNuxtJS
-# Done
-- Aksi Tolak dan Terima tambah catatan
+# FOKUS
 
-- Hanya bisa ubah pengajuan ketika status ditolak
+- Fokus pengajuan
+    - input
+    - update
+    - history
+    - status
 
-- Login Form saja
-
-- Atas Nama Pemerima
-
-- Ubah nama menu
-- Subordinate = List Pengajuan
-- Supervisor = List Pengajuan Sub Divisi
-
-- Upload bukti TF (Dir Keuangan yang bisa upload)
-
-- LPJ (Aksi Terima dan tolak oleh sekniv)
-    - LPJ Kegiatan
-    - LPJ Keuangan
-
-# On Progress
-
-- Fixing ui
-- vueladite (Validasi required)
-
-- Untuk kolom rkat setelah select tinggal ambil data
+# On the go
 
 - Pengajuan
 - Nama Program Kerja
@@ -36,8 +20,6 @@
 - Laporan per Pengajuan
 
 - Administrator = SEKNIV
-
-# DONE
 
 ## Build Setup
 

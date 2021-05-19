@@ -14,7 +14,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="fullname" v-if="!$v.form.fullname.required">
-        <i class="text-danger">Nama lengkap harus diisi</i>
+        <i class="text-danger">Nama lengkap is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -24,16 +24,17 @@
       label-size="sm"
       label="Password"
       label-for="password"
-      :class="{ 'form-group--error': $v.form.password.$error }"
     >
+      <!-- :class="{ 'form-group--error': $v.form.password.$error }" -->
+      <!-- v-model.trim="$v.form.password.$model" -->
       <b-form-input
-        v-model.trim="$v.form.password.$model"
+        v-model="form.password"
         id="password"
         size="sm"
       ></b-form-input>
-      <b-form-text id="password" v-if="!$v.form.password.required">
-        <i class="text-danger">password harus diisi</i>
-      </b-form-text>
+      <!-- <b-form-text id="password" v-if="!$v.form.password.required">
+        <i class="text-danger">password is required</i>
+      </b-form-text> -->
     </b-form-group>
 
     <b-form-group
@@ -53,7 +54,7 @@
         name="unit"
       ></b-form-select>
       <b-form-text id="id_struktur" v-if="!$v.form.id_struktur.required">
-        <i class="text-danger">id_struktur harus diisi</i>
+        <i class="text-danger">Struktur is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -94,14 +95,17 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="email"
+      label="Email"
       label-for="email"
       :class="{ 'form-group--error': $v.form.email.$error }"
     >
       <b-form-input v-model.trim="$v.form.email.$model" id="email" size="sm">
       </b-form-input>
-      <b-form-text id="email" v-if="!$v.form.email.required || !$v.form.email.email">
-        <i class="text-danger">email harus diisi dan pastikan email valid</i>
+      <b-form-text
+        id="email"
+        v-if="!$v.form.email.required || !$v.form.email.email"
+      >
+        <i class="text-danger">email is required and valid email</i>
       </b-form-text>
     </b-form-group>
 
@@ -109,7 +113,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="nomor_wa"
+      label="Nomor WA"
       label-for="nomor_wa"
       :class="{ 'form-group--error': $v.form.nomor_wa.$error }"
     >
@@ -119,7 +123,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="nomor_wa" v-if="!$v.form.nomor_wa.required">
-        <i class="text-danger">nomor_wa harus diisi</i>
+        <i class="text-danger">Nomor WA is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -127,7 +131,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="bank"
+      label="Bank"
       label-for="bank"
       :class="{ 'form-group--error': $v.form.bank.$error }"
     >
@@ -137,7 +141,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="bank" v-if="!$v.form.bank.required">
-        <i class="text-danger">bank harus diisi</i>
+        <i class="text-danger">Bank is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -155,7 +159,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="atn" v-if="!$v.form.atn.required">
-        <i class="text-danger">atn harus diisi</i>
+        <i class="text-danger">ATN is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -173,7 +177,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="no_rek" v-if="!$v.form.no_rek.required">
-        <i class="text-danger">no_rek harus diisi</i>
+        <i class="text-danger">No.Rekening is required</i>
       </b-form-text>
     </b-form-group>
     <p :class="warnaStatus + ' float-right'" v-if="submitStatus">
@@ -193,9 +197,8 @@ export default {
   created() {
     if (this.$route.name === "user-edit-id") {
       this.form = {
-        password: this.userID.fullname,
+        fullname: this.userID.fullname,
         email: this.userID.email,
-        password: this.userID.password,
         id_struktur: this.userID.id_struktur,
         id_struktur_child1: this.userID.id_struktur_child1,
         id_struktur_child2: this.userID.id_struktur_child2,
@@ -215,8 +218,8 @@ export default {
         email: null,
         password: null,
         id_struktur: null,
-        id_struktur_child1: '0',
-        id_struktur_child2: '0',
+        id_struktur_child1: "0",
+        id_struktur_child2: "0",
         nomor_wa: null,
         bank: null,
         atn: null,
@@ -235,10 +238,8 @@ export default {
         required,
       },
       email: {
-        required, email
-      },
-      password: {
         required,
+        email,
       },
       id_struktur: {
         required,
@@ -280,9 +281,17 @@ export default {
           this.updateuser(form)
             .then(() => {
               this.warnaStatus = "text-success";
-              this.submitStatus = "Thanks for your submission!";
+              this.submitStatus = "Data user telah diupdate!";
               setTimeout(() => {}, 1500);
-              this.$router.push("/user");
+              if (
+                this.$store.state.auth.user[0].id_user == this.$route.params.id
+              ) {
+                this.$router.push(
+                  `/user/edit/${this.$store.state.auth.user[0].id_user}`
+                );
+              } else {
+                this.$router.push("/user");
+              }
             })
             .catch((e) => {
               this.warnaStatus = "text-danger";
@@ -292,7 +301,7 @@ export default {
           this.storeuser(this.form)
             .then(() => {
               this.warnaStatus = "text-success";
-              this.submitStatus = "Thanks for your submission!";
+              this.submitStatus = "Data user telah disimpan!";
               setTimeout(() => {}, 1500);
               this.$router.push("/user");
             })
