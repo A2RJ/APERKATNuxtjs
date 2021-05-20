@@ -503,20 +503,21 @@
             label-size="sm"
             label="rab"
             label-for="rab"
-            :class="{ 'form-group--error': $v.file.$error }"
           >
+            <!-- :class="{ 'form-group--error': $v.file.$error }" -->
+            <!-- v-model.trim="$v.file.$model" -->
             <b-form-file
               id="rab"
-              v-model.trim="$v.file.$model"
+              v-model="file"
               :state="Boolean(file)"
               ref="file"
               @change="onSelect"
               placeholder="Choose or drop it here..."
               drop-placeholder="Drop file here..."
             ></b-form-file>
-            <b-form-text id="rab" v-if="!$v.file.required">
+            <!-- <b-form-text id="rab" v-if="!$v.file.required">
               <i class="text-danger">Upload file RAB</i>
-            </b-form-text>
+            </b-form-text> -->
             <!-- accept=".xls, .xlsx, .doc, .docx, .jpg, .png" -->
             <div class="mt-3">
               Current file:
@@ -708,11 +709,11 @@ export default {
         required,
       },
     },
-    file: {
-      required: function() {
-        return this.form.rab ? true : false
-      }
-    },
+    // file: {
+    //   required: function() {
+    //     return this.$route.name == "pengajuan-subordinate-add" ? true : false
+    //   }
+    // },
   },
   computed: {
     ...mapState("subordinate", {
@@ -738,8 +739,8 @@ export default {
     this.$axios.get(`user/${this.form.id_user}`).then((res) => {
       this.norek = res.data.data.no_rek;
     });
-    
-    this.getDataRKAT(this.form.kode_rkat)
+
+    this.getDataRKAT(this.form.kode_rkat);
   },
   methods: {
     ...mapActions("subordinate", [
@@ -756,6 +757,7 @@ export default {
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
         this.form.id_user = this.$store.state.auth.user[0].id_user;
         this.button = false;
+
         for (let index = 0; index < this.status.length; index++) {
           if (
             this.status[index]["id_user"] ==
@@ -775,13 +777,21 @@ export default {
               }
             }
           }
+
           if (
             this.status[index]["nama_struktur"] == "Rektor" &&
-            this.status[index]["status"] == "1" &&
+            this.status[index]["status"] == "2" &&
             this.$store.state.auth.user[0].id_user == 7
           ) {
             this.formPencairan = true;
-            return;
+          }
+        }
+        if (this.status[this.status.length - 1]["id_user"] == this.$store.state.auth.user[0].id_user) {
+          if (
+            this.form.lpj_keuangan == null ||
+            this.form.lpj_kegiatan == null
+          ) {
+            this.option = false;
           }
         }
       } else if (this.$route.name == "pengajuan-subordinate-edit-id") {
@@ -808,6 +818,7 @@ export default {
             this.formLPJ = true;
           }
         }
+
         if (
           this.status[index]["nama_struktur"] == "Rektor" &&
           this.status[index]["status"] == 1 &&
@@ -878,7 +889,11 @@ export default {
             await this.upload();
           }
           let form = Object.assign(
-            { id: this.$route.params.id, message: "Update pengajuan", status: "1" },
+            {
+              id: this.$route.params.id,
+              message: "Update pengajuan",
+              status: "1",
+            },
             this.form
           );
           await this.updatepengajuan(form).catch((e) => {
@@ -891,7 +906,10 @@ export default {
           this.$router.push(this.redirects);
         } else {
           await this.upload();
-          let form = Object.assign({ message: "Input pengajuan", status: "1" }, this.form);
+          let form = Object.assign(
+            { message: "Input pengajuan", status: "1" },
+            this.form
+          );
           await this.storepengajuan(form).catch((e) => {
             this.warnaStatus = "text-danger";
             this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
@@ -917,7 +935,11 @@ export default {
     async buktiTF() {
       await this.uploadBuktiTF();
       let form = Object.assign(
-        { id: this.$route.params.id, message: "Sudah dilakukan pencairan", status: "3" },
+        {
+          id: this.$route.params.id,
+          message: "Sudah dilakukan pencairan",
+          status: "3",
+        },
         this.form
       );
       await this.updatepengajuan(form);
@@ -946,7 +968,11 @@ export default {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_keuangan = res.data;
             let form = Object.assign(
-              { id: this.$route.params.id, message: "Upload LPJ Keuangan", status: "1" },
+              {
+                id: this.$route.params.id,
+                message: "Upload LPJ Keuangan",
+                status: "1",
+              },
               this.form
             );
             this.updatepengajuan(form);
@@ -967,7 +993,11 @@ export default {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_kegiatan = res.data;
             let form = Object.assign(
-              { id: this.$route.params.id, message: "Upload LPJ Kegiatan", status: "1"},
+              {
+                id: this.$route.params.id,
+                message: "Upload LPJ Kegiatan",
+                status: "1",
+              },
               this.form
             );
             this.updatepengajuan(form);

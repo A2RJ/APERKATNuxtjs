@@ -64,7 +64,7 @@
           v-if="this.$store.state.auth.user"
         >
           <h6 class="collapse-header">Daftar Pengajuan</h6>
-          <NuxtLink v-show="!sekniv"
+          <NuxtLink
             class="collapse-item"
             :to="
               '/pengajuan/subordinate/' + this.$store.state.auth.user[0].id_user
@@ -149,7 +149,7 @@ export default {
   mounted() {
     if (this.$store.state.auth.loggedIn) {
       let data = this.$store.state.auth.user[1].level;
-      // console.log(data);
+      console.log(this.$store.state.auth.user[1]);
       if (data == "prodi") {
         this.prodi = true;
       }else if (data == "fakultas") {
