@@ -24,17 +24,16 @@
       label-size="sm"
       label="Password"
       label-for="password"
+      :class="{ 'form-group--error': $v.form.password.$error }"
     >
-      <!-- :class="{ 'form-group--error': $v.form.password.$error }" -->
-      <!-- v-model.trim="$v.form.password.$model" -->
       <b-form-input
-        v-model="form.password"
+        v-model.trim="$v.form.password.$model"
         id="password"
         size="sm"
       ></b-form-input>
-      <!-- <b-form-text id="password" v-if="!$v.form.password.required">
+      <b-form-text id="password" v-if="!$v.form.password.required">
         <i class="text-danger">password is required</i>
-      </b-form-text> -->
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -236,6 +235,11 @@ export default {
     form: {
       fullname: {
         required,
+      },
+      password: {
+        required: function () {
+          return this.$route.params.id ? true : false;
+        },
       },
       email: {
         required,

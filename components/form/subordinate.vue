@@ -410,7 +410,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="Sub IKU"
+            label=""
             label-for="id_iku_child1"
             :class="{ 'form-group--error': $v.form.id_iku_child1.$error }"
           >
@@ -441,7 +441,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="Sub Sub IKU"
+            label=""
             label-for="id_iku_child2"
             :class="{ 'form-group--error': $v.form.id_iku_child2.$error }"
           >
@@ -709,7 +709,9 @@ export default {
       },
     },
     file: {
-      required,
+      required: function() {
+        return this.form.rab ? true : false
+      }
     },
   },
   computed: {
@@ -831,7 +833,7 @@ export default {
     },
     terima() {
       let form = Object.assign(
-        { id: this.$route.params.id, message: this.message },
+        { id: this.$route.params.id, message: this.message, status: "2" },
         this.form
       );
       this.approved(form).then(() => {
@@ -842,7 +844,7 @@ export default {
     },
     tolak() {
       let form = Object.assign(
-        { id: this.$route.params.id, message: this.message },
+        { id: this.$route.params.id, message: this.message, status: "0" },
         this.form
       );
       this.declined(form).then(() => {
@@ -876,7 +878,7 @@ export default {
             await this.upload();
           }
           let form = Object.assign(
-            { id: this.$route.params.id, message: "Update pengajuan" },
+            { id: this.$route.params.id, message: "Update pengajuan", status: "1" },
             this.form
           );
           await this.updatepengajuan(form).catch((e) => {
@@ -889,7 +891,7 @@ export default {
           this.$router.push(this.redirects);
         } else {
           await this.upload();
-          let form = Object.assign({ message: "Input pengajuan" }, this.form);
+          let form = Object.assign({ message: "Input pengajuan", status: "1" }, this.form);
           await this.storepengajuan(form).catch((e) => {
             this.warnaStatus = "text-danger";
             this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
@@ -915,7 +917,7 @@ export default {
     async buktiTF() {
       await this.uploadBuktiTF();
       let form = Object.assign(
-        { id: this.$route.params.id, message: "Sudah dilakukan pencairan" },
+        { id: this.$route.params.id, message: "Sudah dilakukan pencairan", status: "3" },
         this.form
       );
       await this.updatepengajuan(form);
@@ -944,7 +946,7 @@ export default {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_keuangan = res.data;
             let form = Object.assign(
-              { id: this.$route.params.id, message: "Upload LPJ Keuangan" },
+              { id: this.$route.params.id, message: "Upload LPJ Keuangan", status: "1" },
               this.form
             );
             this.updatepengajuan(form);
@@ -965,7 +967,7 @@ export default {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_kegiatan = res.data;
             let form = Object.assign(
-              { id: this.$route.params.id, message: "Upload LPJ Kegiatan" },
+              { id: this.$route.params.id, message: "Upload LPJ Kegiatan", status: "1"},
               this.form
             );
             this.updatepengajuan(form);
