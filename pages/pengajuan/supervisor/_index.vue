@@ -64,6 +64,17 @@
             :current-page="currentPage"
             show-empty
           >
+            <template v-slot:cell(nama_struktur_child1)="row">
+              <p
+                v-if="row.item.nama_struktur_child1 == 0"
+                class="text-uppercase"
+              >
+                {{ row.item.fullname }}
+              </p>
+              <p v-else class="text-uppercase">
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
                 class="btn-sm btn-warning mb-2"
@@ -102,7 +113,6 @@ export default {
     return {
       fields: [
         { key: "fullname", label: "User" },
-        // { key: "nama_struktur_child2", label: "Prodi/Unit Pelaksana" },
         { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
