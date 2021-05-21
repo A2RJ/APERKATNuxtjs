@@ -7,6 +7,7 @@
     <button
       id="sidebarToggleTop"
       class="btn btn-link d-md-none rounded-circle mr-3"
+      @click="toggled"
     >
       <i class="fa fa-bars"></i>
     </button>
@@ -55,8 +56,7 @@
           <span
             class="mr-2 d-none d-lg-inline text-gray-600 small"
             v-show="user"
-            >{{ user.fullname }}</span
-          >
+          ></span>
           <img
             class="img-profile rounded-circle"
             src="~/assets/img/undraw_profile.svg"
@@ -98,6 +98,10 @@ export default {
   mounted() {},
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
+    toggled() {
+      const el = document.getElementById("accordionSidebar");
+      el.classList.toggle("toggled");
+    },
     async logout() {
       try {
         await this.$auth.logout();

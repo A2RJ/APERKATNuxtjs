@@ -1,4 +1,5 @@
 export default {
+  ssr: true,
   target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -18,10 +19,13 @@ export default {
       { src: "/vendor/jquery/jquery.min.js" },
       { src: "/vendor/bootstrap/js/bootstrap.bundle.min.js" },
       { src: "/vendor/jquery-easing/jquery.easing.min.js" },
-      { src: "/js/sb-admin-2.min.js" },
+      // { src: "/js/sb-admin-2.min.js" },
     ],
   },
-
+  /*
+   ** Customize the progress-bar color
+   */
+  loading: { color: '#fff' },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/vendor/fontawesome-free/css/all.min.css',
@@ -50,8 +54,8 @@ export default {
     'bootstrap-vue/nuxt',
     'vue-sweetalert2/nuxt',
   ],
-// https://aperkat.uts.ac.id/api
-// http://localhost:8000
+  // https://aperkat.uts.ac.id/api
+  // http://localhost:8000
   axios: {
     withCredentials: true,
     baseURL: 'http://localhost:8000',
