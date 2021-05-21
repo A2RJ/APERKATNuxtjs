@@ -2,24 +2,11 @@
 # FOKUS
 
 - Fokus pengajuan
-    - input
-    - update
-    - history
-    - status
+    - Kurangi nilai RKAT saat bukti tf diupload
+    - history (Optional)
 
 # On the go
-
-- Pengajuan
-- Nama Program Kerja
-- Total Anggaran
-- Status notif sudah direvisi atau belum 
-    - berdasarkan warna merah belum direvisi
-    - kuning kalau sudah direvisi
-    - hijau sudah disetujui
-
 - Laporan per Pengajuan
-
-- Administrator = SEKNIV
 
 ## Build Setup
 

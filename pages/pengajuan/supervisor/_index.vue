@@ -75,6 +75,33 @@
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
+            <template v-slot:cell(validasi_status)="row">
+              <p v-if="row.item.validasi_status == 0">
+                <b-badge variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 1">
+                <b-badge variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 2 && row.item.nama_status !== 'Sekniv'">
+                <b-badge variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 3">
+                <b-badge variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 2 && row.item.nama_status == 'Sekniv'">
+                <b-badge variant="success"
+                  >Selesai: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
                 class="btn-sm btn-warning mb-2"
@@ -114,6 +141,7 @@ export default {
       fields: [
         { key: "fullname", label: "User" },
         { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
+        { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],

@@ -602,6 +602,8 @@ export default {
         id_atasan: this.$store.state.auth.user[0].id_user,
         lpj_keuangan: this.forms.lpj_keuangan,
         lpj_kegiatan: this.forms.lpj_kegiatan,
+        validasi_status: this.forms.validasi_status,
+        nama_status: this.forms.nama_status
       };
     }
   },
@@ -627,6 +629,8 @@ export default {
         id_atasan: null,
         lpj_keuangan: null,
         lpj_kegiatan: null,
+        validasi_status: 0,
+        nama_status: 0
       },
       rkat: {
         nama_kegiatan: null,
