@@ -1,4 +1,6 @@
 {
+    "name": "uts/aperkat",
+    "description": "1.0.0",
     "require": {
         "tymon/jwt-auth": "dev-develop"
     }
