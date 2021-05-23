@@ -944,7 +944,7 @@ export default {
     },
     terima() {
       let form = Object.assign(
-        { id: this.$route.params.id, message: this.message, status: "2" },
+        { id: this.$route.params.id, message: this.message, status: 2 },
         this.form
       );
       this.approved(form).then(() => {
@@ -955,7 +955,7 @@ export default {
     },
     tolak() {
       let form = Object.assign(
-        { id: this.$route.params.id, message: this.message, status: "0" },
+        { id: this.$route.params.id, message: this.message, status: 0 },
         this.form
       );
       this.declined(form).then(() => {
@@ -992,7 +992,7 @@ export default {
             {
               id: this.$route.params.id,
               message: "Update pengajuan",
-              status: "1",
+              status: 1,
             },
             this.form
           );
@@ -1007,7 +1007,7 @@ export default {
         } else {
           await this.upload();
           let form = Object.assign(
-            { message: "Input pengajuan", status: "1" },
+            { message: "Input pengajuan", status: 1 },
             this.form
           );
           await this.storepengajuan(form).catch((e) => {
@@ -1038,7 +1038,7 @@ export default {
         {
           id: this.$route.params.id,
           message: "Sudah dilakukan pencairan",
-          status: "3",
+          status: 3,
         },
         this.form
       );
@@ -1071,7 +1071,7 @@ export default {
               {
                 id: this.$route.params.id,
                 message: "Upload LPJ Keuangan",
-                status: "1",
+                status: 1,
               },
               this.form
             );
@@ -1096,7 +1096,7 @@ export default {
               {
                 id: this.$route.params.id,
                 message: "Upload LPJ Kegiatan",
-                status: "1",
+                status: 1,
               },
               this.form
             );

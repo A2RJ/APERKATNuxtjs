@@ -37,7 +37,6 @@ export default {
     '@/plugins/axios.js',
     '@/plugins/numeral.js',
     '@/plugins/vuelidate.js',
-    '@/plugins/formatDate.ts',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

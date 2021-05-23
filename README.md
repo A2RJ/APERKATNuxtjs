@@ -3,10 +3,9 @@
 # [x] == Done
 - Fokus pengajuan
     - [x] nama rek dan nomor rek, nama bank dipengajuan, hapus aja diprofil
-    - konfirmasi pop up
-    - pengajuan (selesai) kurangi RKAT
-    - RKAT per prodi/fakultas/dir keuangan
-    - history (Optional)
+    - [x] konfirmasi pop up
+    - [x] RKAT per prodi/fakultas/dir keuangan
+    - [x] pengajuan (selesai) kurangi RKAT
     - menu detail pengajuan (grafik, daftar pengajuan per sub divisi)
 
 - Status

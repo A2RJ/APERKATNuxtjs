@@ -158,9 +158,9 @@ export const actions = {
             })
         })
     },
-    kodeRKAT({ commit }) {
+    kodeRKAT({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get('/rkat/kodeRKAT').then((response) => {
+            this.$axios.get(`/rkat/kodeRKAT/${payload}`).then((response) => {
                 commit('SET_KODE_RKAT', response.data)
                 resolve()
             })
