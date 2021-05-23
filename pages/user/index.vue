@@ -25,21 +25,6 @@
       </div>
     </div>
     <div class="card-body">
-      <b-alert
-        :show="dismissCountDown"
-        dismissible
-        :variant="alertNotif.color"
-        @dismissed="dismissCountDown = 0"
-        @dismiss-count-down="countDownChanged"
-      >
-        <p>{{ alertNotif.message }}</p>
-        <b-progress
-          variant="warning"
-          :max="dismissSecs"
-          :value="dismissCountDown"
-          height="4px"
-        ></b-progress>
-      </b-alert>
       <b-row>
         <b-col sm="5" md="6" class="my-1">
           <b-form-group
@@ -93,6 +78,46 @@
         :current-page="currentPage"
         show-empty
       >
+        
+        <template v-slot:cell(nama_struktur)="row">
+          <p
+            v-if="row.item.nama_struktur_child2 !== '0' && row.item.nama_struktur_child1 !== '0'"
+            class="text-uppercase"
+          >
+            {{ row.item.nama_struktur_child1 }}
+          </p>
+          <p
+            v-if="row.item.nama_struktur_child1 !== '0' && row.item.nama_struktur_child2 == '0'"
+            class="text-uppercase"
+          >
+            {{ row.item.nama_struktur }}
+          </p>
+          <p
+            v-if="row.item.nama_struktur == 'Rektor' && row.item.nama_struktur_child1 == '0'"
+            class="text-uppercase"
+          >
+            {{ row.item.nama_struktur }}
+          </p>
+          <p
+            v-if="row.item.nama_struktur == 'Warek' && row.item.nama_struktur_child1 == '0'"
+            class="text-uppercase"
+          >
+            Rektor
+          </p>
+          <p
+            v-if="row.item.nama_struktur == 'Direktur Keuangan' && row.item.nama_struktur_child1 == '0'"
+            class="text-uppercase"
+          >
+            Warek
+          </p>
+          <p
+            v-if="row.item.nama_struktur == 'Sekniv' && row.item.nama_struktur_child1 == '0'"
+            class="text-uppercase"
+          >
+            Sekniv
+          </p>
+        </template>
+
         <template v-slot:cell(Action)="row">
           <NuxtLink
             class="btn-sm btn-warning m-2"
@@ -129,7 +154,6 @@ export default {
     return {
       fields: [
         { key: "fullname", label: "User" },
-        { key: "nama_struktur_child1", label: "Unit Pelaksana" },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "created_at", label: "Register Date" },
         "Action",
@@ -138,13 +162,6 @@ export default {
       pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      showDismissibleAlert: false,
-      alertNotif: {
-        color: null,
-        message: null,
-      },
     };
   },
   components: {},
@@ -152,22 +169,44 @@ export default {
     ...mapState("user", {
       user: (state) => state.user,
     }),
+    rows() {
+      return this.user.length;
+    },
   },
   mounted() {},
   methods: {
     ...mapActions("user", ["getuser", "deleteuser"]),
     deleteUser(row) {
-      this.deleteuser(row.item.id_user).catch((e) => {
-        this.alertNotif.color = "warning";
-        this.alertNotif.message = e.data;
-        this.dismissCountDown = this.dismissSecs;
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteuser(row.item.id_user)
+            .then(() => {
+              this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "User data was deleted successfully",
+              });
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Please check your server or internet connection",
+              });
+            });
+        }
       });
-      this.alertNotif.color = "success";
-      this.alertNotif.message = "User data was deleted";
-      this.dismissCountDown = this.dismissSecs;
-    },
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown;
     },
   },
 };

@@ -36,7 +36,9 @@
                 alt=""
               />
             </div>
-            <h3 class="title-text-content-3-5">APERKAT-Universitas Teknologi Sumbawa</h3>
+            <h3 class="title-text-content-3-5">
+              APERKAT-Universitas Teknologi Sumbawa
+            </h3>
             <p class="caption-text-content-3-5">
               Please log in using that account has<br />
               registered on the website.
@@ -170,7 +172,6 @@ export default {
         email: null,
         password: null,
       },
-      
     };
   },
   components: {
@@ -188,7 +189,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH","SET_USER_DATA"]),
+    ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
     async login() {
       try {
         await this.$auth

@@ -492,11 +492,56 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="No.Rek Penerima"
-            label-for="norek"
+            label="Bank"
+            label-for="bank"
+            :class="{ 'form-group--error': $v.form.bank.$error }"
           >
-            <b-form-input v-model="norek" id="norek" size="sm"></b-form-input>
+            <b-form-input
+              v-model.trim="$v.form.bank.$model"
+              id="bank"
+              size="sm"
+            ></b-form-input>
+            <b-form-text id="bank" v-if="!$v.form.bank.required">
+              <i class="text-danger">Bank is required</i>
+            </b-form-text>
           </b-form-group>
+
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="Atas Nama Penerima"
+            label-for="atn"
+            :class="{ 'form-group--error': $v.form.atn.$error }"
+          >
+            <b-form-input
+              v-model.trim="$v.form.atn.$model"
+              id="atn"
+              size="sm"
+            ></b-form-input>
+            <b-form-text id="atn" v-if="!$v.form.atn.required">
+              <i class="text-danger">ATN is required</i>
+            </b-form-text>
+          </b-form-group>
+
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="No.Rekening"
+            label-for="no_rek"
+            :class="{ 'form-group--error': $v.form.no_rek.$error }"
+          >
+            <b-form-input
+              v-model.trim="$v.form.no_rek.$model"
+              id="no_rek"
+              size="sm"
+            ></b-form-input>
+            <b-form-text id="no_rek" v-if="!$v.form.no_rek.required">
+              <i class="text-danger">No.Rekening is required</i>
+            </b-form-text>
+          </b-form-group>
+
           <b-form-group
             label-cols="4"
             label-cols-lg="2"
@@ -596,6 +641,9 @@ export default {
         id_iku_child1: this.forms.id_iku_child1,
         id_iku_child2: this.forms.id_iku_child2,
         biaya_program: this.forms.biaya_program,
+        bank: this.forms.bank,
+        atn: this.forms.atn,
+        no_rek: this.forms.no_rek,
         rab: this.forms.rab,
         status_pengajuan: "progress",
         pencairan: this.forms.pencairan,
@@ -603,7 +651,7 @@ export default {
         lpj_keuangan: this.forms.lpj_keuangan,
         lpj_kegiatan: this.forms.lpj_kegiatan,
         validasi_status: this.forms.validasi_status,
-        nama_status: this.forms.nama_status
+        nama_status: this.forms.nama_status,
       };
     }
   },
@@ -623,6 +671,9 @@ export default {
         id_iku_child1: null,
         id_iku_child2: null,
         biaya_program: null,
+        bank: null,
+        atn: null,
+        no_rek: null,
         rab: null,
         status_pengajuan: "progress",
         pencairan: null,
@@ -630,7 +681,7 @@ export default {
         lpj_keuangan: null,
         lpj_kegiatan: null,
         validasi_status: 0,
-        nama_status: 0
+        nama_status: 0,
       },
       rkat: {
         nama_kegiatan: null,
@@ -712,6 +763,15 @@ export default {
       biaya_program: {
         required,
       },
+      bank: {
+        required,
+      },
+      atn: {
+        required,
+      },
+      no_rek: {
+        required,
+      },
     },
     // file: {
     //   required: function() {
@@ -739,10 +799,6 @@ export default {
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
     this.rab = this.form.rab;
-
-    this.$axios.get(`user/${this.form.id_user}`).then((res) => {
-      this.norek = res.data.data.no_rek;
-    });
 
     this.getDataRKAT(this.form.kode_rkat);
   },
@@ -790,7 +846,10 @@ export default {
             this.formPencairan = true;
           }
         }
-        if (this.status[this.status.length - 1]["id_user"] == this.$store.state.auth.user[0].id_user) {
+        if (
+          this.status[this.status.length - 1]["id_user"] ==
+          this.$store.state.auth.user[0].id_user
+        ) {
           if (
             this.form.lpj_keuangan == null ||
             this.form.lpj_kegiatan == null
@@ -810,32 +869,32 @@ export default {
           });
       }
       for (let index = 0; index < this.status.length; index++) {
-         if (
-            this.status[index]["id_user"] ==
-            this.$store.state.auth.user[0].id_user
-          ) {
-            if (index != 0) {
-              if (
-                this.status[index - 1]["status"] == false ||
-                this.status[index - 1]["status"] == "0" ||
-                this.status[index - 1]["status"] == null
-              ) {
-                this.option = false;
-              } else if (this.status[index]["status"]) {
-                this.option = false;
-              } else {
-                this.option = true;
-              }
+        if (
+          this.status[index]["id_user"] ==
+          this.$store.state.auth.user[0].id_user
+        ) {
+          if (index != 0) {
+            if (
+              this.status[index - 1]["status"] == false ||
+              this.status[index - 1]["status"] == "0" ||
+              this.status[index - 1]["status"] == null
+            ) {
+              this.option = false;
+            } else if (this.status[index]["status"]) {
+              this.option = false;
+            } else {
+              this.option = true;
             }
           }
+        }
 
-          if (
-            this.status[index]["nama_struktur"] == "Rektor" &&
-            this.status[index]["status"] == "2" &&
-            this.$store.state.auth.user[0].id_user == 7
-          ) {
-            this.formPencairan = true;
-          }
+        if (
+          this.status[index]["nama_struktur"] == "Rektor" &&
+          this.status[index]["status"] == "2" &&
+          this.$store.state.auth.user[0].id_user == 7
+        ) {
+          this.formPencairan = true;
+        }
         if (
           this.status[index]["nama_struktur"] == "Sekniv" &&
           this.status[index]["status"] !== 1 &&
@@ -856,7 +915,10 @@ export default {
         ) {
           this.formPencairan = true;
         }
-           if (this.status[this.status.length - 1]["id_user"] == this.$store.state.auth.user[0].id_user) {
+        if (
+          this.status[this.status.length - 1]["id_user"] ==
+          this.$store.state.auth.user[0].id_user
+        ) {
           if (
             this.form.lpj_keuangan == null ||
             this.form.lpj_kegiatan == null

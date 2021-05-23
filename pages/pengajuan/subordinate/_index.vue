@@ -37,21 +37,7 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <b-alert
-            :show="dismissCountDown"
-            dismissible
-            :variant="alertNotif.color"
-            @dismissed="dismissCountDown = 0"
-            @dismiss-count-down="countDownChanged"
-          >
-            <p>{{ alertNotif.message }}</p>
-            <b-progress
-              variant="warning"
-              :max="dismissSecs"
-              :value="dismissCountDown"
-              height="4px"
-            ></b-progress>
-          </b-alert>
+          
           <b-row>
             <b-col sm="5" md="6" class="my-1">
               <b-form-group
@@ -92,10 +78,10 @@
               </b-form-group>
             </b-col>
           </b-row>
+            <!-- sticky-header -->
           <b-table
             responsive
             head-variant="light"
-            sticky-header
             hover
             id="my-table"
             :items="pengajuan"
@@ -197,14 +183,7 @@ export default {
       pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
-      items: this.pengajuan,
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      showDismissibleAlert: false,
-      alertNotif: {
-        color: null,
-        message: null,
-      },
+      items: this.pengajuan
     };
   },
   computed: {
@@ -220,21 +199,36 @@ export default {
     ...mapActions("subordinate", ["getpengajuan", "deletepengajuan"]),
 
     destroypengajuan(row) {
-      this.deletepengajuan(row.item.id_pengajuan)
-        .then(() => {
-          this.alertNotif.color = "success";
-          this.alertNotif.message = "Pengajuan data was deleted";
-          this.dismissCountDown = this.dismissSecs;
-          this.getpengajuan(this.$route.params.index);
-        })
-        .catch((e) => {
-          this.alertNotif.color = "warning";
-          this.alertNotif.message = e.data;
-          this.dismissCountDown = this.dismissSecs;
-        });
-    },
-    countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown;
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deletepengajuan(row.item.id_pengajuan)
+          .then(() => {
+            this.$swal({
+              width: 300,
+              icon: "success",
+              title: "Congrats!",
+              text: "RKAT data was deleted successfully",
+            });
+          })
+          .catch(() => {
+            this.$swal({
+              width: 300,
+              icon: "error",
+              title: "Oops...",
+              text: "Please check your server or internet connection",
+            });
+          });
+        }
+      });
     },
   },
 };

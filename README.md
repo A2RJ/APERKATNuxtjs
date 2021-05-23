@@ -1,11 +1,18 @@
 # SubmissionNuxtJS
 # FOKUS
-
+# [x] == Done
 - Fokus pengajuan
-    - Kurangi nilai RKAT saat bukti tf diupload
+    - [x] nama rek dan nomor rek, nama bank dipengajuan, hapus aja diprofil
+    - konfirmasi pop up
+    - pengajuan (selesai) kurangi RKAT
+    - RKAT per prodi/fakultas/dir keuangan
     - history (Optional)
+    - menu detail pengajuan (grafik, daftar pengajuan per sub divisi)
 
-# On the go
+- Status
+    - Update status
+    - Upload bukti pencairan
+
 - Laporan per Pengajuan
 
 ## Build Setup

@@ -51,10 +51,10 @@
               </b-form-group>
             </b-col>
           </b-row>
+            <!-- sticky-header -->
           <b-table
             responsive
             head-variant="light"
-            sticky-header
             hover
             id="my-table"
             :items="subordinate"

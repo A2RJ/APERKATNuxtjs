@@ -126,59 +126,6 @@
       </b-form-text>
     </b-form-group>
 
-    <b-form-group
-      label-cols="4"
-      label-cols-lg="2"
-      label-size="sm"
-      label="Bank"
-      label-for="bank"
-      :class="{ 'form-group--error': $v.form.bank.$error }"
-    >
-      <b-form-input
-        v-model.trim="$v.form.bank.$model"
-        id="bank"
-        size="sm"
-      ></b-form-input>
-      <b-form-text id="bank" v-if="!$v.form.bank.required">
-        <i class="text-danger">Bank is required</i>
-      </b-form-text>
-    </b-form-group>
-
-    <b-form-group
-      label-cols="4"
-      label-cols-lg="2"
-      label-size="sm"
-      label="Atas Nama Penerima"
-      label-for="atn"
-      :class="{ 'form-group--error': $v.form.atn.$error }"
-    >
-      <b-form-input
-        v-model.trim="$v.form.atn.$model"
-        id="atn"
-        size="sm"
-      ></b-form-input>
-      <b-form-text id="atn" v-if="!$v.form.atn.required">
-        <i class="text-danger">ATN is required</i>
-      </b-form-text>
-    </b-form-group>
-
-    <b-form-group
-      label-cols="4"
-      label-cols-lg="2"
-      label-size="sm"
-      label="No.Rekening"
-      label-for="no_rek"
-      :class="{ 'form-group--error': $v.form.no_rek.$error }"
-    >
-      <b-form-input
-        v-model.trim="$v.form.no_rek.$model"
-        id="no_rek"
-        size="sm"
-      ></b-form-input>
-      <b-form-text id="no_rek" v-if="!$v.form.no_rek.required">
-        <i class="text-danger">No.Rekening is required</i>
-      </b-form-text>
-    </b-form-group>
     <p :class="warnaStatus + ' float-right'" v-if="submitStatus">
       {{ submitStatus }}
     </p>
@@ -202,9 +149,6 @@ export default {
         id_struktur_child1: this.userID.id_struktur_child1,
         id_struktur_child2: this.userID.id_struktur_child2,
         nomor_wa: this.userID.nomor_wa,
-        bank: this.userID.bank,
-        atn: this.userID.atn,
-        no_rek: this.userID.no_rek,
       };
       this.getSub1();
       this.getSub2();
@@ -219,10 +163,7 @@ export default {
         id_struktur: null,
         id_struktur_child1: "0",
         id_struktur_child2: "0",
-        nomor_wa: null,
-        bank: null,
-        atn: null,
-        no_rek: null,
+        nomor_wa: null
       },
       strukturOptions: [],
       sub1Options: [],
@@ -250,16 +191,7 @@ export default {
       },
       nomor_wa: {
         required,
-      },
-      bank: {
-        required,
-      },
-      atn: {
-        required,
-      },
-      no_rek: {
-        required,
-      },
+      }
     },
   },
   mounted() {

@@ -25,7 +25,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  // loading: { color: '#fff' },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/vendor/fontawesome-free/css/all.min.css',
@@ -36,7 +36,8 @@ export default {
   plugins: [
     '@/plugins/axios.js',
     '@/plugins/numeral.js',
-    '@/plugins/vuelidate.js'
+    '@/plugins/vuelidate.js',
+    '@/plugins/formatDate.ts',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
