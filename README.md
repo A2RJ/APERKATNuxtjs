@@ -7,6 +7,11 @@
     - [x] RKAT per prodi/fakultas/dir keuangan
     - [x] pengajuan (selesai) kurangi RKAT
     - menu detail pengajuan (grafik, daftar pengajuan per sub divisi)
+        - Buat halaman
+        - Setting store
+        - Setting Vuex
+        - Get data from lumen (untuk menu dan data halaman by id)
+        - Nuxt, setting menu dan c.log data dihalaman
 
 - Status
     - Update status

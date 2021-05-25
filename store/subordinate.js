@@ -10,8 +10,8 @@ export const state = () => ({
     decline: null,
     ikuParent: null,
     ikuChild1: null,
-    ikuChild2: null
-
+    ikuChild2: null,
+    grafik: []
 })
 
 export const mutations = {
@@ -61,6 +61,10 @@ export const mutations = {
 
     SET_IKU_CHILD2(state, payload) {
         state.ikuChild2 = payload
+    },
+
+    SET_GRAFIK(state, payload) {
+        state.grafik = payload
     },
 }
 
@@ -186,6 +190,14 @@ export const actions = {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/iku/child2/${payload}`).then((response) => {
                 commit('SET_IKU_CHILD2', response.data)
+                resolve()
+            })
+        })
+    },
+    getGrafik({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/pengajuan/getGrafik/${payload}`).then((response) => {
+                commit('SET_GRAFIK', response.data)
                 resolve()
             })
         })
