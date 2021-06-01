@@ -6,7 +6,7 @@
 
 <script>
 import { mapActions, mapMutations } from "vuex";
-import subordinate from "~/components/form/subordinate.vue";
+import grafikDetail from "~/components/form/grafikDetail.vue";
 
 export default {
   async asyncData({ store, params }) {
@@ -20,7 +20,7 @@ export default {
     return;
   },
   components: {
-    components: subordinate,
+    components: grafikDetail,
   },
   mounted() {
     // this.SET_IS_AUTH(this.$store.state.auth.loggedIn);

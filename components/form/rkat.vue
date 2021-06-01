@@ -288,7 +288,7 @@
     </p>
     <br />
     <br />
-    <button class="btn-sm btn-info float-right" @click="submit">Save</button>
+    <button class="btn-sm btn-info float-right" v-show="button" @click="submit">Save</button>
   </div>
 </template>
 
@@ -299,6 +299,9 @@ import { required } from "vuelidate/lib/validators";
 export default {
   created() {
     if (this.$route.name === "rkat-edit-id") {
+      if (this.$store.state.auth.user[1].level !== "Sekniv") {
+        this.button = false
+      }
       this.form = {
         id_user: this.forms.id_user,
         kode_rkat: this.forms.kode_rkat,
@@ -339,6 +342,7 @@ export default {
       },
       selected: null,
       options: null,
+      button: true,
       submitStatus: null,
       warnaStatus: null,
     };

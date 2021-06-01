@@ -160,10 +160,6 @@
 
 <script>
 import { mapMutations } from "vuex";
-// import navbar from "~/components/buildwith/navbar.vue";
-// import benefit from "~/components/buildwith/benefit.vue";
-// import login from "~/components/buildwith/login.vue";
-// import footers from "~/components/buildwith/footer.vue";
 export default {
   auth: false,
   data() {
@@ -175,10 +171,6 @@ export default {
     };
   },
   components: {
-    // navbar: navbar,
-    // benefit: benefit,
-    // login: login,
-    // footers: footers,
   },
   mounted() {
     if (this.$auth.$state.loggedIn) {

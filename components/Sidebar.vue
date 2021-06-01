@@ -66,50 +66,20 @@
           <h6 class="collapse-header">Daftar Pengajuan</h6>
           <NuxtLink
             class="collapse-item"
-            :to="
-              '/pengajuan/subordinate/' + this.$store.state.auth.user[0].id_user
-            "
+            :to="'/pengajuan/subordinate/'"
             >Pengajuan</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
-            v-show="fakultas"
-            :to="
-              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
-            "
+            v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+            :to="'/pengajuan/supervisor/'"
             >Pengajuan Sub Divisi</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
-            v-show="dirKeuangan"
-            :to="
-              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
-            "
-            >Pengajuan Sub Divisi</NuxtLink
-          >
-          <NuxtLink
-            class="collapse-item"
-            v-show="warek"
-            :to="
-              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
-            "
-            >Pengajuan Sub Divisi</NuxtLink
-          >
-          <NuxtLink
-            class="collapse-item"
-            v-show="rektor"
-            :to="
-              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
-            "
-            >Pengajuan Sub Divisi</NuxtLink
-          >
-          <NuxtLink
-            class="collapse-item"
-            v-show="sekniv"
-            :to="
-              '/pengajuan/supervisor/' + this.$store.state.auth.user[0].id_user
-            "
-            >Pengajuan Sub Divisi</NuxtLink
+            v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+            :to="'/pengajuan/grafik/'"
+            >Grafik Sub Divisi</NuxtLink
           >
         </div>
       </div>

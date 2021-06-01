@@ -7,37 +7,10 @@
         <div
           class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
         >
-          <h6 class="m-0 font-weight-bold text-primary">Pengajuan</h6>
-          <div class="dropdown no-arrow">
-            <a
-              class="dropdown-toggle"
-              href="#"
-              role="button"
-              id="dropdownMenuLink"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-              aria-labelledby="dropdownMenuLink"
-              style=""
-            >
-              <div class="dropdown-header">Opsi:</div>
-              <NuxtLink class="dropdown-item" to="add"
-                >Tambah Pengajuan</NuxtLink
-              >
-              <NuxtLink class="dropdown-item" to="/rkat/reset"
-                >Reset Pengajuan</NuxtLink
-              >
-            </div>
-          </div>
+          <h6 class="m-0 font-weight-bold text-primary">Pengajuan Bawahan</h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          
           <b-row>
             <b-col sm="5" md="6" class="my-1">
               <b-form-group
@@ -84,11 +57,11 @@
             head-variant="light"
             hover
             id="my-table"
-            :items="pengajuan"
+            :items="subordinate"
             :fields="fields"
+            :filter="filter"
             :per-page="perPage"
             :current-page="currentPage"
-            :filter="filter"
             show-empty
           >
             <template v-slot:cell(nama_struktur_child1)="row">
@@ -136,12 +109,6 @@
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
-              <button
-                class="btn-sm btn-danger mt-2"
-                @click="destroypengajuan(row)"
-              >
-                Hapus
-              </button>
             </template>
           </b-table>
 
@@ -160,12 +127,12 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
-  async asyncData({ store, params }) {
+  async asyncData({ store }) {
     await Promise.all([
-      store.dispatch("subordinate/getpengajuan", params.index),
+      store.dispatch("subordinate/getsubordinates", store.$auth.$state.user[0].id_user),
     ]);
     return;
   },
@@ -183,53 +150,20 @@ export default {
       pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
-      items: this.pengajuan
+      items: this.subordinate,
     };
   },
   computed: {
     ...mapState("subordinate", {
-      pengajuan: (state) => state.pengajuan,
+      subordinate: (state) => state.subordinate,
     }),
     rows() {
-      return this.pengajuan.length;
+      return this.subordinate.length;
     },
   },
   mounted() {},
   methods: {
-    ...mapActions("subordinate", ["getpengajuan", "deletepengajuan"]),
-
-    destroypengajuan(row) {
-      this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        width: 300,
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.deletepengajuan(row.item.id_pengajuan)
-          .then(() => {
-            this.$swal({
-              width: 300,
-              icon: "success",
-              title: "Congrats!",
-              text: "RKAT data was deleted successfully",
-            });
-          })
-          .catch(() => {
-            this.$swal({
-              width: 300,
-              icon: "error",
-              title: "Oops...",
-              text: "Please check your server or internet connection",
-            });
-          });
-        }
-      });
-    },
+    ...mapActions("subordinate", ["getpengajuan"]),
   },
 };
 </script>
