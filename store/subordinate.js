@@ -202,4 +202,12 @@ export const actions = {
             })
         })
     },
+    getSubordinatesGrafik({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/pengajuan/getSubordinatesGrafik/${payload}`).then((response) => {
+                commit('SET_SUBORDINATE', response.data)
+                resolve()
+            })
+        })
+    },
 }

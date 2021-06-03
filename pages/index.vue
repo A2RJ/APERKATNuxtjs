@@ -95,7 +95,7 @@
     <div class="col-lg-12 card mt-2">
       <div class="mt-2 m-1">
         <h4>Data RKAT</h4>
-        <b-table striped hover :items="grafik.data.rkat" :fields="fields">
+        <b-table show-empty striped hover :items="grafik.data.rkat" :fields="fields">
           <template v-slot:cell(total_anggaran)="row">
             {{ row.item.total_anggaran | numFormat }}
           </template>
@@ -116,7 +116,7 @@
         <h4>Data Pengajuan</h4>
         <b-table
           striped
-          hover
+          hover show-empty
           :items="grafik.data.pengajuan"
           :fields="pengajuan"
         >

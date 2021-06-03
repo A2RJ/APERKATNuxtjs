@@ -1,5 +1,5 @@
 <template>
-  <div class="row mb-4">
+  <div class="row">
     <div class="col-lg-8">
       <div class="row">
         <div class="col-lg-12 mb-1">
@@ -7,10 +7,10 @@
             <div class="card-body">
               <div>
                 <img
-                class="img-profile rounded-circle"
-                src="~/assets/img/undraw_profile.svg"
-                style="height: 50px"
-              />
+                  class="img-profile rounded-circle"
+                  src="~/assets/img/undraw_profile.svg"
+                  style="height: 50px"
+                />
               </div>
 
               <div
@@ -19,7 +19,9 @@
                   grafik.data.user.nama_struktur_child1 == '0'
                 "
               >
-                {{ grafik.data.user.nama_struktur }} <br> {{ grafik.data.user.email }} <br> {{ grafik.data.user.nomor_wa }}
+                {{ grafik.data.user.nama_struktur }} <br />
+                {{ grafik.data.user.email }} <br />
+                {{ grafik.data.user.nomor_wa }}
               </div>
               <div
                 v-if="
@@ -27,7 +29,9 @@
                   grafik.data.user.nama_struktur_child2 == '0'
                 "
               >
-                {{ grafik.data.user.nama_struktur_child1 }} <br> {{ grafik.data.user.email }} <br> {{ grafik.data.user.nomor_wa }}
+                {{ grafik.data.user.nama_struktur_child1 }} <br />
+                {{ grafik.data.user.email }} <br />
+                {{ grafik.data.user.nomor_wa }}
               </div>
               <div
                 v-if="
@@ -35,7 +39,9 @@
                   grafik.data.user.nama_struktur_child2 !== '0'
                 "
               >
-                {{ grafik.data.user.nama_struktur_child2 }} <br> {{ grafik.data.user.email }} <br> {{ grafik.data.user.nomor_wa }}
+                {{ grafik.data.user.nama_struktur_child2 }} <br />
+                {{ grafik.data.user.email }} <br />
+                {{ grafik.data.user.nomor_wa }}
               </div>
             </div>
           </div>
@@ -87,7 +93,80 @@
       </chart>
     </div>
     <div class="col-lg-12 card mt-2">
-      {{ grafik.data.user }}
+      <div class="mt-2 m-1">
+        <h4>Data RKAT</h4>
+        <b-table show-empty striped hover :items="grafik.data.rkat" :fields="fields">
+          <template v-slot:cell(total_anggaran)="row">
+            {{ row.item.total_anggaran | numFormat }}
+          </template>
+          <template v-slot:cell(sisa_anggaran)="row">
+            {{ row.item.sisa_anggaran | numFormat }}
+          </template>
+          <template v-slot:cell(actions)="row">
+            <NuxtLink
+              class="btn-sm btn-warning mb-2"
+              :to="'../../../rkat/edit/' + row.item.id_rkat"
+              :key="'edit' + row.index"
+              >Detail</NuxtLink
+            >
+          </template>
+        </b-table>
+      </div>
+      <div class="mt-2 m-1">
+        <h4>Data Pengajuan</h4>
+        <b-table
+          striped
+          hover show-empty
+          :items="grafik.data.pengajuan"
+          :fields="pengajuan"
+        >
+          <template v-slot:cell(validasi_status)="row">
+            <p v-if="row.item.validasi_status == 0">
+              <b-badge variant="danger"
+                >Ditolak: {{ row.item.nama_status }}</b-badge
+              >
+            </p>
+            <p v-if="row.item.validasi_status == 1">
+              <b-badge variant="warning"
+                >Input/Revisi: {{ row.item.nama_status }}</b-badge
+              >
+            </p>
+            <p
+              v-if="
+                row.item.validasi_status == 2 &&
+                row.item.nama_status !== 'Sekniv'
+              "
+            >
+              <b-badge variant="success"
+                >Diterima: {{ row.item.nama_status }}</b-badge
+              >
+            </p>
+            <p v-if="row.item.validasi_status == 3">
+              <b-badge variant="success"
+                >Pencairan: {{ row.item.nama_status }}</b-badge
+              >
+            </p>
+            <p
+              v-if="
+                row.item.validasi_status == 2 &&
+                row.item.nama_status == 'Sekniv'
+              "
+            >
+              <b-badge variant="success"
+                >Selesai: {{ row.item.nama_status }}</b-badge
+              >
+            </p>
+          </template>
+          <template v-slot:cell(actions)="row">
+            <NuxtLink
+              class="btn-sm btn-warning mb-2"
+              :to="'../detail/' + row.item.id_pengajuan"
+              :key="'edit' + row.index"
+              >Detail</NuxtLink
+            >
+          </template>
+        </b-table>
+      </div>
     </div>
   </div>
 </template>
@@ -97,13 +176,27 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   async asyncData({ store, params }) {
-    await Promise.all([store.dispatch("subordinate/getGrafik", params.id)]);
+    await Promise.all([store.dispatch("subordinate/getGrafik", params.index)]);
     return;
   },
   data() {
     return {
       options: {},
       chartData: {},
+      fields: [
+        { key: "fullname", label: "Fakultas/Unit Pelaksana" },
+        { key: "mulai_program", label: "Waktu Kegiatan" },
+        { key: "created_at", label: "Waktu Pengajuan" },
+        { key: "total_anggaran", label: "Total Anggaran" },
+        { key: "sisa_anggaran", label: "Sisa Anggaran" },
+        "actions",
+      ],
+      pengajuan: [
+        { key: "fullname", label: "Fakultas/Unit Pelaksana" },
+        { key: "validasi_status", label: "Status Pengajuan" },
+        { key: "created_at", label: "Waktu Pengajuan" },
+        "actions",
+      ],
     };
   },
   computed: {
