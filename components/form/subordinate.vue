@@ -695,8 +695,7 @@ export default {
       child1: null,
       child2: null,
       option: false,
-      redirects:
-        "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user,
+      redirects: "/pengajuan/subordinate/",
       selectChild1: {
         name: "",
         value: "",
@@ -948,9 +947,7 @@ export default {
         this.form
       );
       this.approved(form).then(() => {
-        this.$router.push(
-          "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
-        );
+        this.$router.push("/pengajuan/supervisor/");
       });
     },
     tolak() {
@@ -959,9 +956,7 @@ export default {
         this.form
       );
       this.declined(form).then(() => {
-        this.$router.push(
-          "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
-        );
+        this.$router.push("/pengajuan/supervisor/");
       });
     },
     getIku1(params) {
@@ -1043,9 +1038,7 @@ export default {
         this.form
       );
       await this.updatepengajuan(form);
-      this.$router.push(
-        "/pengajuan/supervisor/" + this.$store.state.auth.user[0].id_user
-      );
+      this.$router.push("/pengajuan/supervisor/");
     },
     async uploadBuktiTF() {
       const form = new FormData();
@@ -1076,9 +1069,7 @@ export default {
               this.form
             );
             this.updatepengajuan(form);
-            this.$router.push(
-              "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user
-            );
+            this.$router.push("/pengajuan/subordinate/");
           });
         } catch (e) {
           console.log("Whoops Server Error");
@@ -1101,9 +1092,7 @@ export default {
               this.form
             );
             this.updatepengajuan(form);
-            this.$router.push(
-              "/pengajuan/subordinate/" + this.$store.state.auth.user[0].id_user
-            );
+            this.$router.push("/pengajuan/subordinate/");
           });
         } catch (e) {
           console.log("Whoops Server Error");

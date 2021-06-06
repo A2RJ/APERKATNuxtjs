@@ -20,7 +20,7 @@
           style=""
         >
           <div class="dropdown-header">Opsi:</div>
-          <NuxtLink class="dropdown-item" to="/user/add">Add RKAT</NuxtLink>
+          <NuxtLink class="dropdown-item" to="/user/add">Tambah User</NuxtLink>
         </div>
       </div>
     </div>
@@ -173,7 +173,9 @@ export default {
       return this.user.length;
     },
   },
-  mounted() {},
+  mounted() {
+    // console.log(this.user);
+  },
   methods: {
     ...mapActions("user", ["getuser", "deleteuser"]),
     deleteUser(row) {

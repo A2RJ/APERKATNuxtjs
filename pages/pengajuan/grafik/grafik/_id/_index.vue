@@ -95,12 +95,19 @@
     <div class="col-lg-12 card mt-2">
       <div class="mt-2 m-1">
         <h4>Data RKAT</h4>
-        <b-table show-empty striped hover :items="grafik.data.rkat" :fields="fields">
+        <b-table
+          show-empty
+          responsive
+          striped
+          hover
+          :items="grafik.data.rkat"
+          :fields="fields"
+        >
           <template v-slot:cell(total_anggaran)="row">
-            {{ row.item.total_anggaran | numFormat }}
+            RP. {{ row.item.total_anggaran | numFormat }}
           </template>
-          <template v-slot:cell(sisa_anggaran)="row">
-            {{ row.item.sisa_anggaran | numFormat }}
+               <template v-slot:cell(sisa_anggaran)="row">
+            RP. {{ row.item.sisa_anggaran | numFormat }}
           </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink
@@ -116,10 +123,16 @@
         <h4>Data Pengajuan</h4>
         <b-table
           striped
-          hover show-empty
+          responsive
+          hover
+          show-empty
           :items="grafik.data.pengajuan"
           :fields="pengajuan"
         >
+          <template v-slot:cell(biaya_program)="row">
+            RP. {{ row.item.biaya_program | numFormat }}
+          </template>
+     
           <template v-slot:cell(validasi_status)="row">
             <p v-if="row.item.validasi_status == 0">
               <b-badge variant="danger"
@@ -185,14 +198,17 @@ export default {
       chartData: {},
       fields: [
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
-        { key: "mulai_program", label: "Waktu Kegiatan" },
-        { key: "created_at", label: "Waktu Pengajuan" },
+        { key: "kode_rkat", label: "Kode RKAT" },
         { key: "total_anggaran", label: "Total Anggaran" },
         { key: "sisa_anggaran", label: "Sisa Anggaran" },
+        { key: "mulai_program", label: "Waktu Kegiatan" },
+        { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],
       pengajuan: [
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
+        { key: "kode_rkat", label: "Kode RKAT" },
+        { key: "biaya_program", label: "Anggaran" },
         { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",

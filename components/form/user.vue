@@ -24,16 +24,17 @@
       label-size="sm"
       label="Password"
       label-for="password"
-      :class="{ 'form-group--error': $v.form.password.$error }"
     >
+      <!-- :class="{ 'form-group--error': $v.form.password.$error }" -->
+        <!-- v-model.trim="$v.form.password.$model" -->
       <b-form-input
-        v-model.trim="$v.form.password.$model"
+        v-model="form.password"
         id="password"
         size="sm"
       ></b-form-input>
-      <b-form-text id="password" v-if="!$v.form.password.required">
+      <!-- <b-form-text id="password" v-if="!$v.form.password.required">
         <i class="text-danger">password is required</i>
-      </b-form-text>
+      </b-form-text> -->
     </b-form-group>
 
     <b-form-group
@@ -161,8 +162,8 @@ export default {
         email: null,
         password: null,
         id_struktur: null,
-        id_struktur_child1: "0",
-        id_struktur_child2: "0",
+        id_struktur_child1: 0,
+        id_struktur_child2: 0,
         nomor_wa: null
       },
       strukturOptions: [],
@@ -177,11 +178,11 @@ export default {
       fullname: {
         required,
       },
-      password: {
-        required: function () {
-          return this.$route.params.id ? true : false;
-        },
-      },
+      // password: {
+      //   required: function () {
+      //     return this.$route.name == 'user-edit-id';
+      //   },
+      // },
       email: {
         required,
         email,
@@ -195,6 +196,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.$route.name);
     this.$axios.get(`user/struktur`).then((res) => {
       this.strukturOptions = res.data.data;
     });
@@ -208,6 +210,7 @@ export default {
         this.warnaStatus = "text-danger";
         this.submitStatus = "ERROR: Semua harus diisi";
       } else {
+        console.log(this.form);
         // do your submit logic here
         this.submitStatus = "Sedang menyimpan data";
         this.warnaStatus = "text-info";

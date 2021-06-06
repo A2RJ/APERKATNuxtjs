@@ -6,12 +6,12 @@
     - [x] konfirmasi pop up
     - [x] RKAT per prodi/fakultas/dir keuangan
     - [x] pengajuan (selesai) kurangi RKAT
-    - menu detail pengajuan (grafik, daftar pengajuan per sub divisi)
-        - Buat halaman
-        - Setting store
-        - Setting Vuex
-        - Get data from lumen (untuk menu dan data halaman by id)
-        - Nuxt, setting menu dan c.log data dihalaman
+    - [x] menu detail pengajuan (grafik, daftar pengajuan per sub divisi)
+
+    - [-] get default id untuk user fakultas
+    - [-] kurangi nilai RKAT saat dir keuangan 
+    - [-] atur posisi tombol 
+
 
 - Status
     - Update status
