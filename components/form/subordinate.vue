@@ -942,21 +942,47 @@ export default {
       this.LPJKegiatan = this.$refs.LPJKegiatan.files[0];
     },
     terima() {
-      let form = Object.assign(
-        { id: this.$route.params.id, message: this.message, status: 2 },
-        this.form
-      );
-      this.approved(form).then(() => {
-        this.$router.push("/pengajuan/supervisor/");
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oke, Terima!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let form = Object.assign(
+            { id: this.$route.params.id, message: this.message, status: 2 },
+            this.form
+          );
+          this.approved(form).then(() => {
+            this.$router.push("/pengajuan/supervisor/");
+          });
+        }
       });
     },
     tolak() {
-      let form = Object.assign(
-        { id: this.$route.params.id, message: this.message, status: 0 },
-        this.form
-      );
-      this.declined(form).then(() => {
-        this.$router.push("/pengajuan/supervisor/");
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oke, Tolak!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let form = Object.assign(
+            { id: this.$route.params.id, message: this.message, status: 0 },
+            this.form
+          );
+          this.declined(form).then(() => {
+            this.$router.push("/pengajuan/supervisor/");
+          });
+        }
       });
     },
     getIku1(params) {
@@ -972,13 +998,12 @@ export default {
     async submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.warnaStatus = "text-danger";
-        this.submitStatus = "ERROR: Semua harus diisi";
+        this.$swal({
+          icon: "error",
+          title: "Oops...",
+          text: "Pastikan semua fields diisi!",
+        });
       } else {
-        // do your submit logic here
-        this.submitStatus = "Sedang menyimpan data";
-        this.warnaStatus = "text-info";
-        setTimeout(() => {}, 1500);
         if (this.$route.name === "pengajuan-subordinate-edit-id") {
           if (this.file.length != 0) {
             await this.upload();
@@ -992,11 +1017,13 @@ export default {
             this.form
           );
           await this.updatepengajuan(form).catch((e) => {
-            this.warnaStatus = "text-danger";
-            this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
+            this.$swal({
+              icon: "error",
+              title: "Oops...",
+              text: "Pastikan semua fields diisi! " + e,
+            });
           });
-          this.warnaStatus = "text-success";
-          this.submitStatus = "Data pengajuan telah diupdate!";
+          this.$swal("Good job!", "Data telah disimpan!", "success");
           setTimeout(() => {}, 1500);
           this.$router.push(this.redirects);
         } else {
@@ -1006,11 +1033,13 @@ export default {
             this.form
           );
           await this.storepengajuan(form).catch((e) => {
-            this.warnaStatus = "text-danger";
-            this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
+            this.$swal({
+              icon: "error",
+              title: "Oops...",
+              text: "Pastikan semua fields diisi! " + e,
+            });
           });
-          this.warnaStatus = "text-success";
-          this.submitStatus = "Data pengajuan telah disimpan!";
+          this.$swal("Good job!", "Data telah disimpan!", "success");
           setTimeout(() => {}, 1500);
           this.$router.push(this.redirects);
         }
