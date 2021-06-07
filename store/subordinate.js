@@ -109,7 +109,7 @@ export const actions = {
     },
     deletepengajuan({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.delete(`/pengajuan/${payload}`).then((response) => {
+            this.$axios.get(`/pengajuan/delete/${payload}`).then((response) => {
                 dispatch('getpengajuan')
                 resolve()
             })

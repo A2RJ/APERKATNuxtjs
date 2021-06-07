@@ -64,7 +64,7 @@ export const actions = {
     },
     deleterkat({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.delete(`/rkat/${payload}`).then((response) => {
+            this.$axios.get(`/rkat/delete/${payload}`).then((response) => {
                 dispatch('getrkat')
                 resolve()
             })

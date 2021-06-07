@@ -77,7 +77,7 @@ export const actions = {
     },
     deleteuser({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.delete(`/user/${payload}`).then((response) => {
+            this.$axios.get(`/user/delete/${payload}`).then((response) => {
                 dispatch('getuser')
                 resolve()
             })
