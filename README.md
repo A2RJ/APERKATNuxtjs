@@ -1,23 +1,7 @@
 # SubmissionNuxtJS
 # FOKUS
 # [x] == Done
-- Fokus pengajuan
-    - [x] nama rek dan nomor rek, nama bank dipengajuan, hapus aja diprofil
-    - [x] konfirmasi pop up
-    - [x] RKAT per prodi/fakultas/dir keuangan
-    - [x] pengajuan (selesai) kurangi RKAT
-    - [x] menu detail pengajuan (grafik, daftar pengajuan per sub divisi)
-
-    - [-] get default id untuk user fakultas
-    - [-] kurangi nilai RKAT saat dir keuangan 
-    - [-] atur posisi tombol 
-
-
-- Status
-    - Update status
-    - Upload bukti pencairan
-
-- Laporan per Pengajuan
+- Sebelum ubah struktur
 
 ## Build Setup
 
