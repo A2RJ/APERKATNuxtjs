@@ -813,7 +813,7 @@ export default {
     ]),
 
     load() {
-      // Belum 
+      // Belum = form pencairan dan lpj berdasarkan user dan level saja
       // if dir keuangan, this.formPencairan = true
       // if form lpj belum upload, this.formLPJ = true
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
