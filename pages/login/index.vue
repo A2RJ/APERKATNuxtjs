@@ -137,6 +137,9 @@
                   >Forgot Password?</a
                 >
               </div>
+              <div class="text-center" v-show="failed">
+                <b-alert variant="danger" show>Ups! Email dan Password salah</b-alert>
+              </div>
               <button
                 class="btn btn-fill-content-3-5 d-block w-100"
                 type="submit"
@@ -168,6 +171,7 @@ export default {
         email: null,
         password: null,
       },
+      failed: false
     };
   },
   components: {
@@ -197,6 +201,7 @@ export default {
             this.$router.push("/");
           });
       } catch (err) {
+        this.failed = true
         console.log(err);
       }
     },

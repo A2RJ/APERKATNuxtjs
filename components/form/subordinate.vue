@@ -197,7 +197,13 @@
               size="sm"
               class="mt-3"
               name="unit"
-            ></b-form-select>
+            >
+              <template #first v-if="this.$route.params.id">
+                <b-form-select-option :value="mainIKU.value">{{
+                  mainIKU.name
+                }}</b-form-select-option>
+              </template>
+            </b-form-select>
             <b-form-text id="kode_rkat" v-if="!$v.form.kode_rkat.required">
               <i class="text-danger">Kode RKAT is required</i>
             </b-form-text>
@@ -397,7 +403,11 @@
               class="mt-3"
               name="unit"
               @change="getIku1(form.id_iku_parent)"
-            ></b-form-select>
+            >
+            <template #first>
+        <b-form-select-option :value="null" disabled>-- Please select an option --</b-form-select-option>
+      </template>
+            </b-form-select>
             <b-form-text
               id="id_iku_parent"
               v-if="!$v.form.id_iku_parent.required"
@@ -477,14 +487,24 @@
           >
             <b-form-input
               v-model.trim="$v.form.biaya_program.$model"
+              v-on:keyup="numberFormat"
               id="biaya_program"
               size="sm"
             ></b-form-input>
+            <b-form-text id="biaya_program">
+              <p>{{ number }}</p>
+            </b-form-text>
             <b-form-text
               id="biaya_program"
               v-if="!$v.form.biaya_program.required"
             >
               <i class="text-danger">Biaya program is required</i>
+            </b-form-text>
+            <b-form-text
+              id="biaya_program"
+              v-if="!$v.form.biaya_program.numeric"
+            >
+              <i class="text-danger">Biaya program is numeric</i>
             </b-form-text>
           </b-form-group>
 
@@ -539,6 +559,9 @@
             ></b-form-input>
             <b-form-text id="no_rek" v-if="!$v.form.no_rek.required">
               <i class="text-danger">No.Rekening is required</i>
+            </b-form-text>
+            <b-form-text id="no_rek" v-if="!$v.form.no_rek.numeric">
+              <i class="text-danger">No.Rekening is numeric</i>
             </b-form-text>
           </b-form-group>
 
@@ -608,11 +631,23 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { required } from "vuelidate/lib/validators";
+import { required, numeric } from "vuelidate/lib/validators";
 
 export default {
   created() {
     if (this.$route.params.id) {
+      this.$axios
+        .get(`rkat/kodeRKATByValue/${this.forms.kode_rkat}`)
+        .then((res) => {
+          this.mainIKU.value = res.data.data[0].value;
+          this.mainIKU.name = res.data.data[0].text;
+        });
+
+      this.$axios.get(`rkat/byKode/${this.forms.kode_rkat}`).then((res) => {
+        this.rkat.nama_kegiatan = res.data.data.nama_program;
+        this.rkat.tujuan = res.data.data.tujuan;
+      });
+
       this.$axios
         .get(`iku/child1ByID/${this.forms.id_iku_child1}`)
         .then((res) => {
@@ -696,6 +731,10 @@ export default {
       child2: null,
       option: false,
       redirects: "/pengajuan/subordinate/",
+      mainIKU: {
+        name: "",
+        value: "",
+      },
       selectChild1: {
         name: "",
         value: "",
@@ -719,6 +758,7 @@ export default {
       },
       submitStatus: null,
       warnaStatus: null,
+      number: null
     };
   },
   validations: {
@@ -761,6 +801,7 @@ export default {
       },
       biaya_program: {
         required,
+        numeric,
       },
       bank: {
         required,
@@ -770,6 +811,7 @@ export default {
       },
       no_rek: {
         required,
+        numeric,
       },
     },
     // file: {
@@ -797,9 +839,6 @@ export default {
 
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
-    this.rab = this.form.rab;
-
-    this.getDataRKAT(this.form.kode_rkat);
   },
   methods: {
     ...mapActions("subordinate", [
@@ -810,31 +849,30 @@ export default {
       "declined",
       "getIkuChild1",
       "getIkuChild2",
+      "getstatus",
     ]),
 
     load() {
-      // Belum = form pencairan dan lpj berdasarkan user dan level saja
-      // if dir keuangan, this.formPencairan = true
-      // if form lpj belum upload, this.formLPJ = true
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
         this.button = false;
-        this.status
-          .filter(
-            (item, index) =>
-              item.id_user == this.$store.state.auth.user[0].id_user &&
-              index !== 0
-          )
-          .forEach((item, index) => {
-            this.status[index - 1].status > 0
-              ? item.status > 0
-                ? (this.option = false)
-                : (this.option = true)
-              : (this.option = false);
-          });
-      }else if (this.$route.name == "pengajuan-subordinate-edit-id") {
+        for (let index = 1; index < this.status.length; index++) {
+          if (
+            this.status[index].id_user ==
+              this.$store.state.auth.user[0].id_user &&
+            this.status[index - 1].status !== false
+          ) {
+            if (this.status.length == index) {
+              if (this.form.lpj_keuangan && this.form.lpj_kegiatan)
+                this.option = true;
+            } else if (this.status.length - 1 == index) {
+              if (this.status[index].status == false) this.formPencairan = true;
+            } else {
+              if (this.status[index].status == false) this.option = true;
+            }
+          }
+        }
+      } else if (this.$route.name == "pengajuan-subordinate-edit-id") {
         this.option = false;
-        this.formLPJ = false;
-        this.formPencairan = false;
 
         this.$axios
           .get(`/pengajuan/validasi/${this.$route.params.id}`)
@@ -845,6 +883,12 @@ export default {
               this.button = true;
             }
           });
+
+        for (let index = 0; index < this.status.length; index++) {
+          if (this.status.length - 1 == index) {
+            if (this.status[index].status !== false) this.formLPJ = true;
+          }
+        }
       }
     },
     onSelect() {
@@ -1057,6 +1101,12 @@ export default {
         this.rkat.tujuan = res.data.data.tujuan;
       });
     },
+    numberFormat(){
+      let num = `"${this.form.biaya_program}"`;
+      let number = num.replace(",","");
+      let number2 = number.replace(".","");
+      this.number = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(number2)
+    }
   },
 };
 </script>

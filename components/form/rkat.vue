@@ -294,7 +294,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { required } from "vuelidate/lib/validators";
+import { required, numeric } from "vuelidate/lib/validators";
 
 export default {
   created() {
@@ -390,10 +390,12 @@ export default {
       },
       total_anggaran: {
         required,
+        numeric
       },
-      sisa_anggaran: {
-        required,
-      },
+      // sisa_anggaran: {
+      //   required,
+      //   numeric
+      // },
     },
   },
   mounted() {

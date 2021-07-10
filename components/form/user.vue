@@ -26,7 +26,7 @@
       label-for="password"
     >
       <!-- :class="{ 'form-group--error': $v.form.password.$error }" -->
-        <!-- v-model.trim="$v.form.password.$model" -->
+      <!-- v-model.trim="$v.form.password.$model" -->
       <b-form-input
         v-model="form.password"
         id="password"
@@ -72,7 +72,13 @@
         size="sm"
         class="mt-3"
         name="unit"
-      ></b-form-select>
+      >
+        <template #first>
+          <b-form-select-option :value="0"
+            >-- Please select an option --</b-form-select-option
+          >
+        </template>
+      </b-form-select>
     </b-form-group>
 
     <b-form-group
@@ -88,7 +94,13 @@
         size="sm"
         class="mt-3"
         name="unit"
-      ></b-form-select>
+      >
+        <template #first>
+          <b-form-select-option :value="0"
+            >-- Please select an option --</b-form-select-option
+          >
+        </template>
+      </b-form-select>
     </b-form-group>
 
     <b-form-group
@@ -138,7 +150,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, minLength, numeric } from "vuelidate/lib/validators";
 
 export default {
   created() {
@@ -164,7 +176,7 @@ export default {
         id_struktur: null,
         id_struktur_child1: 0,
         id_struktur_child2: 0,
-        nomor_wa: null
+        nomor_wa: null,
       },
       strukturOptions: [],
       sub1Options: [],
@@ -178,11 +190,12 @@ export default {
       fullname: {
         required,
       },
-      // password: {
-      //   required: function () {
-      //     return this.$route.name == 'user-edit-id';
-      //   },
-      // },
+      password: {
+        required: function () {
+          return this.$route.name == "user-add-id";
+        },
+        minLength: minLength(8),
+      },
       email: {
         required,
         email,
@@ -192,7 +205,8 @@ export default {
       },
       nomor_wa: {
         required,
-      }
+        numeric,
+      },
     },
   },
   mounted() {
