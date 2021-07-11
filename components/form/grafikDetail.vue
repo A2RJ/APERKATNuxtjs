@@ -491,8 +491,6 @@ export default {
         keuangan: false,
         kegiatan: false,
       },
-      submitStatus: null,
-      warnaStatus: null,
     };
   },
   computed: {
@@ -510,7 +508,6 @@ export default {
     }),
   },
   mounted() {
-      console.log(this.kodeRKAT);
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
     this.rab = this.form.rab;

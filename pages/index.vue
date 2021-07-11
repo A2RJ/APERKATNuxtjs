@@ -103,6 +103,15 @@
           :items="grafik.data.rkat"
           :fields="fields"
         >
+          <template v-slot:cell(fullname)="row">
+            {{ row.item.fullname | capitalize }}
+          </template>
+          <template v-slot:cell(mulai_program)="row">
+            <p>{{ row.item.mulai_program | convertDate }}</p>
+          </template>
+          <template v-slot:cell(created_at)="row">
+            <p>{{ row.item.created_at | convertDate }}</p>
+          </template>
           <template v-slot:cell(total_anggaran)="row">
             {{ row.item.total_anggaran | currency }}
           </template>
@@ -129,6 +138,9 @@
           :items="grafik.data.pengajuan"
           :fields="pengajuan"
         >
+          <template v-slot:cell(fullname)="row">
+            {{ row.item.fullname | capitalize }}
+          </template>
           <template v-slot:cell(validasi_status)="row">
             <p v-if="row.item.validasi_status == 0">
               <b-badge variant="danger"
@@ -165,6 +177,9 @@
                 >Selesai: {{ row.item.nama_status }}</b-badge
               >
             </p>
+          </template>
+          <template v-slot:cell(created_at)="row">
+            <p>{{ row.item.created_at | convertDate }}</p>
           </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink

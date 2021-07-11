@@ -573,32 +573,27 @@
             label-size="sm"
             label="rab"
             label-for="rab"
+            :class="{ 'form-group--error': $v.file.$error }"
           >
-            <!-- :class="{ 'form-group--error': $v.file.$error }" -->
-            <!-- v-model.trim="$v.file.$model" -->
+            <!-- v-model="file" -->
             <b-form-file
               id="rab"
-              v-model="file"
+              v-model.trim="$v.file.$model"
               :state="Boolean(file)"
               ref="file"
               @change="onSelect"
               placeholder="Choose or drop it here..."
               drop-placeholder="Drop file here..."
             ></b-form-file>
-            <!-- <b-form-text id="rab" v-if="!$v.file.required">
+            <b-form-text id="rab" v-if="!$v.file.required">
               <i class="text-danger">Upload file RAB</i>
-            </b-form-text> -->
+            </b-form-text>
             <!-- accept=".xls, .xlsx, .doc, .docx, .jpg, .png" -->
             <div class="mt-3">
               Current file:
               <a v-if="rab" :href="'../../../' + rab" target="_blank">RAB </a>
             </div>
           </b-form-group>
-          <p :class="warnaStatus + ' float-right'" v-if="submitStatus">
-            {{ submitStatus }}
-          </p>
-          <br />
-          <br />
           <button
             class="btn-sm btn-info float-right"
             v-show="button"
@@ -633,7 +628,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { required, numeric } from "vuelidate/lib/validators";
+import { required, numeric, requiredIf } from "vuelidate/lib/validators";
 
 export default {
   created() {
@@ -758,8 +753,6 @@ export default {
         keuangan: false,
         kegiatan: false,
       },
-      submitStatus: null,
-      warnaStatus: null,
       number: null,
     };
   },
@@ -816,11 +809,11 @@ export default {
         numeric,
       },
     },
-    // file: {
-    //   required: function() {
-    //     return this.$route.name == "pengajuan-subordinate-add" ? true : false
-    //   }
-    // },
+    file: {
+      required: requiredIf(function () {
+        this.$route.name == "pengajuan-subordinate-add";
+      }),
+    },
   },
   computed: {
     ...mapState("subordinate", {
@@ -853,7 +846,6 @@ export default {
       "getIkuChild2",
       "getstatus",
     ]),
-
     load() {
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
         this.button = false;

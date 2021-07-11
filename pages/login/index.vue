@@ -15,7 +15,12 @@
         style="font-family: 'Poppins', sans-serif"
       >
         <div
-          class="position-relative d-none d-lg-block h-100 width-left-content-3-5"
+          class="
+            position-relative
+            d-none d-lg-block
+            h-100
+            width-left-content-3-5
+          "
         >
           <img
             class="position-absolute img-fluid centered-content-3-5"
@@ -24,7 +29,13 @@
           />
         </div>
         <div
-          class="d-flex mx-auto align-items-left justify-content-left width-right-content-3-5"
+          class="
+            d-flex
+            mx-auto
+            align-items-left
+            justify-content-left
+            width-right-content-3-5
+          "
         >
           <div class="right-content-3-5">
             <div
@@ -138,7 +149,7 @@
                 >
               </div>
               <div class="text-center" v-show="failed">
-                <b-alert variant="danger" show>Ups! Email dan Password salah</b-alert>
+                <b-alert variant="danger" show>{{ message }}</b-alert>
               </div>
               <button
                 class="btn btn-fill-content-3-5 d-block w-100"
@@ -171,11 +182,11 @@ export default {
         email: null,
         password: null,
       },
-      failed: false
+      failed: false,
+      message: "",
     };
   },
-  components: {
-  },
+  components: {},
   mounted() {
     if (this.$auth.$state.loggedIn) {
       this.$router.push("/");
@@ -200,9 +211,33 @@ export default {
             this.SET_USER_DATA(this.$store.state.auth.user[0]);
             this.$router.push("/");
           });
-      } catch (err) {
-        this.failed = true
-        console.log(err);
+      } catch (error) {
+        this.failed = true;
+        if (error.response.status === 401) {
+          this.message = "Ups! Email dan Password salah";
+        } else {
+          this.message = "Ups! Server error";
+        }
+        // if (error.response) {
+        //     /*
+        //      * The request was made and the server responded with a
+        //      * status code that falls out of the range of 2xx
+        //      */
+        //     console.log(error.response.data);
+        //     console.log(error.response.status);
+        //     console.log(error.response.headers);
+        // } else if (error.request) {
+        //     /*
+        //      * The request was made but no response was received, `error.request`
+        //      * is an instance of XMLHttpRequest in the browser and an instance
+        //      * of http.ClientRequest in Node.js
+        //      */
+        //     console.log(error.request);
+        // } else {
+        //     // Something happened in setting up the request and triggered an Error
+        //     console.log('Error', error.message);
+        // }
+        // console.log(error.config);
       }
     },
   },

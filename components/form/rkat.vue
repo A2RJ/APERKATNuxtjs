@@ -283,11 +283,6 @@
         <i class="text-danger">Total anggaran is required</i>
       </b-form-text>
     </b-form-group>
-    <p :class="warnaStatus + ' float-right'" v-if="submitStatus">
-      {{ submitStatus }}
-    </p>
-    <br />
-    <br />
     <button class="btn-sm btn-info float-right" v-show="button" @click="submit">
       Save
     </button>
@@ -345,8 +340,6 @@ export default {
       selected: null,
       options: null,
       button: true,
-      submitStatus: null,
-      warnaStatus: null,
     };
   },
   validations: {

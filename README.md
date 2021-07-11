@@ -49,6 +49,8 @@ $ https://github.com/A2RJ/APERKAT-LumenAPI.git
 
 # serve at localhost:8000
 $ npm run dev
+
+# import DB in folder storage
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

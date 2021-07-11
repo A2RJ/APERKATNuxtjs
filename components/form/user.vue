@@ -24,17 +24,56 @@
       label-size="sm"
       label="Password"
       label-for="password"
+      :class="{ 'form-group--error': $v.form.password.$error }"
     >
-      <!-- :class="{ 'form-group--error': $v.form.password.$error }" -->
-      <!-- v-model.trim="$v.form.password.$model" -->
       <b-form-input
-        v-model="form.password"
+        :type="types"
+        v-on:keyup="cek"
+        v-model.trim="$v.form.password.$model"
         id="password"
         size="sm"
       ></b-form-input>
-      <!-- <b-form-text id="password" v-if="!$v.form.password.required">
-        <i class="text-danger">password is required</i>
-      </b-form-text> -->
+      <b-form-text id="password" v-if="!$v.form.password.required">
+        <i class="text-danger">Password is required</i>
+      </b-form-text>
+      <b-form-text id="password" v-if="!$v.form.password.minLength">
+        <i class="text-danger">Password min length is 8</i>
+      </b-form-text>
+      <b-form-text id="password" v-if="this.$route.params.id">
+        <i class="text-black">Optional</i>
+      </b-form-text>
+    </b-form-group>
+
+    <b-form-group
+      label-cols="4"
+      label-cols-lg="2"
+      label-size="sm"
+      label="Repeat Password"
+      label-for="repeatPassword"
+      :class="{ 'form-group--error': $v.form.repeatPassword.$error }"
+    >
+      <b-form-input
+        :type="types"
+        v-on:keyup="cek"
+        v-model.trim="$v.form.repeatPassword.$model"
+        id="repeatPassword"
+        size="sm"
+      ></b-form-input>
+      <b-form-text id="repeatPassword" v-if="!$v.form.repeatPassword.required">
+        <i class="text-danger">Repeat Password is required</i>
+      </b-form-text>
+      <b-form-text
+        id="repeatPassword"
+        v-if="!$v.form.repeatPassword.sameAsPassword"
+      >
+        <i class="text-danger">Repeat Password is not matches</i>
+      </b-form-text>
+      <b-form-text id="repeatPassword" v-if="error">
+        <i class="text-danger">{{ error }}</i>
+      </b-form-text>
+      <b-form-text id="password" v-if="this.$route.params.id">
+        <i class="text-black">Optional</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -52,7 +91,13 @@
         size="sm"
         class="mt-3"
         name="unit"
-      ></b-form-select>
+      >
+        <template #first>
+          <b-form-select-option :value="0"
+            >-- Please select an option --</b-form-select-option
+          >
+        </template>
+      </b-form-select>
       <b-form-text id="id_struktur" v-if="!$v.form.id_struktur.required">
         <i class="text-danger">Struktur is required</i>
       </b-form-text>
@@ -113,11 +158,11 @@
     >
       <b-form-input v-model.trim="$v.form.email.$model" id="email" size="sm">
       </b-form-input>
-      <b-form-text
-        id="email"
-        v-if="!$v.form.email.required || !$v.form.email.email"
-      >
-        <i class="text-danger">email is required and valid email</i>
+      <b-form-text id="email" v-if="!$v.form.email.required">
+        <i class="text-danger">email is required</i>
+      </b-form-text>
+      <b-form-text id="email" v-if="!$v.form.email.email">
+        <i class="text-danger">please input a valid email</i>
       </b-form-text>
     </b-form-group>
 
@@ -134,23 +179,27 @@
         id="nomor_wa"
         size="sm"
       ></b-form-input>
-      <b-form-text id="nomor_wa" v-if="!$v.form.nomor_wa.required">
-        <i class="text-danger">Nomor WA is required</i>
+      <b-form-text
+        id="nomor_wa"
+        v-if="!$v.form.nomor_wa.required || !$v.form.nomor_wa.numeric"
+      >
+        <i class="text-danger">Nomor WA is required and numeric</i>
       </b-form-text>
     </b-form-group>
-
-    <p :class="warnaStatus + ' float-right'" v-if="submitStatus">
-      {{ submitStatus }}
-    </p>
-    <br />
-    <br />
     <button class="btn-sm btn-info float-right" @click="submit">Save</button>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { required, email, minLength, numeric } from "vuelidate/lib/validators";
+import {
+  required,
+  sameAs,
+  email,
+  minLength,
+  numeric,
+  requiredIf,
+} from "vuelidate/lib/validators";
 
 export default {
   created() {
@@ -170,19 +219,20 @@ export default {
   data() {
     return {
       form: {
-        fullname: null,
-        email: null,
-        password: null,
-        id_struktur: null,
+        fullname: "",
+        email: "",
+        password: "default",
+        repeatPassword: "default",
+        id_struktur: "",
         id_struktur_child1: 0,
         id_struktur_child2: 0,
-        nomor_wa: null,
+        nomor_wa: "",
       },
       strukturOptions: [],
       sub1Options: [],
       sub2Options: [],
-      submitStatus: null,
-      warnaStatus: null,
+      types: "password",
+      error: false,
     };
   },
   validations: {
@@ -191,10 +241,16 @@ export default {
         required,
       },
       password: {
-        required: function () {
-          return this.$route.name == "user-add-id";
-        },
         minLength: minLength(8),
+        required: requiredIf(function () {
+          this.$route.name === "user-add";
+        }),
+      },
+      repeatPassword: {
+        sameAsPassword: sameAs("password"),
+        required: requiredIf(function () {
+          this.$route.name === "user-add";
+        }),
       },
       email: {
         required,
@@ -214,7 +270,7 @@ export default {
       this.strukturOptions = res.data.data;
     });
   },
-    computed: {
+  computed: {
     ...mapState("user", {
       forms: (state) => state.user,
       userID: (state) => state.userID,
@@ -227,26 +283,38 @@ export default {
     submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.failed("Pastikan semua fields diisi!")
+        this.failed("Pastikan semua fields diisi!");
       } else {
         if (this.$route.name === "user-edit-id") {
-          let form = Object.assign({ id: this.$route.params.id }, this.form);
-          this.updateuser(form)
-            .then(() => {
-              this.success("Data telah disimpan")
-              if (
-                this.$store.state.auth.user[0].id_user == this.$route.params.id
-              ) {
-                this.$router.push(
-                  `/user/edit/${this.$store.state.auth.user[0].id_user}`
-                );
-              } else {
-                this.$router.push("/user");
-              }
-            })
-            .catch((e) => {
-              this.failed("Pastikan semua fields diisi!")
-            });
+          if (
+            (this.form.password !== "" &&
+              this.form.password !== this.form.repeatPassword) ||
+            (this.form.password.length < 8 &&
+              this.form.password.repeatPassword < 8)
+          ) {
+            this.error = "Repeat Password is not matches and min 8";
+            this.failed("Pastikan semua fields diisi!");
+          } else {
+            this.error = false;
+            let form = Object.assign({ id: this.$route.params.id }, this.form);
+            this.updateuser(form)
+              .then(() => {
+                this.success("Data telah disimpan");
+                if (
+                  this.$store.state.auth.user[0].id_user ==
+                  this.$route.params.id
+                ) {
+                  this.$router.push(
+                    `/user/edit/${this.$store.state.auth.user[0].id_user}`
+                  );
+                } else {
+                  this.$router.push("/user");
+                }
+              })
+              .catch((e) => {
+                this.failed("Pastikan semua fields diisi!");
+              });
+          }
         } else {
           this.storeuser(this.form)
             .then(() => {
@@ -291,6 +359,20 @@ export default {
         title: "Oops...",
         text: params,
       });
+    },
+    cek() {
+      if (this.$route.name === "user-edit-id") {
+        if (
+          (this.form.password !== "" &&
+            this.form.password !== this.form.repeatPassword) ||
+          (this.form.password.length < 8 &&
+            this.form.password.repeatPassword < 8)
+        ) {
+          this.error = "Repeat Password is not matches and min 8";
+        } else {
+          this.error = false;
+        }
+      }
     },
   },
 };

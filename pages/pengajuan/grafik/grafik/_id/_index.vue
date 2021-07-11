@@ -103,6 +103,9 @@
           :items="grafik.data.rkat"
           :fields="fields"
         >
+          <template v-slot:cell(fullname)="row">
+            {{ row.item.fullname | capitalize }}
+          </template>
           <template v-slot:cell(total_anggaran)="row">
             RP. {{ row.item.total_anggaran | currency }}
           </template>
@@ -135,10 +138,12 @@
           :items="grafik.data.pengajuan"
           :fields="pengajuan"
         >
+          <template v-slot:cell(fullname)="row">
+            {{ row.item.fullname | capitalize }}
+          </template>
           <template v-slot:cell(biaya_program)="row">
             RP. {{ row.item.biaya_program | currency }}
           </template>
-
           <template v-slot:cell(validasi_status)="row">
             <p v-if="row.item.validasi_status == 0">
               <b-badge variant="danger"
