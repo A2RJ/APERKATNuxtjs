@@ -51,7 +51,7 @@
             <div class="card-body">
               Total anggaran
               <div class="text-white-50 small">
-                RP. {{ grafik.data.total_anggaran_rkat | numFormat }}
+                RP. {{ grafik.data.total_anggaran_rkat | currency }}
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@
             <div class="card-body">
               Anggaran digunakan
               <div class="text-white-50 small">
-                RP. {{ grafik.data.total_rkat_diterima | numFormat }}
+                RP. {{ grafik.data.total_rkat_diterima | currency }}
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@
             <div class="card-body">
               Pengajuan diterima
               <div class="text-white-50 small">
-                {{ grafik.data.pengajuan_diterima | numFormat }}
+                {{ grafik.data.pengajuan_diterima | currency }}
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@
             <div class="card-body">
               Pengajuan diproses
               <div class="text-white-50 small">
-                {{ grafik.data.pengajuan_progress | numFormat }}
+                {{ grafik.data.pengajuan_progress | currency }}
               </div>
             </div>
           </div>
@@ -104,10 +104,10 @@
           :fields="fields"
         >
           <template v-slot:cell(total_anggaran)="row">
-            {{ row.item.total_anggaran | numFormat }}
+            {{ row.item.total_anggaran | currency }}
           </template>
           <template v-slot:cell(sisa_anggaran)="row">
-            {{ row.item.sisa_anggaran | numFormat }}
+            {{ row.item.sisa_anggaran | currency }}
           </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink

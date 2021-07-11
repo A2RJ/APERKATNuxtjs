@@ -79,6 +79,12 @@
         show-empty
       >
         
+        <template v-slot:cell(fullname)="row">
+          <p>{{ row.item.fullname | capitalize }}</p>
+        </template>
+        <template v-slot:cell(created_at)="row">
+          <p>{{ row.item.created_at | convertDate }}</p>
+        </template>
         <template v-slot:cell(nama_struktur)="row">
           <p
             v-if="row.item.nama_struktur_child2 !== '0' && row.item.nama_struktur_child1 !== '0'"

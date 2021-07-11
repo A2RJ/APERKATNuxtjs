@@ -5,7 +5,14 @@
       <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div
-          class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          class="
+            card-header
+            py-3
+            d-flex
+            flex-row
+            align-items-center
+            justify-content-between
+          "
         >
           <h6 class="m-0 font-weight-bold text-primary">Pengajuan Bawahan</h6>
         </div>
@@ -51,7 +58,7 @@
               </b-form-group>
             </b-col>
           </b-row>
-            <!-- sticky-header -->
+          <!-- sticky-header -->
           <b-table
             responsive
             head-variant="light"
@@ -64,6 +71,11 @@
             :current-page="currentPage"
             show-empty
           >
+            <template v-slot:cell(fullname)="row">
+              <p>
+                {{ row.item.fullname | capitalize }}
+              </p>
+            </template>
             <template v-slot:cell(nama_struktur_child1)="row">
               <p
                 v-if="row.item.nama_struktur_child1 == 0"
@@ -86,7 +98,7 @@
                   >Input/Revisi: {{ row.item.nama_status }}</b-badge
                 >
               </p>
-              <p v-if="row.item.validasi_status == 2 && row.item.nama_status !== 'Sekniv'">
+              <p v-if="row.item.validasi_status == 2">
                 <b-badge variant="success"
                   >Diterima: {{ row.item.nama_status }}</b-badge
                 >
@@ -96,11 +108,9 @@
                   >Pencairan: {{ row.item.nama_status }}</b-badge
                 >
               </p>
-              <p v-if="row.item.validasi_status == 2 && row.item.nama_status == 'Sekniv'">
-                <b-badge variant="success"
-                  >Selesai: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
+            </template>
+            <template v-slot:cell(created_at)="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
@@ -132,7 +142,10 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch("subordinate/getsubordinates", store.$auth.$state.user[0].id_user),
+      store.dispatch(
+        "subordinate/getsubordinates",
+        store.$auth.$state.user[0].id_user
+      ),
     ]);
     return;
   },

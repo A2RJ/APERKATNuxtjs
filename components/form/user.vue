@@ -210,10 +210,16 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$route.name);
     this.$axios.get(`user/struktur`).then((res) => {
       this.strukturOptions = res.data.data;
     });
+  },
+    computed: {
+    ...mapState("user", {
+      forms: (state) => state.user,
+      userID: (state) => state.userID,
+      errors: (state) => state.errors,
+    }),
   },
   methods: {
     ...mapActions("user", ["getuserID", "storeuser", "updateuser"]),
@@ -221,21 +227,13 @@ export default {
     submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.warnaStatus = "text-danger";
-        this.submitStatus = "ERROR: Semua harus diisi";
+        this.failed("Pastikan semua fields diisi!")
       } else {
-        console.log(this.form);
-        // do your submit logic here
-        this.submitStatus = "Sedang menyimpan data";
-        this.warnaStatus = "text-info";
-        setTimeout(() => {}, 1500);
         if (this.$route.name === "user-edit-id") {
           let form = Object.assign({ id: this.$route.params.id }, this.form);
           this.updateuser(form)
             .then(() => {
-              this.warnaStatus = "text-success";
-              this.submitStatus = "Data user telah diupdate!";
-              setTimeout(() => {}, 1500);
+              this.success("Data telah disimpan")
               if (
                 this.$store.state.auth.user[0].id_user == this.$route.params.id
               ) {
@@ -247,20 +245,16 @@ export default {
               }
             })
             .catch((e) => {
-              this.warnaStatus = "text-danger";
-              this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
+              this.failed("Pastikan semua fields diisi!")
             });
         } else {
           this.storeuser(this.form)
             .then(() => {
-              this.warnaStatus = "text-success";
-              this.submitStatus = "Data user telah disimpan!";
-              setTimeout(() => {}, 1500);
+              this.success("Data telah disimpan");
               this.$router.push("/user");
             })
             .catch((e) => {
-              this.warnaStatus = "text-danger";
-              this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
+              this.failed("Pastikan semua fields diisi!");
             });
         }
       }
@@ -282,13 +276,22 @@ export default {
           this.sub2Options = res.data.data;
         });
     },
-  },
-  computed: {
-    ...mapState("user", {
-      forms: (state) => state.user,
-      userID: (state) => state.userID,
-      errors: (state) => state.errors,
-    }),
+    success(params) {
+      this.$swal({
+        width: 300,
+        icon: "success",
+        title: "Congrats!",
+        text: params,
+      });
+    },
+    failed(params) {
+      this.$swal({
+        width: 300,
+        icon: "error",
+        title: "Oops...",
+        text: params,
+      });
+    },
   },
 };
 </script>

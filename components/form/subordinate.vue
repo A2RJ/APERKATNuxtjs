@@ -404,9 +404,11 @@
               name="unit"
               @change="getIku1(form.id_iku_parent)"
             >
-            <template #first>
-        <b-form-select-option :value="null" disabled>-- Please select an option --</b-form-select-option>
-      </template>
+              <template #first>
+                <b-form-select-option :value="null" disabled
+                  >-- Please select an option --</b-form-select-option
+                >
+              </template>
             </b-form-select>
             <b-form-text
               id="id_iku_parent"
@@ -758,7 +760,7 @@ export default {
       },
       submitStatus: null,
       warnaStatus: null,
-      number: null
+      number: null,
     };
   },
   validations: {
@@ -906,48 +908,30 @@ export default {
       this.LPJKegiatan = this.$refs.LPJKegiatan.files[0];
     },
     terima() {
-      this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        width: 300,
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Oke, Terima!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          let form = Object.assign(
+      this.confirm(
+        this.approved(
+          Object.assign(
             { id: this.$route.params.id, message: this.message, status: 2 },
             this.form
-          );
-          this.approved(form).then(() => {
-            this.$router.push("/pengajuan/supervisor/");
-          });
-        }
-      });
+          )
+        ).then(() => {
+          this.success("Berhasil terima pengajuan");
+          this.$router.push("/pengajuan/supervisor/");
+        })
+      );
     },
     tolak() {
-      this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        width: 300,
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Oke, Tolak!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          let form = Object.assign(
+      this.confirm(
+        this.declined(
+          Object.assign(
             { id: this.$route.params.id, message: this.message, status: 0 },
             this.form
-          );
-          this.declined(form).then(() => {
-            this.$router.push("/pengajuan/supervisor/");
-          });
-        }
-      });
+          )
+        ).then(() => {
+          this.success("Berhasil tolak pengajuan");
+          this.$router.push("/pengajuan/supervisor/");
+        })
+      );
     },
     getIku1(params) {
       this.getIkuChild1(params).then(() => {
@@ -962,50 +946,41 @@ export default {
     async submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.$swal({
-          icon: "error",
-          title: "Oops...",
-          text: "Pastikan semua fields diisi!",
-        });
+        this.failed("Pastikan semua fields diisi!");
       } else {
         if (this.$route.name === "pengajuan-subordinate-edit-id") {
           if (this.file.length != 0) {
             await this.upload();
           }
-          let form = Object.assign(
-            {
-              id: this.$route.params.id,
-              message: "Update pengajuan",
-              status: 1,
-            },
-            this.form
-          );
-          await this.updatepengajuan(form).catch((e) => {
-            this.$swal({
-              icon: "error",
-              title: "Oops...",
-              text: "Pastikan semua fields diisi! " + e,
+          await this.updatepengajuan(
+            Object.assign(
+              {
+                id: this.$route.params.id,
+                message: "Update pengajuan",
+                status: 1,
+              },
+              this.form
+            )
+          )
+            .then(() => {
+              this.success("Data telah disimpan!");
+              this.$router.push(this.redirects);
+            })
+            .catch((e) => {
+              this.failed("Pastikan semua fields diisi!");
             });
-          });
-          this.$swal("Good job!", "Data telah disimpan!", "success");
-          setTimeout(() => {}, 1500);
-          this.$router.push(this.redirects);
         } else {
           await this.upload();
-          let form = Object.assign(
-            { message: "Input pengajuan", status: 1 },
-            this.form
-          );
-          await this.storepengajuan(form).catch((e) => {
-            this.$swal({
-              icon: "error",
-              title: "Oops...",
-              text: "Pastikan semua fields diisi! " + e,
+          await this.storepengajuan(
+            Object.assign({ message: "Input pengajuan", status: 1 }, this.form)
+          )
+            .then(() => {
+              this.success("Data telah disimpan!");
+              this.$router.push(this.redirects);
+            })
+            .catch((e) => {
+              this.failed("Pastikan semua fields diisi!");
             });
-          });
-          this.$swal("Good job!", "Data telah disimpan!", "success");
-          setTimeout(() => {}, 1500);
-          this.$router.push(this.redirects);
         }
       }
     },
@@ -1065,7 +1040,7 @@ export default {
             this.$router.push("/pengajuan/subordinate/");
           });
         } catch (e) {
-          console.log("Whoops Server Error");
+          this.failed("Whoops Server Error");
         }
       }
     },
@@ -1088,12 +1063,12 @@ export default {
             this.$router.push("/pengajuan/subordinate/");
           });
         } catch (e) {
-          console.log("Whoops Server Error");
+          this.failed("Whoops Server Error");
         }
       }
     },
     print() {
-      console.log("Printing");
+      this.failed("Whoops fungsi print masih development");
     },
     getDataRKAT(params) {
       this.$axios.get(`rkat/byKode/${params}`).then((res) => {
@@ -1101,12 +1076,47 @@ export default {
         this.rkat.tujuan = res.data.data.tujuan;
       });
     },
-    numberFormat(){
+    numberFormat() {
       let num = `"${this.form.biaya_program}"`;
-      let number = num.replace(",","");
-      let number2 = number.replace(".","");
-      this.number = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(number2)
-    }
+      let number = num.replace(",", "");
+      let number2 = number.replace(".", "");
+      this.number = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(number2);
+    },
+    success(params) {
+      this.$swal({
+        width: 300,
+        icon: "success",
+        title: "Congrats!",
+        text: params,
+      });
+    },
+    failed(params) {
+      this.$swal({
+        width: 300,
+        icon: "error",
+        title: "Oops...",
+        text: params,
+      });
+    },
+    confirm(params) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oke, Terima!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          params;
+        }
+      });
+    },
   },
 };
 </script>

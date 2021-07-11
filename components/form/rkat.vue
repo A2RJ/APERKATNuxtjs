@@ -288,7 +288,9 @@
     </p>
     <br />
     <br />
-    <button class="btn-sm btn-info float-right" v-show="button" @click="submit">Save</button>
+    <button class="btn-sm btn-info float-right" v-show="button" @click="submit">
+      Save
+    </button>
   </div>
 </template>
 
@@ -299,8 +301,8 @@ import { required, numeric } from "vuelidate/lib/validators";
 export default {
   created() {
     if (this.$route.name === "rkat-edit-id") {
-      if (this.$store.state.auth.user[1].level !== "Sekniv") {
-        this.button = false
+      if (this.$store.state.auth.user[1].level !== "sekniv") {
+        this.button = false;
       }
       this.form = {
         id_user: this.forms.id_user,
@@ -350,7 +352,7 @@ export default {
   validations: {
     form: {
       id_user: {
-        required
+        required,
       },
       kode_rkat: {
         required,
@@ -387,10 +389,11 @@ export default {
       },
       rencara_anggaran: {
         required,
+        numeric,
       },
       total_anggaran: {
         required,
-        numeric
+        numeric,
       },
       // sisa_anggaran: {
       //   required,
@@ -413,40 +416,45 @@ export default {
     submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.warnaStatus = "text-danger";
-        this.submitStatus = "ERROR: Semua harus diisi";
+        this.failed();
       } else {
-        // do your submit logic here
-        this.submitStatus = "Sedang menyimpan data";
-        this.warnaStatus = "text-info";
-        setTimeout(() => {}, 1500);
         if (this.$route.name === "rkat-edit-id") {
           let form = Object.assign({ id: this.$route.params.id }, this.form);
           this.updaterkat(form)
             .then(() => {
-              this.warnaStatus = "text-success";
-              this.submitStatus = "Data RKAT telah diupdate!";
-              setTimeout(() => {}, 1500);
+              this.success();
               this.$router.push("/rkat");
             })
             .catch((e) => {
-              this.warnaStatus = "text-danger";
-              this.submitStatus = "ERROR: Pastikan semua fields harus diisi";
+              this.failed();
             });
         } else {
           this.storerkat(this.form)
             .then(() => {
-              this.warnaStatus = "text-success";
-              this.submitStatus = "Data RKAT telah disimpan!";
-              setTimeout(() => {}, 1500);
+              this.success();
               this.$router.push("/rkat");
             })
             .catch((e) => {
-              this.warnaStatus = "text-danger";
-              this.submitStatus = "ERROR";
+              this.failed();
             });
         }
       }
+    },
+    success() {
+      this.$swal({
+        width: 300,
+        icon: "success",
+        title: "Congrats!",
+        text: "Data telah disimpan",
+      });
+    },
+    failed() {
+      this.$swal({
+        width: 300,
+        icon: "error",
+        title: "Oops...",
+        text: "Pastikan semua fields diisi!",
+      });
     },
   },
 };

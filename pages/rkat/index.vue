@@ -90,11 +90,20 @@
             :filter="filter"
             show-empty
           >
+            <template v-slot:cell(fullname)="row">
+              {{ row.item.fullname | capitalize }}
+            </template>
             <template v-slot:cell(total_anggaran)="row">
-              {{ row.item.total_anggaran | numFormat }}
+              RP. {{ row.item.total_anggaran | currency }}
+            </template>
+            <template v-slot:cell(mulai_program)="row">
+              {{ row.item.mulai_program | convertDate }}
+            </template>
+            <template v-slot:cell(created_at)="row">
+              {{ row.item.created_at | convertDate }}
             </template>
             <template v-slot:cell(sisa_anggaran)="row">
-              {{ row.item.sisa_anggaran | numFormat }}
+              RP. {{ row.item.sisa_anggaran | currency }}
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink

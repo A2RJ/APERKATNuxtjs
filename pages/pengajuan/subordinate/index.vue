@@ -5,7 +5,14 @@
       <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div
-          class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          class="
+            card-header
+            py-3
+            d-flex
+            flex-row
+            align-items-center
+            justify-content-between
+          "
         >
           <h6 class="m-0 font-weight-bold text-primary">Pengajuan</h6>
           <div class="dropdown no-arrow">
@@ -37,7 +44,6 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          
           <b-row>
             <b-col sm="5" md="6" class="my-1">
               <b-form-group
@@ -78,7 +84,7 @@
               </b-form-group>
             </b-col>
           </b-row>
-            <!-- sticky-header -->
+          <!-- sticky-header -->
           <b-table
             responsive
             head-variant="light"
@@ -91,6 +97,11 @@
             :filter="filter"
             show-empty
           >
+            <template v-slot:cell(fullname)="row">
+              <p>
+                {{ row.item.fullname | capitalize }}
+              </p>
+            </template>
             <template v-slot:cell(nama_struktur_child1)="row">
               <p
                 v-if="row.item.nama_struktur_child1 == 0"
@@ -113,7 +124,7 @@
                   >Input/Revisi: {{ row.item.nama_status }}</b-badge
                 >
               </p>
-              <p v-if="row.item.validasi_status == 2 && row.item.nama_status !== 'Sekniv'">
+              <p v-if="row.item.validasi_status == 2">
                 <b-badge variant="success"
                   >Diterima: {{ row.item.nama_status }}</b-badge
                 >
@@ -123,11 +134,9 @@
                   >Pencairan: {{ row.item.nama_status }}</b-badge
                 >
               </p>
-              <p v-if="row.item.validasi_status == 2 && row.item.nama_status == 'Sekniv'">
-                <b-badge variant="success"
-                  >Selesai: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
+            </template>
+            <template v-slot:cell(created_at)="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
@@ -165,7 +174,10 @@ import { mapActions, mapState } from "vuex";
 export default {
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch("subordinate/getpengajuan", store.$auth.$state.user[0].id_user),
+      store.dispatch(
+        "subordinate/getpengajuan",
+        store.$auth.$state.user[0].id_user
+      ),
     ]);
     return;
   },
@@ -183,7 +195,8 @@ export default {
       pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
-      items: this.pengajuan
+      items: this.pengajuan,
+      convert: null,
     };
   },
   computed: {
@@ -211,22 +224,22 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.deletepengajuan(row.item.id_pengajuan)
-          .then(() => {
-            this.$swal({
-              width: 300,
-              icon: "success",
-              title: "Congrats!",
-              text: "RKAT data was deleted successfully",
+            .then(() => {
+              this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "Data telah dihapus",
+              });
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Server error atau cek koneksi anda",
+              });
             });
-          })
-          .catch(() => {
-            this.$swal({
-              width: 300,
-              icon: "error",
-              title: "Oops...",
-              text: "Please check your server or internet connection",
-            });
-          });
         }
       });
     },

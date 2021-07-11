@@ -51,7 +51,7 @@
             <div class="card-body">
               Total anggaran
               <div class="text-white-50 small">
-                RP. {{ grafik.data.total_anggaran_rkat | numFormat }}
+                RP. {{ grafik.data.total_anggaran_rkat | currency }}
               </div>
             </div>
           </div>
@@ -61,7 +61,7 @@
             <div class="card-body">
               Anggaran digunakan
               <div class="text-white-50 small">
-                RP. {{ grafik.data.total_rkat_diterima | numFormat }}
+                RP. {{ grafik.data.total_rkat_diterima | currency }}
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@
             <div class="card-body">
               Pengajuan diterima
               <div class="text-white-50 small">
-                {{ grafik.data.pengajuan_diterima | numFormat }}
+                {{ grafik.data.pengajuan_diterima | currency }}
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@
             <div class="card-body">
               Pengajuan diproses
               <div class="text-white-50 small">
-                {{ grafik.data.pengajuan_progress | numFormat }}
+                {{ grafik.data.pengajuan_progress | currency }}
               </div>
             </div>
           </div>
@@ -104,10 +104,16 @@
           :fields="fields"
         >
           <template v-slot:cell(total_anggaran)="row">
-            RP. {{ row.item.total_anggaran | numFormat }}
+            RP. {{ row.item.total_anggaran | currency }}
           </template>
-               <template v-slot:cell(sisa_anggaran)="row">
-            RP. {{ row.item.sisa_anggaran | numFormat }}
+          <template v-slot:cell(sisa_anggaran)="row">
+            RP. {{ row.item.sisa_anggaran | currency }}
+          </template>
+          <template v-slot:cell(mulai_program)="row">
+            <p>{{ row.item.mulai_program | convertDate }}</p>
+          </template>
+          <template v-slot:cell(created_at)="row">
+            <p>{{ row.item.created_at | convertDate }}</p>
           </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink
@@ -130,9 +136,9 @@
           :fields="pengajuan"
         >
           <template v-slot:cell(biaya_program)="row">
-            RP. {{ row.item.biaya_program | numFormat }}
+            RP. {{ row.item.biaya_program | currency }}
           </template>
-     
+
           <template v-slot:cell(validasi_status)="row">
             <p v-if="row.item.validasi_status == 0">
               <b-badge variant="danger"
@@ -144,12 +150,7 @@
                 >Input/Revisi: {{ row.item.nama_status }}</b-badge
               >
             </p>
-            <p
-              v-if="
-                row.item.validasi_status == 2 &&
-                row.item.nama_status !== 'Sekniv'
-              "
-            >
+            <p v-if="row.item.validasi_status == 2">
               <b-badge variant="success"
                 >Diterima: {{ row.item.nama_status }}</b-badge
               >
@@ -159,16 +160,9 @@
                 >Pencairan: {{ row.item.nama_status }}</b-badge
               >
             </p>
-            <p
-              v-if="
-                row.item.validasi_status == 2 &&
-                row.item.nama_status == 'Sekniv'
-              "
-            >
-              <b-badge variant="success"
-                >Selesai: {{ row.item.nama_status }}</b-badge
-              >
-            </p>
+          </template>
+          <template v-slot:cell(created_at)="row">
+            <p>{{ row.item.created_at | convertDate }}</p>
           </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink
