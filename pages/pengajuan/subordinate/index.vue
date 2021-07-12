@@ -15,35 +15,15 @@
           "
         >
           <h6 class="m-0 font-weight-bold text-primary">Pengajuan</h6>
-          <div class="dropdown no-arrow">
-            <a
-              class="dropdown-toggle"
-              href="#"
-              role="button"
-              id="dropdownMenuLink"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-              aria-labelledby="dropdownMenuLink"
-              style=""
-            >
-              <div class="dropdown-header">Opsi:</div>
-              <NuxtLink class="dropdown-item" to="add"
-                >Tambah Pengajuan</NuxtLink
-              >
-              <NuxtLink class="dropdown-item" to="/rkat/reset"
-                >Reset Pengajuan</NuxtLink
-              >
-            </div>
-          </div>
         </div>
         <!-- Card Body -->
         <div class="card-body">
+          <div class="mb-3 mt-1">
+            <NuxtLink class="btn btn-sm btn-outline-primary" to="/pengajuan/subordinate/add"
+              >Tambah Pengajuan</NuxtLink
+            >
+            <!-- <b-button variant="outline-info btn-sm">Reset Pengajuan</b-button> -->
+          </div>
           <b-row>
             <b-col sm="5" md="6" class="my-1">
               <b-form-group
@@ -102,14 +82,35 @@
                 {{ row.item.fullname | capitalize }}
               </p>
             </template>
-            <template v-slot:cell(nama_struktur_child1)="row">
+            <template v-slot:cell(nama_struktur)="row">
               <p
-                v-if="row.item.nama_struktur_child1 == 0"
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
                 class="text-uppercase"
               >
-                {{ row.item.fullname }}
+                {{ row.item.nama_struktur }}
               </p>
-              <p v-else class="text-uppercase">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
@@ -140,13 +141,13 @@
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
-                class="btn-sm btn-warning mb-2"
+                class="btn btn-sm btn-outline-info"
                 :to="'edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
               <button
-                class="btn-sm btn-danger mt-2"
+                class="btn btn-sm btn-outline-danger"
                 @click="destroypengajuan(row)"
               >
                 Hapus
@@ -185,7 +186,7 @@ export default {
     return {
       fields: [
         { key: "fullname", label: "User" },
-        { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
+        { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",

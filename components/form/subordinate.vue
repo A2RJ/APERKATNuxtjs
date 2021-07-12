@@ -595,11 +595,11 @@
             </div>
           </b-form-group>
           <button
-            class="btn-sm btn-info float-right"
+            class="btn btn-sm btn-primary float-right"
             v-show="button"
             @click="submit"
           >
-            Save
+            Simpan Pengajuan
           </button>
         </div>
       </div>
@@ -855,10 +855,14 @@ export default {
               this.$store.state.auth.user[0].id_user &&
             this.status[index - 1].status !== false
           ) {
-            if (this.status.length == index) {
-              if (this.form.lpj_keuangan && this.form.lpj_kegiatan)
+            if (this.status.length - 1 == index) {
+              if (
+                this.form.lpj_keuangan &&
+                this.form.lpj_kegiatan &&
+                this.status[index].status == false
+              )
                 this.option = true;
-            } else if (this.status.length - 1 == index) {
+            } else if (this.status.length - 2 == index) {
               if (this.status[index].status == false) this.formPencairan = true;
             } else {
               if (this.status[index].status == false) this.option = true;
@@ -878,9 +882,19 @@ export default {
             }
           });
 
-        for (let index = 0; index < this.status.length; index++) {
-          if (this.status.length - 1 == index) {
-            if (this.status[index].status !== false) this.formLPJ = true;
+        for (let index = 1; index < this.status.length; index++) {
+          if (
+            this.status[index].id_user ==
+              this.$store.state.auth.user[0].id_user &&
+            this.status[index - 1].status !== false
+          ) {
+            if (this.status[index].status == false) this.option = true;
+          }
+        }
+        if (this.status[this.status.length - 2].status) {
+          this.formLPJ = true;
+          if (this.form.lpj_keuangan && this.form.lpj_kegiatan) {
+            this.formLPJ = false;
           }
         }
       }
@@ -900,30 +914,56 @@ export default {
       this.LPJKegiatan = this.$refs.LPJKegiatan.files[0];
     },
     terima() {
-      this.confirm(
-        this.approved(
-          Object.assign(
-            { id: this.$route.params.id, message: this.message, status: 2 },
-            this.form
-          )
-        ).then(() => {
-          this.success("Berhasil terima pengajuan");
-          this.$router.push("/pengajuan/supervisor/");
-        })
-      );
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oke, Terima!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.approved(
+            Object.assign(
+              { id: this.$route.params.id, message: this.message, status: 2 },
+              this.form
+            )
+          ).then(() => {
+            this.success("Berhasil terima pengajuan");
+            this.$route.name == "pengajuan-subordinate-edit-id"
+              ? this.$router.push("/pengajuan/subordinate/")
+              : this.$router.push("/pengajuan/supervisor/");
+          });
+        }
+      });
     },
     tolak() {
-      this.confirm(
-        this.declined(
-          Object.assign(
-            { id: this.$route.params.id, message: this.message, status: 0 },
-            this.form
-          )
-        ).then(() => {
-          this.success("Berhasil tolak pengajuan");
-          this.$router.push("/pengajuan/supervisor/");
-        })
-      );
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Oke, Tolak!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.declined(
+            Object.assign(
+              { id: this.$route.params.id, message: this.message, status: 0 },
+              this.form
+            )
+          ).then(() => {
+            this.success("Berhasil tolak pengajuan");
+            this.$route.name == "pengajuan-subordinate-edit-id"
+              ? this.$router.push("/pengajuan/subordinate/")
+              : this.$router.push("/pengajuan/supervisor/");
+          });
+        }
+      });
     },
     getIku1(params) {
       this.getIkuChild1(params).then(() => {

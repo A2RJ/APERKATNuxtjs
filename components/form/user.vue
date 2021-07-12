@@ -186,7 +186,7 @@
         <i class="text-danger">Nomor WA is required and numeric</i>
       </b-form-text>
     </b-form-group>
-    <button class="btn-sm btn-info float-right" @click="submit">Save</button>
+    <button class="btn btn-sm btn-primary float-right" @click="submit">Simpan User</button>
   </div>
 </template>
 
@@ -287,12 +287,15 @@ export default {
       } else {
         if (this.$route.name === "user-edit-id") {
           if (
-            (this.form.password !== "" &&
-              this.form.password !== this.form.repeatPassword) ||
-            (this.form.password.length < 8 &&
-              this.form.password.repeatPassword < 8)
+            this.form.password !== "" &&
+            this.form.password !== this.form.repeatPassword
           ) {
-            this.error = "Repeat Password is not matches and min 8";
+            if (
+              this.form.password.length < 8 &&
+              this.form.password.repeatPassword < 8
+            ) {
+              this.error = "Repeat Password is not matches and min 8";
+            }
             this.failed("Pastikan semua fields diisi!");
           } else {
             this.error = false;
@@ -363,12 +366,15 @@ export default {
     cek() {
       if (this.$route.name === "user-edit-id") {
         if (
-          (this.form.password !== "" &&
-            this.form.password !== this.form.repeatPassword) ||
-          (this.form.password.length < 8 &&
-            this.form.password.repeatPassword < 8)
+          this.form.password !== "" &&
+          this.form.password !== this.form.repeatPassword
         ) {
-          this.error = "Repeat Password is not matches and min 8";
+          if (
+            this.form.password.length < 8 &&
+            this.form.password.repeatPassword < 8
+          ) {
+            this.error = "Repeat Password is not matches and min 8";
+          }
         } else {
           this.error = false;
         }

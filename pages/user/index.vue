@@ -1,30 +1,15 @@
 <template>
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-      <div class="dropdown no-arrow">
-        <a
-          class="dropdown-toggle"
-          href="#"
-          role="button"
-          id="dropdownMenuLink"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-        </a>
-        <div
-          class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-          aria-labelledby="dropdownMenuLink"
-          style=""
-        >
-          <div class="dropdown-header">Opsi:</div>
-          <NuxtLink class="dropdown-item" to="/user/add">Tambah User</NuxtLink>
-        </div>
-      </div>
+      <h6 class="m-0 font-weight-bold text-primary">User</h6>
     </div>
     <div class="card-body">
+      <div class="mb-3 mt-1">
+        <NuxtLink class="btn btn-sm btn-outline-primary" to="/user/add"
+          >Tambah User</NuxtLink
+        >
+        <!-- <b-button variant="outline-info btn-sm">Reset User</b-button> -->
+      </div>
       <b-row>
         <b-col sm="5" md="6" class="my-1">
           <b-form-group
@@ -78,7 +63,6 @@
         :current-page="currentPage"
         show-empty
       >
-        
         <template v-slot:cell(fullname)="row">
           <p>{{ row.item.fullname | capitalize }}</p>
         </template>
@@ -87,51 +71,45 @@
         </template>
         <template v-slot:cell(nama_struktur)="row">
           <p
-            v-if="row.item.nama_struktur_child2 !== '0' && row.item.nama_struktur_child1 !== '0'"
+            v-if="
+              row.item.nama_struktur !== '0' &&
+              row.item.nama_struktur_child1 == '0' &&
+              row.item.nama_struktur_child2 == '0'
+            "
+            class="text-uppercase"
+          >
+            {{ row.item.nama_struktur }}
+          </p>
+          <p
+            v-if="
+              row.item.nama_struktur !== '0' &&
+              row.item.nama_struktur_child1 !== '0' &&
+              row.item.nama_struktur_child2 == '0'
+            "
+            class="text-uppercase"
+          >
+            {{ row.item.nama_struktur }}
+          </p>
+          <p
+            v-if="
+              row.item.nama_struktur !== '0' &&
+              row.item.nama_struktur_child1 !== '0' &&
+              row.item.nama_struktur_child2 !== '0'
+            "
             class="text-uppercase"
           >
             {{ row.item.nama_struktur_child1 }}
-          </p>
-          <p
-            v-if="row.item.nama_struktur_child1 !== '0' && row.item.nama_struktur_child2 == '0'"
-            class="text-uppercase"
-          >
-            {{ row.item.nama_struktur }}
-          </p>
-          <p
-            v-if="row.item.nama_struktur == 'Rektor' && row.item.nama_struktur_child1 == '0'"
-            class="text-uppercase"
-          >
-            {{ row.item.nama_struktur }}
-          </p>
-          <p
-            v-if="row.item.nama_struktur == 'Warek' && row.item.nama_struktur_child1 == '0'"
-            class="text-uppercase"
-          >
-            Rektor
-          </p>
-          <p
-            v-if="row.item.nama_struktur == 'Direktur Keuangan' && row.item.nama_struktur_child1 == '0'"
-            class="text-uppercase"
-          >
-            Warek
-          </p>
-          <p
-            v-if="row.item.nama_struktur == 'Sekniv' && row.item.nama_struktur_child1 == '0'"
-            class="text-uppercase"
-          >
-            Sekniv
           </p>
         </template>
 
         <template v-slot:cell(Action)="row">
           <NuxtLink
-            class="btn-sm btn-warning m-2"
+            class="btn btn-sm btn-outline-info"
             :to="'user/edit/' + row.item.id_user"
             :key="'edit' + row.index"
-            >Detail</NuxtLink
+            >Ubah</NuxtLink
           >
-          <button class="btn-sm btn-danger mt-2" @click="deleteUser(row)">
+          <button class="btn btn-sm btn-outline-danger" @click="deleteUser(row)">
             Hapus
           </button>
         </template>

@@ -13,33 +13,8 @@
                 />
               </div>
 
-              <div
-                v-if="
-                  grafik.data.user.nama_struktur_child1 == '0' &&
-                  grafik.data.user.nama_struktur_child1 == '0'
-                "
-              >
-                {{ grafik.data.user.nama_struktur }} <br />
-                {{ grafik.data.user.email }} <br />
-                {{ grafik.data.user.nomor_wa }}
-              </div>
-              <div
-                v-if="
-                  grafik.data.user.nama_struktur_child1 !== '0' &&
-                  grafik.data.user.nama_struktur_child2 == '0'
-                "
-              >
-                {{ grafik.data.user.nama_struktur_child1 }} <br />
-                {{ grafik.data.user.email }} <br />
-                {{ grafik.data.user.nomor_wa }}
-              </div>
-              <div
-                v-if="
-                  grafik.data.user.nama_struktur_child1 !== '0' &&
-                  grafik.data.user.nama_struktur_child2 !== '0'
-                "
-              >
-                {{ grafik.data.user.nama_struktur_child2 }} <br />
+              <div>
+                {{ grafik.data.user.fullname }} <br />
                 {{ grafik.data.user.email }} <br />
                 {{ grafik.data.user.nomor_wa }}
               </div>
@@ -120,7 +95,7 @@
           </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink
-              class="btn-sm btn-warning mb-2"
+              class="btn btn-sm btn-outline-info"
               :to="'../../../rkat/edit/' + row.item.id_rkat"
               :key="'edit' + row.index"
               >Detail</NuxtLink
@@ -171,7 +146,7 @@
           </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink
-              class="btn-sm btn-warning mb-2"
+              class="btn btn-sm btn-outline-info"
               :to="'../detail/' + row.item.id_pengajuan"
               :key="'edit' + row.index"
               >Detail</NuxtLink
@@ -199,7 +174,7 @@ export default {
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
         { key: "total_anggaran", label: "Total Anggaran" },
-        { key: "sisa_anggaran", label: "Sisa Anggaran" },
+        { key: "sisa_anggaran", label: "Anggaran dicairkan" },
         { key: "mulai_program", label: "Waktu Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",

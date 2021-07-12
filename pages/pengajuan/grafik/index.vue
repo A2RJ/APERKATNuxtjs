@@ -64,20 +64,41 @@
             :current-page="currentPage"
             show-empty
           >
-            <template v-slot:cell(nama_struktur_child1)="row">
+                <template v-slot:cell(nama_struktur)="row">
               <p
-                v-if="row.item.nama_struktur_child1 == 0"
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
                 class="text-uppercase"
               >
-                {{ row.item.fullname }}
+                {{ row.item.nama_struktur }}
               </p>
-              <p v-else class="text-uppercase">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
-                class="btn-sm btn-warning mb-2"
+                class="btn btn-sm btn-outline-info"
                 :to="'grafik/' + row.item.id_user"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
@@ -113,7 +134,7 @@ export default {
     return {
       fields: [
         { key: "fullname", label: "User" },
-        { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
+        { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         "actions",
       ],
 

@@ -13,33 +13,8 @@
                 />
               </div>
 
-              <div
-                v-if="
-                  grafik.data.user.nama_struktur_child1 == '0' &&
-                  grafik.data.user.nama_struktur_child1 == '0'
-                "
-              >
-                {{ grafik.data.user.nama_struktur }} <br />
-                {{ grafik.data.user.email }} <br />
-                {{ grafik.data.user.nomor_wa }}
-              </div>
-              <div
-                v-if="
-                  grafik.data.user.nama_struktur_child1 !== '0' &&
-                  grafik.data.user.nama_struktur_child2 == '0'
-                "
-              >
-                {{ grafik.data.user.nama_struktur_child1 }} <br />
-                {{ grafik.data.user.email }} <br />
-                {{ grafik.data.user.nomor_wa }}
-              </div>
-              <div
-                v-if="
-                  grafik.data.user.nama_struktur_child1 !== '0' &&
-                  grafik.data.user.nama_struktur_child2 !== '0'
-                "
-              >
-                {{ grafik.data.user.nama_struktur_child2 }} <br />
+              <div>
+                {{ grafik.data.user.fullname }} <br />
                 {{ grafik.data.user.email }} <br />
                 {{ grafik.data.user.nomor_wa }}
               </div>
@@ -106,21 +81,21 @@
           <template v-slot:cell(fullname)="row">
             {{ row.item.fullname | capitalize }}
           </template>
+          <template v-slot:cell(total_anggaran)="row">
+            RP. {{ row.item.total_anggaran | currency }}
+          </template>
+          <template v-slot:cell(sisa_anggaran)="row">
+            RP. {{ row.item.sisa_anggaran | currency }}
+          </template>
           <template v-slot:cell(mulai_program)="row">
             <p>{{ row.item.mulai_program | convertDate }}</p>
           </template>
           <template v-slot:cell(created_at)="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
-          <template v-slot:cell(total_anggaran)="row">
-            {{ row.item.total_anggaran | currency }}
-          </template>
-          <template v-slot:cell(sisa_anggaran)="row">
-            {{ row.item.sisa_anggaran | currency }}
-          </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink
-              class="btn-sm btn-warning mb-2"
+              class="btn btn-sm btn-outline-info"
               :to="'rkat/edit/' + row.item.id_rkat"
               :key="'edit' + row.index"
               >Detail</NuxtLink
@@ -141,6 +116,9 @@
           <template v-slot:cell(fullname)="row">
             {{ row.item.fullname | capitalize }}
           </template>
+          <template v-slot:cell(biaya_program)="row">
+            RP. {{ row.item.biaya_program | currency }}
+          </template>
           <template v-slot:cell(validasi_status)="row">
             <p v-if="row.item.validasi_status == 0">
               <b-badge variant="danger"
@@ -152,12 +130,7 @@
                 >Input/Revisi: {{ row.item.nama_status }}</b-badge
               >
             </p>
-            <p
-              v-if="
-                row.item.validasi_status == 2 &&
-                row.item.nama_status !== 'Sekniv'
-              "
-            >
+            <p v-if="row.item.validasi_status == 2">
               <b-badge variant="success"
                 >Diterima: {{ row.item.nama_status }}</b-badge
               >
@@ -167,23 +140,13 @@
                 >Pencairan: {{ row.item.nama_status }}</b-badge
               >
             </p>
-            <p
-              v-if="
-                row.item.validasi_status == 2 &&
-                row.item.nama_status == 'Sekniv'
-              "
-            >
-              <b-badge variant="success"
-                >Selesai: {{ row.item.nama_status }}</b-badge
-              >
-            </p>
           </template>
           <template v-slot:cell(created_at)="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
           <template v-slot:cell(actions)="row">
             <NuxtLink
-              class="btn-sm btn-warning mb-2"
+              class="btn btn-sm btn-outline-info"
               :to="'pengajuan/grafik/detail/' + row.item.id_pengajuan"
               :key="'edit' + row.index"
               >Detail</NuxtLink
@@ -214,14 +177,17 @@ export default {
       chartData: {},
       fields: [
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
+        { key: "kode_rkat", label: "Kode RKAT" },
+        { key: "total_anggaran", label: "Total Anggaran" },
+        { key: "sisa_anggaran", label: "Anggaran dicairkan" },
         { key: "mulai_program", label: "Waktu Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },
-        { key: "total_anggaran", label: "Total Anggaran" },
-        { key: "sisa_anggaran", label: "Sisa Anggaran" },
         "actions",
       ],
       pengajuan: [
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
+        { key: "kode_rkat", label: "Kode RKAT" },
+        { key: "biaya_program", label: "Anggaran" },
         { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",

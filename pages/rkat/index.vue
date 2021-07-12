@@ -6,37 +6,25 @@
       <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div
-          class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          class="
+            card-header
+            py-3
+            d-flex
+            flex-row
+            align-items-center
+            justify-content-between
+          "
         >
-          <h6 class="m-0 font-weight-bold text-primary">Data RKAT</h6>
-          <div class="dropdown no-arrow">
-            <a
-              class="dropdown-toggle"
-              href="#"
-              role="button"
-              id="dropdownMenuLink"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-              aria-labelledby="dropdownMenuLink"
-              style=""
-            >
-              <div class="dropdown-header">Opsi:</div>
-              <NuxtLink class="dropdown-item" to="/rkat/add">Add RKAT</NuxtLink>
-              <!-- <NuxtLink class="dropdown-item" to="/rkat/reset"
-                >Reset RKAT</NuxtLink
-              > -->
-            </div>
-          </div>
+          <h6 class="m-0 font-weight-bold text-primary">RKAT</h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          
+          <div class="mb-3 mt-1">
+            <NuxtLink class="btn btn-sm btn-outline-primary" to="/rkat/add"
+              >Tambah RKAT</NuxtLink
+            >
+            <!-- <b-button variant="outline-info btn-sm">Reset RKAT</b-button> -->
+          </div>
           <b-row>
             <b-col sm="5" md="6" class="my-1">
               <b-form-group
@@ -77,7 +65,7 @@
               </b-form-group>
             </b-col>
           </b-row>
-            <!-- sticky-header -->
+          <!-- sticky-header -->
           <b-table
             responsive
             head-variant="light"
@@ -107,12 +95,12 @@
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
-                class="btn-sm btn-warning mb-2"
+                class="btn btn-sm btn-outline-info"
                 :to="'rkat/edit/' + row.item.id_rkat"
                 :key="'edit' + row.index"
-                >Update</NuxtLink
+                >Ubah</NuxtLink
               >
-              <button class="btn-sm btn-danger mt-2" @click="destroyrkat(row)">
+              <button class="btn btn-sm btn-outline-danger" @click="destroyrkat(row)">
                 Hapus
               </button>
             </template>
@@ -148,7 +136,7 @@ export default {
         { key: "mulai_program", label: "Waktu Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         { key: "total_anggaran", label: "Total Anggaran" },
-        { key: "sisa_anggaran", label: "Sisa Anggaran" },
+        { key: "sisa_anggaran", label: "Anggaran dicairkan" },
         "total_anggaran",
         "actions",
       ],
@@ -156,7 +144,7 @@ export default {
       pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
-      items: this.rkat
+      items: this.rkat,
     };
   },
   computed: {
@@ -188,25 +176,25 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.deleterkat(row.item.id_rkat)
-          .then(() => {
-            this.$swal({
-              width: 300,
-              icon: "success",
-              title: "Congrats!",
-              text: "RKAT data was deleted successfully",
+            .then(() => {
+              this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "RKAT data was deleted successfully",
+              });
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Please check your server or internet connection",
+              });
             });
-          })
-          .catch(() => {
-            this.$swal({
-              width: 300,
-              icon: "error",
-              title: "Oops...",
-              text: "Please check your server or internet connection",
-            });
-          });
         }
       });
-    }
+    },
   },
 };
 </script>

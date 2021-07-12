@@ -283,8 +283,8 @@
         <i class="text-danger">Total anggaran is required</i>
       </b-form-text>
     </b-form-group>
-    <button class="btn-sm btn-info float-right" v-show="button" @click="submit">
-      Save
+    <button class="btn btn-sm btn-primary float-right" v-show="button" @click="submit">
+      Simpan RKAT
     </button>
   </div>
 </template>

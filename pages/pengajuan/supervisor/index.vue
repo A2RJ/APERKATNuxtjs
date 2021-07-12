@@ -14,7 +14,7 @@
             justify-content-between
           "
         >
-          <h6 class="m-0 font-weight-bold text-primary">Pengajuan Bawahan</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Pengajuan Sub Divisi</h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
@@ -76,14 +76,35 @@
                 {{ row.item.fullname | capitalize }}
               </p>
             </template>
-            <template v-slot:cell(nama_struktur_child1)="row">
+            <template v-slot:cell(nama_struktur)="row">
               <p
-                v-if="row.item.nama_struktur_child1 == 0"
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
                 class="text-uppercase"
               >
-                {{ row.item.fullname }}
+                {{ row.item.nama_struktur }}
               </p>
-              <p v-else class="text-uppercase">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
@@ -114,7 +135,7 @@
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
-                class="btn-sm btn-warning mb-2"
+                class="btn btn-sm btn-outline-info"
                 :to="'edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
@@ -153,7 +174,7 @@ export default {
     return {
       fields: [
         { key: "fullname", label: "User" },
-        { key: "nama_struktur_child1", label: "Fakultas/Unit Pelaksana" },
+        { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
