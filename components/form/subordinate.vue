@@ -915,14 +915,14 @@ export default {
     },
     terima() {
       this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Warning!",
+        text: "Setujui pengajuan ini?",
         icon: "warning",
         width: 300,
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Oke, Terima!",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
           this.approved(
@@ -941,14 +941,14 @@ export default {
     },
     tolak() {
       this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Warning!",
+        text: "Tolak pengajuan ini?",
         icon: "warning",
         width: 300,
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Oke, Tolak!",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
           this.declined(
@@ -1135,13 +1135,13 @@ export default {
     },
     confirm(params) {
       this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Warning!",
+        text: "Yakin?",
         icon: "warning",
         width: 300,
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
         confirmButtonText: "Oke, Terima!",
       }).then((result) => {
         if (result.isConfirmed) {

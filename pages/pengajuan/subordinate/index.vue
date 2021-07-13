@@ -19,10 +19,14 @@
         <!-- Card Body -->
         <div class="card-body">
           <div class="mb-3 mt-1">
-            <NuxtLink class="btn btn-sm btn-outline-primary" to="/pengajuan/subordinate/add"
+            <NuxtLink
+              class="btn btn-sm btn-outline-primary"
+              to="/pengajuan/subordinate/add"
               >Tambah Pengajuan</NuxtLink
             >
-            <!-- <b-button variant="outline-info btn-sm">Reset Pengajuan</b-button> -->
+            <b-button variant="outline-info btn-sm" @click="deleteAll"
+              >Reset Pengajuan</b-button
+            >
           </div>
           <b-row>
             <b-col sm="5" md="6" class="my-1">
@@ -214,14 +218,14 @@ export default {
 
     destroypengajuan(row) {
       this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Warning!",
+        text: "Yakin menghapus pengajuan?",
         icon: "warning",
         width: 300,
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK, Hapus!",
       }).then((result) => {
         if (result.isConfirmed) {
           this.deletepengajuan(row.item.id_pengajuan)
@@ -232,6 +236,7 @@ export default {
                 title: "Congrats!",
                 text: "Data telah dihapus",
               });
+              this.$nuxt.refresh();
             })
             .catch(() => {
               this.$swal({
@@ -239,6 +244,40 @@ export default {
                 icon: "error",
                 title: "Oops...",
                 text: "Server error atau cek koneksi anda",
+              });
+            });
+        }
+      });
+    },
+    deleteAll() {
+      this.$swal({
+        title: "Warning!",
+        text: "Hapus semua pengajuan?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await this.$axios
+            .get(`/pengajuan/destroy/${this.$store.state.auth.user[0].id_user}`)
+            .then(() => {
+              this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "Semua pengajuan telah dihapus",
+              });
+              this.$nuxt.refresh();
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Cek server atau koneksi anda",
               });
             });
         }

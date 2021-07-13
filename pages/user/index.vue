@@ -8,7 +8,9 @@
         <NuxtLink class="btn btn-sm btn-outline-primary" to="/user/add"
           >Tambah User</NuxtLink
         >
-        <!-- <b-button variant="outline-info btn-sm">Reset User</b-button> -->
+        <b-button variant="outline-info btn-sm" @click="deleteAll"
+          >Reset User</b-button
+        >
       </div>
       <b-row>
         <b-col sm="5" md="6" class="my-1">
@@ -109,7 +111,10 @@
             :key="'edit' + row.index"
             >Ubah</NuxtLink
           >
-          <button class="btn btn-sm btn-outline-danger" @click="deleteUser(row)">
+          <button
+            class="btn btn-sm btn-outline-danger"
+            @click="deleteUser(row)"
+          >
             Hapus
           </button>
         </template>
@@ -164,14 +169,14 @@ export default {
     ...mapActions("user", ["getuser", "deleteuser"]),
     deleteUser(row) {
       this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Warning!",
+        text: "Yakin menghapus user ini?",
         icon: "warning",
         width: 300,
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
           this.deleteuser(row.item.id_user)
@@ -180,15 +185,50 @@ export default {
                 width: 300,
                 icon: "success",
                 title: "Congrats!",
-                text: "User data was deleted successfully",
+                text: "User data telah dihapus",
               });
+              this.$nuxt.refresh();
             })
             .catch(() => {
               this.$swal({
                 width: 300,
                 icon: "error",
                 title: "Oops...",
-                text: "Please check your server or internet connection",
+                text: "Cek server atau koneksi anda",
+              });
+            });
+        }
+      });
+    },
+    deleteAll() {
+      this.$swal({
+        title: "Warning!",
+        text: "Yakin menghapus user ini?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$axios
+            .post("/user/destroy")
+            .then(() => {
+              this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "User data telah dihapus",
+              });
+              this.$nuxt.refresh();
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Cek server atau koneksi anda",
               });
             });
         }

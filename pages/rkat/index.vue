@@ -23,7 +23,9 @@
             <NuxtLink class="btn btn-sm btn-outline-primary" to="/rkat/add"
               >Tambah RKAT</NuxtLink
             >
-            <!-- <b-button variant="outline-info btn-sm">Reset RKAT</b-button> -->
+            <b-button variant="outline-info btn-sm" @click="deleteAll"
+              >Reset RKAT</b-button
+            >
           </div>
           <b-row>
             <b-col sm="5" md="6" class="my-1">
@@ -100,7 +102,10 @@
                 :key="'edit' + row.index"
                 >Ubah</NuxtLink
               >
-              <button class="btn btn-sm btn-outline-danger" @click="destroyrkat(row)">
+              <button
+                class="btn btn-sm btn-outline-danger"
+                @click="destroyrkat(row)"
+              >
                 Hapus
               </button>
             </template>
@@ -165,14 +170,14 @@ export default {
 
     destroyrkat(row) {
       this.$swal({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: "Warning!",
+        text: "Yakin menghapus RKAT?",
         icon: "warning",
         width: 300,
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
           this.deleterkat(row.item.id_rkat)
@@ -183,6 +188,7 @@ export default {
                 title: "Congrats!",
                 text: "RKAT data was deleted successfully",
               });
+              this.$nuxt.refresh();
             })
             .catch(() => {
               this.$swal({
@@ -190,6 +196,40 @@ export default {
                 icon: "error",
                 title: "Oops...",
                 text: "Please check your server or internet connection",
+              });
+            });
+        }
+      });
+    },
+    deleteAll() {
+      this.$swal({
+        title: "Warning!",
+        text: "Yakin menghapus semua RKAT?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await this.$axios
+            .get("/rkat/destroy")
+            .then(() => {
+              this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "RKAT telah dihapus",
+              });
+              this.$nuxt.refresh();
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Cek server atau koneksi anda",
               });
             });
         }
