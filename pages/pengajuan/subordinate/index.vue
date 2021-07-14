@@ -145,13 +145,13 @@
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
-                class="btn btn-sm btn-outline-info"
+                class="btn btn-sm btn-outline-info mt-1"
                 :to="'edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
               <button
-                class="btn btn-sm btn-outline-danger"
+                class="btn btn-sm btn-outline-danger mt-1"
                 @click="destroypengajuan(row)"
               >
                 Hapus
@@ -196,8 +196,8 @@ export default {
         "actions",
       ],
 
-      perPage: 5,
-      pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+      perPage: 10,
+      pageOptions: [5, 10, 15, 20, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
       items: this.pengajuan,

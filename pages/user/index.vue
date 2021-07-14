@@ -106,13 +106,13 @@
 
         <template v-slot:cell(Action)="row">
           <NuxtLink
-            class="btn btn-sm btn-outline-info"
+            class="btn btn-sm btn-outline-info mt-1"
             :to="'user/edit/' + row.item.id_user"
             :key="'edit' + row.index"
             >Ubah</NuxtLink
           >
           <button
-            class="btn btn-sm btn-outline-danger"
+            class="btn btn-sm btn-outline-danger mt-1"
             @click="deleteUser(row)"
           >
             Hapus
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   async asyncData({ store }) {
@@ -148,7 +148,7 @@ export default {
         "Action",
       ],
       perPage: 10,
-      pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+      pageOptions: [5, 10, 15, 20, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
     };
@@ -163,7 +163,6 @@ export default {
     },
   },
   mounted() {
-    // console.log(this.user);
   },
   methods: {
     ...mapActions("user", ["getuser", "deleteuser"]),

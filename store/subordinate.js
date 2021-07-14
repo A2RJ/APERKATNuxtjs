@@ -4,6 +4,7 @@ export const state = () => ({
     status: [],
     history: [],
     subordinate: [],
+    subordinatesGrafik: [],
     errors: [],
     kodeRKAT: [],
     approve: null,
@@ -41,6 +42,10 @@ export const mutations = {
 
     SET_SUBORDINATE(state, payload) {
         state.subordinate = payload
+    },
+
+    SET_SUBORDINATE_GRAFIK(state, payload) {
+        state.subordinatesGrafik = payload
     },
 
     SET_ERRORS(state, payload) {
@@ -205,7 +210,7 @@ export const actions = {
     getSubordinatesGrafik({ commit }, payload) {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/pengajuan/getSubordinatesGrafik/${payload}`).then((response) => {
-                commit('SET_SUBORDINATE', response.data)
+                commit('SET_SUBORDINATE_GRAFIK', response.data)
                 resolve()
             })
         })

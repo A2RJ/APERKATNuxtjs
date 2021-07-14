@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from "vuex";
+import { mapActions } from "vuex";
 import grafikDetail from "~/components/form/grafikDetail.vue";
 
 export default {
@@ -23,8 +23,6 @@ export default {
     components: grafikDetail,
   },
   mounted() {
-    // this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-    // this.SET_USER_DATA(this.$store.state.auth.user[0]);
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuanID", "getstatus", "gethistory"]),

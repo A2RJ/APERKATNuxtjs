@@ -5,7 +5,14 @@
       <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div
-          class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+          class="
+            card-header
+            py-3
+            d-flex
+            flex-row
+            align-items-center
+            justify-content-between
+          "
         >
           <h6 class="m-0 font-weight-bold text-primary">Grafik Pengajuan</h6>
         </div>
@@ -51,20 +58,20 @@
               </b-form-group>
             </b-col>
           </b-row>
-            <!-- sticky-header -->
+          <!-- sticky-header -->
           <b-table
-            responsive
+            id="my-table"
             head-variant="light"
             hover
-            id="my-table"
-            :items="subordinate.data"
+            responsive
+            show-empty
+            :items="items"
             :fields="fields"
             :filter="filter"
             :per-page="perPage"
             :current-page="currentPage"
-            show-empty
           >
-                <template v-slot:cell(nama_struktur)="row">
+            <template v-slot:cell(nama_struktur)="row">
               <p
                 v-if="
                   row.item.nama_struktur !== '0' &&
@@ -96,6 +103,9 @@
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
+             <template v-slot:cell(created_at)="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
@@ -121,12 +131,15 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch("subordinate/getSubordinatesGrafik", store.$auth.$state.user[0].id_user),
+      store.dispatch(
+        "subordinate/getSubordinatesGrafik",
+        store.$auth.$state.user[0].id_user
+      ),
     ]);
     return;
   },
@@ -135,25 +148,28 @@ export default {
       fields: [
         { key: "fullname", label: "User" },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
+        { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],
 
-      perPage: 5,
-      pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+      perPage: 2,
+      pageOptions: [10, 15, 20, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
-      items: this.subordinate,
+      items: [],
     };
   },
   computed: {
     ...mapState("subordinate", {
-      subordinate: (state) => state.subordinate,
+      subordinatesGrafik: (state) => state.subordinatesGrafik,
     }),
     rows() {
-      return this.subordinate.length;
+      return this.subordinatesGrafik.data.length;
     },
   },
-  mounted() {},
+  mounted() {
+    this.items = this.subordinatesGrafik.data;
+  },
   methods: {
     ...mapActions("subordinate", ["getpengajuan"]),
   },

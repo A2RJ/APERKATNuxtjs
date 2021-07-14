@@ -199,9 +199,14 @@
               name="unit"
             >
               <template #first v-if="this.$route.params.id">
-                <b-form-select-option :value="mainIKU.value">{{
-                  mainIKU.name
+                <b-form-select-option :value="kode_rkat.value">{{
+                  kode_rkat.name
                 }}</b-form-select-option>
+              </template>
+              <template v-else>
+                <b-form-select-option :value="null" disabled
+                  >-- Please select an option --</b-form-select-option
+                >
               </template>
             </b-form-select>
             <b-form-text id="kode_rkat" v-if="!$v.form.kode_rkat.required">
@@ -633,17 +638,7 @@ import { required, numeric, requiredIf } from "vuelidate/lib/validators";
 export default {
   created() {
     if (this.$route.params.id) {
-      this.$axios
-        .get(`rkat/kodeRKATByValue/${this.forms.kode_rkat}`)
-        .then((res) => {
-          this.mainIKU.value = res.data.data[0].value;
-          this.mainIKU.name = res.data.data[0].text;
-        });
-
-      this.$axios.get(`rkat/byKode/${this.forms.kode_rkat}`).then((res) => {
-        this.rkat.nama_kegiatan = res.data.data.nama_program;
-        this.rkat.tujuan = res.data.data.tujuan;
-      });
+      this.getDataRKAT(this.forms.kode_rkat);
 
       this.$axios
         .get(`iku/child1ByID/${this.forms.id_iku_child1}`)
@@ -728,7 +723,7 @@ export default {
       child2: null,
       option: false,
       redirects: "/pengajuan/subordinate/",
-      mainIKU: {
+      kode_rkat: {
         name: "",
         value: "",
       },
@@ -1106,6 +1101,8 @@ export default {
       this.$axios.get(`rkat/byKode/${params}`).then((res) => {
         this.rkat.nama_kegiatan = res.data.data.nama_program;
         this.rkat.tujuan = res.data.data.tujuan;
+        this.kode_rkat.value = res.data.data.id_rkat;
+        this.kode_rkat.name = res.data.data.kode_rkat;
       });
     },
     numberFormat() {

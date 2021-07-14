@@ -322,11 +322,7 @@
             label="Atas Nama Penerima"
             label-for="atn"
           >
-            <b-form-input
-              v-model="form.atn"
-              id="atn"
-              size="sm"
-            ></b-form-input>
+            <b-form-input v-model="form.atn" id="atn" size="sm"></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -386,6 +382,7 @@ import { mapActions, mapState } from "vuex";
 export default {
   created() {
     if (this.$route.params.id) {
+      
       this.$axios
         .get(`iku/child1ByID/${this.forms.id_iku_child1}`)
         .then((res) => {
@@ -491,6 +488,7 @@ export default {
         keuangan: false,
         kegiatan: false,
       },
+      kode: null
     };
   },
   computed: {
@@ -531,6 +529,7 @@ export default {
       this.$axios.get(`rkat/byKode/${params}`).then((res) => {
         this.rkat.nama_kegiatan = res.data.data.nama_program;
         this.rkat.tujuan = res.data.data.tujuan;
+        this.form.kode_rkat = res.data.data.kode_rkat;
       });
     },
   },

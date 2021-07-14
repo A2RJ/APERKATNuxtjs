@@ -14,7 +14,9 @@
             justify-content-between
           "
         >
-          <h6 class="m-0 font-weight-bold text-primary">Pengajuan Sub Divisi</h6>
+          <h6 class="m-0 font-weight-bold text-primary">
+            Pengajuan Sub Divisi
+          </h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
@@ -60,16 +62,16 @@
           </b-row>
           <!-- sticky-header -->
           <b-table
-            responsive
+            id="my-table"
             head-variant="light"
             hover
-            id="my-table"
-            :items="subordinate"
+            responsive
+            show-empty
+            :items="items"
             :fields="fields"
             :filter="filter"
             :per-page="perPage"
             :current-page="currentPage"
-            show-empty
           >
             <template v-slot:cell(fullname)="row">
               <p>
@@ -158,7 +160,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   async asyncData({ store }) {
@@ -180,11 +182,11 @@ export default {
         "actions",
       ],
 
-      perPage: 5,
-      pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+      perPage: 2,
+      pageOptions: [10, 15, 20, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,
-      items: this.subordinate,
+      items: [],
     };
   },
   computed: {
@@ -195,7 +197,9 @@ export default {
       return this.subordinate.length;
     },
   },
-  mounted() {},
+  mounted() {
+    this.items = this.subordinate;
+  },
   methods: {
     ...mapActions("subordinate", ["getpengajuan"]),
   },

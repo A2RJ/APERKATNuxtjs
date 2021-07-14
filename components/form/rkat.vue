@@ -264,6 +264,12 @@
       >
         <i class="text-danger">Rencara anggaran is required</i>
       </b-form-text>
+      <b-form-text
+        id="rencara_anggaran"
+        v-if="!$v.form.rencara_anggaran.numeric"
+      >
+        <i class="text-danger">Rencara anggaran must numeric</i>
+      </b-form-text>
     </b-form-group>
 
     <b-form-group
@@ -281,6 +287,9 @@
       ></b-form-input>
       <b-form-text id="total_anggaran" v-if="!$v.form.total_anggaran.required">
         <i class="text-danger">Total anggaran is required</i>
+      </b-form-text>
+      <b-form-text id="total_anggaran" v-if="!$v.form.total_anggaran.numeric">
+        <i class="text-danger">Total anggaran must numeric</i>
       </b-form-text>
     </b-form-group>
     <button class="btn btn-sm btn-primary float-right" v-show="button" @click="submit">
@@ -387,11 +396,7 @@ export default {
       total_anggaran: {
         required,
         numeric,
-      },
-      // sisa_anggaran: {
-      //   required,
-      //   numeric
-      // },
+      }
     },
   },
   mounted() {
