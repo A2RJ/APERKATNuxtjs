@@ -1,5 +1,11 @@
 <template>
   <div class="card-body">
+    <b-button
+      v-if="this.$route.params.id"
+      variant="outline-success btn-sm mb-3"
+      @click="download"
+      >Download RKAT</b-button
+    >
     <b-form-group
       label-cols="4"
       label-cols-lg="2"
@@ -255,6 +261,7 @@
     >
       <b-form-input
         v-model.trim="$v.form.rencara_anggaran.$model"
+        v-on:keyup="numberFormatRencanaAnggaran"
         id="rencara_anggaran"
         size="sm"
       ></b-form-input>
@@ -263,12 +270,6 @@
         v-if="!$v.form.rencara_anggaran.required"
       >
         <i class="text-danger">Rencara anggaran is required</i>
-      </b-form-text>
-      <b-form-text
-        id="rencara_anggaran"
-        v-if="!$v.form.rencara_anggaran.numeric"
-      >
-        <i class="text-danger">Rencara anggaran must numeric</i>
       </b-form-text>
     </b-form-group>
 
@@ -282,17 +283,19 @@
     >
       <b-form-input
         v-model.trim="$v.form.total_anggaran.$model"
+        v-on:keyup="numberFormatTotalAnggaran"
         id="total_anggaran"
         size="sm"
       ></b-form-input>
       <b-form-text id="total_anggaran" v-if="!$v.form.total_anggaran.required">
         <i class="text-danger">Total anggaran is required</i>
       </b-form-text>
-      <b-form-text id="total_anggaran" v-if="!$v.form.total_anggaran.numeric">
-        <i class="text-danger">Total anggaran must numeric</i>
-      </b-form-text>
     </b-form-group>
-    <button class="btn btn-sm btn-primary float-right" v-show="button" @click="submit">
+    <button
+      class="btn btn-sm btn-primary float-right"
+      v-show="button"
+      @click="submit"
+    >
       Simpan RKAT
     </button>
   </div>
@@ -325,6 +328,8 @@ export default {
         total_anggaran: this.forms.total_anggaran,
         sisa_anggaran: this.forms.sisa_anggaran,
       };
+      this.numberFormatRencanaAnggaran();
+      this.numberFormatTotalAnggaran();
     }
   },
   data() {
@@ -391,12 +396,10 @@ export default {
       },
       rencara_anggaran: {
         required,
-        numeric,
       },
       total_anggaran: {
         required,
-        numeric,
-      }
+      },
     },
   },
   mounted() {
@@ -414,45 +417,73 @@ export default {
     submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.failed();
+        this.failed("Pastikan semua fields diisi!");
       } else {
+        this.form.rencara_anggaran = this.form.rencara_anggaran.replaceAll(".", "");
+        this.form.total_anggaran = this.form.total_anggaran.replaceAll(".", "");
         if (this.$route.name === "rkat-edit-id") {
           let form = Object.assign({ id: this.$route.params.id }, this.form);
           this.updaterkat(form)
             .then(() => {
-              this.success();
+              this.success("Data telah disimpan");
               this.$router.push("/rkat");
             })
             .catch((e) => {
-              this.failed();
+              this.failed("Pastikan semua fields diisi!");
             });
         } else {
           this.storerkat(this.form)
             .then(() => {
-              this.success();
+              this.success("Data telah disimpan");
               this.$router.push("/rkat");
             })
             .catch((e) => {
-              this.failed();
+              this.failed("Pastikan semua fields diisi!");
             });
         }
       }
     },
-    success() {
+    success(params) {
       this.$swal({
         width: 300,
         icon: "success",
         title: "Congrats!",
-        text: "Data telah disimpan",
+        text: params,
       });
     },
-    failed() {
+    failed(params) {
       this.$swal({
         width: 300,
         icon: "error",
         title: "Oops...",
-        text: "Pastikan semua fields diisi!",
+        text: params,
       });
+    },
+    download() {
+      this.$axios
+        .get(`/rkat/pdf_kode_rkat/${this.form.kode_rkat}`, {
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "RKAT.pdf");
+          document.body.appendChild(link);
+          link.click();
+          this.success("RKAT telah dihapus");
+        })
+        .catch(() => {
+          this.failed("Cek server atau koneksi anda");
+        });
+    },
+    numberFormatRencanaAnggaran() {
+      this.form.rencara_anggaran = this.$formatRupiah(
+        this.form.rencara_anggaran
+      );
+    },
+    numberFormatTotalAnggaran() {
+      this.form.total_anggaran = this.$formatRupiah(this.form.total_anggaran);
     },
   },
 };

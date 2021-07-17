@@ -19,17 +19,7 @@
       </div>
     </div>
 
-    <div
-      class="col-xl-12 col-lg-12"
-      v-show="
-        formPencairan ||
-        formLPJ ||
-        option ||
-        form.pencairan ||
-        form.lpj_keuangan ||
-        form.lpj_kegiatan
-      "
-    >
+    <div class="col-xl-12 col-lg-12">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
@@ -523,7 +513,22 @@ export default {
       "getIkuChild2",
     ]),
     print() {
-      console.log("Printing");
+      this.$axios
+        .get(`pengajuan/pdf_pengajuan/${this.$route.params.id}`, {
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "RKAT.pdf");
+          document.body.appendChild(link);
+          link.click();
+          this.success("Pengajuan telah didownload!");
+        })
+        .catch(() => {
+          this.failed("Whoops fungsi print masih development");
+        });
     },
     getDataRKAT(params) {
       this.$axios.get(`rkat/byKode/${params}`).then((res) => {

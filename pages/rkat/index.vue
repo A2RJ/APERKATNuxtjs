@@ -23,6 +23,9 @@
             <NuxtLink class="btn btn-sm btn-outline-primary" to="/rkat/add"
               >Tambah RKAT</NuxtLink
             >
+            <b-button variant="outline-success btn-sm" @click="download"
+              >Download RKAT</b-button
+            >
             <b-button variant="outline-info btn-sm" @click="deleteAll"
               >Reset RKAT</b-button
             >
@@ -234,6 +237,34 @@ export default {
             });
         }
       });
+    },
+    async download() {
+      await this.$axios
+        .get("/rkat/pdf_rkat", {
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "RKAT.pdf");
+          document.body.appendChild(link);
+          link.click();
+          this.$swal({
+            width: 300,
+            icon: "success",
+            title: "Congrats!",
+            text: "RKAT telah dihapus",
+          });
+        })
+        .catch(() => {
+          this.$swal({
+            width: 300,
+            icon: "error",
+            title: "Oops...",
+            text: "Cek server atau koneksi anda",
+          });
+        });
     },
   },
 };

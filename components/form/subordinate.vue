@@ -19,17 +19,7 @@
       </div>
     </div>
 
-    <div
-      class="col-xl-12 col-lg-12"
-      v-show="
-        formPencairan ||
-        formLPJ ||
-        option ||
-        form.pencairan ||
-        form.lpj_keuangan ||
-        form.lpj_kegiatan
-      "
-    >
+    <div class="col-xl-12 col-lg-12">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
@@ -494,24 +484,15 @@
           >
             <b-form-input
               v-model.trim="$v.form.biaya_program.$model"
-              v-on:keyup="numberFormat"
+              v-on:keyup="numberFormatBiayaProgram"
               id="biaya_program"
               size="sm"
             ></b-form-input>
-            <b-form-text id="biaya_program">
-              <p>{{ number }}</p>
-            </b-form-text>
             <b-form-text
               id="biaya_program"
               v-if="!$v.form.biaya_program.required"
             >
               <i class="text-danger">Biaya program is required</i>
-            </b-form-text>
-            <b-form-text
-              id="biaya_program"
-              v-if="!$v.form.biaya_program.numeric"
-            >
-              <i class="text-danger">Biaya program is numeric</i>
             </b-form-text>
           </b-form-group>
 
@@ -638,22 +619,6 @@ import { required, numeric, requiredIf } from "vuelidate/lib/validators";
 export default {
   created() {
     if (this.$route.params.id) {
-      this.getDataRKAT(this.forms.kode_rkat);
-
-      this.$axios
-        .get(`iku/child1ByID/${this.forms.id_iku_child1}`)
-        .then((res) => {
-          (this.selectChild1.value = res.data.data.value),
-            (this.selectChild1.name = res.data.data.text);
-        });
-
-      this.$axios
-        .get(`iku/child2ByID/${this.forms.id_iku_child2}`)
-        .then((res) => {
-          (this.selectChild2.value = res.data.data.value),
-            (this.selectChild2.name = res.data.data.text);
-        });
-
       this.form = {
         kode_rkat: this.forms.kode_rkat,
         id_user: this.forms.id_user,
@@ -680,6 +645,10 @@ export default {
         validasi_status: this.forms.validasi_status,
         nama_status: this.forms.nama_status,
       };
+      this.rab = this.forms.rab;
+      this.getDataRKAT(this.forms.kode_rkat);
+      this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
+      this.numberFormatBiayaProgram();
     }
   },
   data() {
@@ -791,7 +760,6 @@ export default {
       },
       biaya_program: {
         required,
-        numeric,
       },
       bank: {
         required,
@@ -894,6 +862,9 @@ export default {
         }
       }
     },
+    replace() {
+      this.form.biaya_program = this.form.biaya_program.replaceAll(".", "");
+    },
     onSelect() {
       const file = this.$refs.file.files[0];
       this.file = file;
@@ -920,6 +891,7 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
+          this.replace()
           this.approved(
             Object.assign(
               { id: this.$route.params.id, message: this.message, status: 2 },
@@ -946,6 +918,7 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
+          this.replace()
           this.declined(
             Object.assign(
               { id: this.$route.params.id, message: this.message, status: 0 },
@@ -970,6 +943,17 @@ export default {
         this.child2 = this.ikuChild2.data;
       });
     },
+    doubleIKU(params1, params2) {
+      this.$axios.get(`iku/child1ByID/${params1}`).then((res) => {
+        (this.selectChild1.value = res.data.data.value),
+          (this.selectChild1.name = res.data.data.text);
+      });
+
+      this.$axios.get(`iku/child2ByID/${params2}`).then((res) => {
+        (this.selectChild2.value = res.data.data.value),
+          (this.selectChild2.name = res.data.data.text);
+      });
+    },
     async submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
@@ -979,6 +963,7 @@ export default {
           if (this.file.length != 0) {
             await this.upload();
           }
+          this.replace()
           await this.updatepengajuan(
             Object.assign(
               {
@@ -998,6 +983,7 @@ export default {
             });
         } else {
           await this.upload();
+          this.replace()
           await this.storepengajuan(
             Object.assign({ message: "Input pengajuan", status: 1 }, this.form)
           )
@@ -1005,7 +991,7 @@ export default {
               this.success("Data telah disimpan!");
               this.$router.push(this.redirects);
             })
-            .catch((e) => {
+            .catch(() => {
               this.failed("Pastikan semua fields diisi!");
             });
         }
@@ -1024,6 +1010,7 @@ export default {
     },
     async buktiTF() {
       await this.uploadBuktiTF();
+      this.replace()
       let form = Object.assign(
         {
           id: this.$route.params.id,
@@ -1055,6 +1042,7 @@ export default {
         try {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_keuangan = res.data;
+            this.replace()
             let form = Object.assign(
               {
                 id: this.$route.params.id,
@@ -1078,6 +1066,7 @@ export default {
         try {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_kegiatan = res.data;
+            this.replace()
             let form = Object.assign(
               {
                 id: this.$route.params.id,
@@ -1095,7 +1084,22 @@ export default {
       }
     },
     print() {
-      this.failed("Whoops fungsi print masih development");
+      this.$axios
+        .get(`pengajuan/pdf_pengajuan/${this.$route.params.id}`, {
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "RKAT.pdf");
+          document.body.appendChild(link);
+          link.click();
+          this.success("Pengajuan telah didownload!");
+        })
+        .catch(() => {
+          this.failed("Whoops fungsi print masih development");
+        });
     },
     getDataRKAT(params) {
       this.$axios.get(`rkat/byKode/${params}`).then((res) => {
@@ -1105,14 +1109,8 @@ export default {
         this.kode_rkat.name = res.data.data.kode_rkat;
       });
     },
-    numberFormat() {
-      let num = `"${this.form.biaya_program}"`;
-      let number = num.replace(",", "");
-      let number2 = number.replace(".", "");
-      this.number = new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      }).format(number2);
+    numberFormatBiayaProgram() {
+      this.form.biaya_program = this.$formatRupiah(this.form.biaya_program);
     },
     success(params) {
       this.$swal({

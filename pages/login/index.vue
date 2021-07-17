@@ -124,6 +124,7 @@
                     required
                     v-model="auth.password"
                   />
+                  
                   <div>
                     <svg
                       style="margin-left: 0.75rem; cursor: pointer"
@@ -181,6 +182,7 @@ export default {
       auth: {
         email: null,
         password: null,
+        number: null,
       },
       failed: false,
       message: "",
