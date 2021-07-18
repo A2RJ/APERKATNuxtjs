@@ -430,6 +430,9 @@
               name="unit"
               @change="getIku2(form.id_iku_child1)"
             >
+            <b-form-select-option :value="null" disabled
+                  >-- Please select an option --</b-form-select-option
+                >
               <template #first v-if="this.$route.params.id">
                 <b-form-select-option :value="selectChild1.value">{{
                   selectChild1.name
@@ -460,6 +463,9 @@
               class="mt-3"
               name="unit"
             >
+            <b-form-select-option :value="null" disabled
+                  >-- Please select an option --</b-form-select-option
+                >
               <template #first v-if="this.$route.params.id">
                 <b-form-select-option :value="selectChild2.value">{{
                   selectChild2.name
@@ -1057,7 +1063,7 @@ export default {
               this.form
             );
             this.updatepengajuan(form);
-            this.$router.push("/pengajuan/subordinate/");
+            this.$router.push("/pengajuan/subordinate");
           });
         } catch (e) {
           this.failed("Whoops Server Error");
@@ -1081,7 +1087,7 @@ export default {
               this.form
             );
             this.updatepengajuan(form);
-            this.$router.push("/pengajuan/subordinate/");
+            this.$router.push("/pengajuan/subordinate");
           });
         } catch (e) {
           this.failed("Whoops Server Error");
