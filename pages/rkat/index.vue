@@ -95,8 +95,8 @@
             <template v-slot:cell(created_at)="row">
               {{ row.item.created_at | convertDate }}
             </template>
-            <template v-slot:cell(sisa_anggaran)="row">
-              RP. {{ row.item.sisa_anggaran | currency }}
+            <template v-slot:cell(anggaran_digunakan)="row">
+              RP. {{ row.item.anggaran_digunakan | currency }}
             </template>
             <template v-slot:cell(actions)="row">
               <NuxtLink
@@ -144,7 +144,7 @@ export default {
         { key: "mulai_program", label: "Waktu Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         { key: "total_anggaran", label: "Total Anggaran" },
-        { key: "sisa_anggaran", label: "Anggaran dicairkan" },
+        { key: "anggaran_digunakan", label: "Anggaran dicairkan" },
         "total_anggaran",
         "actions",
       ],

@@ -326,7 +326,7 @@ export default {
         sumber_anggaran: this.forms.sumber_anggaran,
         rencara_anggaran: this.forms.rencara_anggaran,
         total_anggaran: this.forms.total_anggaran,
-        sisa_anggaran: this.forms.sisa_anggaran,
+        anggaran_digunakan: this.forms.anggaran_digunakan,
       };
       this.numberFormatRencanaAnggaran();
       this.numberFormatTotalAnggaran();
@@ -349,7 +349,7 @@ export default {
         sumber_anggaran: "",
         rencara_anggaran: "",
         total_anggaran: "",
-        sisa_anggaran: 0,
+        anggaran_digunakan: 0,
       },
       selected: null,
       options: null,

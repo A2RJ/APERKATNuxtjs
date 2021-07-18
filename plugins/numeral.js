@@ -27,7 +27,7 @@ Vue.filter('convertDate', value => {
 Vue.use({
     install(Vue, options) {
         Vue.prototype.$formatRupiah = (params) => {
-            if (params !== null) {
+            if (params !== null && params !== undefined) {
                 var number_string = params.replace(/[^,\d]/g, "").toString(),
                     split = number_string.split(","),
                     sisa = split[0].length % 3,

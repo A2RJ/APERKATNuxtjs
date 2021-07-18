@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="col-xl-12 col-lg-12">
+    <div class="col-xl-12 col-lg-12" v-if="this.$route.params.id">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
@@ -855,9 +855,14 @@ export default {
           }
         }
         if (this.status[this.status.length - 2].status) {
-          this.formLPJ = true;
-          if (this.form.lpj_keuangan && this.form.lpj_kegiatan) {
-            this.formLPJ = false;
+          this.form.lpj_keuangan && this.form.lpj_kegiatan
+            ? (this.formLPJ = false)
+            : (this.formLPJ = true);
+          if (this.$store.state.auth.user[0].level == 1) {
+            this.form.lpj_keuangan && this.form.lpj_kegiatan
+              ? (this.option = true)
+              : (this.option = false);
+            if (this.status[this.status.length - 1].status) this.option = false;
           }
         }
       }
@@ -891,7 +896,7 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.replace()
+          this.replace();
           this.approved(
             Object.assign(
               { id: this.$route.params.id, message: this.message, status: 2 },
@@ -918,7 +923,7 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.replace()
+          this.replace();
           this.declined(
             Object.assign(
               { id: this.$route.params.id, message: this.message, status: 0 },
@@ -963,7 +968,7 @@ export default {
           if (this.file.length != 0) {
             await this.upload();
           }
-          this.replace()
+          this.replace();
           await this.updatepengajuan(
             Object.assign(
               {
@@ -983,7 +988,7 @@ export default {
             });
         } else {
           await this.upload();
-          this.replace()
+          this.replace();
           await this.storepengajuan(
             Object.assign({ message: "Input pengajuan", status: 1 }, this.form)
           )
@@ -1010,7 +1015,7 @@ export default {
     },
     async buktiTF() {
       await this.uploadBuktiTF();
-      this.replace()
+      this.replace();
       let form = Object.assign(
         {
           id: this.$route.params.id,
@@ -1042,7 +1047,7 @@ export default {
         try {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_keuangan = res.data;
-            this.replace()
+            this.replace();
             let form = Object.assign(
               {
                 id: this.$route.params.id,
@@ -1066,7 +1071,7 @@ export default {
         try {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_kegiatan = res.data;
-            this.replace()
+            this.replace();
             let form = Object.assign(
               {
                 id: this.$route.params.id,

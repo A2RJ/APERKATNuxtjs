@@ -84,8 +84,8 @@
           <template v-slot:cell(total_anggaran)="row">
             RP. {{ row.item.total_anggaran | currency }}
           </template>
-          <template v-slot:cell(sisa_anggaran)="row">
-            RP. {{ row.item.sisa_anggaran | currency }}
+          <template v-slot:cell(anggaran_digunakan)="row">
+            RP. {{ row.item.anggaran_digunakan | currency }}
           </template>
           <template v-slot:cell(mulai_program)="row">
             <p>{{ row.item.mulai_program | convertDate }}</p>
@@ -179,7 +179,7 @@ export default {
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
         { key: "total_anggaran", label: "Total Anggaran" },
-        { key: "sisa_anggaran", label: "Anggaran dicairkan" },
+        { key: "anggaran_digunakan", label: "Anggaran dicairkan" },
         { key: "mulai_program", label: "Waktu Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
