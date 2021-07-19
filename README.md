@@ -2,8 +2,6 @@
 - Aplikasi RKAT (Rencana Kerja dan Anggaran Tahunan) Universitas
 
 # On Progress
-- RAB
-- 
 # Menu
 - Login
 - Dashboard
