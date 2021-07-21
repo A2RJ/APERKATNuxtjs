@@ -52,6 +52,9 @@
       >
         <i class="fas fa-fw fa-cog"></i>
         <span>PENGAJUAN</span>
+        <b-badge v-if="badge != 0" pill variant="light">{{
+          badge + badgeSelf
+        }}</b-badge>
       </a>
       <div
         id="collapseTwo"
@@ -64,16 +67,21 @@
           v-if="this.$store.state.auth.user"
         >
           <h6 class="collapse-header">Daftar Pengajuan</h6>
-          <NuxtLink
-            class="collapse-item"
-            :to="'/pengajuan/subordinate/'"
-            >Pengajuan</NuxtLink
+          <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/'"
+            >Pengajuan<b-badge v-if="badgeSelf != 0" pill variant="primary">{{
+              badgeSelf
+            }}</b-badge></NuxtLink
           >
           <NuxtLink
             class="collapse-item"
             v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
             :to="'/pengajuan/supervisor/'"
-            >Pengajuan Sub Divisi</NuxtLink
+            >Pengajuan Sub Divisi<b-badge
+              v-if="badge != 0"
+              pill
+              variant="primary"
+              >{{ badge }}</b-badge
+            ></NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -112,25 +120,65 @@ export default {
       warek: false,
       rektor: false,
       sekniv: false,
+      badge: 0,
+      badgeSelf: 0,
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    interval() {
+      // setInterval(() => {
+        this.$axios
+          .get(
+            `/pengajuan/countMessage/${this.$store.state.auth.user[0].id_user}`
+          )
+          .then((response) => {
+            this.badge = response.data.data;
+          });
+      // }, 1000);
+    },
+    intervalSelf() {
+      // setInterval(() => {
+        this.$axios
+          .get(
+            `/pengajuan/countMessageSelf/${this.$store.state.auth.user[0].id_user}`
+          )
+          .then((response) => {
+            this.badgeSelf = response.data.data;
+          });
+      // }, 1000);
+    },
+  },
   mounted() {
     if (this.$store.state.auth.loggedIn) {
       let data = this.$store.state.auth.user[1].level;
       if (data == "prodi") {
         this.prodi = true;
-      }else if (data == "fakultas") {
+      } else if (data == "fakultas") {
         this.fakultas = true;
-      }else if (data == "dirKeuangan") {
+      } else if (data == "dirKeuangan") {
         this.dirKeuangan = true;
-      }else if (data == "warek") {
+      } else if (data == "warek") {
         this.warek = true;
-      }else if (data == "rektor") {
+      } else if (data == "rektor") {
         this.rektor = true;
-      }else if (data == "sekniv") {
+      } else if (data == "sekniv") {
         this.sekniv = true;
+      }
+
+      if (data !== "prodi") {
+        if (this.$store.state.auth.user[0].id_user) {
+          this.interval();
+        } else {
+          // clearInterval(this.interval());
+        }
+      }
+      if (data !== "prodi") {
+        if (this.$store.state.auth.user[0].id_user) {
+          this.intervalSelf();
+        } else {
+          // clearInterval(this.intervalSelf());
+        }
       }
     }
   },

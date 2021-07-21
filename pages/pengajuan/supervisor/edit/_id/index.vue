@@ -25,12 +25,6 @@ export default {
   mounted() {
     },
   methods: {
-    ...mapMutations([
-      "SET_IS_AUTH",
-      "SET_USER_DATA",
-      "SET_STATUS",
-      "SET_HISTORY",
-    ]),
     ...mapActions("subordinate", ["getpengajuanID", "getstatus", "gethistory"]),
   },
 };

@@ -72,6 +72,7 @@
             :filter="filter"
             :per-page="perPage"
             :current-page="currentPage"
+            :tbody-tr-class="rowClass"
           >
             <template v-slot:cell(fullname)="row">
               <p>
@@ -202,6 +203,11 @@ export default {
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuan"]),
+    rowClass(item, type){
+      console.log(item);
+      if (!item || type !== 'row') return
+      if (item.status_message === 0) return 'table-success'
+    }
   },
 };
 </script>
