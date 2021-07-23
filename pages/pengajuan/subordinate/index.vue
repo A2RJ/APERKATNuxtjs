@@ -70,16 +70,17 @@
           </b-row>
           <!-- sticky-header -->
           <b-table
-            responsive
-            head-variant="light"
             hover
+            show-empty
+            responsive
             id="my-table"
-            :items="pengajuan"
+            head-variant="light"
+            :filter="filter"
             :fields="fields"
+            :items="pengajuan"
             :per-page="perPage"
             :current-page="currentPage"
-            :filter="filter"
-            show-empty
+            :tbody-tr-class="rowClass"
           >
             <template v-slot:cell(fullname)="row">
               <p>
@@ -215,7 +216,11 @@ export default {
   mounted() {},
   methods: {
     ...mapActions("subordinate", ["getpengajuan", "deletepengajuan"]),
-
+    rowClass(item, type) {
+      console.log(item);
+      if (!item || type !== "row") return;
+      if (item.status_message === 0) return "table-success";
+    },
     destroypengajuan(row) {
       this.$swal({
         title: "Warning!",

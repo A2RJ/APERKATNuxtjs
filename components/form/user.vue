@@ -181,9 +181,9 @@
       ></b-form-input>
       <b-form-text
         id="nomor_wa"
-        v-if="!$v.form.nomor_wa.required || !$v.form.nomor_wa.numeric"
+        v-if="!$v.form.nomor_wa.required || !$v.form.nomor_wa.numeric || !$v.form.nomor_wa.maxLength"
       >
-        <i class="text-danger">Nomor WA is required and numeric</i>
+        <i class="text-danger">Nomor WA is required, numeric and max length is 15</i>
       </b-form-text>
     </b-form-group>
     <button class="btn btn-sm btn-primary float-right" @click="submit">Simpan User</button>
@@ -197,6 +197,7 @@ import {
   sameAs,
   email,
   minLength,
+  maxLength,
   numeric,
   requiredIf,
 } from "vuelidate/lib/validators";
@@ -262,6 +263,7 @@ export default {
       nomor_wa: {
         required,
         numeric,
+        maxLength: maxLength(15)
       },
     },
   },

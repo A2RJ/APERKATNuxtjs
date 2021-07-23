@@ -52,9 +52,7 @@
       >
         <i class="fas fa-fw fa-cog"></i>
         <span>PENGAJUAN</span>
-        <b-badge v-if="badge != 0" pill variant="light">{{
-          badge + badgeSelf
-        }}</b-badge>
+        <b-badge v-if="badge != 0" pill variant="light">{{ total }}</b-badge>
       </a>
       <div
         id="collapseTwo"
@@ -122,12 +120,13 @@ export default {
       sekniv: false,
       badge: 0,
       badgeSelf: 0,
+      total: 0,
     };
   },
   computed: {},
   methods: {
     interval() {
-      // setInterval(() => {
+      setInterval(() => {
         this.$axios
           .get(
             `/pengajuan/countMessage/${this.$store.state.auth.user[0].id_user}`
@@ -135,10 +134,10 @@ export default {
           .then((response) => {
             this.badge = response.data.data;
           });
-      // }, 1000);
+      }, 1000);
     },
     intervalSelf() {
-      // setInterval(() => {
+      setInterval(() => {
         this.$axios
           .get(
             `/pengajuan/countMessageSelf/${this.$store.state.auth.user[0].id_user}`
@@ -146,7 +145,12 @@ export default {
           .then((response) => {
             this.badgeSelf = response.data.data;
           });
-      // }, 1000);
+      }, 1000);
+    },
+    count() {
+      setInterval(() => {
+        this.total = parseInt(this.badge) + parseInt(this.badgeSelf);
+      }, 1000);
     },
   },
   mounted() {
@@ -166,19 +170,13 @@ export default {
         this.sekniv = true;
       }
 
-      if (data !== "prodi") {
-        if (this.$store.state.auth.user[0].id_user) {
-          this.interval();
-        } else {
-          // clearInterval(this.interval());
-        }
-      }
-      if (data !== "prodi") {
-        if (this.$store.state.auth.user[0].id_user) {
-          this.intervalSelf();
-        } else {
-          // clearInterval(this.intervalSelf());
-        }
+      if (data == "prodi") {
+        this.intervalSelf();
+        this.count();
+      } else {
+        this.interval();
+        this.intervalSelf();
+        this.count();
       }
     }
   },

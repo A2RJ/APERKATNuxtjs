@@ -183,7 +183,7 @@ export default {
         "actions",
       ],
 
-      perPage: 2,
+      perPage: 10,
       pageOptions: [10, 15, 20, { value: 100, text: "Show a lot" }],
       filter: null,
       currentPage: 1,

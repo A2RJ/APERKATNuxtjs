@@ -430,9 +430,9 @@
               name="unit"
               @change="getIku2(form.id_iku_child1)"
             >
-            <b-form-select-option :value="null" disabled
-                  >-- Please select an option --</b-form-select-option
-                >
+              <b-form-select-option :value="null" disabled
+                >-- Please select an option --</b-form-select-option
+              >
               <template #first v-if="this.$route.params.id">
                 <b-form-select-option :value="selectChild1.value">{{
                   selectChild1.name
@@ -463,9 +463,9 @@
               class="mt-3"
               name="unit"
             >
-            <b-form-select-option :value="null" disabled
-                  >-- Please select an option --</b-form-select-option
-                >
+              <b-form-select-option :value="null" disabled
+                >-- Please select an option --</b-form-select-option
+              >
               <template #first v-if="this.$route.params.id">
                 <b-form-select-option :value="selectChild2.value">{{
                   selectChild2.name
@@ -620,7 +620,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { required, numeric, requiredIf } from "vuelidate/lib/validators";
+import { required, numeric, maxLength, requiredIf } from "vuelidate/lib/validators";
 
 export default {
   created() {
@@ -655,6 +655,7 @@ export default {
       this.getDataRKAT(this.forms.kode_rkat);
       this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
       this.numberFormatBiayaProgram();
+      this.showMessage();
     }
   },
   data() {
@@ -776,6 +777,7 @@ export default {
       no_rek: {
         required,
         numeric,
+        maxLength: maxLength(20)
       },
     },
     file: {
@@ -1122,6 +1124,14 @@ export default {
     },
     numberFormatBiayaProgram() {
       this.form.biaya_program = this.$formatRupiah(this.form.biaya_program);
+    },
+    async showMessage() {
+      await this.$axios
+        .get(
+          `pengajuan/showPengajuan/${this.$route.params.id}/${this.$store.state.auth.user[0].id_user}`
+        )
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     },
     success(params) {
       this.$swal({

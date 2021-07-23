@@ -84,7 +84,7 @@ export const actions = {
     },
     getpengajuanID({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(`/pengajuan/showPengajuan/${payload}/${this.state.auth.user[0].id_user}`).then((response) => {
+            this.$axios.get(`/pengajuan/${payload}`).then((response) => {
                 commit('SET_DATA', response.data.data)
                 resolve()
             })
