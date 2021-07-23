@@ -620,11 +620,18 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { required, numeric, maxLength, requiredIf } from "vuelidate/lib/validators";
+import {
+  required,
+  numeric,
+  maxLength,
+  requiredIf,
+} from "vuelidate/lib/validators";
 
 export default {
   created() {
     if (this.$route.params.id) {
+      this.showMessage();
+
       this.form = {
         kode_rkat: this.forms.kode_rkat,
         id_user: this.forms.id_user,
@@ -655,7 +662,6 @@ export default {
       this.getDataRKAT(this.forms.kode_rkat);
       this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
       this.numberFormatBiayaProgram();
-      this.showMessage();
     }
   },
   data() {
@@ -777,7 +783,7 @@ export default {
       no_rek: {
         required,
         numeric,
-        maxLength: maxLength(20)
+        maxLength: maxLength(20),
       },
     },
     file: {
@@ -1065,7 +1071,8 @@ export default {
               this.form
             );
             this.updatepengajuan(form);
-            this.$router.push("/pengajuan/subordinate");
+            this.success("Data telah disimpan!");
+            // this.$router.push("/pengajuan/subordinate");
           });
         } catch (e) {
           this.failed("Whoops Server Error");
@@ -1089,7 +1096,8 @@ export default {
               this.form
             );
             this.updatepengajuan(form);
-            this.$router.push("/pengajuan/subordinate");
+            this.success("Data telah disimpan!");
+            // this.$router.push("/pengajuan/subordinate");
           });
         } catch (e) {
           this.failed("Whoops Server Error");
@@ -1130,7 +1138,7 @@ export default {
         .get(
           `pengajuan/showPengajuan/${this.$route.params.id}/${this.$store.state.auth.user[0].id_user}`
         )
-        .then((res) => console.log(res))
+        .then((res) => {})
         .catch((err) => console.log(err));
     },
     success(params) {

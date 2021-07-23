@@ -4,11 +4,11 @@
       <h6 class="m-0 font-weight-bold text-primary">User</h6>
     </div>
     <div class="card-body">
-      <div class="mb-3 mt-1">
-        <NuxtLink class="btn btn-sm btn-outline-primary" to="/user/add"
+      <div class="mb-3">
+        <NuxtLink class="btn btn-sm btn-outline-primary mt-1" to="/user/add"
           >Tambah User</NuxtLink
         >
-        <b-button variant="outline-info btn-sm" @click="deleteAll"
+        <b-button variant="outline-info btn-sm mt-1" @click="deleteAll"
           >Reset User</b-button
         >
       </div>

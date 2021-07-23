@@ -125,7 +125,7 @@ export default {
   },
   computed: {},
   methods: {
-    interval() {
+    subMessage() {
       setInterval(() => {
         this.$axios
           .get(
@@ -134,9 +134,9 @@ export default {
           .then((response) => {
             this.badge = response.data.data;
           });
-      }, 1000);
+      }, 2000);
     },
-    intervalSelf() {
+    selfMessage() {
       setInterval(() => {
         this.$axios
           .get(
@@ -145,12 +145,12 @@ export default {
           .then((response) => {
             this.badgeSelf = response.data.data;
           });
-      }, 1000);
+      });
     },
     count() {
       setInterval(() => {
         this.total = parseInt(this.badge) + parseInt(this.badgeSelf);
-      }, 1000);
+      }, 500);
     },
   },
   mounted() {
@@ -169,17 +169,19 @@ export default {
       } else if (data == "sekniv") {
         this.sekniv = true;
       }
-
+      this.count();
       if (data == "prodi") {
-        this.intervalSelf();
-        this.count();
+        this.selfMessage();
       } else {
-        this.interval();
-        this.intervalSelf();
-        this.count();
+        this.selfMessage();
+        this.subMessage();
       }
     }
   },
+  // watch: {
+  //   $route() {
+  //   },
+  // },
 };
 </script>
 

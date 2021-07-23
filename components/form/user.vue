@@ -224,7 +224,7 @@ export default {
         email: "",
         password: "default",
         repeatPassword: "default",
-        id_struktur: "",
+        id_struktur: 0,
         id_struktur_child1: 0,
         id_struktur_child2: 0,
         nomor_wa: "",
@@ -317,6 +317,7 @@ export default {
                 }
               })
               .catch((e) => {
+                console.log(e);
                 this.failed("Pastikan semua fields diisi!");
               });
           }
@@ -327,6 +328,7 @@ export default {
               this.$router.push("/user");
             })
             .catch((e) => {
+              console.log(e);
               this.failed("Pastikan semua fields diisi!");
             });
         }

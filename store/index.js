@@ -34,8 +34,6 @@ export const actions = {
     nuxtServerInit({ commit }, context) {
         if (context.app.$auth.strategy.token.status().valid()) {
             commit('SET_IS_AUTH', true);
-            // console.log(context.app.$auth.$state);
-            // console.log(context.app.$auth._token.laravelJWT);
         }
         
     }

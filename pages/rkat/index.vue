@@ -19,14 +19,14 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <div class="mb-3 mt-1">
-            <NuxtLink class="btn btn-sm btn-outline-primary" to="/rkat/add"
+          <div class="mb-3">
+            <NuxtLink class="btn btn-sm btn-outline-primary mt-1" to="/rkat/add"
               >Tambah RKAT</NuxtLink
             >
-            <b-button variant="outline-success btn-sm" @click="download"
+            <b-button variant="outline-success btn-sm mt-1" @click="download"
               >Download RKAT</b-button
             >
-            <b-button variant="outline-info btn-sm" @click="deleteAll"
+            <b-button variant="outline-info btn-sm mt-1" @click="deleteAll"
               >Reset RKAT</b-button
             >
           </div>
@@ -164,8 +164,8 @@ export default {
     },
   },
   mounted() {
-    this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-    this.SET_USER_DATA(this.$store.state.auth.user[0]);
+    // this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
+    // this.SET_USER_DATA(this.$store.state.auth.user[0]);
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),

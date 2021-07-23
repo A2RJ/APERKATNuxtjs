@@ -18,13 +18,13 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <div class="mb-3 mt-1">
+          <div class="mb-3">
             <NuxtLink
-              class="btn btn-sm btn-outline-primary"
+              class="btn btn-sm btn-outline-primary mt-1"
               to="/pengajuan/subordinate/add"
               >Tambah Pengajuan</NuxtLink
             >
-            <b-button variant="outline-info btn-sm" @click="deleteAll"
+            <b-button variant="outline-info btn-sm mt-1" @click="deleteAll"
               >Reset Pengajuan</b-button
             >
           </div>
@@ -217,7 +217,6 @@ export default {
   methods: {
     ...mapActions("subordinate", ["getpengajuan", "deletepengajuan"]),
     rowClass(item, type) {
-      console.log(item);
       if (!item || type !== "row") return;
       if (item.status_message === 0) return "table-success";
     },

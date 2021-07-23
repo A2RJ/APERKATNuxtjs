@@ -229,31 +229,6 @@ export default {
   },
   methods: {
     ...mapActions("subordinate", ["getGrafik"]),
-    checkValidIP() {
-      const randomNumber = async () => {
-        return Math.floor(Math.random() * 100);
-      };
-
-      const randomNumberSum = async () => {
-        const firstNumber = await randomNumber();
-        const secondNumber = await randomNumber();
-        console.log(firstNumber + secondNumber);
-      };
-
-      randomNumberSum();
-
-      const isValidPIN = (pin) => {
-        if (pin.length >= 4 || pin.length >= 6) {
-          return !isNaN(pin) && pin !== "";
-        }
-
-        return false;
-      };
-
-      console.log(isValidPIN("12346")); //True
-      console.log(isValidPIN("")); //False
-      console.log(isValidPIN("a2bO")); //False
-    },
   },
 };
 </script>

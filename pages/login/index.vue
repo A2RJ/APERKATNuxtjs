@@ -193,7 +193,7 @@ export default {
     if (this.$auth.$state.loggedIn) {
       this.$router.push("/");
     } else {
-      this.SET_IS_AUTH(false);
+      // this.SET_IS_AUTH(false);
       this.$router.push("/login");
     }
   },
