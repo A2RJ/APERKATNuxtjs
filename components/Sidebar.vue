@@ -173,12 +173,12 @@ export default {
       } else if (data == "sekniv") {
         this.sekniv = true;
       }
-      // if (data == "prodi") {
-      //   this.selfMessage();
-      // } else {
-      //   this.selfMessage();
-      //   this.subMessage();
-      // }
+      if (data == "prodi") {
+        this.selfMessage();
+      } else {
+        this.selfMessage();
+        this.subMessage();
+      }
     }
   },
   // watch: {
