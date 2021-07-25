@@ -52,7 +52,7 @@
       >
         <i class="fas fa-fw fa-cog"></i>
         <span>PENGAJUAN</span>
-        <b-badge v-if="badge != 0" pill variant="light">{{ total }}</b-badge>
+        <b-badge v-if="total != 0" pill variant="light">{{ total }}</b-badge>
       </a>
       <div
         id="collapseTwo"
@@ -126,31 +126,35 @@ export default {
   computed: {},
   methods: {
     subMessage() {
-      setInterval(() => {
-        this.$axios
-          .get(
-            `/pengajuan/countMessage/${this.$store.state.auth.user[0].id_user}`
-          )
-          .then((response) => {
-            this.badge = response.data.data;
-          });
-      }, 2000);
+      this.$axios
+        .get(
+          `/pengajuan/countMessage/${this.$store.state.auth.user[0].id_user}`
+        )
+        .then((response) => {
+          this.badge = response.data.data;
+          this.count();
+
+          setTimeout(() => {
+            this.subMessage();
+          }, 1500);
+        });
     },
     selfMessage() {
-      setInterval(() => {
-        this.$axios
-          .get(
-            `/pengajuan/countMessageSelf/${this.$store.state.auth.user[0].id_user}`
-          )
-          .then((response) => {
-            this.badgeSelf = response.data.data;
-          });
-      });
+      this.$axios
+        .get(
+          `/pengajuan/countMessageSelf/${this.$store.state.auth.user[0].id_user}`
+        )
+        .then((response) => {
+          this.badgeSelf = response.data.data;
+          this.count();
+
+          setTimeout(() => {
+            this.selfMessage();
+          }, 1500);
+        });
     },
     count() {
-      setInterval(() => {
-        this.total = parseInt(this.badge) + parseInt(this.badgeSelf);
-      }, 500);
+      this.total = parseInt(this.badge) + parseInt(this.badgeSelf);
     },
   },
   mounted() {
@@ -169,13 +173,12 @@ export default {
       } else if (data == "sekniv") {
         this.sekniv = true;
       }
-      this.count();
-      if (data == "prodi") {
-        this.selfMessage();
-      } else {
-        this.selfMessage();
-        this.subMessage();
-      }
+      // if (data == "prodi") {
+      //   this.selfMessage();
+      // } else {
+      //   this.selfMessage();
+      //   this.subMessage();
+      // }
     }
   },
   // watch: {

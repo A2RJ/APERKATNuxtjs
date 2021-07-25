@@ -1,6 +1,7 @@
 # Main
 - Aplikasi RKAT (Rencana Kerja dan Anggaran Tahunan) Universitas
 
+# Fungsi upload bukti tf dan lpj belum selesai
 # On Progress
 # Menu
 - Login

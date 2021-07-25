@@ -628,9 +628,13 @@ import {
 } from "vuelidate/lib/validators";
 
 export default {
-  created() {
+  async created() {
     if (this.$route.params.id) {
       this.showMessage();
+      this.getDataRKAT(this.forms.kode_rkat);
+      this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
+      this.numberFormatBiayaProgram();
+      this.rab = this.forms.rab;
 
       this.form = {
         kode_rkat: this.forms.kode_rkat,
@@ -652,16 +656,11 @@ export default {
         rab: this.forms.rab,
         status_pengajuan: "progress",
         pencairan: this.forms.pencairan,
-        id_atasan: this.$store.state.auth.user[0].id_user,
         lpj_keuangan: this.forms.lpj_keuangan,
         lpj_kegiatan: this.forms.lpj_kegiatan,
         validasi_status: this.forms.validasi_status,
         nama_status: this.forms.nama_status,
       };
-      this.rab = this.forms.rab;
-      this.getDataRKAT(this.forms.kode_rkat);
-      this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
-      this.numberFormatBiayaProgram();
     }
   },
   data() {
@@ -898,60 +897,6 @@ export default {
     onSelectLPJKegiatan() {
       this.LPJKegiatan = this.$refs.LPJKegiatan.files[0];
     },
-    terima() {
-      this.$swal({
-        title: "Warning!",
-        text: "Setujui pengajuan ini?",
-        icon: "warning",
-        width: 300,
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.replace();
-          this.approved(
-            Object.assign(
-              { id: this.$route.params.id, message: this.message, status: 2 },
-              this.form
-            )
-          ).then(() => {
-            this.success("Berhasil terima pengajuan");
-            this.$route.name == "pengajuan-subordinate-edit-id"
-              ? this.$router.push("/pengajuan/subordinate/")
-              : this.$router.push("/pengajuan/supervisor/");
-          });
-        }
-      });
-    },
-    tolak() {
-      this.$swal({
-        title: "Warning!",
-        text: "Tolak pengajuan ini?",
-        icon: "warning",
-        width: 300,
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.replace();
-          this.declined(
-            Object.assign(
-              { id: this.$route.params.id, message: this.message, status: 0 },
-              this.form
-            )
-          ).then(() => {
-            this.success("Berhasil tolak pengajuan");
-            this.$route.name == "pengajuan-subordinate-edit-id"
-              ? this.$router.push("/pengajuan/subordinate/")
-              : this.$router.push("/pengajuan/supervisor/");
-          });
-        }
-      });
-    },
     getIku1(params) {
       this.getIkuChild1(params).then(() => {
         this.child1 = this.ikuChild1.data;
@@ -983,12 +928,15 @@ export default {
             await this.upload();
           }
           this.replace();
-          await this.updatepengajuan(
+          this.updatepengajuan(
             Object.assign(
               {
                 id: this.$route.params.id,
                 message: "Update pengajuan",
                 status: 1,
+                status_pengajuan: "progress",
+                id_struktur: this.$store.state.auth.user[0].id_user,
+                nama: this.$store.state.auth.user[0].fullname,
               },
               this.form
             )
@@ -1003,10 +951,18 @@ export default {
         } else {
           await this.upload();
           this.replace();
-          await this.storepengajuan(
-            Object.assign({ message: "Input pengajuan", status: 1 }, this.form)
-          )
-            .then(() => {
+          let data = Object.assign(
+            {
+              message: "Input pengajuan",
+              status: 1,
+              status_pengajuan: "progress",
+              id_struktur: this.$store.state.auth.user[0].id_user,
+              nama: this.$store.state.auth.user[0].fullname,
+            },
+            this.form
+          );
+          this.storepengajuan(data)
+            .then((res) => {
               this.success("Data telah disimpan!");
               this.$router.push(this.redirects);
             })
@@ -1015,6 +971,71 @@ export default {
             });
         }
       }
+    },
+    terima() {
+      this.$swal({
+        title: "Warning!",
+        text: "Setujui pengajuan ini?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.replace();
+          this.approved({
+            id: this.$route.params.id,
+            message: this.message,
+            status: 2,
+            status_pengajuan:
+              this.$store.state.auth.user[0].level == 1
+                ? "approved"
+                : "progress",
+            id_user: this.form.id_user,
+            id_struktur: this.$store.state.auth.user[0].id_user,
+            nama: this.$store.state.auth.user[0].fullname,
+            kode_rkat: this.form.kode_rkat,
+          }).then(() => {
+            this.success("Berhasil terima pengajuan");
+            this.$route.name == "pengajuan-subordinate-edit-id"
+              ? this.$router.push("/pengajuan/subordinate/")
+              : this.$router.push("/pengajuan/supervisor/");
+          });
+        }
+      });
+    },
+    tolak() {
+      this.$swal({
+        title: "Warning!",
+        text: "Tolak pengajuan ini?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.replace();
+          this.declined({
+            id: this.$route.params.id,
+            message: this.message,
+            status: 0,
+            status_pengajuan: "progress",
+            id_user: this.form.id_user,
+            id_struktur: this.$store.state.auth.user[0].id_user,
+            nama: this.$store.state.auth.user[0].fullname,
+            kode_rkat: this.form.kode_rkat,
+          }).then(() => {
+            this.success("Berhasil tolak pengajuan");
+            this.$route.name == "pengajuan-subordinate-edit-id"
+              ? this.$router.push("/pengajuan/subordinate/")
+              : this.$router.push("/pengajuan/supervisor/");
+          });
+        }
+      });
     },
     async upload() {
       const form = new FormData();
@@ -1030,15 +1051,19 @@ export default {
     async buktiTF() {
       await this.uploadBuktiTF();
       this.replace();
-      let form = Object.assign(
-        {
-          id: this.$route.params.id,
-          message: "Sudah dilakukan pencairan",
-          status: 3,
-        },
-        this.form
-      );
-      await this.updatepengajuan(form);
+      await this.updatepengajuan({
+        id: this.$route.params.id,
+        id_pengajuan: this.$route.params.id,
+        message: "Telah dilakukan pencairan",
+        status: 3,
+        status_pengajuan: "progress",
+        id_user: this.form.id_user,
+        id_struktur: this.$store.state.auth.user[0].id_user,
+        kode_rkat: this.form.kode_rkat,
+        nama: this.$store.state.auth.user[0].fullname,
+        pencairan: this.form.pencairan,
+      });
+      this.success("Berhasil upload bukti pencairan");
       this.$router.push("/pengajuan/supervisor/");
     },
     async uploadBuktiTF() {
@@ -1047,8 +1072,6 @@ export default {
       try {
         await this.$axios.post("/pengajuan/upload", form).then((res) => {
           this.form.pencairan = res.data;
-          this.form.id_atasan = this.$store.state.auth.user[0].id_user;
-          this.form.id_user = this.forms.id_user;
         });
       } catch (e) {
         console.log("Whoops Server Error");
@@ -1062,16 +1085,19 @@ export default {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_keuangan = res.data;
             this.replace();
-            let form = Object.assign(
-              {
-                id: this.$route.params.id,
-                message: "Upload LPJ Keuangan",
-                status: 1,
-              },
-              this.form
-            );
-            this.updatepengajuan(form);
+            this.updatepengajuan({
+              id: this.$route.params.id,
+              message: "Upload LPJ Keuangan",
+              status: 1,
+              status_pengajuan: "progress",
+              id_user: this.form.id_user,
+              id_struktur: this.$store.state.auth.user[0].id_user,
+              nama: this.$store.state.auth.user[0].fullname,
+              kode_rkat: this.form.kode_rkat,
+              lpj_keuangan: this.form.lpj_keuangan,
+            });
             this.success("Data telah disimpan!");
+            this.$nuxt.refresh();
             // this.$router.push("/pengajuan/subordinate");
           });
         } catch (e) {
@@ -1087,16 +1113,20 @@ export default {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_kegiatan = res.data;
             this.replace();
-            let form = Object.assign(
-              {
-                id: this.$route.params.id,
-                message: "Upload LPJ Kegiatan",
-                status: 1,
-              },
-              this.form
-            );
-            this.updatepengajuan(form);
+            this.updatepengajuan({
+              id: this.$route.params.id,
+              message: "Upload LPJ Kegiatan",
+              status: 1,
+              status_pengajuan: "progress",
+              id_user: this.form.id_user,
+              id_struktur: this.$store.state.auth.user[0].id_user,
+              nama: this.$store.state.auth.user[0].fullname,
+              kode_rkat: this.form.kode_rkat,
+              lpj_kegiatan: this.form.lpj_kegiatan,
+            });
             this.success("Data telah disimpan!");
+            // this.$forceUpdate();
+            this.$nuxt.refresh();
             // this.$router.push("/pengajuan/subordinate");
           });
         } catch (e) {
@@ -1113,7 +1143,7 @@ export default {
           const url = window.URL.createObjectURL(new Blob([res.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "RKAT.pdf");
+          link.setAttribute("download", "Pengajuan.pdf");
           document.body.appendChild(link);
           link.click();
           this.success("Pengajuan telah didownload!");
@@ -1134,12 +1164,10 @@ export default {
       this.form.biaya_program = this.$formatRupiah(this.form.biaya_program);
     },
     async showMessage() {
-      await this.$axios
+      this.$axios
         .get(
           `pengajuan/showPengajuan/${this.$route.params.id}/${this.$store.state.auth.user[0].id_user}`
         )
-        .then((res) => {})
-        .catch((err) => console.log(err));
     },
     success(params) {
       this.$swal({
