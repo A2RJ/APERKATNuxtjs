@@ -306,7 +306,7 @@ import { mapActions, mapState } from "vuex";
 import { required, numeric } from "vuelidate/lib/validators";
 
 export default {
-  created() {
+  async created() {
     if (this.$route.name === "rkat-edit-id") {
       if (this.$store.state.auth.user[1].level !== "sekniv") {
         this.button = false;
@@ -419,8 +419,12 @@ export default {
       if (this.$v.$invalid) {
         this.failed("Pastikan semua fields diisi!");
       } else {
-        this.form.rencara_anggaran = this.form.rencara_anggaran.replaceAll(".", "");
+        this.form.rencara_anggaran = this.form.rencara_anggaran.replaceAll(
+          ".",
+          ""
+        );
         this.form.total_anggaran = this.form.total_anggaran.replaceAll(".", "");
+        this.loader("Saving RKAT")
         if (this.$route.name === "rkat-edit-id") {
           let form = Object.assign({ id: this.$route.params.id }, this.form);
           this.updaterkat(form)
@@ -484,6 +488,16 @@ export default {
     },
     numberFormatTotalAnggaran() {
       this.form.total_anggaran = this.$formatRupiah(this.form.total_anggaran);
+    },
+    loader(params) {
+      this.$swal({
+        title: "Please wait",
+        width: 300,
+        text: params,
+        imageUrl: "/Rocket.gif",
+        showConfirmButton: false,
+        allowOutsideClick: false,
+      });
     },
   },
 };

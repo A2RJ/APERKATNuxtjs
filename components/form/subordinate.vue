@@ -923,6 +923,7 @@ export default {
       if (this.$v.$invalid) {
         this.failed("Pastikan semua fields diisi!");
       } else {
+        this.loader("Saving pengajuan");
         if (this.$route.name === "pengajuan-subordinate-edit-id") {
           if (this.file.length != 0) {
             await this.upload();
@@ -951,20 +952,22 @@ export default {
         } else {
           await this.upload();
           this.replace();
-          let data = Object.assign(
-            {
-              message: "Input pengajuan",
-              status: 1,
-              status_pengajuan: "progress",
-              id_struktur: this.$store.state.auth.user[0].id_user,
-              nama: this.$store.state.auth.user[0].fullname,
-            },
-            this.form
-          );
-          this.storepengajuan(data)
-            .then((res) => {
+          this.storepengajuan(
+            Object.assign(
+              {
+                message: "Input pengajuan",
+                status: 1,
+                status_pengajuan: "progress",
+                id_struktur: this.$store.state.auth.user[0].id_user,
+                nama: this.$store.state.auth.user[0].fullname,
+              },
+              this.form
+            )
+          )
+            .then(() => {
               this.success("Data telah disimpan!");
-              this.$router.push(this.redirects);
+              this.$nuxt.refresh();
+              // this.$router.push(this.redirects);
             })
             .catch(() => {
               this.failed("Pastikan semua fields diisi!");
@@ -984,6 +987,7 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loader("loading...");
           this.replace();
           this.approved({
             id: this.$route.params.id,
@@ -997,12 +1001,18 @@ export default {
             id_struktur: this.$store.state.auth.user[0].id_user,
             nama: this.$store.state.auth.user[0].fullname,
             kode_rkat: this.form.kode_rkat,
-          }).then(() => {
-            this.success("Berhasil terima pengajuan");
-            this.$route.name == "pengajuan-subordinate-edit-id"
-              ? this.$router.push("/pengajuan/subordinate/")
-              : this.$router.push("/pengajuan/supervisor/");
-          });
+          })
+            .then(() => {
+              this.success("Berhasil terima pengajuan");
+              this.option = false;
+              this.$nuxt.refresh();
+              // this.$route.name == "pengajuan-subordinate-edit-id"
+              //   ? this.$router.push("/pengajuan/subordinate/")
+              //   : this.$router.push("/pengajuan/supervisor/");
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
         }
       });
     },
@@ -1018,6 +1028,7 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loader("loading...");
           this.replace();
           this.declined({
             id: this.$route.params.id,
@@ -1028,12 +1039,18 @@ export default {
             id_struktur: this.$store.state.auth.user[0].id_user,
             nama: this.$store.state.auth.user[0].fullname,
             kode_rkat: this.form.kode_rkat,
-          }).then(() => {
-            this.success("Berhasil tolak pengajuan");
-            this.$route.name == "pengajuan-subordinate-edit-id"
-              ? this.$router.push("/pengajuan/subordinate/")
-              : this.$router.push("/pengajuan/supervisor/");
-          });
+          })
+            .then(() => {
+              this.success("Berhasil tolak pengajuan");
+              this.option = true;
+              this.$nuxt.refresh();
+              // this.$route.name == "pengajuan-subordinate-edit-id"
+              //   ? this.$router.push("/pengajuan/subordinate/")
+              //   : this.$router.push("/pengajuan/supervisor/");
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
         }
       });
     },
@@ -1045,13 +1062,14 @@ export default {
           this.form.rab = res.data;
         });
       } catch (e) {
-        console.log("Whoops Server Error");
+        this.failed("Whoops Server Error");
       }
     },
     async buktiTF() {
       await this.uploadBuktiTF();
+      this.loader("loading...");
       this.replace();
-      await this.updatepengajuan({
+      this.updatepengajuan({
         id: this.$route.params.id,
         id_pengajuan: this.$route.params.id,
         message: "Telah dilakukan pencairan",
@@ -1062,9 +1080,16 @@ export default {
         kode_rkat: this.form.kode_rkat,
         nama: this.$store.state.auth.user[0].fullname,
         pencairan: this.form.pencairan,
-      });
-      this.success("Berhasil upload bukti pencairan");
-      this.$router.push("/pengajuan/supervisor/");
+      })
+        .then(() => {
+          this.success("Berhasil upload bukti pencairan");
+          this.formPencairan = false;
+          this.$nuxt.refresh();
+          // this.$router.push("/pengajuan/supervisor/");
+        })
+        .catch(() => {
+          this.failed("Whoops Server Error");
+        });
     },
     async uploadBuktiTF() {
       const form = new FormData();
@@ -1084,6 +1109,7 @@ export default {
         try {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_keuangan = res.data;
+            this.loader("Uploading...");
             this.replace();
             this.updatepengajuan({
               id: this.$route.params.id,
@@ -1095,10 +1121,17 @@ export default {
               nama: this.$store.state.auth.user[0].fullname,
               kode_rkat: this.form.kode_rkat,
               lpj_keuangan: this.form.lpj_keuangan,
-            });
-            this.success("Data telah disimpan!");
-            this.$nuxt.refresh();
-            // this.$router.push("/pengajuan/subordinate");
+            })
+              .then(() => {
+                this.success("Data telah disimpan!");
+                this.$nuxt.refresh();
+                if (this.form.lpj_keuangan && this.form.lpj_kegiatan)
+                  this.formLPJ = false;
+                // this.$router.push("/pengajuan/subordinate");
+              })
+              .catch(() => {
+                this.failed("Whoops Server Error");
+              });
           });
         } catch (e) {
           this.failed("Whoops Server Error");
@@ -1112,6 +1145,7 @@ export default {
         try {
           this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.lpj_kegiatan = res.data;
+            this.loader("Uploading...");
             this.replace();
             this.updatepengajuan({
               id: this.$route.params.id,
@@ -1123,11 +1157,17 @@ export default {
               nama: this.$store.state.auth.user[0].fullname,
               kode_rkat: this.form.kode_rkat,
               lpj_kegiatan: this.form.lpj_kegiatan,
-            });
-            this.success("Data telah disimpan!");
-            // this.$forceUpdate();
-            this.$nuxt.refresh();
-            // this.$router.push("/pengajuan/subordinate");
+            })
+              .then(() => {
+                this.success("Data telah disimpan!");
+                this.$nuxt.refresh();
+                if (this.form.lpj_keuangan && this.form.lpj_kegiatan)
+                  this.formLPJ = false;
+                // this.$router.push("/pengajuan/subordinate");
+              })
+              .catch(() => {
+                this.failed("Whoops Server Error");
+              });
           });
         } catch (e) {
           this.failed("Whoops Server Error");
@@ -1164,10 +1204,9 @@ export default {
       this.form.biaya_program = this.$formatRupiah(this.form.biaya_program);
     },
     async showMessage() {
-      this.$axios
-        .get(
-          `pengajuan/showPengajuan/${this.$route.params.id}/${this.$store.state.auth.user[0].id_user}`
-        )
+      this.$axios.get(
+        `pengajuan/showPengajuan/${this.$route.params.id}/${this.$store.state.auth.user[0].id_user}`
+      );
     },
     success(params) {
       this.$swal({
@@ -1185,20 +1224,14 @@ export default {
         text: params,
       });
     },
-    confirm(params) {
+    loader(params) {
       this.$swal({
-        title: "Warning!",
-        text: "Yakin?",
-        icon: "warning",
+        title: "Please wait",
         width: 300,
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Oke, Terima!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          params;
-        }
+        text: params,
+        imageUrl: "/Rocket.gif",
+        showConfirmButton: false,
+        allowOutsideClick: false,
       });
     },
   },

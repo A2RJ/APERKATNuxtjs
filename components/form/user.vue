@@ -39,6 +39,11 @@
       <b-form-text id="password" v-if="!$v.form.password.minLength">
         <i class="text-danger">Password min length is 8</i>
       </b-form-text>
+      <b-form-text id="repeatPassword" v-if="error">
+        <i class="text-danger"
+          >Repeat Password is not matches and min length is 8</i
+        >
+      </b-form-text>
       <b-form-text id="password" v-if="this.$route.params.id">
         <i class="text-black">Optional</i>
       </b-form-text>
@@ -69,7 +74,9 @@
         <i class="text-danger">Repeat Password is not matches</i>
       </b-form-text>
       <b-form-text id="repeatPassword" v-if="error">
-        <i class="text-danger">{{ error }}</i>
+        <i class="text-danger"
+          >Repeat Password is not matches and min length is 8</i
+        >
       </b-form-text>
       <b-form-text id="password" v-if="this.$route.params.id">
         <i class="text-black">Optional</i>
@@ -122,6 +129,9 @@
           <b-form-select-option :value="0"
             >-- Please select an option --</b-form-select-option
           >
+          <b-form-select-option :value="select1"
+            >-- Please select an option --</b-form-select-option
+          >
         </template>
       </b-form-select>
     </b-form-group>
@@ -142,6 +152,9 @@
       >
         <template #first>
           <b-form-select-option :value="0"
+            >-- Please select an option --</b-form-select-option
+          >
+          <b-form-select-option :value="select2"
             >-- Please select an option --</b-form-select-option
           >
         </template>
@@ -181,12 +194,20 @@
       ></b-form-input>
       <b-form-text
         id="nomor_wa"
-        v-if="!$v.form.nomor_wa.required || !$v.form.nomor_wa.numeric || !$v.form.nomor_wa.maxLength"
+        v-if="
+          !$v.form.nomor_wa.required ||
+          !$v.form.nomor_wa.numeric ||
+          !$v.form.nomor_wa.maxLength
+        "
       >
-        <i class="text-danger">Nomor WA is required, numeric and max length is 15</i>
+        <i class="text-danger"
+          >Nomor WA is required, numeric and max length is 15</i
+        >
       </b-form-text>
     </b-form-group>
-    <button class="btn btn-sm btn-primary float-right" @click="submit">Simpan User</button>
+    <button class="btn btn-sm btn-primary float-right" @click="submit">
+      Simpan User
+    </button>
   </div>
 </template>
 
@@ -203,7 +224,7 @@ import {
 } from "vuelidate/lib/validators";
 
 export default {
-  created() {
+  async created() {
     if (this.$route.name === "user-edit-id") {
       this.form = {
         fullname: this.userID.fullname,
@@ -263,7 +284,7 @@ export default {
       nomor_wa: {
         required,
         numeric,
-        maxLength: maxLength(15)
+        maxLength: maxLength(15),
       },
     },
   },
@@ -288,19 +309,8 @@ export default {
         this.failed("Pastikan semua fields diisi!");
       } else {
         if (this.$route.name === "user-edit-id") {
-          if (
-            this.form.password !== "" &&
-            this.form.password !== this.form.repeatPassword
-          ) {
-            if (
-              this.form.password.length < 8 &&
-              this.form.password.repeatPassword < 8
-            ) {
-              this.error = "Repeat Password is not matches and min 8";
-            }
-            this.failed("Pastikan semua fields diisi!");
-          } else {
-            this.error = false;
+          if (this.error == false) {
+            this.loader("Saving user data");
             let form = Object.assign({ id: this.$route.params.id }, this.form);
             this.updateuser(form)
               .then(() => {
@@ -317,11 +327,13 @@ export default {
                 }
               })
               .catch((e) => {
-                console.log(e);
                 this.failed("Pastikan semua fields diisi!");
               });
+          } else {
+            this.failed("Pastikan semua fields diisi!");
           }
         } else {
+          this.loader("Update user data");
           this.storeuser(this.form)
             .then(() => {
               this.success("Data telah disimpan");
@@ -345,11 +357,25 @@ export default {
         });
     },
     getSub2() {
-      this.$axios
-        .get(`user/sub_sub_struktur/${this.form.id_struktur_child1}`)
-        .then((res) => {
-          this.sub2Options = res.data.data;
-        });
+      if (this.form.id_struktur_child1 == "select1") {
+        console.log("Tampilkan form 1");
+      } else {
+        this.$axios
+          .get(`user/sub_sub_struktur/${this.form.id_struktur_child1}`)
+          .then((res) => {
+            this.sub2Options = res.data.data;
+          });
+      }
+    },
+    getSub3() {
+      if (this.form.id_struktur_child2 == "select2") {
+        console.log("Tampilkan form 2");
+      } else {
+        this.$axios
+          .post()
+          .then(() => {
+          });
+      }
     },
     success(params) {
       this.$swal({
@@ -367,20 +393,30 @@ export default {
         text: params,
       });
     },
+    loader(params) {
+      this.$swal({
+        title: "Please wait",
+        width: 300,
+        text: params,
+        imageUrl: "/Rocket.gif",
+        showConfirmButton: false,
+        allowOutsideClick: false,
+      });
+    },
     cek() {
       if (this.$route.name === "user-edit-id") {
-        if (
-          this.form.password !== "" &&
-          this.form.password !== this.form.repeatPassword
-        ) {
-          if (
-            this.form.password.length < 8 &&
-            this.form.password.repeatPassword < 8
-          ) {
-            this.error = "Repeat Password is not matches and min 8";
-          }
-        } else {
+        if (this.form.password == "" && this.form.repeatPassword == "") {
           this.error = false;
+        } else {
+          if (
+            this.form.password !== this.form.repeatPassword ||
+            new String(this.form.password).length < 8 ||
+            new String(this.form.repeatPassword).length < 8
+          ) {
+            this.error = true;
+          } else {
+            this.error = false;
+          }
         }
       }
     },
