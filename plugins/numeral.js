@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import numeral from 'numeral';
 import currency from 'vue-filter-number-format';
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 
+Vue.component('v-select', vSelect)
 Vue.filter('currency', currency(numeral));
 
 Vue.filter('capitalize', value => {

@@ -12,17 +12,15 @@
       label-size="sm"
       label="Fakultas/Unit Pelaksana"
       label-for="id_user"
-      :class="{ 'form-group--error': $v.form.id_user.$error }"
+      :class="{ 'form-group--error': $v.selected.$error }"
     >
-      <!-- :state="$v.form.id_user.required" -->
-      <b-form-select
-        v-model.trim="$v.form.id_user.$model"
+      <v-select
+        v-model.trim="$v.selected.$model"
         :options="options"
-        size="sm"
-        class="mt-3"
-        name="unit"
-      ></b-form-select>
-      <b-form-text id="id_user" v-if="!$v.form.id_user.required">
+        :value="selected"
+        @input="get"
+      ></v-select>
+      <b-form-text id="id_user" v-if="!$v.selected.required">
         <i class="text-danger">Fakultas/Unit Pelaksana is required</i>
       </b-form-text>
     </b-form-group>
@@ -41,7 +39,7 @@
         size="sm"
       ></b-form-input>
       <b-form-text id="kode_rkat" v-if="!$v.form.kode_rkat.required">
-        <i class="text-danger">Kode RKAT harus diisi</i>
+        <i class="text-danger">Kode RKAT is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -311,6 +309,7 @@ export default {
       if (this.$store.state.auth.user[1].level !== "sekniv") {
         this.button = false;
       }
+
       this.form = {
         id_user: this.forms.id_user,
         kode_rkat: this.forms.kode_rkat,
@@ -328,6 +327,7 @@ export default {
         total_anggaran: this.forms.total_anggaran,
         anggaran_digunakan: this.forms.anggaran_digunakan,
       };
+
       this.numberFormatRencanaAnggaran();
       this.numberFormatTotalAnggaran();
     }
@@ -351,16 +351,16 @@ export default {
         total_anggaran: "",
         anggaran_digunakan: 0,
       },
-      selected: null,
-      options: null,
+      selected: [],
+      options: [],
       button: true,
     };
   },
   validations: {
+    selected: {
+      required,
+    },
     form: {
-      id_user: {
-        required,
-      },
       kode_rkat: {
         required,
       },
@@ -404,6 +404,7 @@ export default {
   },
   mounted() {
     this.options = this.rkatUser;
+    this.selected = this.forms.fullname;
   },
   computed: {
     ...mapState("rkat", {
@@ -445,6 +446,11 @@ export default {
               this.failed("Pastikan semua fields diisi!");
             });
         }
+      }
+    },
+    get(value) {
+      if (value) {
+        this.form.id_user = value.code;
       }
     },
     success(params) {

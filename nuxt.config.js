@@ -52,7 +52,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     'bootstrap-vue/nuxt',
-    'vue-sweetalert2/nuxt',
+    'vue-sweetalert2/nuxt'
   ],
   // https://aperkat.uts.ac.id/api
   // http://localhost:8000

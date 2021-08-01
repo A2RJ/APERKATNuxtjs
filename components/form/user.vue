@@ -89,23 +89,15 @@
       label-size="sm"
       label="Struktur"
       label-for="id_struktur"
-      :class="{ 'form-group--error': $v.form.id_struktur.$error }"
+      :class="{ 'form-group--error': $v.id_struktur.$error }"
     >
-      <b-form-select
-        v-model.trim="$v.form.id_struktur.$model"
+      <v-select
+        v-model.trim="$v.id_struktur.$model"
         :options="strukturOptions"
-        @change="getSub1"
-        size="sm"
-        class="mt-3"
-        name="unit"
-      >
-        <template #first>
-          <b-form-select-option :value="0"
-            >-- Please select an option --</b-form-select-option
-          >
-        </template>
-      </b-form-select>
-      <b-form-text id="id_struktur" v-if="!$v.form.id_struktur.required">
+        :value="id_struktur"
+        @input="getSub1"
+      ></v-select>
+      <b-form-text id="id_struktur" v-if="!$v.id_struktur.required">
         <i class="text-danger">Struktur is required</i>
       </b-form-text>
     </b-form-group>
@@ -117,23 +109,12 @@
       label="Sub Struktur"
       label-for="id_struktur_child1"
     >
-      <b-form-select
-        v-model="form.id_struktur_child1"
+      <v-select
+        v-model="id_struktur_child1"
         :options="sub1Options"
-        @change="getSub2"
-        size="sm"
-        class="mt-3"
-        name="unit"
-      >
-        <template #first>
-          <b-form-select-option :value="0"
-            >-- Please select an option --</b-form-select-option
-          >
-          <b-form-select-option :value="select1"
-            >-- Please select an option --</b-form-select-option
-          >
-        </template>
-      </b-form-select>
+        :value="id_struktur_child1"
+        @input="getSub2"
+      ></v-select>
     </b-form-group>
 
     <b-form-group
@@ -143,22 +124,12 @@
       label="Sub Sub Struktur"
       label-for="id_struktur_child2"
     >
-      <b-form-select
-        v-model="form.id_struktur_child2"
+      <v-select
+        v-model="id_struktur_child2"
         :options="sub2Options"
-        size="sm"
-        class="mt-3"
-        name="unit"
-      >
-        <template #first>
-          <b-form-select-option :value="0"
-            >-- Please select an option --</b-form-select-option
-          >
-          <b-form-select-option :value="select2"
-            >-- Please select an option --</b-form-select-option
-          >
-        </template>
-      </b-form-select>
+        :value="id_struktur_child2"
+        @input="getSub3"
+      ></v-select>
     </b-form-group>
 
     <b-form-group
@@ -234,8 +205,21 @@ export default {
         id_struktur_child2: this.userID.id_struktur_child2,
         nomor_wa: this.userID.nomor_wa,
       };
-      this.getSub1();
-      this.getSub2();
+      this.$axios
+        .get(`user/getStruktur/${this.userID.id_struktur}`)
+        .then((res) => {
+          this.id_struktur = res.data.data;
+        });
+      this.$axios
+        .get(`user/getSub_struktur/${this.userID.id_struktur_child1}`)
+        .then((res) => {
+          this.id_struktur_child1 = res.data.data;
+        });
+      this.$axios
+        .get(`user/getSub_sub_struktur/${this.userID.id_struktur_child2}`)
+        .then((res) => {
+          this.id_struktur_child2 = res.data.data;
+        });
     }
   },
   data() {
@@ -250,6 +234,9 @@ export default {
         id_struktur_child2: 0,
         nomor_wa: "",
       },
+      id_struktur: 0,
+      id_struktur_child1: 0,
+      id_struktur_child2: 0,
       strukturOptions: [],
       sub1Options: [],
       sub2Options: [],
@@ -278,20 +265,30 @@ export default {
         required,
         email,
       },
-      id_struktur: {
-        required,
-      },
       nomor_wa: {
         required,
         numeric,
         maxLength: maxLength(15),
       },
     },
+    id_struktur: {
+      required,
+    },
   },
   mounted() {
     this.$axios.get(`user/struktur`).then((res) => {
       this.strukturOptions = res.data.data;
     });
+    this.$axios
+      .get(`user/sub_struktur/${this.form.id_struktur}`)
+      .then((res) => {
+        this.sub1Options = res.data.data;
+      });
+    this.$axios
+      .get(`user/sub_sub_struktur/${this.form.id_struktur_child1}`)
+      .then((res) => {
+        this.sub2Options = res.data.data;
+      });
   },
   computed: {
     ...mapState("user", {
@@ -347,35 +344,41 @@ export default {
       }
     },
     getSub1() {
-      this.$axios
-        .get(`user/sub_struktur/${this.form.id_struktur}`)
-        .then((res) => {
-          this.sub1Options = res.data.data;
-          if (this.sub1Options.length == 0) {
+      if (this.id_struktur !== null && this.id_struktur.code) {
+        this.form.id_struktur = this.id_struktur.code;
+        this.$axios
+          .get(`user/sub_struktur/${this.form.id_struktur}`)
+          .then(async (res) => {
+            this.sub1Options = res.data.data;
+            this.id_struktur_child1 = [];
+            this.id_struktur_child2 = [];
             this.sub2Options = [];
-          }
-        });
+          });
+      } else {
+        this.id_struktur_child1 = [];
+        this.sub1Options = [];
+        this.id_struktur_child2 = [];
+        this.sub2Options = [];
+      }
     },
     getSub2() {
-      if (this.form.id_struktur_child1 == "select1") {
-        console.log("Tampilkan form 1");
-      } else {
+      if (this.id_struktur_child1 !== null && this.id_struktur_child1.code) {
+        this.form.id_struktur_child1 = this.id_struktur_child1.code;
         this.$axios
           .get(`user/sub_sub_struktur/${this.form.id_struktur_child1}`)
           .then((res) => {
+            this.id_struktur_child2 = [];
             this.sub2Options = res.data.data;
           });
+      } else {
+        this.id_struktur_child2 = [];
+        this.sub2Options = [];
       }
     },
     getSub3() {
-      if (this.form.id_struktur_child2 == "select2") {
-        console.log("Tampilkan form 2");
-      } else {
-        this.$axios
-          .post()
-          .then(() => {
-          });
-      }
+      if (this.id_struktur_child2 !== null && this.id_struktur_child2.code)
+        this.form.id_struktur_child2 = this.id_struktur_child2.code;
+      // this.$axios.post().then(() => {});
     },
     success(params) {
       this.$swal({

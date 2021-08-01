@@ -1,7 +1,11 @@
 # Main
 - Aplikasi RKAT (Rencana Kerja dan Anggaran Tahunan) Universitas
+# 23/07/2021
+- Kelola struktur
 
-# Fungsi upload bukti tf dan lpj belum selesai
+# 24/07/2021
+- loading function submit saat proses input data dan sending email
+
 # On Progress
 # Menu
 - Login

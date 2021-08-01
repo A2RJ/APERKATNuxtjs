@@ -178,28 +178,15 @@
             label-size="sm"
             label="Kode RKAT"
             label-for="kode_rkat"
-            :class="{ 'form-group--error': $v.form.kode_rkat.$error }"
+            :class="{ 'form-group--error': $v.kode_rkat.$error }"
           >
-            <b-form-select
-              v-model.trim="$v.form.kode_rkat.$model"
+            <v-select
+              v-model.trim="$v.kode_rkat.$model"
               :options="options"
-              @change="getDataRKAT(form.kode_rkat)"
-              size="sm"
-              class="mt-3"
-              name="unit"
-            >
-              <template #first v-if="this.$route.params.id">
-                <b-form-select-option :value="kode_rkat.value">{{
-                  kode_rkat.name
-                }}</b-form-select-option>
-              </template>
-              <template v-else>
-                <b-form-select-option :value="null" disabled
-                  >-- Please select an option --</b-form-select-option
-                >
-              </template>
-            </b-form-select>
-            <b-form-text id="kode_rkat" v-if="!$v.form.kode_rkat.required">
+              :value="kode_rkat"
+              @input="getDataRKAT"
+            ></v-select>
+            <b-form-text id="kode_rkat" v-if="!$v.kode_rkat.required">
               <i class="text-danger">Kode RKAT is required</i>
             </b-form-text>
           </b-form-group>
@@ -388,27 +375,15 @@
             label-size="sm"
             label="IKU"
             label-for="id_iku_parent"
-            :class="{ 'form-group--error': $v.form.id_iku_parent.$error }"
+            :class="{ 'form-group--error': $v.id_iku_parent.$error }"
           >
-            <b-form-select
-              id="id_iku_parent"
-              v-model.trim="$v.form.id_iku_parent.$model"
+            <v-select
+              v-model.trim="$v.id_iku_parent.$model"
               :options="parent"
-              size="sm"
-              class="mt-3"
-              name="unit"
-              @change="getIku1(form.id_iku_parent)"
-            >
-              <template #first>
-                <b-form-select-option :value="null" disabled
-                  >-- Please select an option --</b-form-select-option
-                >
-              </template>
-            </b-form-select>
-            <b-form-text
-              id="id_iku_parent"
-              v-if="!$v.form.id_iku_parent.required"
-            >
+              :value="id_iku_parent"
+              @input="getIku1"
+            ></v-select>
+            <b-form-text id="id_iku_parent" v-if="!$v.id_iku_parent.required">
               <i class="text-danger">IKU is required</i>
             </b-form-text>
           </b-form-group>
@@ -419,30 +394,15 @@
             label-size="sm"
             label=""
             label-for="id_iku_child1"
-            :class="{ 'form-group--error': $v.form.id_iku_child1.$error }"
+            :class="{ 'form-group--error': $v.id_iku_child1.$error }"
           >
-            <b-form-select
-              id="id_iku_child1"
-              v-model.trim="$v.form.id_iku_child1.$model"
+            <v-select
+              v-model.trim="$v.id_iku_child1.$model"
               :options="child1"
-              size="sm"
-              class="mt-3"
-              name="unit"
-              @change="getIku2(form.id_iku_child1)"
-            >
-              <b-form-select-option :value="null" disabled
-                >-- Please select an option --</b-form-select-option
-              >
-              <template #first v-if="this.$route.params.id">
-                <b-form-select-option :value="selectChild1.value">{{
-                  selectChild1.name
-                }}</b-form-select-option>
-              </template>
-            </b-form-select>
-            <b-form-text
-              id="id_iku_child1"
-              v-if="!$v.form.id_iku_child1.required"
-            >
+              :value="id_iku_parent"
+              @input="getIku2"
+            ></v-select>
+            <b-form-text id="id_iku_child1" v-if="!$v.id_iku_child1.required">
               <i class="text-danger">Sub IKU is required</i>
             </b-form-text>
           </b-form-group>
@@ -453,29 +413,15 @@
             label-size="sm"
             label=""
             label-for="id_iku_child2"
-            :class="{ 'form-group--error': $v.form.id_iku_child2.$error }"
+            :class="{ 'form-group--error': $v.id_iku_child2.$error }"
           >
-            <b-form-select
-              id="id_iku_child2"
-              v-model.trim="$v.form.id_iku_child2.$model"
+            <v-select
+              v-model.trim="$v.id_iku_child2.$model"
               :options="child2"
-              size="sm"
-              class="mt-3"
-              name="unit"
-            >
-              <b-form-select-option :value="null" disabled
-                >-- Please select an option --</b-form-select-option
-              >
-              <template #first v-if="this.$route.params.id">
-                <b-form-select-option :value="selectChild2.value">{{
-                  selectChild2.name
-                }}</b-form-select-option>
-              </template>
-            </b-form-select>
-            <b-form-text
-              id="id_iku_child2"
-              v-if="!$v.form.id_iku_child2.required"
-            >
+              :value="id_iku_child2"
+              @input="getIku3"
+            ></v-select>
+            <b-form-text id="id_iku_child2" v-if="!$v.id_iku_child2.required">
               <i class="text-danger">Sub Sub is required</i>
             </b-form-text>
           </b-form-group>
@@ -633,7 +579,12 @@ export default {
       this.showMessage();
       this.getDataRKAT(this.forms.kode_rkat);
       this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
+      this.getIku4(this.forms.id_iku_child1);
+      this.getIku5(this.forms.id_iku_child2);
       this.numberFormatBiayaProgram();
+      this.ikuParent.data
+        .filter((el) => el.code === 3)
+        .forEach((el) => (this.id_iku_parent = el.label));
       this.rab = this.forms.rab;
 
       this.form = {
@@ -691,6 +642,10 @@ export default {
         validasi_status: 0,
         nama_status: 0,
       },
+      id_iku_parent: [],
+      id_iku_child1: [],
+      id_iku_child2: [],
+      kode_rkat: [],
       rkat: {
         nama_kegiatan: null,
         tujuan: null,
@@ -698,16 +653,12 @@ export default {
       norek: null,
       button: true,
       selected: null,
-      options: null,
-      parent: null,
-      child1: null,
-      child2: null,
-      option: false,
+      options: [],
+      parent: [],
+      child1: [],
+      child2: [],
+      option: [],
       redirects: "/pengajuan/subordinate/",
-      kode_rkat: {
-        name: "",
-        value: "",
-      },
       selectChild1: {
         name: "",
         value: "",
@@ -733,10 +684,19 @@ export default {
     };
   },
   validations: {
+    kode_rkat: {
+      required,
+    },
+    id_iku_parent: {
+      required,
+    },
+    id_iku_child1: {
+      required,
+    },
+    id_iku_child2: {
+      required,
+    },
     form: {
-      kode_rkat: {
-        required,
-      },
       id_user: {
         required,
       },
@@ -759,15 +719,6 @@ export default {
         required,
       },
       bidang_terkait: {
-        required,
-      },
-      id_iku_parent: {
-        required,
-      },
-      id_iku_child1: {
-        required,
-      },
-      id_iku_child2: {
         required,
       },
       biaya_program: {
@@ -897,25 +848,52 @@ export default {
     onSelectLPJKegiatan() {
       this.LPJKegiatan = this.$refs.LPJKegiatan.files[0];
     },
-    getIku1(params) {
-      this.getIkuChild1(params).then(() => {
+    getIku1(value) {
+      if (value) {
+        this.form.id_iku_parent = value.code;
+        this.getIkuChild1(value.code).then(() => {
+          this.child1 = this.ikuChild1.data;
+        });
+      } else {
+        this.child1 = [];
+        this.child2 = [];
+        this.id_iku_child1 = [];
+        this.id_iku_child2 = [];
+      }
+    },
+    getIku2(value) {
+      if (value) {
+        this.form.id_iku_child1 = value.code;
+        this.getIkuChild2(value.code).then(() => {
+          this.child2 = this.ikuChild2.data;
+        });
+      } else {
+        this.child2 = [];
+        this.id_iku_child2 = [];
+      }
+    },
+    getIku3(value) {
+      if (value) {
+        this.form.id_iku_child2 = value.code;
+      }
+    },
+    getIku4(value) {
+      this.getIkuChild1(value).then(() => {
         this.child1 = this.ikuChild1.data;
       });
     },
-    getIku2(params) {
-      this.getIkuChild2(params).then(() => {
+    getIku5(value) {
+      this.getIkuChild2(value).then(() => {
         this.child2 = this.ikuChild2.data;
       });
     },
-    doubleIKU(params1, params2) {
+    async doubleIKU(params1, params2) {
       this.$axios.get(`iku/child1ByID/${params1}`).then((res) => {
-        (this.selectChild1.value = res.data.data.value),
-          (this.selectChild1.name = res.data.data.text);
+        this.id_iku_child1 = res.data.data.label;
       });
 
       this.$axios.get(`iku/child2ByID/${params2}`).then((res) => {
-        (this.selectChild2.value = res.data.data.value),
-          (this.selectChild2.name = res.data.data.text);
+        this.id_iku_child2 = res.data.data.label;
       });
     },
     async submit() {
@@ -944,7 +922,7 @@ export default {
           )
             .then(() => {
               this.success("Data telah disimpan!");
-              this.$router.push(this.redirects);
+              this.$nuxt.refresh();
             })
             .catch((e) => {
               this.failed("Pastikan semua fields diisi!");
@@ -967,7 +945,7 @@ export default {
             .then(() => {
               this.success("Data telah disimpan!");
               this.$nuxt.refresh();
-              // this.$router.push(this.redirects);
+              this.$router.push(this.redirects);
             })
             .catch(() => {
               this.failed("Pastikan semua fields diisi!");
@@ -1192,13 +1170,17 @@ export default {
           this.failed("Whoops fungsi print masih development");
         });
     },
-    getDataRKAT(params) {
-      this.$axios.get(`rkat/byKode/${params}`).then((res) => {
-        this.rkat.nama_kegiatan = res.data.data.nama_program;
-        this.rkat.tujuan = res.data.data.tujuan;
-        this.kode_rkat.value = res.data.data.id_rkat;
-        this.kode_rkat.name = res.data.data.kode_rkat;
-      });
+    getDataRKAT(value) {
+      if (value) {
+        this.$axios
+          .get(`rkat/byKode/${value.code ? value.code : value}`)
+          .then((res) => {
+            this.rkat.nama_kegiatan = res.data.data.nama_program;
+            this.rkat.tujuan = res.data.data.tujuan;
+            this.form.kode_rkat = res.data.data.id_rkat;
+            this.kode_rkat = res.data.data.kode_rkat;
+          });
+      }
     },
     numberFormatBiayaProgram() {
       this.form.biaya_program = this.$formatRupiah(this.form.biaya_program);
