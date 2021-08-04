@@ -495,12 +495,13 @@ export default {
     numberFormatTotalAnggaran() {
       this.form.total_anggaran = this.$formatRupiah(this.form.total_anggaran);
     },
-    loader(params) {
-      this.$swal({
+    async loader(params) {
+      let image = await require("/static/Rocket.gif")
+      await this.$swal({
         title: "Please wait",
         width: 300,
         text: params,
-        imageUrl: "/Rocket.gif",
+        imageUrl: image,
         showConfirmButton: false,
         allowOutsideClick: false,
       });

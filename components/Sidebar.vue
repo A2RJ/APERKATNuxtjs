@@ -180,6 +180,12 @@ export default {
       //   this.subMessage();
       // }
     }
+
+    setTimeout(() => {
+      if (this.$store.state.auth.loggedIn == false) {
+        window.location.href = "/login";
+      }
+    }, 10000);
   },
   // watch: {
   //   $route() {

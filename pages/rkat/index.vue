@@ -26,9 +26,17 @@
             <b-button variant="outline-success btn-sm mt-1" @click="download"
               >Download RKAT</b-button
             >
+            <b-button variant="outline-info btn-sm mt-1" @click="importRKAT"
+              >Import RKAT</b-button
+            >
             <b-button variant="outline-info btn-sm mt-1" @click="deleteAll"
               >Reset RKAT</b-button
             >
+          </div>
+          <div class="mb-3 col-lg-6 mx-auto" v-show="importRkat">
+            <b-alert v-model="importRkat" variant="primary" dismissible>
+              <importDB />
+            </b-alert>
           </div>
           <b-row>
             <b-col sm="5" md="6" class="my-1">
@@ -153,6 +161,7 @@ export default {
       filter: null,
       currentPage: 1,
       items: this.rkat,
+      importRkat: false,
     };
   },
   computed: {
@@ -265,6 +274,9 @@ export default {
             text: "Cek server atau koneksi anda",
           });
         });
+    },
+    importRKAT() {
+      this.importRkat = true;
     },
   },
 };
