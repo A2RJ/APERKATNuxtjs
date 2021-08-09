@@ -148,6 +148,7 @@ export default {
     return {
       fields: [
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
+        { key: "kode_rkat", label: "Kode RKAT " },
         "mulai_program",
         { key: "mulai_program", label: "Waktu Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },

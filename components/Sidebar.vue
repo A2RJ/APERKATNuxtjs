@@ -87,6 +87,18 @@
             :to="'/pengajuan/grafik/'"
             >Grafik Sub Divisi</NuxtLink
           >
+          <NuxtLink
+            class="collapse-item"
+            v-show="warek"
+            :to="'/pengajuanSelesai'"
+            >Approved</NuxtLink
+          >
+          <NuxtLink
+            class="collapse-item"
+            v-show="warek"
+            :to="'/user/struktur'"
+            >struktur</NuxtLink
+          >
         </div>
       </div>
     </li>
