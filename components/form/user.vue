@@ -1,5 +1,15 @@
 <template>
   <div>
+    <div class="mb-3">
+      <b-button class="btn btn-info-outline btn-sm" v-b-toggle href="#userStruktur" @click.prevent>User struktur</b-button>
+    </div>
+
+    <b-collapse id="userStruktur">
+      <b-card title="Kelola struktur">
+        <struktur />
+      </b-card>
+    </b-collapse>
+
     <b-form-group
       label-cols="4"
       label-cols-lg="2"
@@ -193,8 +203,10 @@ import {
   numeric,
   requiredIf,
 } from "vuelidate/lib/validators";
+import struktur from './struktur.vue';
 
 export default {
+  components: { struktur },
   async created() {
     if (this.$route.name === "user-edit-id") {
       this.form = {
