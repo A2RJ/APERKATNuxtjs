@@ -82,6 +82,9 @@
             :current-page="currentPage"
             :tbody-tr-class="rowClass"
           >
+          <!-- <template #cell(index)="data">
+            {{ data.index + 1 }}
+          </template> -->
             <template v-slot:cell(fullname)="row">
               <p>
                 {{ row.item.fullname | capitalize }}
@@ -190,6 +193,7 @@ export default {
   data() {
     return {
       fields: [
+        { key: "index", label: "No."},
         { key: "fullname", label: "User" },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "validasi_status", label: "Status Pengajuan" },

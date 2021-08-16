@@ -65,6 +65,9 @@
         :current-page="currentPage"
         show-empty
       >
+      <!-- <template #cell(index)="data">
+            {{ data.index + 1 }}
+          </template> -->
         <template v-slot:cell(fullname)="row">
           <p>{{ row.item.fullname | capitalize }}</p>
         </template>
@@ -142,6 +145,7 @@ export default {
   data() {
     return {
       fields: [
+        // { key: "index", label: "No."},
         { key: "fullname", label: "User" },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "created_at", label: "Register Date" },

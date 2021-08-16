@@ -576,6 +576,9 @@ import {
 export default {
   async created() {
     if (this.$route.params.id) {
+      // this.status.forEach((e) => {
+      //   console.table(e.id_user, e.status);
+      // });
       this.showMessage();
       this.getDataRKAT(this.forms.kode_rkat);
       this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
@@ -738,7 +741,7 @@ export default {
     },
     file: {
       required: requiredIf(function () {
-        this.$route.name == "pengajuan-subordinate-add";
+        return this.$route.name == "pengajuan-subordinate-add";
       }),
     },
   },
@@ -776,6 +779,8 @@ export default {
     load() {
       if (this.$route.name == "pengajuan-supervisor-edit-id") {
         this.button = false;
+        this.option = false;
+
         for (let index = 1; index < this.status.length; index++) {
           if (
             this.status[index].id_user ==
@@ -789,10 +794,17 @@ export default {
                 this.status[index].status == false
               )
                 this.option = true;
+              console.log("pertama");
             } else if (this.status.length - 2 == index) {
               if (this.status[index].status == false) this.formPencairan = true;
+              console.log("kedua");
             } else {
-              if (this.status[index].status == false) this.option = true;
+              console.log("ketiga");
+              if (
+                this.status[index].status == false &&
+                this.status[index - 1].status !== false
+              )
+                this.option = true;
             }
           }
         }
@@ -944,7 +956,6 @@ export default {
           )
             .then(() => {
               this.success("Data telah disimpan!");
-              this.$nuxt.refresh();
               this.$router.push(this.redirects);
             })
             .catch(() => {
@@ -984,9 +995,6 @@ export default {
               this.success("Berhasil terima pengajuan");
               this.option = false;
               this.$nuxt.refresh();
-              // this.$route.name == "pengajuan-subordinate-edit-id"
-              //   ? this.$router.push("/pengajuan/subordinate/")
-              //   : this.$router.push("/pengajuan/supervisor/");
             })
             .catch(() => {
               this.failed("Whoops Server Error");
@@ -1213,7 +1221,7 @@ export default {
         text: params,
         imageUrl: "/Rocket.gif",
         showConfirmButton: false,
-        allowOutsideClick: false,
+        allowOutsideClick: true,
       });
     },
   },
