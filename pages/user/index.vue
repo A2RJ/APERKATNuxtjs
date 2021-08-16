@@ -153,7 +153,6 @@ export default {
       currentPage: 1,
     };
   },
-  components: {},
   computed: {
     ...mapState("user", {
       user: (state) => state.user,

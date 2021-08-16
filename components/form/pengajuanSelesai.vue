@@ -36,13 +36,23 @@
         {{ data.index + 1 }}
       </template>
     </b-table>
+    <pre>{{ data }}</pre>
   </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
+  // created() {
+  //   console.log(this.pengajuanDir);
+  // },
+  mounted() {
+    this.load();
+  },
   data() {
     return {
+      data: [],
       filter1: null,
       filter2: null,
       fields: [
@@ -120,6 +130,17 @@ export default {
     };
   },
   methods: {
+    load() {
+      this.$axios
+        .get('/pengajuan/pengajuanSelesai/')
+        .then((response) => {
+          this.data = response.data.data.data
+          console.log(this.data)
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
     filter() {
       if (this.filter1 && this.filter2) {
         var startDate = new Date(this.filter1),

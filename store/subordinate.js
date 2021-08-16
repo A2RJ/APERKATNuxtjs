@@ -1,5 +1,6 @@
 export const state = () => ({
     pengajuan: [],
+    pengajuanDir: [],
     data: [],
     status: [],
     history: [],
@@ -16,6 +17,10 @@ export const state = () => ({
 })
 
 export const mutations = {
+    SET_PENGAJUAN_SELESAI(state, payload) {
+        state.pengajuanDir = payload
+    },
+
     SET_PENGAJUAN_DATA(state, payload) {
         state.pengajuan = payload
     },
@@ -78,6 +83,14 @@ export const actions = {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/pengajuan/byUser/${payload}`).then((response) => {
                 commit('SET_PENGAJUAN_DATA', response.data.data.data)
+                resolve()
+            })
+        })
+    },
+    pengajuanSelesai({ commit }) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/pengajuan/pengajuanSelesai/`).then((response) => {
+                commit('SET_PENGAJUAN_SELESAI', response.data.data)
                 resolve()
             })
         })

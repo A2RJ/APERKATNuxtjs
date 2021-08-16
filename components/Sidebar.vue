@@ -89,15 +89,9 @@
           >
           <NuxtLink
             class="collapse-item"
-            v-show="warek"
+            v-show="dirKeuangan"
             :to="'/pengajuanSelesai'"
-            >Approved</NuxtLink
-          >
-          <NuxtLink
-            class="collapse-item"
-            v-show="warek"
-            :to="'/user/struktur'"
-            >struktur</NuxtLink
+            >Pengajuan diterima</NuxtLink
           >
         </div>
       </div>
@@ -106,9 +100,15 @@
     <li class="nav-item" v-show="sekniv">
       <NuxtLink class="nav-link" to="/user">
         <i class="fas fa-fw fa-chart-area"></i>
-        <span>USER</span>
+        <span>User</span>
       </NuxtLink>
     </li>
+    <!-- <li class="nav-item" v-show="sekniv">
+      <NuxtLink class="nav-link" to="/user/struktur">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>Struktur</span>
+      </NuxtLink>
+    </li> -->
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />
 
