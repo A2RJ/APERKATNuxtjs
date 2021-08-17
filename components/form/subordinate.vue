@@ -794,12 +794,9 @@ export default {
                 this.status[index].status == false
               )
                 this.option = true;
-              console.log("pertama");
             } else if (this.status.length - 2 == index) {
               if (this.status[index].status == false) this.formPencairan = true;
-              console.log("kedua");
             } else {
-              console.log("ketiga");
               if (
                 this.status[index].status == false &&
                 this.status[index - 1].status !== false

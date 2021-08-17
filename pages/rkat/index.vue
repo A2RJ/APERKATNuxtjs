@@ -26,9 +26,9 @@
             <b-button variant="outline-success btn-sm mt-1" @click="download"
               >Download RKAT</b-button
             >
-            <b-button variant="outline-info btn-sm mt-1" @click="importRKAT"
+            <!-- <b-button variant="outline-info btn-sm mt-1" @click="importRKAT"
               >Import RKAT</b-button
-            >
+            > -->
             <b-button variant="outline-info btn-sm mt-1" @click="deleteAll"
               >Reset RKAT</b-button
             >

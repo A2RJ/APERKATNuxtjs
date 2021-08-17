@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <b-button class="btn btn-info-outline btn-sm" v-b-toggle href="#userStruktur" @click.prevent>User struktur</b-button>
     </div>
 
@@ -8,7 +8,7 @@
       <b-card title="Kelola struktur">
         <struktur />
       </b-card>
-    </b-collapse>
+    </b-collapse> -->
 
     <b-form-group
       label-cols="4"
@@ -225,12 +225,12 @@ export default {
       this.$axios
         .get(`user/getSub_struktur/${this.userID.id_struktur_child1}`)
         .then((res) => {
-          this.id_struktur_child1 = res.data.data;
+          this.id_struktur_child1 = res.data.data[0].label == "0" ? [] : res.data.data[0];
         });
       this.$axios
         .get(`user/getSub_sub_struktur/${this.userID.id_struktur_child2}`)
         .then((res) => {
-          this.id_struktur_child2 = res.data.data;
+          this.id_struktur_child2 = res.data.data[0].label == "0" ? [] : res.data.data[0];
         });
     }
   },

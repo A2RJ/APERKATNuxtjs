@@ -135,7 +135,6 @@ export default {
         .get('/pengajuan/pengajuanSelesai/')
         .then((response) => {
           this.data = response.data.data.data
-          console.log(this.data)
         })
         .catch((error) => {
           console.error(error);
