@@ -97,6 +97,42 @@
       </div>
     </li>
 
+    <li class="nav-item">
+      <a
+        class="nav-link collapsed"
+        href="#"
+        data-toggle="collapse"
+        data-target="#collapseTwo"
+        aria-expanded="true"
+        aria-controls="collapseTwo"
+      >
+        <i class="fas fa-fw fa-cog"></i>
+        <span>NON RKAT</span>
+      </a>
+      <div
+        id="collapseTwo"
+        class="collapse"
+        aria-labelledby="headingTwo"
+        data-parent="#accordionSidebar"
+      >
+        <div
+          class="bg-white py-2 collapse-inner rounded"
+          v-if="this.$store.state.auth.user"
+        >
+          <h6 class="collapse-header">Daftar Pengajuan</h6>
+          <NuxtLink class="collapse-item" :to="'/nonrkat/'"
+            >Pengajuan</NuxtLink
+          >
+          <NuxtLink
+            class="collapse-item"
+            v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+            :to="'/nonrkat/sub/'"
+            >Pengajuan Sub Divisi</NuxtLink
+          >
+        </div>
+      </div>
+    </li>
+
     <li class="nav-item" v-show="sekniv">
       <NuxtLink class="nav-link" to="/user">
         <i class="fas fa-fw fa-chart-area"></i>
