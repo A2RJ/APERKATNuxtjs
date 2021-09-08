@@ -213,11 +213,13 @@
             label-for="latar_belakang"
             :class="{ 'form-group--error': $v.form.latar_belakang.$error }"
           >
-            <b-form-input
+            <b-form-textarea
               v-model.trim="$v.form.latar_belakang.$model"
-              id="latar_belakang"
-              size="sm"
-            ></b-form-input>
+              id="textarea"
+              placeholder="Enter something..."
+              rows="3"
+              max-rows="6"
+            ></b-form-textarea>
             <b-form-text
               id="latar_belakang"
               v-if="!$v.form.latar_belakang.required"
@@ -235,11 +237,13 @@
             label="Tujuan Kegiatan"
             label-for="tujuan"
           >
-            <b-form-input
+            <b-form-textarea
               v-model="rkat.tujuan"
-              id="tujuan"
-              size="sm"
-            ></b-form-input>
+              id="textarea"
+              placeholder="Enter something..."
+              rows="3"
+              max-rows="6"
+            ></b-form-textarea>
           </b-form-group>
 
           <b-form-group
@@ -264,7 +268,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="target capaian"
+            label="Target Capaian"
             label-for="target_capaian"
             :class="{ 'form-group--error': $v.form.target_capaian.$error }"
           >
@@ -285,7 +289,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="bentuk pelaksanaan program"
+            label="Bentuk Pelaksanaan Program"
             label-for="bentuk_pelaksanaan_program"
             :class="{
               'form-group--error': $v.form.bentuk_pelaksanaan_program.$error,
@@ -308,7 +312,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="tempat program"
+            label="Tempat Program"
             label-for="tempat_program"
             :class="{ 'form-group--error': $v.form.tempat_program.$error }"
           >
@@ -329,7 +333,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="tanggal"
+            label="Tanggal"
             label-for="tanggal"
             :class="{ 'form-group--error': $v.form.tanggal.$error }"
           >
@@ -352,7 +356,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="bidang terkait"
+            label="Bidang Terkait"
             label-for="bidang_terkait"
             :class="{ 'form-group--error': $v.form.bidang_terkait.$error }"
           >
@@ -430,7 +434,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="biaya program"
+            label="Biaya Program"
             label-for="biaya_program"
             :class="{ 'form-group--error': $v.form.biaya_program.$error }"
           >
@@ -509,7 +513,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="rab"
+            label="Surat pengantar, AKA/TOR dan RAB"
             label-for="rab"
             :class="{ 'form-group--error': $v.file.$error }"
           >
@@ -522,14 +526,17 @@
               @change="onSelect"
               placeholder="Choose or drop it here..."
               drop-placeholder="Drop file here..."
+              accept=".pdf"
             ></b-form-file>
             <b-form-text id="rab" v-if="!$v.file.required">
-              <i class="text-danger">Upload file RAB</i>
+              <i class="text-danger">Upload file</i>
             </b-form-text>
-            <!-- accept=".xls, .xlsx, .doc, .docx, .jpg, .png" -->
-            <div class="mt-3">
+            <div class="mt-3" v-if="rab">
               Current file:
-              <a v-if="rab" :href="'../../../' + rab" target="_blank">RAB </a>
+              <a :href="'../../../' + rab" target="_blank">RAB </a>
+            </div>
+            <div class="mt-3" v-else>
+              Ekstensi file harus .PDF
             </div>
           </b-form-group>
           <button
@@ -584,7 +591,6 @@ export default {
       this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
       this.getIku4(this.forms.id_iku_child1);
       this.getIku5(this.forms.id_iku_child2);
-      this.numberFormatBiayaProgram();
       this.ikuParent.data
         .filter((el) => el.code === 3)
         .forEach((el) => (this.id_iku_parent = el.label));
@@ -603,7 +609,7 @@ export default {
         id_iku_parent: this.forms.id_iku_parent,
         id_iku_child1: this.forms.id_iku_child1,
         id_iku_child2: this.forms.id_iku_child2,
-        biaya_program: this.forms.biaya_program,
+        biaya_program: this.$formatRupiah(this.forms.biaya_program),
         bank: this.forms.bank,
         atn: this.forms.atn,
         no_rek: this.forms.no_rek,

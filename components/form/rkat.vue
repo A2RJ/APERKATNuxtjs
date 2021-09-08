@@ -47,7 +47,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="sasaran strategi"
+      label="Sasaran Strategi"
       label-for="sasaran_strategi"
       :class="{ 'form-group--error': $v.form.sasaran_strategi.$error }"
     >
@@ -68,7 +68,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="indikator sasaran strategi"
+      label="Indikator Sasaran Strategi"
       label-for="indikator_sasaran_strategi"
       :class="{
         'form-group--error': $v.form.indikator_sasaran_strategi.$error,
@@ -91,7 +91,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="nama program"
+      label="Nama Program"
       label-for="nama_program"
       :class="{ 'form-group--error': $v.form.nama_program.$error }"
     >
@@ -109,7 +109,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="program kerja"
+      label="Program Kerja"
       label-for="program_kerja"
       :class="{ 'form-group--error': $v.form.program_kerja.$error }"
     >
@@ -127,7 +127,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="deskripsi"
+      label="Deskripsi"
       label-for="deskripsi"
       :class="{ 'form-group--error': $v.form.deskripsi.$error }"
     >
@@ -147,15 +147,17 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="tujuan"
+      label="Tujuan"
       label-for="tujuan"
       :class="{ 'form-group--error': $v.form.tujuan.$error }"
     >
-      <b-form-input
+      <b-form-textarea
         v-model.trim="$v.form.tujuan.$model"
-        id="tujuan"
-        size="sm"
-      ></b-form-input>
+        id="textarea"
+        placeholder="Enter something..."
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
       <b-form-text id="tujuan" v-if="!$v.form.tujuan.required">
         <i class="text-danger">Tujuan is required</i>
       </b-form-text>
@@ -165,7 +167,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="mulai program"
+      label="Mulai Program"
       label-for="mulai_program"
       :class="{ 'form-group--error': $v.form.mulai_program.$error }"
     >
@@ -188,7 +190,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="selesai program"
+      label="Selesai Program"
       label-for="selesai_program"
       :class="{ 'form-group--error': $v.form.selesai_program.$error }"
     >
@@ -214,7 +216,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="tempat"
+      label="Tempat"
       label-for="tempat"
       :class="{ 'form-group--error': $v.form.tempat.$error }"
     >
@@ -232,7 +234,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="sumber anggaran"
+      label="Sumber Anggaran"
       label-for="sumber_anggaran"
       :class="{ 'form-group--error': $v.form.sumber_anggaran.$error }"
     >
@@ -253,7 +255,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="rencara anggaran"
+      label="Rencara Anggaran"
       label-for="rencara_anggaran"
       :class="{ 'form-group--error': $v.form.rencara_anggaran.$error }"
     >
@@ -275,7 +277,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="total anggaran"
+      label="Total Anggaran"
       label-for="total_anggaran"
       :class="{ 'form-group--error': $v.form.total_anggaran.$error }"
     >
@@ -425,7 +427,7 @@ export default {
           ""
         );
         this.form.total_anggaran = this.form.total_anggaran.replaceAll(".", "");
-        this.loader("Saving RKAT")
+        this.loader("Saving RKAT");
         if (this.$route.name === "rkat-edit-id") {
           let form = Object.assign({ id: this.$route.params.id }, this.form);
           this.updaterkat(form)
@@ -496,7 +498,7 @@ export default {
       this.form.total_anggaran = this.$formatRupiah(this.form.total_anggaran);
     },
     async loader(params) {
-      let image = await require("/static/Rocket.gif")
+      let image = await require("/static/Rocket.gif");
       await this.$swal({
         title: "Please wait",
         width: 300,

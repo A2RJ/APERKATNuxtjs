@@ -26,16 +26,123 @@
             <b-button variant="outline-success btn-sm mt-1" @click="download"
               >Download RKAT</b-button
             >
-            <!-- <b-button variant="outline-info btn-sm mt-1" @click="importRKAT"
+            <b-button variant="outline-info btn-sm mt-1" @click="importRKAT"
               >Import RKAT</b-button
-            > -->
+            >
             <b-button variant="outline-info btn-sm mt-1" @click="deleteAll"
               >Reset RKAT</b-button
             >
           </div>
-          <div class="mb-3 col-lg-6 mx-auto" v-show="importRkat">
+          <div class="mb-3 mx-auto" v-show="importRkat">
             <b-alert v-model="importRkat" variant="primary" dismissible>
-              <importDB />
+              <div class="container">
+                <div class="">
+                  <b-form-group
+                    label-cols="4"
+                    label-cols-lg="2"
+                    label-size="sm"
+                    label="Fakultas/Unit Pelaksana"
+                    label-for="id_user"
+                  >
+                    <!-- :class="{ 'form-group--error': $v.selected.$error }" -->
+                    <!-- v-model.trim="$v.selected.$model" -->
+                    <v-select
+                      v-model="selected"
+                      :options="options"
+                      :value="selected"
+                      @input="get"
+                    ></v-select>
+                    <b-form-text id="id_user" v-if="pesan">
+                      <i class="text-danger"
+                        >Fakultas/Unit Pelaksana is required</i
+                      >
+                    </b-form-text>
+                  </b-form-group>
+                  <b-form-file
+                    size="sm"
+                    v-model="file1"
+                    :state="Boolean(file1)"
+                    placeholder="Choose a file or drop it here..."
+                    drop-placeholder="Drop file here..."
+                    ref="file"
+                    accept=".xls, .xlsx"
+                    v-on:change="handleFileUpload()"
+                  ></b-form-file>
+                  <b-progress-bar
+                    class="my-1"
+                    :value="uploadPercentage"
+                    :max="100"
+                    variant="info"
+                    key="info"
+                    show-progress
+                    animated
+                  ></b-progress-bar>
+                  <button
+                    class="btn btn-sm btn-outline-primary mt-1 ml-1"
+                    v-on:click="submitFile()"
+                  >
+                    Import
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger mt-1 ml-1"
+                    v-on:click="resetFile()"
+                  >
+                    Reset
+                  </button>
+                </div>
+                <table
+                  v-if="data"
+                  class="mt-4 table table-responsive"
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid #112031;
+                  "
+                >
+                  <tr>
+                    <th>#</th>
+                    <th>Kode RKAT</th>
+                    <th>Program Kerja</th>
+                    <th>Deskripsi</th>
+                    <th>Mulai Program</th>
+                    <th>Selesai Program</th>
+                    <th>Tempat</th>
+                    <th>Anggaran</th>
+                  </tr>
+                  <tr v-for="item in data.data" :key="item.no">
+                    <td>{{ item.no }}</td>
+                    <td>{{ item.kode_rkat }}</td>
+                    <td>{{ item.program_kerja }}</td>
+                    <td>{{ item.deskripsi }}</td>
+                    <td>{{ item.mulai_program }}</td>
+                    <td>{{ item.selesai_program }}</td>
+                    <td>{{ item.tempat }}</td>
+                    <td>RP. {{ item.total_anggaran }}</td>
+                  </tr>
+                </table>
+                <div
+                  v-if="data && data.data && data.data.length == 0"
+                  class="alert alert-danger my-3 text-center mx-auto"
+                  role="alert"
+                >
+                  Data sudah terimport!
+                </div>
+                <div class="mt-2" v-if="data">
+                  <b-button
+                    variant="outline-info btn-sm mt-1"
+                    @click="postImport"
+                    >Simpan RKAT</b-button
+                  >
+                </div>
+
+                <div
+                  class="alert alert-danger my-3 text-center mx-auto"
+                  v-if="error"
+                  role="alert"
+                >
+                  {{ error }}
+                </div>
+              </div>
             </b-alert>
           </div>
           <b-row>
@@ -163,6 +270,15 @@ export default {
       currentPage: 1,
       items: this.rkat,
       importRkat: false,
+      file: "",
+      data: null,
+      id_user: null,
+      error: null,
+      file1: null,
+      pesan: false,
+      selected: [],
+      options: [],
+      uploadPercentage: 0,
     };
   },
   computed: {
@@ -174,12 +290,11 @@ export default {
     },
   },
   mounted() {
-    // this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-    // this.SET_USER_DATA(this.$store.state.auth.user[0]);
+    
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
-    ...mapActions("rkat", ["getrkat", "deleterkat"]),
+    ...mapActions("rkat", ["getrkat", "deleterkat", "getUser"]),
 
     destroyrkat(row) {
       this.$swal({
@@ -278,6 +393,74 @@ export default {
     },
     importRKAT() {
       this.importRkat = true;
+      this.$axios
+        .get("/user/rkatUser")
+        .then((res) => {
+          this.options = res.data.data;
+        })
+        .catch((e) => {});
+    },
+    handleFileUpload() {
+      this.file1 = this.$refs.file.files[0];
+    },
+    resetFile() {
+      this.file1 = null;
+      this.data = null;
+      this.selected = [];
+    },
+    async submitFile() {
+      if (this.selected) {
+        this.pesan = false;
+
+        /**
+         * Submits the file to the server
+         * Initialize the form data
+         * Add the form data we need to submit
+         * Make the request to the POST /single-file URL
+         */
+        let formData = new FormData();
+        formData.append("file", this.file1);
+
+        await this.$axios
+          .post("/rkat/uploadRKAT", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data;",
+            },
+            onUploadProgress: function (progressEvent) {
+              this.uploadPercentage = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+            }.bind(this),
+          })
+          .then((res) => {
+            this.data = res.data;
+
+            this.error = null;
+          })
+          .catch((e) => {
+            this.data = null;
+            this.error = "Pastikan format file benar!";
+          });
+      } else {
+        this.pesan = true;
+      }
+    },
+    get(value) {
+      if (value) {
+        this.selected = value.label;
+        this.id_user = value.code;
+      }
+    },
+    postImport() {
+      this.$axios
+        .post(`/rkat/postImport/${this.id_user}`, this.data)
+        .then((res) => {
+          this.data = null;
+          this.importRkat = false;
+
+          this.$nuxt.refresh();
+        })
+        .catch((e) => {});
     },
   },
 };

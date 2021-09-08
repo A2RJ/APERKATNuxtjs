@@ -97,7 +97,7 @@
       </div>
     </li>
 
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a
         class="nav-link collapsed"
         href="#"
@@ -131,7 +131,7 @@
           >
         </div>
       </div>
-    </li>
+    </li> -->
 
     <li class="nav-item" v-show="sekniv">
       <NuxtLink class="nav-link" to="/user">
@@ -221,17 +221,23 @@ export default {
       } else if (data == "sekniv") {
         this.sekniv = true;
       }
-      if (data == "prodi") {
-        this.selfMessage();
-      } else {
-        this.selfMessage();
-        this.subMessage();
-      }
+      // if (data == "prodi") {
+      //   this.selfMessage();
+      // } else {
+      //   this.selfMessage();
+      //   this.subMessage();
+      // }
     }
 
-    setTimeout(() => {
+    setTimeout(async () => {
       if (this.$store.state.auth.loggedIn == false) {
+        try {
+        this.SET_IS_AUTH(false);
+        this.SET_USER_DATA(null);
         window.location.href = "/login";
+      } catch (err) {
+        console.log(err);
+      }
       }
     }, 10000);
   },

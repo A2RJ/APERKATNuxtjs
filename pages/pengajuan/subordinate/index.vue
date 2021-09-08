@@ -193,11 +193,12 @@ export default {
   data() {
     return {
       fields: [
-        { key: "index", label: "No."},
+        // { key: "index", label: "No."},
         { key: "fullname", label: "User" },
+        { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "validasi_status", label: "Status Pengajuan" },
-        { key: "created_at", label: "Waktu Pengajuan" },
+        { key: "created_at", label: "Waktu Pengajuan" }, 
         "actions",
       ],
 
