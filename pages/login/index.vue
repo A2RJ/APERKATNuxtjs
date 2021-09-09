@@ -169,11 +169,14 @@
       </div>
     </section>
     <!-- <footers /> -->
+    <custom-table-testing />
   </section>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
+import CustomTable from '../../components/customTable.vue';
+import CustomTableTesting from '../../components/customTableTesting.vue';
 export default {
   auth: false,
   data() {
@@ -187,7 +190,7 @@ export default {
       message: "",
     };
   },
-  components: {},
+  components: {CustomTable, CustomTableTesting},
   mounted() {
     if (this.$auth.$state.loggedIn) {
       this.$router.push("/");

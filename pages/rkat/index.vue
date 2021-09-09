@@ -89,6 +89,12 @@
                   >
                     Reset
                   </button>
+                  <button
+                    class="btn btn-sm btn-outline-info mt-1 ml-1"
+                    v-on:click="downloadFile()"
+                  >
+                    Download template
+                  </button>
                 </div>
                 <table
                   v-if="data"
@@ -190,13 +196,13 @@
             responsive
             head-variant="light"
             hover
+            show-empty
             id="my-table"
             :items="rkat"
             :fields="fields"
             :per-page="perPage"
             :current-page="currentPage"
             :filter="filter"
-            show-empty
           >
             <template v-slot:cell(fullname)="row">
               {{ row.item.fullname | capitalize }}
@@ -402,6 +408,9 @@ export default {
     },
     handleFileUpload() {
       this.file1 = this.$refs.file.files[0];
+    },
+    downloadFile() {
+      window.open("https://aperkat.uts.ac.id/RKATemplate.xlsx");
     },
     resetFile() {
       this.file1 = null;

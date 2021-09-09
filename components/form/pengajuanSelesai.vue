@@ -57,7 +57,7 @@ export default {
       filter2: null,
       fields: [
         "index",
-        { key: "name", label: "Name" },
+        { key: "name", stickyColumn: true, label: "Name" },
         { key: "department", label: "Department" },
         { key: "age", label: "Age" },
         { key: "dateOfBirth", label: "Date Of Birth" },
