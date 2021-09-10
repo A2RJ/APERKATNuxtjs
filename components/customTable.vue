@@ -107,14 +107,18 @@
         <slot v-bind="props" :name="slot" />
       </template>
     </b-table>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="fill"
-      size="sm"
-      class="my-0"
-    ></b-pagination>
+    <b-row>
+      <b-col lg="6" class="my-1">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          align="fill"
+          size="sm"
+          class="my-0"
+        ></b-pagination>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
@@ -127,20 +131,23 @@ export default {
         name: "flip-list",
       },
       id: this.html,
-      fieldsTable: ["selected", "index"],
+      fieldsTable: ["selected", { key: "index", label: "No." }],
       selectMode: "multi",
       selected: [],
       selectAll: false,
       checked: true,
-      totalRows: 1,
       currentPage: 1,
       perPage: 10,
-      pageOptions: [15, 20, 25, { value: 100, text: "Show a lot" }],
+      pageOptions: [10, 15, 20, 25, { value: 100, text: "Show a lot" }],
       filter: null,
     };
   },
+  computed: {
+    totalRows() {
+      return this.items.length;
+    },
+  },
   mounted() {
-    this.totalRows = this.items.length;
     for (let index = 0; index < this.fields.length; index++) {
       this.fieldsTable.push(this.fields[index]);
     }

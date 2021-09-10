@@ -20,66 +20,19 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <b-row>
-            <b-col sm="5" md="6" class="my-1">
-              <b-form-group
-                label="Per page"
-                label-for="per-page-select"
-                label-cols-sm="6"
-                label-cols-md="4"
-                label-cols-lg="3"
-                label-align-sm="right"
-                label-size="sm"
-                class="mb-0"
-              >
-                <b-form-select
-                  id="per-page-select"
-                  v-model="perPage"
-                  :options="pageOptions"
-                  size="sm"
-                ></b-form-select>
-              </b-form-group>
-            </b-col>
-            <b-col lg="6" class="my-1 float-right">
-              <b-form-group
-                label="Filter"
-                label-for="filter-input"
-                label-cols-sm="3"
-                label-align-sm="right"
-                label-size="sm"
-                class="mb-0"
-              >
-                <b-input-group size="sm">
-                  <b-form-input
-                    id="filter-input"
-                    v-model="filter"
-                    type="search"
-                    placeholder="Type to Search"
-                  ></b-form-input>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-          </b-row>
           <!-- sticky-header -->
-          <b-table
-            id="my-table"
-            head-variant="light"
-            hover
-            responsive
-            show-empty
+          <custom-table
             :items="items"
             :fields="fields"
-            :filter="filter"
-            :per-page="perPage"
-            :current-page="currentPage"
-            :tbody-tr-class="rowClass"
+            :html="key"
+            :actions="actions"
           >
-            <template v-slot:cell(fullname)="row">
+            <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }}
               </p>
             </template>
-            <template v-slot:cell(nama_struktur)="row">
+            <template v-slot:nama_struktur="row">
               <p
                 v-if="
                   row.item.nama_struktur !== '0' &&
@@ -111,7 +64,7 @@
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
-            <template v-slot:cell(validasi_status)="row">
+            <template v-slot:validasi_status="row">
               <p v-if="row.item.validasi_status == 0">
                 <b-badge variant="danger"
                   >Ditolak: {{ row.item.nama_status }}</b-badge
@@ -133,10 +86,10 @@
                 >
               </p>
             </template>
-            <template v-slot:cell(created_at)="row">
+            <template v-slot:created_at="row">
               <p>{{ row.item.created_at | convertDate }}</p>
             </template>
-            <template v-slot:cell(actions)="row">
+            <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
                 :to="'edit/' + row.item.id_pengajuan"
@@ -144,16 +97,7 @@
                 >Detail</NuxtLink
               >
             </template>
-          </b-table>
-
-          <div class="overflow-auto">
-            <b-pagination
-              v-model="currentPage"
-              :total-rows="rows"
-              :per-page="perPage"
-              aria-controls="my-table"
-            ></b-pagination>
-          </div>
+          </custom-table>
         </div>
       </div>
     </div>
@@ -175,6 +119,64 @@ export default {
   },
   data() {
     return {
+      key: "id_pengajuan",
+      actions: [
+        {
+          name: "Tambah",
+          type: "link",
+          link: "user/add",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Reset",
+          type: "func",
+          func: "deleteAll",
+          link: "Reset",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Print",
+          type: "func",
+          func: "print",
+          link: "Print",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Import",
+          type: "func",
+          func: "importRKAT",
+          link: "Print",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Select All",
+          type: "func",
+          func: "selectAll",
+          link: "Select All",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Clear Selected",
+          type: "func",
+          func: "clearSelected",
+          link: "Clear Selected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Delete Selected",
+          type: "func",
+          func: "deleteSelected",
+          link: "Delete Selected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Print Selected",
+          type: "func",
+          func: "printSelected",
+          link: "Print Selected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+      ],
       fields: [
         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },
@@ -183,11 +185,6 @@ export default {
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],
-
-      perPage: 10,
-      pageOptions: [10, 15, 20, { value: 100, text: "Show a lot" }],
-      filter: null,
-      currentPage: 1,
       items: [],
     };
   },
@@ -204,10 +201,10 @@ export default {
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuan"]),
-    rowClass(item, type){
-      if (!item || type !== 'row') return
-      if (item.status_message === 0) return 'table-success'
-    }
+    rowClass(item, type) {
+      if (!item || type !== "row") return;
+      if (item.status_message === 0) return "table-success";
+    },
   },
 };
 </script>

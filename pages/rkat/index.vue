@@ -19,151 +19,32 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          
-          <div class="mb-3 mx-auto" v-show="importRkat">
-            <b-alert v-model="importRkat" variant="primary" dismissible>
-              <div class="container">
-                <div class="">
-                  <b-form-group
-                    label-cols="4"
-                    label-cols-lg="2"
-                    label-size="sm"
-                    label="Fakultas/Unit Pelaksana"
-                    label-for="id_user"
-                  >
-                    <!-- :class="{ 'form-group--error': $v.selected.$error }" -->
-                    <!-- v-model.trim="$v.selected.$model" -->
-                    <v-select
-                      v-model="selected"
-                      :options="options"
-                      :value="selected"
-                      @input="get"
-                    ></v-select>
-                    <b-form-text id="id_user" v-if="pesan">
-                      <i class="text-danger"
-                        >Fakultas/Unit Pelaksana is required</i
-                      >
-                    </b-form-text>
-                  </b-form-group>
-                  <b-form-file
-                    size="sm"
-                    v-model="file1"
-                    :state="Boolean(file1)"
-                    placeholder="Choose a file or drop it here..."
-                    drop-placeholder="Drop file here..."
-                    ref="file"
-                    accept=".xls, .xlsx"
-                    v-on:change="handleFileUpload()"
-                  ></b-form-file>
-                  <b-progress-bar
-                    class="my-1"
-                    :value="uploadPercentage"
-                    :max="100"
-                    variant="info"
-                    key="info"
-                    show-progress
-                    animated
-                  ></b-progress-bar>
-                  <button
-                    class="btn btn-sm btn-outline-primary mt-1 ml-1"
-                    v-on:click="submitFile()"
-                  >
-                    Import
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-danger mt-1 ml-1"
-                    v-on:click="resetFile()"
-                  >
-                    Reset
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-info mt-1 ml-1"
-                    v-on:click="downloadFile()"
-                  >
-                    Download template
-                  </button>
-                </div>
-                <table
-                  v-if="data"
-                  class="mt-4 table table-responsive"
-                  style="
-                    width: 100%;
-                    border-collapse: collapse;
-                    border: 1px solid #112031;
-                  "
-                >
-                  <tr>
-                    <th>#</th>
-                    <th>Kode RKAT</th>
-                    <th>Program Kerja</th>
-                    <th>Deskripsi</th>
-                    <th>Mulai Program</th>
-                    <th>Selesai Program</th>
-                    <th>Tempat</th>
-                    <th>Anggaran</th>
-                  </tr>
-                  <tr v-for="item in data.data" :key="item.no">
-                    <td>{{ item.no }}</td>
-                    <td>{{ item.kode_rkat }}</td>
-                    <td>{{ item.program_kerja }}</td>
-                    <td>{{ item.deskripsi }}</td>
-                    <td>{{ item.mulai_program }}</td>
-                    <td>{{ item.selesai_program }}</td>
-                    <td>{{ item.tempat }}</td>
-                    <td>RP. {{ item.total_anggaran }}</td>
-                  </tr>
-                </table>
-                <div
-                  v-if="data && data.data && data.data.length == 0"
-                  class="alert alert-danger my-3 text-center mx-auto"
-                  role="alert"
-                >
-                  Data sudah terimport!
-                </div>
-                <div class="mt-2" v-if="data">
-                  <b-button
-                    variant="outline-info btn-sm mt-1"
-                    @click="postImport"
-                    >Simpan RKAT</b-button
-                  >
-                </div>
-
-                <div
-                  class="alert alert-danger my-3 text-center mx-auto"
-                  v-if="error"
-                  role="alert"
-                >
-                  {{ error }}
-                </div>
-              </div>
-            </b-alert>
-          </div>
           <custom-table  :items="items" :fields="fields" :html="key" :actions="actions">
-            <template v-slot:cell(fullname)="row">
-              {{ row.value | capitalize }}
+            <template v-slot:fullname="data">
+              {{ data.value | capitalize }}
             </template>
-            <template v-slot:cell(total_anggaran)="row">
-              RP. {{ row.value | currency }}
+            <template v-slot:total_anggaran="data">
+              RP. {{ data.value | currency }}
             </template>
-            <template v-slot:cell(mulai_program)="row">
-              {{ row.value | convertDate }}
+            <template v-slot:mulai_program="data">
+              {{ data.value | convertDate }}
             </template>
-            <template v-slot:cell(created_at)="row">
-              {{ row.value | convertDate }}
+            <template v-slot:created_at="data">
+              {{ data.value | convertDate }}
             </template>
-            <template v-slot:cell(anggaran_digunakan)="row">
-              RP. {{ row.value | currency }}
+            <template v-slot:anggaran_digunakan="data">
+              RP. {{ data.value | currency }}
             </template>
-            <template v-slot:cell(actions)="row">
+            <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info mt-1"
-                :to="'rkat/edit/' + row.value"
+                :to="'rkat/edit/' + row.item.id_rkat"
                 :key="'edit' + row.index"
                 >Ubah</NuxtLink
               >
               <button
                 class="btn btn-sm btn-outline-danger mt-1"
-                @click="destroyrkat(row)"
+                @click="destroyrkat(row.item.id_rkat)"
               >
                 Hapus
               </button>
@@ -207,51 +88,16 @@ export default {
         "total_anggaran",
         "actions",
       ],
-      items: [
-        { id: 1, age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-        { id: 2, age: 21, first_name: "Larsen", last_name: "Shaw" },
-        { id: 3, age: 89, first_name: "Geneva", last_name: "Wilson" },
-        { id: 4, age: 38, first_name: "Jami", last_name: "Carney" },
-        { id: 5, age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-        { id: 6, age: 21, first_name: "Larsen", last_name: "Shaw" },
-        { id: 7, age: 89, first_name: "Geneva", last_name: "Wilson" },
-        { id: 8, age: 38, first_name: "Jami", last_name: "Carney" },
-        { id: 9, age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-        { id: 10, age: 21, first_name: "Larsen", last_name: "Shaw" },
-        { id: 11, age: 89, first_name: "Geneva", last_name: "Wilson" },
-        { id: 12, age: 38, first_name: "Jami", last_name: "Carney" },
-        { id: 13, age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-        { id: 14, age: 21, first_name: "Larsen", last_name: "Shaw" },
-        { id: 15, age: 89, first_name: "Geneva", last_name: "Wilson" },
-        { id: 16, age: 38, first_name: "Jami", last_name: "Carney" },
-      ],
-      perPage: 10,
-      pageOptions: [5, 10, 15, 20, { value: 100, text: "Show a lot" }],
-      filter: null,
-      currentPage: 1,
-      items: this.rkat,
-      importRkat: false,
-      file: "",
-      data: null,
-      id_user: null,
-      error: null,
-      file1: null,
-      pesan: false,
-      selected: [],
-      options: [],
-      uploadPercentage: 0,
+      items: [],
     };
   },
   computed: {
     ...mapState("rkat", {
       rkat: (state) => state.rkat,
-    }),
-    rows() {
-      return this.rkat.length;
-    },
+    })
   },
-  mounted() {
-    
+  mounted(){
+    this.items = this.rkat
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
