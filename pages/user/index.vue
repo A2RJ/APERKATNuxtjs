@@ -65,9 +65,6 @@
         :current-page="currentPage"
         show-empty
       >
-      <!-- <template #cell(index)="data">
-            {{ data.index + 1 }}
-          </template> -->
         <template v-slot:cell(fullname)="row">
           <p>{{ row.item.fullname | capitalize }}</p>
         </template>
