@@ -87,18 +87,18 @@
       @row-selected="onRowSelected"
       selectedVariant="success"
     >
-      <template #head(selected)>
+      <template #head(index)>
         <span aria-hidden="true">
-          <b-form-checkbox v-model="selectAll" name="check-button" />
+          <b-form-checkbox v-model="selectAll" name="check-button"
+            >No.</b-form-checkbox
+          >
         </span>
       </template>
-      <template #cell(selected)="{ rowSelected }">
-        <template v-if="rowSelected">
-          <b-form-checkbox v-model="checked" disabled> </b-form-checkbox>
-        </template>
-      </template>
       <template #cell(index)="data">
-        {{ data.index + 1 }}
+        <b-form-checkbox v-if="data.rowSelected" v-model="checked" disabled>
+          {{ data.index + 1 }}
+        </b-form-checkbox>
+        <span v-else aria-hidden="true">{{ data.index + 1 }}</span>
       </template>
       <template
         v-for="slot in Object.keys($scopedSlots)"
@@ -111,7 +111,9 @@
       <b-col lg="6" class="my-1">
         <b-pagination
           v-model="currentPage"
-          :total-rows="totalRows"
+          :total-rows="
+            countRows !== 0 && countRows < totalRows ? countRows : totalRows
+          "
           :per-page="perPage"
           align="fill"
           size="sm"
@@ -123,6 +125,8 @@
 </template>
 
 <script>
+import { mapActions, mapState, mapMutations } from "vuex";
+
 export default {
   props: ["items", "fields", "html", "actions"],
   data() {
@@ -131,7 +135,7 @@ export default {
         name: "flip-list",
       },
       id: this.html,
-      fieldsTable: ["selected", { key: "index", label: "No." }],
+      fieldsTable: ["index"],
       selectMode: "multi",
       selected: [],
       selectAll: false,
@@ -140,12 +144,17 @@ export default {
       perPage: 10,
       pageOptions: [10, 15, 20, 25, { value: 100, text: "Show a lot" }],
       filter: null,
+      countRows: 0,
     };
   },
   computed: {
     totalRows() {
       return this.items.length;
     },
+    ...mapState("customTable", {
+      success: (state) => state.success,
+      errors: (state) => state.errors,
+    }),
   },
   mounted() {
     for (let index = 0; index < this.fields.length; index++) {
@@ -153,26 +162,30 @@ export default {
     }
   },
   methods: {
+    ...mapActions("customTable", ["action"]),
+
     onRowSelected(items) {
       this.selected = items;
     },
     selectAllRows() {
       this.$refs.selectableTable.selectAllRows();
+      this.selectAll = true;
     },
     clearSelected() {
       this.$refs.selectableTable.clearSelected();
+      this.selectAll = false;
     },
     onFiltered(filteredItems) {
-      this.totalRows = filteredItems.length;
+      this.countRows = filteredItems.length;
       this.currentPage = 1;
     },
     toCellName(slot) {
       return `cell(${slot})`;
     },
     functionIndex(func, link) {
-      if (func == "add") {
-        this.add(link);
-      } else if (func == "reset") {
+      console.log("functionIndex");
+
+      if (func == "reset") {
         this.reset(link);
       } else if (func == "print") {
         this.print(link);
@@ -186,11 +199,38 @@ export default {
         this.printSelectedRows();
       }
     },
-    add(link) {
-      console.log(link);
-    },
     reset(link) {
-      console.log(link);
+      this.$swal({
+        title: "Warning!",
+        text: "Yakin menghapus data?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.action(Object.assign({ route: "GET", link: link }))
+            .then(() => {
+              this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "Data berhasil dihapus",
+              });
+              this.$nuxt.refresh();
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Periksa jaringan anda!",
+              });
+            });
+        }
+      });
     },
     print(link) {
       console.log(link);
@@ -217,6 +257,9 @@ export default {
       } else {
         this.clearSelected();
       }
+    },
+    items: function () {
+      console.log(this.items.length);
     },
   },
 };

@@ -169,7 +169,7 @@
       </div>
     </section>
     <!-- <footers /> -->
-    <!-- <custom-table-testing /> -->
+    <custom-table-testing />
   </section>
 </template>
 

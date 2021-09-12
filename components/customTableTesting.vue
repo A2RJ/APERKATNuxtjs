@@ -18,7 +18,7 @@ export default {
       key: "id",
       actions: [
         { name: "Tambah", type: "link", link: "user/add", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Reset", type: "func", func: "deleteAll", link: "Reset", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        { name: "Reset", type: "func", func: "reset", link: "Reset", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
         { name: "Print", type: "func", func: "print", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
         { name: "Import", type: "func", func: "importRKAT", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
         { name: "Select All", type: "func", func: "selectAll", link: "Select All", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
