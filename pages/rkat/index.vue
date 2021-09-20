@@ -19,7 +19,7 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <custom-table  :items="items" :fields="fields" :html="key" :actions="actions">
+          <custom-table :items="items" :fields="fields" :html="key" :actions="actions">
             <template v-slot:fullname="data">
               {{ data.value | capitalize }}
             </template>
@@ -68,14 +68,14 @@ export default {
     return {
       key: "id_rkat",
       actions: [
-        { name: "Tambah", type: "link", link: "user/add", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Reset", type: "func", func: "deleteAll", link: "Reset", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Print", type: "func", func: "print", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Import", type: "func", func: "importRKAT", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        { name: "Tambah", type: "link", link: "rkat/add", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        { name: "Reset", type: "func", func: "reset", link: "/rkat/destroy", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        { name: "Print", type: "func", func: "print", link: "/rkat/pdf_rkat", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        // { name: "Import", type: "func", func: "importRKAT", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
         { name: "Select All", type: "func", func: "selectAll", link: "Select All", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
         { name: "Clear Selected", type: "func", func: "clearSelected", link: "Clear Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Delete Selected", type: "func", func: "deleteSelected", link: "Delete Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Print Selected", type: "func", func: "printSelected", link: "Print Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        { name: "Delete Selected", type: "func", func: "deleteSelected", link: "/rkat/pdf_selected_rkat/", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        { name: "Print Selected", type: "func", func: "printSelected", link: "/rkat/pdf_selected_rkat/", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
       ],
       fields: [
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
@@ -115,7 +115,7 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.deleterkat(row.item.id_rkat)
+          this.deleterkat(row)
             .then(() => {
               this.$swal({
                 width: 300,
@@ -124,6 +124,7 @@ export default {
                 text: "RKAT data was deleted successfully",
               });
               this.$nuxt.refresh();
+              this.items = this.rkat
             })
             .catch(() => {
               this.$swal({
@@ -158,6 +159,7 @@ export default {
                 text: "RKAT telah dihapus",
               });
               this.$nuxt.refresh();
+              this.items = this.rkat
             })
             .catch(() => {
               this.$swal({

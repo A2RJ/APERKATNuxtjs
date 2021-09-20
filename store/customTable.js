@@ -16,16 +16,23 @@ export const mutations = {
 export const actions = {
     action({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            const fun = '';
-            if (payload.route == "RESET") {
-                this.$axios.get(payload.link).then((response) => {
-                    commit('SET_SUCCESS', response.data.data)
-                    resolve()
-                })
+            if (payload.route == "GET") {
+                this.$axios.get(payload.link)
+                    .then((r) => {
+                        commit('SET_SUCCESS', r.data.data)
+                        resolve()
+                    }).catch((e) => {
+                        commit('SET_ERRORS', e.response.data)
+                    })
+            } else if (payload.route == "POST") {
+                this.$axios.post(payload.link, payload.data)
+                    .then((r) => {
+                        commit('SET_SUCCESS', r.data.data)
+                        resolve()
+                    }).catch((e) => {
+                        commit('SET_ERRORS', e.response.data)
+                    })
             }
-            fun.catch((e) => {
-                commit('SET_ERRORS', e.response.data)
-            })
         })
     }
 }

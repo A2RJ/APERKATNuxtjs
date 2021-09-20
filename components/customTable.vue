@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   props: ["items", "fields", "html", "actions"],
@@ -182,9 +182,14 @@ export default {
     toCellName(slot) {
       return `cell(${slot})`;
     },
+    getAllSelected() {
+      const a = [];
+      for (let index = 0; index < this.selected.length; index++) {
+        a.push(this.selected[index][this.id]);
+      }
+      return a;
+    },
     functionIndex(func, link) {
-      console.log("functionIndex");
-
       if (func == "reset") {
         this.reset(link);
       } else if (func == "print") {
@@ -194,9 +199,9 @@ export default {
       } else if (func == "clearSelected") {
         this.clearSelected();
       } else if (func == "deleteSelected") {
-        this.deleteRows();
+        this.deleteRows(link);
       } else if (func == "printSelected") {
-        this.printSelectedRows();
+        this.printRows(link);
       }
     },
     reset(link) {
@@ -233,21 +238,61 @@ export default {
       });
     },
     print(link) {
-      console.log(link);
+      this.$axios
+        .get(link, {
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "file.pdf");
+          document.body.appendChild(link);
+          link.click();
+          this.$swal({
+            width: 300,
+            icon: "success",
+            title: "Congrats!",
+            text: "Telah didownload",
+          });
+        })
+        .catch(() => {
+          this.$swal({
+            width: 300,
+            icon: "error",
+            title: "Oops...",
+            text: "Cek server atau koneksi anda",
+          });
+        });
     },
-    deleteRows() {
-      const a = [];
-      for (let index = 0; index < this.selected.length; index++) {
-        a.push(this.selected[index][this.id]);
-      }
-      this.selected = a;
+    deleteRows(link) {
+      this.action(
+        Object.assign({ route: "POST", link: link, data: this.getAllSelected() })
+      )
+        .then((res) => {
+          console.log(link);
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
-    printSelectedRows() {
-      const a = [];
-      for (let index = 0; index < this.selected.length; index++) {
-        a.push(this.selected[index][this.id]);
-      }
-      this.selected = a;
+    printRows(link) {
+      this.$axios
+        .get(
+          link,
+          { data: this.getAllSelected() },
+          {
+            responseType: "blob",
+          }
+        )
+        .then((res) => {
+          console.log(link);
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
   },
   watch: {
@@ -258,9 +303,7 @@ export default {
         this.clearSelected();
       }
     },
-    items: function () {
-      console.log(this.items.length);
-    },
+    items: function () {},
   },
 };
 </script>

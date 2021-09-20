@@ -121,33 +121,13 @@ export default {
     return {
       key: "id_pengajuan",
       actions: [
-        {
-          name: "Tambah",
-          type: "link",
-          link: "user/add",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        {
-          name: "Reset",
-          type: "func",
-          func: "deleteAll",
-          link: "Reset",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        {
-          name: "Print",
-          type: "func",
-          func: "print",
-          link: "Print",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        {
-          name: "Import",
-          type: "func",
-          func: "importRKAT",
-          link: "Print",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
+        // {
+        //   name: "Print",
+        //   type: "func",
+        //   func: "print",
+        //   link: "Print",
+        //   color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        // },
         {
           name: "Select All",
           type: "func",
@@ -162,20 +142,13 @@ export default {
           link: "Clear Selected",
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
-        {
-          name: "Delete Selected",
-          type: "func",
-          func: "deleteSelected",
-          link: "Delete Selected",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        {
-          name: "Print Selected",
-          type: "func",
-          func: "printSelected",
-          link: "Print Selected",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
+        // {
+        //   name: "Print Selected",
+        //   type: "func",
+        //   func: "printSelected",
+        //   link: "Print Selected",
+        //   color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        // },
       ],
       fields: [
         { key: "fullname", label: "User" },

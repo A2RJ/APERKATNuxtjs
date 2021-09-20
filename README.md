@@ -60,3 +60,21 @@ $ npm run dev
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+# ALL
+- print all /sesuai/route GET
+- delete selected /sesuai/route POST
+- print selected /sesuai/route GET
+# RKAT
+- tambah /rkat/add GET
+- reset /rkat/destroy GET
+- import
+- delete /rkat/delete/${payload} GET
+# user
+- tambah /user/add
+- reset /user/destroy POST
+- delete /user/delete/${payload} GET
+# pengajuan divisi
+- tambah
+- reset /pengajuan/destroy/${this.$store.state.auth.user[0].id_user} GET
+- delete /pengajuan/delete/${payload}` GET
