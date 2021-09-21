@@ -65,16 +65,23 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 - print all /sesuai/route GET
 - delete selected /sesuai/route POST
 - print selected /sesuai/route GET
+# Selesaikan bottom menu (disable top menu) baru top menu
+KIRIM DATA TERBARU SETELAH AKSI DELETE
 # RKAT
 - tambah /rkat/add GET
-- reset /rkat/destroy GET
-- import
-- delete /rkat/delete/${payload} GET
+- reset this.$parent.reset
+- import this.$parent.import
+- delete this.delete(row)
 # user
 - tambah /user/add
-- reset /user/destroy POST
-- delete /user/delete/${payload} GET
+- reset this.$parent.reset
+- delete this.delete(row)
 # pengajuan divisi
-- tambah
-- reset /pengajuan/destroy/${this.$store.state.auth.user[0].id_user} GET
-- delete /pengajuan/delete/${payload}` GET
+- tambah pengajuan/subordinate/add
+- reset this.reset
+- delete this.delete(row)
+# grafik
+
+# MABA
+- administrasi.uts.ac.id (nim - nim)
+- portal (nim - nim)

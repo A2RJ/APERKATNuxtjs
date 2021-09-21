@@ -4,7 +4,12 @@
       <h6 class="m-0 font-weight-bold text-primary">User</h6>
     </div>
     <div class="card-body">
-      <custom-table  :items="items" :fields="fields" :html="key" :actions="actions">
+      <custom-table
+        :items="items"
+        :fields="fields"
+        :html="key"
+        :actions="actions"
+      >
         <template v-slot:fullname="row">
           <p>{{ row.item.fullname | capitalize }}</p>
         </template>
@@ -75,13 +80,48 @@ export default {
     return {
       key: "id_user",
       actions: [
-        { name: "Tambah", type: "link", link: "user/add", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Reset", type: "func", func: "reset", link: "/user/destroy", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Print", type: "func", func: "print", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Select All", type: "func", func: "selectAll", link: "Select All", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Clear Selected", type: "func", func: "clearSelected", link: "Clear Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Delete Selected", type: "func", func: "deleteSelected", link: "Delete Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Print Selected", type: "func", func: "printSelected", link: "Print Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        {
+          name: "Tambah",
+          type: "link",
+          link: "user/add",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Reset",
+          type: "func",
+          func: "reset",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Print",
+          type: "func",
+          func: "print",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Select All",
+          type: "func",
+          func: "selectAll",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Clear Selected",
+          type: "func",
+          func: "clearSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Delete Selected",
+          type: "func",
+          func: "deleteSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Print Selected",
+          type: "func",
+          func: "printSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
       ],
       fields: [
         { key: "fullname", label: "User" },
@@ -89,7 +129,7 @@ export default {
         { key: "created_at", label: "Register Date" },
         "Action",
       ],
-      items: []
+      items: [],
     };
   },
   computed: {
@@ -98,7 +138,7 @@ export default {
     }),
   },
   mounted() {
-    this.items = this.user
+    this.items = this.user;
   },
   methods: {
     ...mapActions("user", ["getuser", "deleteuser"]),

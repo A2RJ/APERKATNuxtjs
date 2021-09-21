@@ -120,36 +120,7 @@ export default {
   data() {
     return {
       key: "id_pengajuan",
-      actions: [
-        // {
-        //   name: "Print",
-        //   type: "func",
-        //   func: "print",
-        //   link: "Print",
-        //   color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        // },
-        {
-          name: "Select All",
-          type: "func",
-          func: "selectAll",
-          link: "Select All",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        {
-          name: "Clear Selected",
-          type: "func",
-          func: "clearSelected",
-          link: "Clear Selected",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        // {
-        //   name: "Print Selected",
-        //   type: "func",
-        //   func: "printSelected",
-        //   link: "Print Selected",
-        //   color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        // },
-      ],
+      actions: [],
       fields: [
         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },

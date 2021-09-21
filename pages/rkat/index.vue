@@ -19,7 +19,13 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <custom-table :items="items" :fields="fields" :html="key" :actions="actions">
+          <custom-table
+            :items="items"
+            :fields="fields"
+            :html="key"
+            :actions="actions"
+            ref="table"
+          >
             <template v-slot:fullname="data">
               {{ data.value | capitalize }}
             </template>
@@ -58,7 +64,6 @@
 
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
-
 export default {
   async asyncData({ store }) {
     await Promise.all([store.dispatch("rkat/getrkat")]);
@@ -68,14 +73,54 @@ export default {
     return {
       key: "id_rkat",
       actions: [
-        { name: "Tambah", type: "link", link: "rkat/add", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Reset", type: "func", func: "reset", link: "/rkat/destroy", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Print", type: "func", func: "print", link: "/rkat/pdf_rkat", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Import", type: "func", func: "importRKAT", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Select All", type: "func", func: "selectAll", link: "Select All", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Clear Selected", type: "func", func: "clearSelected", link: "Clear Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Delete Selected", type: "func", func: "deleteSelected", link: "/rkat/pdf_selected_rkat/", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Print Selected", type: "func", func: "printSelected", link: "/rkat/pdf_selected_rkat/", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        {
+          name: "Tambah",
+          type: "link",
+          link: "rkat/add",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Reset",
+          type: "func",
+          func: "deleteAll",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Print",
+          type: "func",
+          func: "print",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Import",
+          type: "func",
+          func: "importRKAT",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Select All",
+          type: "func",
+          func: "selectAll",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Clear Selected",
+          type: "func",
+          func: "clearSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Delete Selected",
+          type: "func",
+          func: "deleteSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Print Selected",
+          type: "func",
+          func: "printSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
       ],
       fields: [
         { key: "fullname", label: "Fakultas/Unit Pelaksana" },
@@ -94,10 +139,10 @@ export default {
   computed: {
     ...mapState("rkat", {
       rkat: (state) => state.rkat,
-    })
+    }),
   },
-  mounted(){
-    this.items = this.rkat
+  mounted() {
+    this.items = this.rkat;
   },
   methods: {
     ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
@@ -123,8 +168,7 @@ export default {
                 title: "Congrats!",
                 text: "RKAT data was deleted successfully",
               });
-              this.$nuxt.refresh();
-              this.items = this.rkat
+              this.reload();
             })
             .catch(() => {
               this.$swal({
@@ -158,8 +202,7 @@ export default {
                 title: "Congrats!",
                 text: "RKAT telah dihapus",
               });
-              this.$nuxt.refresh();
-              this.items = this.rkat
+              this.reload();
             })
             .catch(() => {
               this.$swal({
@@ -172,8 +215,8 @@ export default {
         }
       });
     },
-    async download() {
-      await this.$axios
+    print() {
+      this.$axios
         .get("/rkat/pdf_rkat", {
           responseType: "blob",
         })

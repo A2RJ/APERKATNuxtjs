@@ -18,7 +18,12 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <custom-table :items="items" :fields="fields" :html="key" :actions="actions">
+          <custom-table
+            :items="items"
+            :fields="fields"
+            :html="key"
+            :actions="actions"
+          >
             <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }}
@@ -119,20 +124,55 @@ export default {
     return {
       key: "id_pengajuan",
       actions: [
-        { name: "Tambah", type: "link", link: "/pengajuan/subordinate/add", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Reset", type: "func", func: "reset", link: `/pengajuan/destroy/${this.$store.state.auth.user[0].id_user}`, color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Print", type: "func", func: "print", link: "/", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Select All", type: "func", func: "selectAll", link: "Select All", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        { name: "Clear Selected", type: "func", func: "clearSelected", link: "Clear Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Delete Selected", type: "func", func: "deleteSelected", link: "Delete Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Print Selected", type: "func", func: "printSelected", link: "Print Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
+        {
+          name: "Tambah",
+          type: "link",
+          link: "/pengajuan/subordinate/add",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Reset",
+          type: "func",
+          func: "reset",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Print",
+          type: "func",
+          func: "print",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Select All",
+          type: "func",
+          func: "selectAll",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Clear Selected",
+          type: "func",
+          func: "clearSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Delete Selected",
+          type: "func",
+          func: "deleteSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Print Selected",
+          type: "func",
+          func: "printSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
       ],
       fields: [
         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "validasi_status", label: "Status Pengajuan" },
-        { key: "created_at", label: "Waktu Pengajuan" }, 
+        { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],
       items: [],
@@ -147,7 +187,7 @@ export default {
     },
   },
   mounted() {
-    this.items = this.pengajuan.length
+    this.items = this.pengajuan.length;
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuan", "deletepengajuan"]),
