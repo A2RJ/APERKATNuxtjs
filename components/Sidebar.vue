@@ -229,17 +229,17 @@ export default {
       // }
     }
 
-    setTimeout(async () => {
-      if (this.$store.state.auth.loggedIn == false) {
-        try {
-        this.SET_IS_AUTH(false);
-        this.SET_USER_DATA(null);
-        window.location.href = "/login";
-      } catch (err) {
-        console.log(err);
-      }
-      }
-    }, 10000);
+    // setTimeout(async () => {
+    //   if (this.$store.state.auth.loggedIn == false) {
+    //     try {
+    //     this.SET_IS_AUTH(false);
+    //     this.SET_USER_DATA(null);
+    //     window.location.href = "/login";
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    //   }
+    // }, 10000);
   },
   // watch: {
   //   $route() {

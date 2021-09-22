@@ -19,6 +19,74 @@
         </div>
         <!-- Card Body -->
         <div class="card-body">
+          <div class="mb-3 mx-auto" v-show="importRkat">
+            <b-alert v-model="importRkat" variant="primary" dismissible>
+              <div class="container">
+                <div class="">
+                  <b-form-group
+                    label-cols="4"
+                    label-cols-lg="2"
+                    label-size="sm"
+                    label="Fakultas/Unit Pelaksana"
+                    label-for="id_user"
+                  >
+                    <!-- :class="{ 'form-group--error': $v.selected.$error }" -->
+                    <!-- v-model.trim="$v.selected.$model" -->
+                    <v-select
+                      v-model="selected"
+                      :options="options"
+                      :value="selected"
+                      @input="get"
+                    ></v-select>
+                    <b-form-text id="id_user" v-if="pesan">
+                      <i class="text-danger"
+                        >Fakultas/Unit Pelaksana is required</i
+                      >
+                    </b-form-text>
+                  </b-form-group>
+                  <b-form-file
+                    size="sm"
+                    v-model="file1"
+                    :state="Boolean(file1)"
+                    placeholder="Choose a file or drop it here..."
+                    drop-placeholder="Drop file here..."
+                    ref="file"
+                    accept=".xls, .xlsx"
+                    v-on:change="handleFileUpload()"
+                  ></b-form-file>
+                  <b-progress-bar
+                    class="my-1"
+                    :value="uploadPercentage"
+                    :max="100"
+                    variant="info"
+                    key="info"
+                    show-progress
+                    animated
+                  ></b-progress-bar>
+                  <button
+                    class="btn btn-sm btn-outline-primary mt-1 ml-1"
+                    v-on:click="submitFile()"
+                  >
+                    Import
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger mt-1 ml-1"
+                    v-on:click="resetFile()"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-info mt-1 ml-1"
+                    v-on:click="downloadFile()"
+                  >
+                    Download template
+                  </button>
+                </div>
+              </div>
+            </b-alert>
+          </div>
+        </div>
+        <div class="card-body">
           <custom-table
             :items="items"
             :fields="fields"
@@ -86,7 +154,7 @@ export default {
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
         {
-          name: "Print",
+          name: "Print All",
           type: "func",
           func: "print",
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
@@ -134,6 +202,16 @@ export default {
         "actions",
       ],
       items: [],
+      importRkat: false,
+      file: "",
+      data: null,
+      id_user: null,
+      error: null,
+      file1: null,
+      pesan: false,
+      selected: [],
+      options: [],
+      uploadPercentage: 0,
     };
   },
   computed: {
@@ -233,15 +311,65 @@ export default {
             title: "Congrats!",
             text: "RKAT telah dihapus",
           });
+        });
+    },
+    deleteRows(params) {
+      this.$swal({
+        title: "Warning!",
+        text: "Yakin menghapus RKAT terpilih?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$axios
+            .post("/rkat/deleteRows", params)
+            .then(() => {
+              this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "RKAT data was deleted successfully",
+              });
+              this.reload();
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Please check your server or internet connection",
+              });
+            });
+        }
+      });
+    },
+    printRows(params) {
+      this.$axios
+        .post("/rkat/printRows", params, {
+          responseType: "blob",
         })
-        .catch(() => {
+        .then((res) => {
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "RKAT.pdf");
+          document.body.appendChild(link);
+          link.click();
           this.$swal({
             width: 300,
-            icon: "error",
-            title: "Oops...",
-            text: "Cek server atau koneksi anda",
+            icon: "success",
+            title: "Congrats!",
+            text: "RKAT telah didownload",
           });
         });
+    },
+    async reload() {
+      await this.$nuxt.refresh();
+      await this.$refs.table.reload(this.rkat)
     },
     importRKAT() {
       this.importRkat = true;

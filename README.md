@@ -1,10 +1,5 @@
 # Main
 - Aplikasi RKAT (Rencana Kerja dan Anggaran Tahunan) Universitas
-# 23/07/2021
-- Kelola struktur
-
-# 24/07/2021
-- loading function submit saat proses input data dan sending email
 
 # On Progress
 # Menu
@@ -82,6 +77,9 @@ KIRIM DATA TERBARU SETELAH AKSI DELETE
 - delete this.delete(row)
 # grafik
 
-# MABA
+# MABA SSO
 - administrasi.uts.ac.id (nim - nim)
 - portal (nim - nim)
+
+# import berita uts
+- gunakan scraper untuk post contents
