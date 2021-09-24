@@ -23,6 +23,7 @@
             :fields="fields"
             :html="key"
             :actions="actions"
+            ref="table"
           >
             <template v-slot:fullname="row">
               <p>
@@ -187,7 +188,7 @@ export default {
     },
   },
   mounted() {
-    this.items = this.pengajuan.length;
+    this.items = this.pengajuan;
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuan", "deletepengajuan"]),
@@ -215,7 +216,7 @@ export default {
                 title: "Congrats!",
                 text: "Data telah dihapus",
               });
-              this.$nuxt.refresh();
+              this.reload();
             })
             .catch(() => {
               this.$swal({
@@ -238,18 +239,18 @@ export default {
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "OK!",
-      }).then(async (result) => {
+      }).then((result) => {
         if (result.isConfirmed) {
-          await this.$axios
+          this.$axios
             .get(`/pengajuan/destroy/${this.$store.state.auth.user[0].id_user}`)
-            .then(() => {
-              this.$swal({
+            .then(async () => {
+              await this.$swal({
                 width: 300,
                 icon: "success",
                 title: "Congrats!",
                 text: "Semua pengajuan telah dihapus",
               });
-              this.$nuxt.refresh();
+              await this.reload();
             })
             .catch(() => {
               this.$swal({
@@ -261,6 +262,64 @@ export default {
             });
         }
       });
+    },
+    print(params) {
+      this.$axios
+        .post("/pengajuan/pdfByUSer", params, {
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "RKAT.pdf");
+          document.body.appendChild(link);
+          link.click();
+          this.$swal({
+            width: 300,
+            icon: "success",
+            title: "Congrats!",
+            text: "RKAT telah dihapus",
+          });
+        });
+    },
+    deleteRows(params) {
+      this.$swal({
+        title: "Warning!",
+        text: "Yakin menghapus pengajuan terpilih?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$axios
+            .post("/pengajuan/deleteRows", params)
+            .then(async () => {
+              await this.$swal({
+                width: 300,
+                icon: "success",
+                title: "Congrats!",
+                text: "Pengajuan telah dihapus",
+              });
+              await this.reload();
+            })
+            .catch(() => {
+              this.$swal({
+                width: 300,
+                icon: "error",
+                title: "Oops...",
+                text: "Please check your server or internet connection",
+              });
+            });
+        }
+      });
+    },
+    async reload() {
+      await this.$nuxt.refresh();
+      await this.$refs.table.reload(this.pengajuan);
     },
   },
 };

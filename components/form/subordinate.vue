@@ -1178,7 +1178,7 @@ export default {
           this.success("Pengajuan telah didownload!");
         })
         .catch(() => {
-          this.failed("Whoops fungsi print masih development");
+          this.failed("Whoops periksa koneksi anda");
         });
     },
     getDataRKAT(value) {

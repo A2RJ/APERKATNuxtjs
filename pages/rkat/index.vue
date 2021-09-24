@@ -293,9 +293,9 @@ export default {
         }
       });
     },
-    print() {
+    print(params) {
       this.$axios
-        .get("/rkat/pdf_rkat", {
+        .post("/rkat/printRows", params, {
           responseType: "blob",
         })
         .then((res) => {
@@ -346,26 +346,6 @@ export default {
             });
         }
       });
-    },
-    printRows(params) {
-      this.$axios
-        .post("/rkat/printRows", params, {
-          responseType: "blob",
-        })
-        .then((res) => {
-          const url = window.URL.createObjectURL(new Blob([res.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "RKAT.pdf");
-          document.body.appendChild(link);
-          link.click();
-          this.$swal({
-            width: 300,
-            icon: "success",
-            title: "Congrats!",
-            text: "RKAT telah didownload",
-          });
-        });
     },
     async reload() {
       await this.$nuxt.refresh();
