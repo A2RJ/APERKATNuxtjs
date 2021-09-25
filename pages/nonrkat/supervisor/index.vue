@@ -14,12 +14,24 @@
             justify-content-between
           "
         >
-          <h6 class="m-0 font-weight-bold text-primary">Grafik Pengajuan</h6>
+          <h6 class="m-0 font-weight-bold text-primary">
+            Pengajuan Sub Divisi
+          </h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <custom-table :items="items" :fields="fields" :html="key" :actions="actions"
+          <!-- sticky-header -->
+          <custom-table
+            :items="items"
+            :fields="fields"
+            :html="key"
+            :actions="actions"
           >
+            <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }}
+              </p>
+            </template>
             <template v-slot:nama_struktur="row">
               <p
                 v-if="
@@ -52,13 +64,35 @@
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
-             <template v-slot:created_at="row">
+            <template v-slot:validasi_status="row">
+              <p v-if="row.item.validasi_status == 0">
+                <b-badge variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 1">
+                <b-badge variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 2">
+                <b-badge variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 3">
+                <b-badge variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:created_at="row">
               <p>{{ row.item.created_at | convertDate }}</p>
             </template>
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
-                :to="'grafik/' + row.item.id_user"
+                :to="'edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
@@ -77,7 +111,7 @@ export default {
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch(
-        "subordinate/getSubordinatesGrafik",
+        "subordinate/getsubordinates",
         store.$auth.$state.user[0].id_user
       ),
     ]);
@@ -86,15 +120,12 @@ export default {
   data() {
     return {
       key: "id_pengajuan",
-      actions: [
-        // { name: "Print", type: "func", func: "print", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Select All", type: "func", func: "selectAll", link: "Select All", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Clear Selected", type: "func", func: "clearSelected", link: "Clear Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Print Selected", type: "func", func: "printSelected", link: "Print Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-      ],
+      actions: [],
       fields: [
         { key: "fullname", label: "User" },
+        { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
+        { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],
@@ -103,17 +134,21 @@ export default {
   },
   computed: {
     ...mapState("subordinate", {
-      subordinatesGrafik: (state) => state.subordinatesGrafik,
+      subordinate: (state) => state.subordinate,
     }),
     rows() {
-      return this.subordinatesGrafik.data.length;
+      return this.subordinate.length;
     },
   },
   mounted() {
-    this.items = this.subordinatesGrafik.data;
+    this.items = this.subordinate;
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuan"]),
+    rowClass(item, type) {
+      if (!item || type !== "row") return;
+      if (item.status_message === 0) return "table-success";
+    },
   },
 };
 </script>

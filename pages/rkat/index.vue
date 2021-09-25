@@ -148,21 +148,15 @@ export default {
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
         {
-          name: "Reset",
-          type: "func",
-          func: "deleteAll",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        {
-          name: "Print All",
-          type: "func",
-          func: "print",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        {
           name: "Import",
           type: "func",
           func: "importRKAT",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Reset",
+          type: "func",
+          func: "deleteAll",
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
         {
@@ -178,15 +172,21 @@ export default {
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
         {
-          name: "Delete Selected",
+          name: "Print",
           type: "func",
-          func: "deleteSelected",
+          func: "print",
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
         {
           name: "Print Selected",
           type: "func",
           func: "printSelected",
+          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        },
+        {
+          name: "Delete Selected",
+          type: "func",
+          func: "deleteSelected",
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
       ],
@@ -349,7 +349,7 @@ export default {
     },
     async reload() {
       await this.$nuxt.refresh();
-      await this.$refs.table.reload(this.rkat)
+      await this.$refs.table.reload(this.rkat);
     },
     importRKAT() {
       this.importRkat = true;

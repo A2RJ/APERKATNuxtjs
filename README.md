@@ -57,24 +57,30 @@ $ npm run dev
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 # ALL
-- print all /sesuai/route GET
-- delete selected /sesuai/route POST
-- print selected /sesuai/route GET
-# Selesaikan bottom menu (disable top menu) baru top menu
-KIRIM DATA TERBARU SETELAH AKSI DELETE
+# Export xlsx
 # RKAT
-- tambah /rkat/add GET
-- reset this.$parent.reset
-- import this.$parent.import
-- delete this.delete(row)
+- [x] tambah /rkat/add
+- [x] import this.$parent.import
+- [x] reset this.$parent.reset
+- [x] delete this.delete(row)
+- [x] delete selected
+- [x] print all
+- [x] print selected
+# pengajuan divisi
+- [x] tambah pengajuan/subordinate/add
+- [x] reset this.reset
+- [x] delete this.delete(row)
+- [x] print all
+- [COba untuk 2 user berbeda] delete selected
+- [Coba untuk 2 user berbeda] print selected
+- [Hanya list yg akan di terima saja] Daftar pengajuan (berikan tanda di DB next siapa, ex: )
 # user
 - tambah /user/add
 - reset this.$parent.reset
 - delete this.delete(row)
-# pengajuan divisi
-- tambah pengajuan/subordinate/add
-- reset this.reset
-- delete this.delete(row)
+- print all
+- delete selected
+- print selected
 # grafik
 
 # MABA SSO

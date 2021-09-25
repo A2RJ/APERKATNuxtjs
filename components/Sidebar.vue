@@ -46,16 +46,16 @@
         class="nav-link collapsed"
         href="#"
         data-toggle="collapse"
-        data-target="#collapseTwo"
+        data-target="#collapseOne"
         aria-expanded="true"
-        aria-controls="collapseTwo"
+        aria-controls="collapseOne"
       >
         <i class="fas fa-fw fa-cog"></i>
         <span>PENGAJUAN</span>
         <b-badge v-if="total != 0" pill variant="light">{{ total }}</b-badge>
       </a>
       <div
-        id="collapseTwo"
+        id="collapseOne"
         class="collapse"
         aria-labelledby="headingTwo"
         data-parent="#accordionSidebar"
@@ -97,7 +97,7 @@
       </div>
     </li>
 
-    <!-- <li class="nav-item">
+    <li class="nav-item">
       <a
         class="nav-link collapsed"
         href="#"
@@ -108,6 +108,7 @@
       >
         <i class="fas fa-fw fa-cog"></i>
         <span>NON RKAT</span>
+        <b-badge v-if="total != 0" pill variant="light">{{ total }}</b-badge>
       </a>
       <div
         id="collapseTwo"
@@ -119,19 +120,39 @@
           class="bg-white py-2 collapse-inner rounded"
           v-if="this.$store.state.auth.user"
         >
-          <h6 class="collapse-header">Daftar Pengajuan</h6>
-          <NuxtLink class="collapse-item" :to="'/nonrkat/'"
-            >Pengajuan</NuxtLink
+          <h6 class="collapse-header">Daftar Non RKAT</h6>
+          <NuxtLink class="collapse-item" :to="'/nonrkat/subordinate/'"
+            >Non RKAT<b-badge v-if="badgeSelf != 0" pill variant="primary">{{
+              badgeSelf
+            }}</b-badge></NuxtLink
           >
           <NuxtLink
             class="collapse-item"
             v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
-            :to="'/nonrkat/sub/'"
-            >Pengajuan Sub Divisi</NuxtLink
+            :to="'/nonrkat/supervisor/'"
+            >Non RKAT Sub Divisi<b-badge
+              v-if="badge != 0"
+              pill
+              variant="primary"
+              >{{ badge }}</b-badge
+            ></NuxtLink
+          >
+          <NuxtLink
+            class="collapse-item"
+            v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+            :to="'/nonrkat/grafik/'"
+            >Grafik Sub Divisi</NuxtLink
+          >
+          <NuxtLink
+            class="collapse-item"
+            v-show="dirKeuangan"
+            :to="'/pengajuanSelesai'"
+            >Non RKAT diterima</NuxtLink
           >
         </div>
       </div>
-    </li> -->
+    </li>
+
 
     <li class="nav-item" v-show="sekniv">
       <NuxtLink class="nav-link" to="/user">
@@ -139,12 +160,7 @@
         <span>User</span>
       </NuxtLink>
     </li>
-    <!-- <li class="nav-item" v-show="sekniv">
-      <NuxtLink class="nav-link" to="/user/struktur">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>Struktur</span>
-      </NuxtLink>
-    </li> -->
+    
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />
 

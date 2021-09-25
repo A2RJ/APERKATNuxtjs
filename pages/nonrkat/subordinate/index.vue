@@ -14,7 +14,7 @@
             justify-content-between
           "
         >
-          <h6 class="m-0 font-weight-bold text-primary">Pengajuan</h6>
+          <h6 class="m-0 font-weight-bold text-primary">Pengajuan non RKAT</h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
@@ -128,7 +128,7 @@ export default {
         {
           name: "Tambah",
           type: "link",
-          link: "/pengajuan/subordinate/add",
+          link: "/nonrkat/subordinate/add",
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
         {
