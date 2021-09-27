@@ -90,13 +90,13 @@
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info mt-1"
-                :to="'edit/' + row.item.id_pengajuan"
+                :to="'edit/' + row.item.id_nonrkat"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
               <button
                 class="btn btn-sm btn-outline-danger mt-1"
-                @click="destroypengajuan(row.item.id_pengajuan)"
+                @click="destroynonRKAT(row.item.id_nonrkat)"
               >
                 Hapus
               </button>
@@ -114,16 +114,13 @@ import { mapActions, mapState } from "vuex";
 export default {
   async asyncData({ store }) {
     await Promise.all([
-      store.dispatch(
-        "subordinate/getpengajuan",
-        store.$auth.$state.user[0].id_user
-      ),
+      store.dispatch("nonrkat/getNonRKAT", store.$auth.$state.user[0].id_user),
     ]);
     return;
   },
   data() {
     return {
-      key: "id_pengajuan",
+      key: "id_nonrkat",
       actions: [
         {
           name: "Tambah",
@@ -134,7 +131,7 @@ export default {
         {
           name: "Reset",
           type: "func",
-          func: "reset",
+          func: "deleteAll",
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
         {
@@ -149,18 +146,18 @@ export default {
           func: "clearSelected",
           color: "btn btn-sm btn-outline-primary mt-1 ml-2",
         },
-        {
-          name: "Print",
-          type: "func",
-          func: "print",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
-        {
-          name: "Print Selected",
-          type: "func",
-          func: "printSelected",
-          color: "btn btn-sm btn-outline-primary mt-1 ml-2",
-        },
+        // {
+        //   name: "Print",
+        //   type: "func",
+        //   func: "print",
+        //   color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        // },
+        // {
+        //   name: "Print Selected",
+        //   type: "func",
+        //   func: "printSelected",
+        //   color: "btn btn-sm btn-outline-primary mt-1 ml-2",
+        // },
         {
           name: "Delete Selected",
           type: "func",
@@ -170,7 +167,6 @@ export default {
       ],
       fields: [
         { key: "fullname", label: "User" },
-        { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
         { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
@@ -180,23 +176,20 @@ export default {
     };
   },
   computed: {
-    ...mapState("subordinate", {
-      pengajuan: (state) => state.pengajuan,
+    ...mapState("nonrkat", {
+      nonRKAT: (state) => state.nonRKAT,
     }),
-    rows() {
-      return this.pengajuan.length;
-    },
   },
   mounted() {
-    this.items = this.pengajuan;
+    this.items = this.nonRKAT;
   },
   methods: {
-    ...mapActions("subordinate", ["getpengajuan", "deletepengajuan"]),
+    ...mapActions("nonrkat", ["getNonRKAT", "deleteNonRKAT"]),
     rowClass(item, type) {
       if (!item || type !== "row") return;
       if (item.status_message === 0) return "table-success";
     },
-    destroypengajuan(row) {
+    destroynonRKAT(row) {
       this.$swal({
         title: "Warning!",
         text: "Yakin menghapus pengajuan?",
@@ -208,7 +201,7 @@ export default {
         confirmButtonText: "OK, Hapus!",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.deletepengajuan(row.item.id_pengajuan)
+          this.deleteNonRKAT([row])
             .then(() => {
               this.$swal({
                 width: 300,
@@ -242,7 +235,9 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.$axios
-            .get(`/pengajuan/destroy/${this.$store.state.auth.user[0].id_user}`)
+            .get(
+              `/nonrkat/deleteByUser/${this.$store.state.auth.user[0].id_user}`
+            )
             .then(async () => {
               await this.$swal({
                 width: 300,
@@ -265,7 +260,7 @@ export default {
     },
     print(params) {
       this.$axios
-        .post("/pengajuan/pdfByUSer", params, {
+        .post("/nonrkat/pdfByUSer", params, {
           responseType: "blob",
         })
         .then((res) => {
@@ -296,7 +291,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.$axios
-            .post("/pengajuan/deleteRows", params)
+            .post("/nonrkat/delete/", params)
             .then(async () => {
               await this.$swal({
                 width: 300,
@@ -319,7 +314,7 @@ export default {
     },
     async reload() {
       await this.$nuxt.refresh();
-      await this.$refs.table.reload(this.pengajuan);
+      await this.$refs.table.reload(this.nonRKAT);
     },
   },
 };

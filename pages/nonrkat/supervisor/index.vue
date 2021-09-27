@@ -92,7 +92,7 @@
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
+                :to="'edit/' + row.item.id_nonrkat"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
@@ -111,7 +111,7 @@ export default {
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch(
-        "subordinate/getsubordinates",
+        "nonrkat/getSubdivisi",
         store.$auth.$state.user[0].id_user
       ),
     ]);
@@ -133,18 +133,15 @@ export default {
     };
   },
   computed: {
-    ...mapState("subordinate", {
-      subordinate: (state) => state.subordinate,
+    ...mapState("nonrkat", {
+      subdivisinon: (state) => state.subdivisinon,
     }),
-    rows() {
-      return this.subordinate.length;
-    },
   },
   mounted() {
-    this.items = this.subordinate;
+    this.items = this.subdivisinon;
   },
   methods: {
-    ...mapActions("subordinate", ["getpengajuan"]),
+    ...mapActions("nonrkat", ["getSubdivisi"]),
     rowClass(item, type) {
       if (!item || type !== "row") return;
       if (item.status_message === 0) return "table-success";

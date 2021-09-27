@@ -4,6 +4,7 @@ export const state = () => ({
     subdivisinon: [],
     statusnon: [],
     historynon: [],
+    errors: [],
 })
 
 export const mutations = {
@@ -27,6 +28,9 @@ export const mutations = {
     },
     SET_DECLINENON(state, payload) {
         state.declinenon = payload
+    },
+    SET_ERRORS(state, payload) {
+        state.errors = payload
     }
 }
 
@@ -41,8 +45,8 @@ export const actions = {
     },
     getNonRKATById({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(`/nonrkat/byId/${payload}`).then((response) => {
-                commit('SET_NONRKATBYID', response.data.data)
+            this.$axios.get(`/nonrkat/id/${payload}`).then((response) => {
+                commit('SET_NONRKATBYID', response.data)
                 resolve()
             })
         })
@@ -57,7 +61,7 @@ export const actions = {
     },
     approved({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.post(`/nonrkat/approve/${payload.id}`, payload).then(() => {
+            this.$axios.post(`/nonrkat/approved`, payload).then(() => {
                 resolve()
             }).catch((e) => {
                 commit('SET_ERRORS', e.response.data)
@@ -66,7 +70,7 @@ export const actions = {
     },
     declined({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.post(`/nonrkat/decline/${payload.id}`, payload).then(() => {
+            this.$axios.post(`/nonrkat/declined`, payload).then(() => {
                 resolve()
             }).catch((e) => {
                 commit('SET_ERRORS', e.response.data)
@@ -93,7 +97,7 @@ export const actions = {
     },
     deleteNonRKAT({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(`/nonrkat/delete/${payload}`).then((response) => {
+            this.$axios.post(`/nonrkat/delete/`, payload).then((response) => {
                 resolve()
             }).catch((e) => {
                 commit('SET_ERRORS', e.response.data)
@@ -102,7 +106,7 @@ export const actions = {
     },
     resetNonRKAT({ dispatch, commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(`/nonrkat/delete/${payload}`).then((response) => {
+            this.$axios.post(`/nonrkat/delete/${payload}`).then((response) => {
                 resolve()
             }).catch((e) => {
                 commit('SET_ERRORS', e.response.data)

@@ -573,40 +573,46 @@ import {
 export default {
   async created() {
     if (this.$route.params.id) {
+      this.history = this.nonRKATById.history;
+      this.status = this.nonRKATById.status;
       this.showMessage();
-      this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
-      this.getIku4(this.forms.id_iku_child1);
-      this.getIku5(this.forms.id_iku_child2);
+      this.doubleIKU(
+        this.nonRKATById.data.id_iku_child1,
+        this.nonRKATById.data.id_iku_child2
+      );
+      this.getIku4(this.nonRKATById.data.id_iku_child1);
+      this.getIku5(this.nonRKATById.data.id_iku_child2);
       this.ikuParent.data
         .filter((el) => el.code === 3)
         .forEach((el) => (this.id_iku_parent = el.label));
-      this.rab = this.forms.rab;
+      this.rab = this.nonRKATById.data.rab;
 
       this.form = {
-        id_user: this.forms.id_user,
-        nama_kegiatan: this.forms.nama_kegiatan,
-        tujuan: this.forms.tujuan,
-        latar_belakang: this.forms.latar_belakang,
-        sasaran: this.forms.sasaran,
-        target_capaian: this.forms.target_capaian,
-        bentuk_pelaksanaan_program: this.forms.bentuk_pelaksanaan_program,
-        tempat_program: this.forms.tempat_program,
-        tanggal: this.forms.tanggal,
-        bidang_terkait: this.forms.bidang_terkait,
-        id_iku_parent: this.forms.id_iku_parent,
-        id_iku_child1: this.forms.id_iku_child1,
-        id_iku_child2: this.forms.id_iku_child2,
-        biaya_program: this.$formatRupiah(this.forms.biaya_program),
-        bank: this.forms.bank,
-        atn: this.forms.atn,
-        no_rek: this.forms.no_rek,
-        rab: this.forms.rab,
+        id_user: this.nonRKATById.data.id_user,
+        nama_kegiatan: this.nonRKATById.data.nama_kegiatan,
+        tujuan: this.nonRKATById.data.tujuan,
+        latar_belakang: this.nonRKATById.data.latar_belakang,
+        sasaran: this.nonRKATById.data.sasaran,
+        target_capaian: this.nonRKATById.data.target_capaian,
+        bentuk_pelaksanaan_program:
+          this.nonRKATById.data.bentuk_pelaksanaan_program,
+        tempat_program: this.nonRKATById.data.tempat_program,
+        tanggal: this.nonRKATById.data.tanggal,
+        bidang_terkait: this.nonRKATById.data.bidang_terkait,
+        id_iku_parent: this.nonRKATById.data.id_iku_parent,
+        id_iku_child1: this.nonRKATById.data.id_iku_child1,
+        id_iku_child2: this.nonRKATById.data.id_iku_child2,
+        biaya_program: this.$formatRupiah(this.nonRKATById.data.biaya_program),
+        bank: this.nonRKATById.data.bank,
+        atn: this.nonRKATById.data.atn,
+        no_rek: this.nonRKATById.data.no_rek,
+        rab: this.nonRKATById.data.rab,
         status_pengajuan: "progress",
-        pencairan: this.forms.pencairan,
-        lpj_keuangan: this.forms.lpj_keuangan,
-        lpj_kegiatan: this.forms.lpj_kegiatan,
-        validasi_status: this.forms.validasi_status,
-        nama_status: this.forms.nama_status,
+        pencairan: this.nonRKATById.data.pencairan,
+        lpj_keuangan: this.nonRKATById.data.lpj_keuangan,
+        lpj_kegiatan: this.nonRKATById.data.lpj_kegiatan,
+        validasi_status: this.nonRKATById.data.validasi_status,
+        nama_status: this.nonRKATById.data.nama_status,
       };
     }
   },
@@ -636,8 +642,9 @@ export default {
         id_atasan: null,
         lpj_keuangan: null,
         lpj_kegiatan: null,
-        validasi_status: 0,
-        nama_status: 0,
+        validasi_status: null,
+        nama_status: null,
+        message: null,
       },
       id_iku_parent: [],
       id_iku_child1: [],
@@ -661,7 +668,7 @@ export default {
       },
       file: [],
       rab: false,
-      message: "",
+      // message: "",
       formPencairan: false,
       pencairan: [],
       formLPJ: false,
@@ -673,6 +680,9 @@ export default {
         kegiatan: false,
       },
       number: null,
+      message: null,
+      status: null,
+      status: null,
     };
   },
   validations: {
@@ -739,34 +749,25 @@ export default {
   },
   computed: {
     ...mapState("subordinate", {
-      forms: (state) => state.data,
-      status: (state) => state.status,
-      history: (state) => state.history,
-      errors: (state) => state.errors,
-      approve: (state) => state.approve,
-      decline: (state) => state.decline,
       ikuParent: (state) => state.ikuParent,
-      ikuChild1: (state) => state.ikuChild1,
-      ikuChild2: (state) => state.ikuChild2,
+    }),
+    ...mapState("nonrkat", {
+      nonRKATById: (state) => state.nonRKATById,
     }),
   },
   mounted() {
     this.load();
+    if (this.$route.params.id) {
+      this.history = this.nonRKATById.history;
+      this.status = this.nonRKATById.status;
+    }
     this.parent = this.ikuParent.data;
   },
   methods: {
-    ...mapActions("subordinate", [
-      "storepengajuan",
-      "getpengajuanID",
-      "updatepengajuan",
-      "approved",
-      "declined",
-      "getIkuChild1",
-      "getIkuChild2",
-      "getstatus",
-    ]),
+    ...mapActions("subordinate", ["getIkuChild1", "getIkuChild2"]),
+    ...mapActions("nonrkat", ["storeNonRKAT", "updateNonRKAT", "approved", "declined"]),
     load() {
-      if (this.$route.name == "pengajuan-supervisor-edit-id") {
+      if (this.$route.name == "nonrkat-supervisor-edit-id") {
         this.button = false;
         this.option = false;
 
@@ -794,18 +795,18 @@ export default {
             }
           }
         }
-      } else if (this.$route.name == "pengajuan-subordinate-edit-id") {
+      } else if (this.$route.name == "nonrkat-subordinate-edit-id") {
         this.option = false;
 
-        this.$axios
-          .get(`/pengajuan/validasi/${this.$route.params.id}`)
-          .then((res) => {
-            if (res.data) {
-              this.button = false;
-            } else {
-              this.button = true;
-            }
-          });
+        // this.$axios
+        //   .get(`/pengajuan/validasi/${this.$route.params.id}`)
+        //   .then((res) => {
+        //     if (res.data) {
+        //       this.button = false;
+        //     } else {
+        //       this.button = true;
+        //     }
+        //   });
 
         for (let index = 1; index < this.status.length; index++) {
           if (
@@ -849,9 +850,13 @@ export default {
     getIku1(value) {
       if (value) {
         this.form.id_iku_parent = value.code;
-        this.getIkuChild1(value.code).then(() => {
-          this.child1 = this.ikuChild1.data;
+        this.$axios.get(`/iku/child1/${value.code}`).then((response) => {
+          this.child1 = response.data.data;
         });
+        // this.getIkuChild1(value.code).then(() => {
+        //   console.log(this.ikuChild1);
+        //   // this.child1 = this.ikuChild1.data;
+        // });
       } else {
         this.child1 = [];
         this.child2 = [];
@@ -862,9 +867,12 @@ export default {
     getIku2(value) {
       if (value) {
         this.form.id_iku_child1 = value.code;
-        this.getIkuChild2(value.code).then(() => {
-          this.child2 = this.ikuChild2.data;
+        this.$axios.get(`/iku/child2/${value.code}`).then((response) => {
+          this.child2 = response.data.data;
         });
+        // this.getIkuChild2(value.code).then(() => {
+        //   this.child2 = this.ikuChild2.data;
+        // });
       } else {
         this.child2 = [];
         this.id_iku_child2 = [];
@@ -900,14 +908,44 @@ export default {
         this.failed("Pastikan semua fields diisi!");
       } else {
         this.loader("Saving pengajuan");
-        if (this.$route.name === "pengajuan-subordinate-edit-id") {
+        if (this.$route.name === "nonrkat-subordinate-edit-id") {
           if (this.file.length != 0) {
             await this.upload();
           }
           this.replace();
+          this.form.validasi_status = "1";
+          this.form.nama_status = this.$store.state.auth.user[0].fullname;
+          this.form.message = "Revisi pengajuan";
+          console.log(this.form);
+          this.updateNonRKAT(
+            Object.assign(
+              {
+                id: this.$route.params.id,
+              },
+              this.form
+            )
+          )
+            .then(() => {
+              this.success("Data telah disimpan!");
+              this.$router.push("/nonrkat/supervisor/");
+            })
+            .catch(() => {
+              this.failed("Pastikan semua fields diisi!");
+            });
         } else {
           await this.upload();
           this.replace();
+          this.form.validasi_status = "1";
+          this.form.nama_status = this.$store.state.auth.user[0].fullname;
+          this.form.message = "Input pengajuan";
+          this.storeNonRKAT(this.form)
+            .then(() => {
+              this.success("Data telah disimpan!");
+              this.$router.push("/nonrkat/supervisor/");
+            })
+            .catch(() => {
+              this.failed("Pastikan semua fields diisi!");
+            });
         }
       }
     },
@@ -925,6 +963,27 @@ export default {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
+          this.approved({
+            id: this.$route.params.id,
+            message: this.message,
+            validasi_status: 2,
+            status_pengajuan:
+              this.$store.state.auth.user[0].level == 1
+                ? "approved"
+                : "progress",
+            id_user: this.form.id_user,
+            id_struktur: this.$store.state.auth.user[0].id_user,
+            nama_status: this.$store.state.auth.user[0].fullname,
+          })
+            .then(() => {
+              this.success("Berhasil terima pengajuan");
+              this.option = false;
+              // this.$nuxt.refresh();
+              this.$router.push(this.redirects);
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
         }
       });
     },
@@ -942,6 +1001,24 @@ export default {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
+          this.declined({
+            id: this.$route.params.id,
+            message: this.message,
+            validasi_status: 0,
+            status_pengajuan: "progress",
+            id_user: this.form.id_user,
+            id_struktur: this.$store.state.auth.user[0].id_user,
+            nama_status: this.$store.state.auth.user[0].fullname,
+          })
+            .then(() => {
+              this.success("Berhasil tolak pengajuan");
+              this.option = true;
+              // this.$nuxt.refresh();
+              this.$router.push(this.redirects);
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
         }
       });
     },

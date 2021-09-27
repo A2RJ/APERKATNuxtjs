@@ -137,7 +137,7 @@
               >{{ badge }}</b-badge
             ></NuxtLink
           >
-          <NuxtLink
+          <!-- <NuxtLink
             class="collapse-item"
             v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
             :to="'/nonrkat/grafik/'"
@@ -148,7 +148,7 @@
             v-show="dirKeuangan"
             :to="'/pengajuanSelesai'"
             >Non RKAT diterima</NuxtLink
-          >
+          > -->
         </div>
       </div>
     </li>
