@@ -82,6 +82,58 @@
                     Download template
                   </button>
                 </div>
+                <table
+                  v-if="data"
+                  class="mt-4 table table-responsive"
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid #112031;
+                  "
+                >
+                  <tr>
+                    <th>#</th>
+                    <th>Kode RKAT</th>
+                    <th>Program Kerja</th>
+                    <th>Deskripsi</th>
+                    <th>Mulai Program</th>
+                    <th>Selesai Program</th>
+                    <th>Tempat</th>
+                    <th>Anggaran</th>
+                  </tr>
+                  <tr v-for="item in data.data" :key="item.no">
+                    <td>{{ item.no }}</td>
+                    <td>{{ item.kode_rkat }}</td>
+                    <td>{{ item.program_kerja }}</td>
+                    <td>{{ item.deskripsi }}</td>
+                    <td>{{ item.mulai_program }}</td>
+                    <td>{{ item.selesai_program }}</td>
+                    <td>{{ item.tempat }}</td>
+                    <td>RP. {{ item.total_anggaran }}</td>
+                  </tr>
+                </table>
+                <div
+                  v-if="data && data.data && data.data.length == 0"
+                  class="alert alert-danger my-3 text-center mx-auto"
+                  role="alert"
+                >
+                  Data sudah terimport!
+                </div>
+                <div class="mt-2" v-if="data">
+                  <b-button
+                    variant="outline-info btn-sm mt-1"
+                    @click="postImport"
+                    >Simpan RKAT</b-button
+                  >
+                </div>
+
+                <div
+                  class="alert alert-danger my-3 text-center mx-auto"
+                  v-if="error"
+                  role="alert"
+                >
+                  {{ error }}
+                </div>
               </div>
             </b-alert>
           </div>
@@ -420,8 +472,7 @@ export default {
         .then((res) => {
           this.data = null;
           this.importRkat = false;
-
-          this.$nuxt.refresh();
+          this.reload();
         })
         .catch((e) => {});
     },

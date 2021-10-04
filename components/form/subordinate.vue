@@ -535,9 +535,7 @@
               Current file:
               <a :href="'../../../' + rab" target="_blank">RAB </a>
             </div>
-            <div class="mt-3" v-else>
-              Ekstensi file harus .PDF
-            </div>
+            <div class="mt-3" v-else>Ekstensi file harus .PDF</div>
           </b-form-group>
           <button
             class="btn btn-sm btn-primary float-right"
@@ -690,6 +688,7 @@ export default {
         kegiatan: false,
       },
       number: null,
+      next: [],
     };
   },
   validations: {
@@ -767,9 +766,18 @@ export default {
   },
   mounted() {
     this.load();
-
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
+
+    for (let index = 1; index < this.status.length; index++) {
+      if (
+        this.status[index].id_user == this.$store.state.auth.user[0].id_user &&
+        this.status[index - 1].status !== false
+      ) {
+        this.next = this.status[index + 1].id_user;
+        console.log(this.next);
+      }
+    }
   },
   methods: {
     ...mapActions("subordinate", [
@@ -993,6 +1001,7 @@ export default {
             id_struktur: this.$store.state.auth.user[0].id_user,
             nama: this.$store.state.auth.user[0].fullname,
             kode_rkat: this.form.kode_rkat,
+            next: this.next,
           })
             .then(() => {
               this.success("Berhasil terima pengajuan");

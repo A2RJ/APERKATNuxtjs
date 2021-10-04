@@ -765,7 +765,12 @@ export default {
   },
   methods: {
     ...mapActions("subordinate", ["getIkuChild1", "getIkuChild2"]),
-    ...mapActions("nonrkat", ["storeNonRKAT", "updateNonRKAT", "approved", "declined"]),
+    ...mapActions("nonrkat", [
+      "storeNonRKAT",
+      "updateNonRKAT",
+      "approved",
+      "declined",
+    ]),
     load() {
       if (this.$route.name == "nonrkat-supervisor-edit-id") {
         this.button = false;
@@ -927,7 +932,7 @@ export default {
           )
             .then(() => {
               this.success("Data telah disimpan!");
-              this.$router.push("/nonrkat/supervisor/");
+              this.$router.push("/nonrkat/subordinate/");
             })
             .catch(() => {
               this.failed("Pastikan semua fields diisi!");
@@ -941,7 +946,7 @@ export default {
           this.storeNonRKAT(this.form)
             .then(() => {
               this.success("Data telah disimpan!");
-              this.$router.push("/nonrkat/supervisor/");
+              this.$router.push("/nonrkat/subordinate/");
             })
             .catch(() => {
               this.failed("Pastikan semua fields diisi!");
@@ -963,8 +968,19 @@ export default {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
+          const next = null;
+          for (let index = 1; index < this.status.length; index++) {
+            if (
+              this.status[index].id_user ==
+                this.$store.state.auth.user[0].id_user &&
+              this.status[index - 1].status !== false
+            ) {
+              next = this.status[index + 1].id_user;
+            }
+          }
           this.approved({
             id: this.$route.params.id,
+            next: next,
             message: this.message,
             validasi_status: 2,
             status_pengajuan:

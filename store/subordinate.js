@@ -5,6 +5,7 @@ export const state = () => ({
     status: [],
     history: [],
     subordinate: [],
+    subordinateneed: [],
     subordinatesGrafik: [],
     errors: [],
     kodeRKAT: [],
@@ -47,6 +48,10 @@ export const mutations = {
 
     SET_SUBORDINATE(state, payload) {
         state.subordinate = payload
+    },
+
+    SET_SUBORDINATENEED(state, payload) {
+        state.subordinateneed = payload
     },
 
     SET_SUBORDINATE_GRAFIK(state, payload) {
@@ -176,6 +181,14 @@ export const actions = {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/pengajuan/pengajuanSubordinate/${payload}`).then((response) => {
                 commit('SET_SUBORDINATE', response.data.data)
+                resolve()
+            })
+        })
+    },
+    pengajuanNeedApproved({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/pengajuan/pengajuanNeedApproved/${payload}`).then((response) => {
+                commit('SET_SUBORDINATENEED', response.data.data)
                 resolve()
             })
         })

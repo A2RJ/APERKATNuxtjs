@@ -2,6 +2,7 @@ export const state = () => ({
     nonRKAT: [],
     nonRKATById: [],
     subdivisinon: [],
+    subdivisineed: [],
     statusnon: [],
     historynon: [],
     errors: [],
@@ -16,6 +17,9 @@ export const mutations = {
     },
     SET_SUBDIVISINON(state, payload) {
         state.subdivisinon = payload
+    },
+    SET_SUBDIVISINEED(state, payload) {
+        state.subdivisineed = payload
     },
     SET_STATUSNON(state, payload) {
         state.statusnon = payload
@@ -55,6 +59,14 @@ export const actions = {
         return new Promise((resolve, reject) => {
             this.$axios.get(`/nonrkat/subdivisi/${payload}`).then((response) => {
                 commit('SET_SUBDIVISINON', response.data.data)
+                resolve()
+            })
+        })
+    },
+    subDivisiNeed({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(`/nonrkat/subDivisiNeed/${payload}`).then((response) => {
+                commit('SET_SUBDIVISINEED', response.data.data)
                 resolve()
             })
         })
