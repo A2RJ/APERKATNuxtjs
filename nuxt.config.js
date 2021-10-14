@@ -1,6 +1,6 @@
 export default {
   ssr: true,
-  // target: 'static',
+  target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'APERKAT - Universitas Teknologi Sumbawa',
@@ -78,10 +78,10 @@ export default {
         },
         token: {
           property: 'access_token',
-          maxAge: 120 * 60
+          maxAge: 3600
         },
         refreshToken: {
-          maxAge: 20160 * 60
+          maxAge: 3600
         },
       },
     }

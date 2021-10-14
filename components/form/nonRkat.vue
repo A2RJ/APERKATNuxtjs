@@ -682,7 +682,7 @@ export default {
       number: null,
       message: null,
       status: null,
-      status: null,
+      next: null,
     };
   },
   validations: {
@@ -762,6 +762,17 @@ export default {
       this.status = this.nonRKATById.status;
     }
     this.parent = this.ikuParent.data;
+
+    for (let index = 1; index < this.status.length; index++) {
+      if (
+        this.status[index].id_user == this.$store.state.auth.user[0].id_user &&
+        this.status[index - 1].status !== false
+      ) {
+        this.next = this.status[index + 1]
+          ? this.status[index + 1].id_user
+          : this.status[index].id_user;
+      }
+    }
   },
   methods: {
     ...mapActions("subordinate", ["getIkuChild1", "getIkuChild2"]),
@@ -921,11 +932,11 @@ export default {
           this.form.validasi_status = "1";
           this.form.nama_status = this.$store.state.auth.user[0].fullname;
           this.form.message = "Revisi pengajuan";
-          console.log(this.form);
           this.updateNonRKAT(
             Object.assign(
               {
                 id: this.$route.params.id,
+                next: this.nonRKATById.data.next,
               },
               this.form
             )
@@ -943,7 +954,14 @@ export default {
           this.form.validasi_status = "1";
           this.form.nama_status = this.$store.state.auth.user[0].fullname;
           this.form.message = "Input pengajuan";
-          this.storeNonRKAT(this.form)
+          this.storeNonRKAT(
+            Object.assign(
+              {
+                next: this.next,
+              },
+              this.form
+            )
+          )
             .then(() => {
               this.success("Data telah disimpan!");
               this.$router.push("/nonrkat/subordinate/");
@@ -968,19 +986,9 @@ export default {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
-          const next = null;
-          for (let index = 1; index < this.status.length; index++) {
-            if (
-              this.status[index].id_user ==
-                this.$store.state.auth.user[0].id_user &&
-              this.status[index - 1].status !== false
-            ) {
-              next = this.status[index + 1].id_user;
-            }
-          }
           this.approved({
             id: this.$route.params.id,
-            next: next,
+            next: this.next,
             message: this.message,
             validasi_status: 2,
             status_pengajuan:
@@ -1019,6 +1027,7 @@ export default {
           this.replace();
           this.declined({
             id: this.$route.params.id,
+            next: this.$store.state.auth.user[0].id_user,
             message: this.message,
             validasi_status: 0,
             status_pengajuan: "progress",

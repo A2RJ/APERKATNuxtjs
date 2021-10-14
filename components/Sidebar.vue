@@ -108,7 +108,7 @@
       >
         <i class="fas fa-fw fa-cog"></i>
         <span>NON RKAT</span>
-        <b-badge v-if="total != 0" pill variant="light">{{ total }}</b-badge>
+        <!-- <b-badge v-if="total != 0" pill variant="light">{{ total }}</b-badge> -->
       </a>
       <div
         id="collapseTwo"
@@ -122,20 +122,24 @@
         >
           <h6 class="collapse-header">Daftar Non RKAT</h6>
           <NuxtLink class="collapse-item" :to="'/nonrkat/subordinate/'"
-            >Non RKAT<b-badge v-if="badgeSelf != 0" pill variant="primary">{{
+            >Non RKAT
+            <!-- <b-badge v-if="badgeSelf != 0" pill variant="primary">{{
               badgeSelf
-            }}</b-badge></NuxtLink
+            }}</b-badge> -->
+            </NuxtLink
           >
           <NuxtLink
             class="collapse-item"
             v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
             :to="'/nonrkat/supervisor/'"
-            >Non RKAT Sub Divisi<b-badge
+            >Non RKAT Sub Divisi
+            <!-- <b-badge
               v-if="badge != 0"
               pill
               variant="primary"
-              >{{ badge }}</b-badge
-            ></NuxtLink
+              >{{ badge }}
+              </b-badge> -->
+            </NuxtLink
           >
           <!-- <NuxtLink
             class="collapse-item"
@@ -244,23 +248,7 @@ export default {
       //   this.subMessage();
       // }
     }
-
-    // setTimeout(async () => {
-    //   if (this.$store.state.auth.loggedIn == false) {
-    //     try {
-    //     this.SET_IS_AUTH(false);
-    //     this.SET_USER_DATA(null);
-    //     window.location.href = "/login";
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    //   }
-    // }, 10000);
   },
-  // watch: {
-  //   $route() {
-  //   },
-  // },
 };
 </script>
 

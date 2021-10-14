@@ -272,11 +272,13 @@
             label-for="target_capaian"
             :class="{ 'form-group--error': $v.form.target_capaian.$error }"
           >
-            <b-form-input
+            <b-form-textarea
               v-model.trim="$v.form.target_capaian.$model"
+              placeholder="Enter something..."
+              rows="3"
+              max-rows="6"
               id="target_capaian"
-              size="sm"
-            ></b-form-input>
+            ></b-form-textarea>
             <b-form-text
               id="target_capaian"
               v-if="!$v.form.target_capaian.required"
@@ -316,11 +318,13 @@
             label-for="tempat_program"
             :class="{ 'form-group--error': $v.form.tempat_program.$error }"
           >
-            <b-form-input
+          <b-form-textarea
               v-model.trim="$v.form.tempat_program.$model"
+              placeholder="Enter something..."
+              rows="3"
+              max-rows="6"
               id="tempat_program"
-              size="sm"
-            ></b-form-input>
+            ></b-form-textarea>
             <b-form-text
               id="tempat_program"
               v-if="!$v.form.tempat_program.required"
@@ -688,7 +692,7 @@ export default {
         kegiatan: false,
       },
       number: null,
-      next: [],
+      next: null,
     };
   },
   validations: {
@@ -774,10 +778,11 @@ export default {
         this.status[index].id_user == this.$store.state.auth.user[0].id_user &&
         this.status[index - 1].status !== false
       ) {
-        this.next = this.status[index + 1].id_user;
-        console.log(this.next);
+        this.next = this.status[index + 1] ? this.status[index + 1].id_user : this.$store.state.auth.user[0].id_user;
       }
     }
+
+    // console.log(this.next.length)
   },
   methods: {
     ...mapActions("subordinate", [
@@ -939,6 +944,7 @@ export default {
                 status_pengajuan: "progress",
                 id_struktur: this.$store.state.auth.user[0].id_user,
                 nama: this.$store.state.auth.user[0].fullname,
+                next: this.forms.next,
               },
               this.form
             )
@@ -961,6 +967,7 @@ export default {
                 status_pengajuan: "progress",
                 id_struktur: this.$store.state.auth.user[0].id_user,
                 nama: this.$store.state.auth.user[0].fullname,
+                next: this.next,
               },
               this.form
             )
@@ -1037,6 +1044,7 @@ export default {
             id_struktur: this.$store.state.auth.user[0].id_user,
             nama: this.$store.state.auth.user[0].fullname,
             kode_rkat: this.form.kode_rkat,
+            next: this.$store.state.auth.user[0].id_user,
           })
             .then(() => {
               this.success("Berhasil tolak pengajuan");
