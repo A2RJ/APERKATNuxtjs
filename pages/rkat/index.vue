@@ -27,7 +27,7 @@
                     label-cols="4"
                     label-cols-lg="2"
                     label-size="sm"
-                    label="Fakultas/Unit Pelaksana"
+                    label="Pelaksana"
                     label-for="id_user"
                   >
                     <!-- :class="{ 'form-group--error': $v.selected.$error }" -->
@@ -40,7 +40,7 @@
                     ></v-select>
                     <b-form-text id="id_user" v-if="pesan">
                       <i class="text-danger"
-                        >Fakultas/Unit Pelaksana is required</i
+                        >Pelaksana is required</i
                       >
                     </b-form-text>
                   </b-form-group>
@@ -243,7 +243,7 @@ export default {
         },
       ],
       fields: [
-        { key: "fullname", label: "Fakultas/Unit Pelaksana" },
+        { key: "fullname", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT " },
         "mulai_program",
         { key: "mulai_program", label: "Waktu Kegiatan" },

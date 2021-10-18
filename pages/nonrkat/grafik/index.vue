@@ -94,7 +94,7 @@ export default {
       ],
       fields: [
         { key: "fullname", label: "User" },
-        { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
+        { key: "nama_struktur", label: "Pelaksana" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],

@@ -10,7 +10,7 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="Fakultas/Unit Pelaksana"
+      label="Pelaksana"
       label-for="id_user"
       :class="{ 'form-group--error': $v.selected.$error }"
     >
@@ -21,7 +21,7 @@
         @input="get"
       ></v-select>
       <b-form-text id="id_user" v-if="!$v.selected.required">
-        <i class="text-danger">Fakultas/Unit Pelaksana is required</i>
+        <i class="text-danger">Pelaksana is required</i>
       </b-form-text>
     </b-form-group>
 

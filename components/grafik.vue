@@ -70,89 +70,146 @@
     <div class="col-lg-12 card mt-2">
       <div class="mt-2 m-1">
         <h4>Data RKAT</h4>
-        <b-table
-          show-empty
-          responsive
-          striped
-          hover
+        <custom-table
           :items="grafik.data.rkat"
           :fields="fields"
+          :html="keyRKAT"
+          :actions="actions"
         >
-          <template v-slot:cell(fullname)="row">
-            {{ row.item.fullname | capitalize }}
+          <template v-slot:fullname="">
+            <p>
+              {{ grafik.data.user.fullname | capitalize }}
+            </p>
           </template>
-          <template v-slot:cell(total_anggaran)="row">
-            RP. {{ row.item.total_anggaran | currency }}
+          <template v-slot:nama_struktur="">
+            <p
+              v-if="
+                grafik.data.user.nama_struktur !== '0' &&
+                grafik.data.user.nama_struktur_child1 == '0' &&
+                grafik.data.user.nama_struktur_child2 == '0'
+              "
+              class="text-uppercase"
+            >
+              {{ grafik.data.user.nama_struktur }}
+            </p>
+            <p
+              v-if="
+                grafik.data.user.nama_struktur !== '0' &&
+                grafik.data.user.nama_struktur_child1 !== '0' &&
+                grafik.data.user.nama_struktur_child2 == '0'
+              "
+              class="text-uppercase"
+            >
+              {{ grafik.data.user.nama_struktur }}
+            </p>
+            <p
+              v-if="
+                grafik.data.user.nama_struktur !== '0' &&
+                grafik.data.user.nama_struktur_child1 !== '0' &&
+                grafik.data.user.nama_struktur_child2 !== '0'
+              "
+              class="text-uppercase"
+            >
+              {{ grafik.data.user.nama_struktur_child1 }}
+            </p>
           </template>
-          <template v-slot:cell(anggaran_digunakan)="row">
-            RP. {{ row.item.anggaran_digunakan | currency }}
-          </template>
-          <template v-slot:cell(mulai_program)="row">
-            <p>{{ row.item.mulai_program | convertDate }}</p>
-          </template>
-          <template v-slot:cell(created_at)="row">
+          <template v-slot:created_at="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
-          <template v-slot:cell(actions)="row">
+          <template v-slot:rencara_anggaran="row">
+            <p>RP. {{ row.item.rencara_anggaran | currency }}</p>
+          </template>
+          <template v-slot:biaya_program="row">
+            <p>RP. {{ row.item.biaya_program | currency }}</p>
+          </template>
+          <template v-slot:persentase="row">
+            <p>
+              {{
+                ((row.item.biaya_program / row.item.rencara_anggaran) * 100)
+                  | currency
+              }}%
+            </p>
+          </template>
+          <template v-slot:actions="row">
             <NuxtLink
               class="btn btn-sm btn-outline-info"
-              :to="'../../../rkat/edit/' + row.item.id_rkat"
+              :to="'rkat/edit/' + row.item.id_rkat"
               :key="'edit' + row.index"
               >Detail</NuxtLink
             >
           </template>
-        </b-table>
+        </custom-table>
       </div>
       <div class="mt-2 m-1">
         <h4>Data Pengajuan</h4>
-        <b-table
-          striped
-          responsive
-          hover
-          show-empty
+        <custom-table
           :items="grafik.data.pengajuan"
           :fields="pengajuan"
+          :html="key"
+          :actions="actions"
+          ref="table"
         >
-          <template v-slot:cell(fullname)="row">
-            {{ row.item.fullname | capitalize }}
-          </template>
-          <template v-slot:cell(biaya_program)="row">
-            RP. {{ row.item.biaya_program | currency }}
-          </template>
-          <template v-slot:cell(validasi_status)="row">
-            <p v-if="row.item.validasi_status == 0">
-              <b-badge variant="danger"
+          <template v-slot:fullname="row">
+            <p>
+              {{ row.item.fullname | capitalize }} <br />
+              <b-badge v-if="row.item.validasi_status == 0" variant="danger"
                 >Ditolak: {{ row.item.nama_status }}</b-badge
               >
-            </p>
-            <p v-if="row.item.validasi_status == 1">
-              <b-badge variant="warning"
+              <b-badge v-if="row.item.validasi_status == 1" variant="warning"
                 >Input/Revisi: {{ row.item.nama_status }}</b-badge
               >
-            </p>
-            <p v-if="row.item.validasi_status == 2">
-              <b-badge variant="success"
+              <b-badge v-if="row.item.validasi_status == 2" variant="success"
                 >Diterima: {{ row.item.nama_status }}</b-badge
               >
-            </p>
-            <p v-if="row.item.validasi_status == 3">
-              <b-badge variant="success"
+              <b-badge v-if="row.item.validasi_status == 3" variant="success"
                 >Pencairan: {{ row.item.nama_status }}</b-badge
               >
             </p>
           </template>
-          <template v-slot:cell(created_at)="row">
+          <template v-slot:nama_struktur="row">
+            <p
+              v-if="
+                row.item.nama_struktur !== '0' &&
+                row.item.nama_struktur_child1 == '0' &&
+                row.item.nama_struktur_child2 == '0'
+              "
+              class="text-uppercase"
+            >
+              {{ row.item.nama_struktur }}
+            </p>
+            <p
+              v-if="
+                row.item.nama_struktur !== '0' &&
+                row.item.nama_struktur_child1 !== '0' &&
+                row.item.nama_struktur_child2 == '0'
+              "
+              class="text-uppercase"
+            >
+              {{ row.item.nama_struktur }}
+            </p>
+            <p
+              v-if="
+                row.item.nama_struktur !== '0' &&
+                row.item.nama_struktur_child1 !== '0' &&
+                row.item.nama_struktur_child2 !== '0'
+              "
+              class="text-uppercase"
+            >
+              {{ row.item.nama_struktur_child1 }}
+            </p>
+          </template>
+          <template v-slot:created_at="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
-          <template v-slot:cell(actions)="row">
+          <template v-slot:actions="row">
             <NuxtLink
               class="btn btn-sm btn-outline-info"
-              :to="'../detail/' + row.item.id_pengajuan"
+              :to="'/pengajuan/grafik/detail/' + row.item.id_pengajuan"
               :key="'edit' + row.index"
               >Detail</NuxtLink
             >
           </template>
-        </b-table>
+        </custom-table>
       </div>
     </div>
   </div>
@@ -162,28 +219,36 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
-  async asyncData({ store, params }) {
-    await Promise.all([store.dispatch("subordinate/getGrafik", params.index)]);
+  async asyncData({ store }) {
+    await Promise.all([
+      store.dispatch(
+        "subordinate/getGrafik",
+        store.$auth.$state.user[0].id_user
+      ),
+    ]);
     return;
   },
   data() {
     return {
       options: {},
       chartData: {},
+      keyRKAT: "id_rkat",
       fields: [
-        { key: "fullname", label: "Pelaksana" },
+        { key: "fullname", label: "User" },
+        { key: "nama_struktur", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
-        { key: "total_anggaran", label: "Total Anggaran" },
-        { key: "anggaran_digunakan", label: "Anggaran dicairkan" },
-        { key: "mulai_program", label: "Waktu Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },
+        { key: "rencara_anggaran", label: "Total Anggaran" },
+        { key: "biaya_program", label: "Total Realisasi" },
+        "persentase",
         "actions",
       ],
+      key: "id_pengajuan",
+      actions: [],
       pengajuan: [
         { key: "fullname", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
         { key: "biaya_program", label: "Anggaran" },
-        { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],

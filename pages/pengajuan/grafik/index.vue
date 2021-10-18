@@ -52,8 +52,14 @@
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
-             <template v-slot:created_at="row">
-              <p>{{ row.item.created_at | convertDate }}</p>
+             <template v-slot:rencara_anggaran="row">
+              RP. {{ row.item.rencara_anggaran | currency }}
+            </template>
+             <template v-slot:biaya_program="row">
+              RP. {{ row.item.biaya_program | currency }}
+            </template>
+             <template v-slot:persentase="row">
+              {{ (row.item.biaya_program/row.item.rencara_anggaran) * 100 | currency }}%
             </template>
             <template v-slot:actions="row">
               <NuxtLink
@@ -94,8 +100,10 @@ export default {
       ],
       fields: [
         { key: "fullname", label: "User" },
-        { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
-        { key: "created_at", label: "Waktu Pengajuan" },
+        { key: "nama_struktur", label: "Pelaksana" },
+        { key: "rencara_anggaran", label: "Total Anggaran" },
+        { key: "biaya_program", label: "Total Realisasi" },
+        "persentase",
         "actions",
       ],
       items: [],

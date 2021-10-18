@@ -171,7 +171,7 @@ export default {
       fields: [
         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },
-        { key: "nama_struktur", label: "Fakultas/Unit Pelaksana" },
+        { key: "nama_struktur", label: "Pelaksana" },
         { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
