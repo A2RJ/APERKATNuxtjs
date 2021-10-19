@@ -92,9 +92,9 @@ export const actions = {
             })
         })
     },
-    pengajuanSelesai({ commit }) {
+    pengajuanSelesai({ commit }, payload) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(`/pengajuan/pengajuanSelesai/`).then((response) => {
+            this.$axios.get(`/pengajuan/pengajuanSelesai/${payload}`).then((response) => {
                 commit('SET_PENGAJUAN_SELESAI', response.data.data)
                 resolve()
             })

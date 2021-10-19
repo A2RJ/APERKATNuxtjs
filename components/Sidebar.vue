@@ -87,12 +87,12 @@
             :to="'/pengajuan/grafik/'"
             >Grafik Sub Divisi</NuxtLink
           >
-          <NuxtLink
+          <!-- <NuxtLink
             class="collapse-item"
             v-show="dirKeuangan"
             :to="'/pengajuanSelesai'"
             >Pengajuan diterima</NuxtLink
-          >
+          > -->
         </div>
       </div>
     </li>

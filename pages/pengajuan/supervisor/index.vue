@@ -306,7 +306,7 @@ export default {
       login: null,
       filter1: null,
       filter2: null,
-      items: [],
+      itemsSelesai: [],
       itemsCadangan: [],
     };
   },

@@ -72,6 +72,7 @@
                 @change="onSelectPencairan"
                 placeholder="Choose or drop it here..."
                 drop-placeholder="Drop file here..."
+                accept=".pdf"
               ></b-form-file>
             </b-form-group>
             <div>
@@ -99,6 +100,7 @@
                 @change="onSelectLPJKeuangan"
                 placeholder="Choose or drop it here..."
                 drop-placeholder="Drop file here..."
+                accept=".pdf"
               ></b-form-file>
             </b-form-group>
             <button
@@ -125,6 +127,7 @@
                 @change="onSelectLPJKegiatan"
                 placeholder="Choose or drop it here..."
                 drop-placeholder="Drop file here..."
+                accept=".pdf"
               ></b-form-file>
             </b-form-group>
             <button
@@ -318,7 +321,7 @@
             label-for="tempat_program"
             :class="{ 'form-group--error': $v.form.tempat_program.$error }"
           >
-          <b-form-textarea
+            <b-form-textarea
               v-model.trim="$v.form.tempat_program.$model"
               placeholder="Enter something..."
               rows="3"
@@ -562,9 +565,8 @@
             <li
               :class="history.status_validasi ? 'text-success' : 'text-warning'"
             >
-              {{ history.created_at }}
-              {{ history.status_validasi ? "Diterima" : "Ditolak" }} -
-              {{ history.message }}
+              {{ history.status_validasi ? "Diterima" : "Ditolak" }} oleh
+              {{ history.message }} ({{ history.created_at | convertDate }})
             </li>
           </ul>
         </div>
@@ -585,9 +587,7 @@ import {
 export default {
   async created() {
     if (this.$route.params.id) {
-      // this.status.forEach((e) => {
-      //   console.table(e.id_user, e.status);
-      // });
+      
       this.showMessage();
       this.getDataRKAT(this.forms.kode_rkat);
       this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
@@ -772,17 +772,6 @@ export default {
     this.load();
     this.options = this.kodeRKAT.data;
     this.parent = this.ikuParent.data;
-
-    for (let index = 1; index < this.status.length; index++) {
-      if (
-        this.status[index].id_user == this.$store.state.auth.user[0].id_user &&
-        this.status[index - 1].status !== false
-      ) {
-        this.next = this.status[index + 1] ? this.status[index + 1].id_user : this.$store.state.auth.user[0].id_user;
-      }
-    }
-
-    // console.log(this.next.length)
   },
   methods: {
     ...mapActions("subordinate", [
@@ -967,7 +956,7 @@ export default {
                 status_pengajuan: "progress",
                 id_struktur: this.$store.state.auth.user[0].id_user,
                 nama: this.$store.state.auth.user[0].fullname,
-                next: this.next,
+                next: this.status[1],
               },
               this.form
             )
@@ -994,6 +983,14 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
+          for (let index = 1; index < this.status.length; index++) {
+            if (
+              this.status[index].id_user == this.$store.state.auth.user[0].id_user
+               && this.status[index - 1].status !== false
+            ) {
+              this.next = this.status[index + 1] == undefined ? this.$store.state.auth.user[0].id_user : this.status[index + 1].id_user;
+            }
+          }
           this.loader("loading...");
           this.replace();
           this.approved({
@@ -1001,7 +998,7 @@ export default {
             message: this.message,
             status: 2,
             status_pengajuan:
-              this.$store.state.auth.user[0].level == 1
+              this.forms.lpj_keuangan && this.forms.lpj_kegiatan
                 ? "approved"
                 : "progress",
             id_user: this.form.id_user,
@@ -1050,9 +1047,6 @@ export default {
               this.success("Berhasil tolak pengajuan");
               this.option = true;
               this.$nuxt.refresh();
-              // this.$route.name == "pengajuan-subordinate-edit-id"
-              //   ? this.$router.push("/pengajuan/subordinate/")
-              //   : this.$router.push("/pengajuan/supervisor/");
             })
             .catch(() => {
               this.failed("Whoops Server Error");
@@ -1072,30 +1066,34 @@ export default {
       }
     },
     async buktiTF() {
-      await this.uploadBuktiTF();
-      this.loader("loading...");
-      this.replace();
-      this.updatepengajuan({
-        id: this.$route.params.id,
-        id_pengajuan: this.$route.params.id,
-        message: "Telah dilakukan pencairan",
-        status: 3,
-        status_pengajuan: "progress",
-        id_user: this.form.id_user,
-        id_struktur: this.$store.state.auth.user[0].id_user,
-        kode_rkat: this.form.kode_rkat,
-        nama: this.$store.state.auth.user[0].fullname,
-        pencairan: this.form.pencairan,
-      })
-        .then(() => {
-          this.success("Berhasil upload bukti pencairan");
-          this.formPencairan = false;
-          this.$nuxt.refresh();
-          // this.$router.push("/pengajuan/supervisor/");
+      if (this.pencairan.length != 0) {
+        await this.uploadBuktiTF();
+        this.loader("loading...");
+        this.replace();
+        this.updatepengajuan({
+          id: this.$route.params.id,
+          id_pengajuan: this.$route.params.id,
+          message: "Telah dilakukan pencairan",
+          status: 3,
+          status_pengajuan: "progress",
+          id_user: this.form.id_user,
+          id_struktur: this.$store.state.auth.user[0].id_user,
+          kode_rkat: this.form.kode_rkat,
+          nama: this.$store.state.auth.user[0].fullname,
+          pencairan: this.form.pencairan,
         })
-        .catch(() => {
-          this.failed("Whoops Server Error");
-        });
+          .then(() => {
+            this.success("Berhasil upload bukti pencairan");
+            this.formPencairan = false;
+            this.$nuxt.refresh();
+            // this.$router.push("/pengajuan/supervisor/");
+          })
+          .catch(() => {
+            this.failed("Whoops Server Error");
+          });
+      } else {
+        this.failed("Select file");
+      }
     },
     async uploadBuktiTF() {
       const form = new FormData();
