@@ -133,7 +133,7 @@
           <template v-slot:actions="row">
             <NuxtLink
               class="btn btn-sm btn-outline-info"
-              :to="'rkat/edit/' + row.item.id_rkat"
+              :to="'/rkat/edit/' + row.item.id_rkat"
               :key="'edit' + row.index"
               >Detail</NuxtLink
             >

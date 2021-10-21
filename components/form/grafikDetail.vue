@@ -355,9 +355,8 @@
             <li
               :class="history.status_validasi ? 'text-success' : 'text-warning'"
             >
-              {{ history.created_at }}
-              {{ history.status_validasi ? "Diterima" : "Ditolak" }} -
-              {{ history.message }}
+              {{ history.status_validasi ? "Diterima" : "Ditolak" }} oleh
+              {{ history.message }} ({{ history.created_at | convertDate }})
             </li>
           </ul>
         </div>
