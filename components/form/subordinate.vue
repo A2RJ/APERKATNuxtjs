@@ -13,6 +13,9 @@
               :class="status.status ? 'approve' : 'decline'"
             >
               <p class="h6 fw-bold">{{ status.nama_struktur }}</p>
+              <span v-if="status.lpj">
+                <p v-for="(lpj, index) in status.lpj" :key="index"> {{ lpj.nama_struktur }}</p>
+              </span>
             </li>
           </ul>
         </div>
@@ -692,6 +695,7 @@ export default {
       },
       number: null,
       next: null,
+      lastStatatus: [],
     };
   },
   validations: {

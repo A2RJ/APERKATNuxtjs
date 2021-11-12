@@ -96,7 +96,7 @@
               >
               <button
                 class="btn btn-sm btn-outline-danger mt-1"
-                @click="destroypengajuan(row.item.id_pengajuan)"
+                @click="deleteRows(row.item.id_pengajuan)"
               >
                 Hapus
               </button>
