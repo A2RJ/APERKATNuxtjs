@@ -520,7 +520,7 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="Surat pengantar, AKA/TOR dan RAB"
+            label="File RAB"
             label-for="rab"
             :class="{ 'form-group--error': $v.file.$error }"
           >
@@ -533,7 +533,7 @@
               @change="onSelect"
               placeholder="Choose or drop it here..."
               drop-placeholder="Drop file here..."
-              accept=".pdf"
+              accept=".xls, .xlsx"
             ></b-form-file>
             <b-form-text id="rab" v-if="!$v.file.required">
               <i class="text-danger">Upload file</i>
@@ -542,7 +542,7 @@
               Current file:
               <a :href="'../../../' + rab" target="_blank">RAB </a>
             </div>
-            <div class="mt-3" v-else>Ekstensi file harus .PDF</div>
+            <div class="mt-3" v-else>Ekstensi file harus .XLS/XLSX</div>
           </b-form-group>
           <button
             class="btn btn-sm btn-primary float-right"
@@ -587,7 +587,6 @@ import {
 export default {
   async created() {
     if (this.$route.params.id) {
-      
       this.showMessage();
       this.getDataRKAT(this.forms.kode_rkat);
       this.doubleIKU(this.forms.id_iku_child1, this.forms.id_iku_child2);
@@ -766,6 +765,7 @@ export default {
       ikuParent: (state) => state.ikuParent,
       ikuChild1: (state) => state.ikuChild1,
       ikuChild2: (state) => state.ikuChild2,
+      errors: (state) => state.errors,
     }),
   },
   mounted() {
@@ -924,49 +924,57 @@ export default {
             await this.upload();
           }
           this.replace();
-          this.updatepengajuan(
-            Object.assign(
-              {
-                id: this.$route.params.id,
-                message: "Update pengajuan",
-                status: 1,
-                status_pengajuan: "progress",
-                id_struktur: this.$store.state.auth.user[0].id_user,
-                nama: this.$store.state.auth.user[0].fullname,
-                next: this.forms.next,
-              },
-              this.form
+          this.$axios
+            .post(
+              `/pengajuan/${this.$route.params.id}`,
+              Object.assign(
+                {
+                  id: this.$route.params.id,
+                  message: "Update pengajuan",
+                  status: 1,
+                  status_pengajuan: "progress",
+                  id_struktur: this.$store.state.auth.user[0].id_user,
+                  nama: this.$store.state.auth.user[0].fullname,
+                  next: this.forms.next,
+                },
+                this.form
+              )
             )
-          )
             .then(() => {
               this.success("Data telah disimpan!");
               this.$nuxt.refresh();
             })
-            .catch((e) => {
-              this.failed("Pastikan semua fields diisi!");
+            .catch((error) => {
+              if (error.response) {
+                this.failed(error.response.data.message);
+              }
             });
         } else {
           await this.upload();
           this.replace();
-          this.storepengajuan(
-            Object.assign(
-              {
-                message: "Input pengajuan",
-                status: 1,
-                status_pengajuan: "progress",
-                id_struktur: this.$store.state.auth.user[0].id_user,
-                nama: this.$store.state.auth.user[0].fullname,
-                next: this.status[1],
-              },
-              this.form
+          this.$axios
+            .post(
+              "/pengajuan/",
+              Object.assign(
+                {
+                  message: "Input pengajuan",
+                  status: 1,
+                  status_pengajuan: "progress",
+                  id_struktur: this.$store.state.auth.user[0].id_user,
+                  nama: this.$store.state.auth.user[0].fullname,
+                  next: null,
+                },
+                this.form
+              )
             )
-          )
-            .then(() => {
+            .then((response) => {
               this.success("Data telah disimpan!");
               this.$router.push(this.redirects);
             })
-            .catch(() => {
-              this.failed("Pastikan semua fields diisi!");
+            .catch((error) => {
+              if (error.response) {
+                this.failed(error.response.data.message);
+              }
             });
         }
       }
@@ -985,10 +993,14 @@ export default {
         if (result.isConfirmed) {
           for (let index = 1; index < this.status.length; index++) {
             if (
-              this.status[index].id_user == this.$store.state.auth.user[0].id_user
-               && this.status[index - 1].status !== false
+              this.status[index].id_user ==
+                this.$store.state.auth.user[0].id_user &&
+              this.status[index - 1].status !== false
             ) {
-              this.next = this.status[index + 1] == undefined ? this.$store.state.auth.user[0].id_user : this.status[index + 1].id_user;
+              this.next =
+                this.status[index + 1] == undefined
+                  ? this.$store.state.auth.user[0].id_user
+                  : this.status[index + 1].id_user;
             }
           }
           this.loader("loading...");
@@ -1180,7 +1192,7 @@ export default {
     },
     print() {
       this.$axios
-        .get(`pengajuan/pdf_pengajuan/${this.$route.params.id}`, {
+        .post("/pengajuan/pdfByUSer", this.$route.params.id, {
           responseType: "blob",
         })
         .then((res) => {
@@ -1190,11 +1202,11 @@ export default {
           link.setAttribute("download", "Pengajuan.pdf");
           document.body.appendChild(link);
           link.click();
-          this.success("Pengajuan telah didownload!");
-        })
-        .catch(() => {
-          this.failed("Whoops periksa koneksi anda");
+          // this.success("Pengajuan telah didownload!");
         });
+      // .catch(() => {
+      //   this.failed("Whoops periksa koneksi anda");
+      // });
     },
     getDataRKAT(value) {
       if (value) {

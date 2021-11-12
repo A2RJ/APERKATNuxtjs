@@ -75,6 +75,14 @@ export default {
   },
   methods: {
     ...mapActions("subordinate", ["getGrafik"]),
+    // cek apakah user telah login
+    isLoggedIn() {
+      return this.$auth.loggedIn();
+    },
+    // cek apakah user adalah admin
+    isAdmin() {
+      return this.$auth.user.role === "admin";
+    },
   },
 };
 </script>

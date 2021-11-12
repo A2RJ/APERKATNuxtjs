@@ -279,7 +279,7 @@ export default {
             width: 300,
             icon: "success",
             title: "Congrats!",
-            text: "RKAT telah dihapus",
+            text: "Pengajuan telah didownload",
           });
         });
     },

@@ -14,7 +14,7 @@ export default {
       store.dispatch("subordinate/getpengajuanID", params.id),
       store.dispatch("subordinate/getstatus", params.id),
       store.dispatch("subordinate/gethistory", params.id),
-      store.dispatch("subordinate/kodeRKAT"),
+      store.dispatch("subordinate/kodeRKAT", store.$auth.$state.user[0].id_user),
       store.dispatch("subordinate/ikuParent"),
     ]);
     return;
