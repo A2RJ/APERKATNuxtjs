@@ -14,7 +14,9 @@
             >
               <p class="h6 fw-bold">{{ status.nama_struktur }}</p>
               <span v-if="status.lpj">
-                <p v-for="(lpj, index) in status.lpj" :key="index"> {{ lpj.nama_struktur }}</p>
+                <p v-for="(lpj, index) in status.lpj" :key="index">
+                  {{ lpj.nama_struktur }}
+                </p>
               </span>
             </li>
           </ul>
@@ -789,66 +791,63 @@ export default {
       "getstatus",
     ]),
     load() {
-      if (this.$route.name == "pengajuan-supervisor-edit-id") {
+      if (this.$route.params.id) {
         this.button = false;
         this.option = false;
-
+        // console.log(this.status[index - 1].status ); // untuk mengecek pengajuan sebelumnya
+        // jika user login == atasan && status belum diterima && status sebelumnya diterima maka option true
         for (let index = 1; index < this.status.length; index++) {
           if (
             this.status[index].id_user ==
               this.$store.state.auth.user[0].id_user &&
+            this.status[index].status == false &&
             this.status[index - 1].status !== false
           ) {
-            if (this.status.length - 1 == index) {
-              if (
-                this.form.lpj_keuangan &&
-                this.form.lpj_kegiatan &&
-                this.status[index].status == false
-              )
-                this.option = true;
-            } else if (this.status.length - 2 == index) {
-              if (this.status[index].status == false) this.formPencairan = true;
-            } else {
-              if (
-                this.status[index].status == false &&
-                this.status[index - 1].status !== false
-              )
-                this.option = true;
-            }
+            this.option = true;
           }
         }
-      } else if (this.$route.name == "pengajuan-subordinate-edit-id") {
-        this.option = false;
-
-        this.$axios
-          .get(`/pengajuan/validasi/${this.$route.params.id}`)
-          .then((res) => {
-            if (res.data) {
-              this.button = false;
-            } else {
-              this.button = true;
-            }
-          });
-
-        for (let index = 1; index < this.status.length; index++) {
-          if (
-            this.status[index].id_user ==
-              this.$store.state.auth.user[0].id_user &&
-            this.status[index - 1].status !== false
-          ) {
-            if (this.status[index].status == false) this.option = true;
-          }
+        // jika dir keuangan maka upload pencairan
+        if (
+          this.$store.state.auth.user[0].id_user == 24 &&
+          this.status[this.status.length - 4].status &&
+          this.status[this.status.length - 3].status == false
+        ) {
+          this.form.lpj_keuangan && this.form.lpj_kegiatan
+            ? (this.formPencairan = false)
+            : ((this.formPencairan = true), (this.option = false));
         }
-        if (this.status[this.status.length - 2].status) {
+        // jika user login == pengaju && sudah pencairan maka formLPJ true
+        if (
+          this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
+          this.status[this.status.length - 3].status
+        ) {
           this.form.lpj_keuangan && this.form.lpj_kegiatan
             ? (this.formLPJ = false)
-            : (this.formLPJ = true);
-          if (this.$store.state.auth.user[0].level == 1) {
-            this.form.lpj_keuangan && this.form.lpj_kegiatan
-              ? (this.option = true)
-              : (this.option = false);
-            if (this.status[this.status.length - 1].status) this.option = false;
-          }
+            : ((this.formLPJ = true), (this.option = false));
+        }
+        // jika sekniv/dir keuangan maka tampilkan form terima/tolak lpj
+        if (
+          (this.$store.state.auth.user[0].id_user == 24 &&
+            this.forms.lpj_keuangan) ||
+          (this.$store.state.auth.user[0].id_user == 21 &&
+            this.forms.lpj_kegiatan)
+        ) {
+          console.log("Tampil form terima tolak lpj");
+        }
+        // jika user login == pengaju dan dihalaman suboridnate maka button true
+        if (
+          this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
+          this.$route.name == "pengajuan-subordinate-edit-id"
+        ) {
+          this.$axios
+            .get(`/pengajuan/validasi/${this.$route.params.id}`)
+            .then((res) => {
+              if (res.data) {
+                this.button = false;
+              } else {
+                this.button = true;
+              }
+            });
         }
       }
     },

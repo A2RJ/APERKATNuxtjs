@@ -10,20 +10,12 @@
 - [ok] validasi nominal pengajuan sesuai dengan nominal yang ada di RKAT
 - [ok] jika sudah pencairan maka pengaju wajib upload lpj dalam waktu 1 minggu dan tidak boleh input pengajuan ketika belum upload 2x lpj
 - [progress] perubahan persetujuan pengajuan dibagi dir keuangan dan sekniv
-- - ubah list (dir keuangan dan sekniv)
+- - ubah timeline status
+- - ubah looping status hanya sampai pencairan
+- - jika sudah pencairan dan
 - - jika keuangan && lpj keuangan !== null maka tampilkan form terima pengajuan
 - - jika sekniv && lpj kegiatan !== null maka tampilkan form terima pengajuan
-- - terima bagaimana?
-- - - tambahkan field terima pengajuan sebanyak 2
-- - - atau buat seperti alur sebelumnya tetapi hanya dibuat list untuk 2 terakhir (Custom list status)
-- - - Misalkan:
-[
-    {
-        'id_user': 1,
-        'nama_struktur': 'LPJ',
-        'status': diambil dari value ke berapa dir keuangan dan sekniv atau periksa validasi.id_struktur = 123 && validasi.message like '%LPJ%' maka dapatkan valuenya.
-    }
-]
+
 - print pengajuan dengan format baru
 - - insert image (kop surat)
 - - bagaimana cara membuat format surat?
