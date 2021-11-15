@@ -27,7 +27,22 @@
           >
             <template v-slot:fullname="row">
               <p>
-                {{ row.item.fullname | capitalize }}
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
               </p>
             </template>
             <template v-slot:nama_struktur="row">
@@ -60,28 +75,6 @@
                 class="text-uppercase"
               >
                 {{ row.item.nama_struktur_child1 }}
-              </p>
-            </template>
-            <template v-slot:validasi_status="row">
-              <p v-if="row.item.validasi_status == 0">
-                <b-badge variant="danger"
-                  >Ditolak: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 1">
-                <b-badge variant="warning"
-                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 2">
-                <b-badge variant="success"
-                  >Diterima: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 3">
-                <b-badge variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
-                >
               </p>
             </template>
             <template v-slot:created_at="row">
@@ -169,10 +162,10 @@ export default {
         },
       ],
       fields: [
-        { key: "fullname", label: "User" },
+         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Pelaksana" },
-        { key: "validasi_status", label: "Status Pengajuan" },
+        // { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],

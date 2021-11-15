@@ -89,7 +89,7 @@
               </button>
             </div>
           </div>
-          <div v-show="formLPJ" class="m-3">
+          <div v-show="formLPJKeuangan" class="m-3">
             <b-form-group
               label-cols="4"
               label-cols-lg="2"
@@ -116,7 +116,7 @@
             </button>
           </div>
           <br />
-          <div v-show="formLPJ" class="m-3">
+          <div v-show="formLPJKegiatan" class="m-3">
             <b-form-group
               label-cols="4"
               label-cols-lg="2"
@@ -158,10 +158,10 @@
               ></b-form-input>
               <div class="float-right">
                 <button class="btn btn-sm btn-outline-danger" @click="tolak">
-                  Tolak
+                  Tolak <span v-show="terimaLPJ">LPJ</span>
                 </button>
                 <button class="btn btn-sm btn-outline-success" @click="terima">
-                  Terima
+                  Terima <span v-show="terimaLPJ">LPJ</span>
                 </button>
               </div>
             </b-form-group>
@@ -687,7 +687,8 @@ export default {
       message: "",
       formPencairan: false,
       pencairan: [],
-      formLPJ: false,
+      formLPJKeuangan: false,
+      formLPJKegiatan: false,
       LPJKeuangan: [],
       LPJKegiatan: [],
       view: {
@@ -697,7 +698,7 @@ export default {
       },
       number: null,
       next: null,
-      lastStatatus: [],
+      terimaLPJ: null,
     };
   },
   validations: {
@@ -819,20 +820,34 @@ export default {
         // jika user login == pengaju && sudah pencairan maka formLPJ true
         if (
           this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
-          this.status[this.status.length - 3].status
+          this.status[this.status.length - 3].status &&
+          this.form.lpj_keuangan == null &&
+          this.form.lpj_kegiatan == null
         ) {
-          this.form.lpj_keuangan && this.form.lpj_kegiatan
-            ? (this.formLPJ = false)
-            : ((this.formLPJ = true), (this.option = false));
+          this.formLPJKeuangan = true;
+          this.option = false;
+        }
+        if (
+          this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
+          this.status[this.status.length - 3].status &&
+          this.form.lpj_keuangan !== null &&
+          this.form.lpj_kegiatan == null && 
+          this.status[this.status.length - 2].lpj[0].status !== false
+        ) {
+          this.formLPJKegiatan = true;
+          this.option = false;
         }
         // jika sekniv/dir keuangan maka tampilkan form terima/tolak lpj
         if (
           (this.$store.state.auth.user[0].id_user == 24 &&
-            this.forms.lpj_keuangan) ||
+            this.forms.lpj_keuangan &&
+            this.status[this.status.length - 2].lpj[0].status == false) ||
           (this.$store.state.auth.user[0].id_user == 21 &&
-            this.forms.lpj_kegiatan)
+            this.forms.lpj_kegiatan &&
+            this.status[this.status.length - 2].lpj[1].status == false)
         ) {
-          console.log("Tampil form terima tolak lpj");
+          this.terimaLPJ = 4;
+          this.option = true;
         }
         // jika user login == pengaju dan dihalaman suboridnate maka button true
         if (
@@ -1000,10 +1015,20 @@ export default {
                 this.$store.state.auth.user[0].id_user &&
               this.status[index - 1].status !== false
             ) {
-              this.next =
-                this.status[index + 1] == undefined
-                  ? this.$store.state.auth.user[0].id_user
-                  : this.status[index + 1].id_user;
+              this.next = this.status[index + 1].id_user;
+            }
+          }
+          if (this.terimaLPJ == 4) {
+            if (
+              this.status[this.status.length - 2].lpj[0].status == false &&
+              this.status[this.status.length - 2].lpj[1].status == false
+            ) {
+              this.next = 21;
+            } else if (
+              this.status[this.status.length - 2].lpj[0].status !== false &&
+              this.status[this.status.length - 2].lpj[1].status == false
+            ) {
+              this.next = 3333;
             }
           }
           this.loader("loading...");
@@ -1011,11 +1036,8 @@ export default {
           this.approved({
             id: this.$route.params.id,
             message: this.message,
-            status: 2,
-            status_pengajuan:
-              this.forms.lpj_keuangan && this.forms.lpj_kegiatan
-                ? "approved"
-                : "progress",
+            status: this.terimaLPJ ? this.terimaLPJ : 2,
+            status_pengajuan: "progress",
             id_user: this.form.id_user,
             id_struktur: this.$store.state.auth.user[0].id_user,
             nama: this.$store.state.auth.user[0].fullname,
@@ -1093,6 +1115,7 @@ export default {
           status_pengajuan: "progress",
           id_user: this.form.id_user,
           id_struktur: this.$store.state.auth.user[0].id_user,
+          next: this.$store.state.auth.user[0].id_user,
           kode_rkat: this.form.kode_rkat,
           nama: this.$store.state.auth.user[0].fullname,
           pencairan: this.form.pencairan,
@@ -1140,6 +1163,7 @@ export default {
               nama: this.$store.state.auth.user[0].fullname,
               kode_rkat: this.form.kode_rkat,
               lpj_keuangan: this.form.lpj_keuangan,
+              next: 24
             })
               .then(() => {
                 this.success("Data telah disimpan!");
@@ -1176,6 +1200,7 @@ export default {
               nama: this.$store.state.auth.user[0].fullname,
               kode_rkat: this.form.kode_rkat,
               lpj_kegiatan: this.form.lpj_kegiatan,
+              next: 21
             })
               .then(() => {
                 this.success("Data telah disimpan!");

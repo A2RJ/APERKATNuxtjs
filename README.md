@@ -10,11 +10,10 @@
 - [ok] validasi nominal pengajuan sesuai dengan nominal yang ada di RKAT
 - [ok] jika sudah pencairan maka pengaju wajib upload lpj dalam waktu 1 minggu dan tidak boleh input pengajuan ketika belum upload 2x lpj
 - [progress] perubahan persetujuan pengajuan dibagi dir keuangan dan sekniv
-- - ubah timeline status
-- - ubah looping status hanya sampai pencairan
-- - jika sudah pencairan dan
-- - jika keuangan && lpj keuangan !== null maka tampilkan form terima pengajuan
-- - jika sekniv && lpj kegiatan !== null maka tampilkan form terima pengajuan
+- - [ok] ubah status pengajuan
+- - [ok] jika keuangan && lpj keuangan !== null maka tampilkan form terima pengajuan || jika sekniv && lpj kegiatan !== null maka tampilkan form terima pengajuan
+- - [next] terima sudah, tetapi bagaimana saat user upload 2 lpj? sedangkan fungsi next hanya menyimpan 1 value saja, mungkin bis buat 2 fields: next_kegiatan dan next_keuangan
+- - - atau buat fungsi sendiri untuk menyimpan 2 value (yg dibutuhkan untuk mengupdate status pengajuan)
 
 - print pengajuan dengan format baru
 - - insert image (kop surat)
