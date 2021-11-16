@@ -164,6 +164,9 @@
               <b-badge v-if="row.item.validasi_status == 3" variant="success"
                 >Pencairan: {{ row.item.nama_status }}</b-badge
               >
+              <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                >Completed: {{ row.item.nama_status }}</b-badge
+              >
             </p>
           </template>
           <template v-slot:nama_struktur="row">
@@ -197,6 +200,9 @@
             >
               {{ row.item.nama_struktur_child1 }}
             </p>
+          </template>
+          <template v-slot:biaya_program="row">
+            <p>RP. {{ row.item.biaya_program | currency }}</p>
           </template>
           <template v-slot:created_at="row">
             <p>{{ row.item.created_at | convertDate }}</p>

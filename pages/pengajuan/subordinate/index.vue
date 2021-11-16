@@ -41,7 +41,7 @@
                   >Pencairan: {{ row.item.nama_status }}</b-badge
                 >
                 <b-badge v-if="row.item.validasi_status == 4" variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                  >Completed: {{ row.item.nama_status }}</b-badge
                 >
               </p>
             </template>
@@ -162,7 +162,7 @@ export default {
         },
       ],
       fields: [
-         { key: "fullname", label: "User" },
+        { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Pelaksana" },
         // { key: "validasi_status", label: "Status Pengajuan" },

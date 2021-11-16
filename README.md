@@ -9,6 +9,9 @@
 - [ok] Bug download pengajuan
 - [ok] validasi nominal pengajuan sesuai dengan nominal yang ada di RKAT
 - [ok] jika sudah pencairan maka pengaju wajib upload lpj dalam waktu 1 minggu dan tidak boleh input pengajuan ketika belum upload 2x lpj
+- [ok] pengajuan selesai
+- [ok] grafik sub divisi
+- [ok] grafik rkat (detail grafik sub divisi)
 - [progress] perubahan persetujuan pengajuan dibagi dir keuangan dan sekniv
 - - [ok] ubah status pengajuan
 - - [ok] jika keuangan && lpj keuangan !== null maka tampilkan form terima pengajuan || jika sekniv && lpj kegiatan !== null maka tampilkan form terima pengajuan

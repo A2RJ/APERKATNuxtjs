@@ -14,9 +14,11 @@
             >
               <p class="h6 fw-bold">{{ status.nama_struktur }}</p>
               <span v-if="status.lpj">
-                <p v-for="(lpj, index) in status.lpj" :key="index">
-                  {{ lpj.nama_struktur }}
-                </p>
+                <span v-for="(lpj, index) in status.lpj" :key="index">
+                  <p :class="lpj.status ? 'text-success' : 'text-danger'">
+                    {{ lpj.nama_struktur }}
+                  </p>
+                </span>
               </span>
             </li>
           </ul>
@@ -89,59 +91,62 @@
               </button>
             </div>
           </div>
-          <div v-show="formLPJKeuangan" class="m-3">
-            <b-form-group
-              label-cols="4"
-              label-cols-lg="2"
-              label-size="sm"
-              label="LPJ Keuangan"
-              label-for="LPJKeuangan"
-            >
-              <b-form-file
-                id="LPJKeuangan"
-                v-model="LPJKeuangan"
-                :state="Boolean(LPJKeuangan)"
-                ref="LPJKeuangan"
-                @change="onSelectLPJKeuangan"
-                placeholder="Choose or drop it here..."
-                drop-placeholder="Drop file here..."
-                accept=".pdf"
-              ></b-form-file>
-            </b-form-group>
-            <button
-              class="btn btn-sm btn-outline-success float-right"
-              @click="uploadLPJKeuangan"
-            >
-              LPJ Keuangan
-            </button>
+          <div>
+            <div v-show="formLPJKeuangan" class="m-3">
+              <b-form-group
+                label-cols="4"
+                label-cols-lg="2"
+                label-size="sm"
+                label="LPJ Keuangan"
+                label-for="LPJKeuangan"
+              >
+                <b-form-file
+                  id="LPJKeuangan"
+                  v-model="LPJKeuangan"
+                  :state="Boolean(LPJKeuangan)"
+                  ref="LPJKeuangan"
+                  @change="onSelectLPJKeuangan"
+                  placeholder="Choose or drop it here..."
+                  drop-placeholder="Drop file here..."
+                  accept=".pdf"
+                ></b-form-file>
+              </b-form-group>
+              <button
+                class="btn btn-sm btn-outline-success float-right"
+                @click="uploadLPJKeuangan"
+              >
+                LPJ Keuangan
+              </button>
+            </div>
+            <br />
+            <div v-show="formLPJKegiatan" class="m-3">
+              <b-form-group
+                label-cols="4"
+                label-cols-lg="2"
+                label-size="sm"
+                label="LPJ Kegiatan"
+                label-for="LPJKegiatan"
+              >
+                <b-form-file
+                  id="LPJKegiatan"
+                  v-model="LPJKegiatan"
+                  :state="Boolean(LPJKegiatan)"
+                  ref="LPJKegiatan"
+                  @change="onSelectLPJKegiatan"
+                  placeholder="Choose or drop it here..."
+                  drop-placeholder="Drop file here..."
+                  accept=".pdf"
+                ></b-form-file>
+              </b-form-group>
+              <button
+                class="btn btn-sm btn-outline-success float-right"
+                @click="uploadLPJKegiatan"
+              >
+                LPJ Kegiatan
+              </button>
+            </div>
           </div>
           <br />
-          <div v-show="formLPJKegiatan" class="m-3">
-            <b-form-group
-              label-cols="4"
-              label-cols-lg="2"
-              label-size="sm"
-              label="LPJ Kegiatan"
-              label-for="LPJKegiatan"
-            >
-              <b-form-file
-                id="LPJKegiatan"
-                v-model="LPJKegiatan"
-                :state="Boolean(LPJKegiatan)"
-                ref="LPJKegiatan"
-                @change="onSelectLPJKegiatan"
-                placeholder="Choose or drop it here..."
-                drop-placeholder="Drop file here..."
-                accept=".pdf"
-              ></b-form-file>
-            </b-form-group>
-            <button
-              class="btn btn-sm btn-outline-success float-right"
-              @click="uploadLPJKegiatan"
-            >
-              LPJ Kegiatan
-            </button>
-          </div>
           <div v-show="option" class="m-3">
             <b-form-group
               label-cols="4"
@@ -821,8 +826,7 @@ export default {
         if (
           this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
           this.status[this.status.length - 3].status &&
-          this.form.lpj_keuangan == null &&
-          this.form.lpj_kegiatan == null
+          this.status[this.status.length - 2].lpj[0].status == false
         ) {
           this.formLPJKeuangan = true;
           this.option = false;
@@ -830,9 +834,8 @@ export default {
         if (
           this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
           this.status[this.status.length - 3].status &&
-          this.form.lpj_keuangan !== null &&
-          this.form.lpj_kegiatan == null && 
-          this.status[this.status.length - 2].lpj[0].status !== false
+          this.status[this.status.length - 2].lpj[0].status &&
+          this.status[this.status.length - 2].lpj[1].status == false
         ) {
           this.formLPJKegiatan = true;
           this.option = false;
@@ -1048,6 +1051,9 @@ export default {
               this.success("Berhasil terima pengajuan");
               this.option = false;
               this.$nuxt.refresh();
+              if (this.form.lpj_keuangan && this.form.lpj_kegiatan)
+                this.formLPJKeuangan = false;
+              this.formLPJKegiatan = false;
             })
             .catch(() => {
               this.failed("Whoops Server Error");
@@ -1084,6 +1090,9 @@ export default {
               this.success("Berhasil tolak pengajuan");
               this.option = true;
               this.$nuxt.refresh();
+              if (this.form.lpj_keuangan && this.form.lpj_kegiatan)
+                this.formLPJKeuangan = false;
+              this.formLPJKegiatan = false;
             })
             .catch(() => {
               this.failed("Whoops Server Error");
@@ -1163,14 +1172,11 @@ export default {
               nama: this.$store.state.auth.user[0].fullname,
               kode_rkat: this.form.kode_rkat,
               lpj_keuangan: this.form.lpj_keuangan,
-              next: 24
+              next: 24,
             })
               .then(() => {
                 this.success("Data telah disimpan!");
                 this.$nuxt.refresh();
-                if (this.form.lpj_keuangan && this.form.lpj_kegiatan)
-                  this.formLPJ = false;
-                // this.$router.push("/pengajuan/subordinate");
               })
               .catch(() => {
                 this.failed("Whoops Server Error");
@@ -1200,14 +1206,11 @@ export default {
               nama: this.$store.state.auth.user[0].fullname,
               kode_rkat: this.form.kode_rkat,
               lpj_kegiatan: this.form.lpj_kegiatan,
-              next: 21
+              next: 21,
             })
               .then(() => {
                 this.success("Data telah disimpan!");
                 this.$nuxt.refresh();
-                if (this.form.lpj_keuangan && this.form.lpj_kegiatan)
-                  this.formLPJ = false;
-                // this.$router.push("/pengajuan/subordinate");
               })
               .catch(() => {
                 this.failed("Whoops Server Error");
