@@ -4,6 +4,156 @@
     <div class="col-xl-12 col-lg-12">
       <b-card no-body>
         <b-tabs card>
+          <b-tab title="Bukti Transfer">
+            <custom-table
+              :items="itemsTransfer"
+              :fields="fields"
+              :html="key"
+              :actions="actions"
+            >
+              <template v-slot:fullname="row">
+                <p>
+                  {{ row.item.fullname | capitalize }} <br />
+                  <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                    >Ditolak: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 1"
+                    variant="warning"
+                    >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 2"
+                    variant="success"
+                    >Diterima: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 3"
+                    variant="success"
+                    >Pencairan: {{ row.item.nama_status }}</b-badge
+                  >
+                </p>
+              </template>
+              <template v-slot:nama_struktur="row">
+                <p
+                  v-if="
+                    row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 == '0' &&
+                    row.item.nama_struktur_child2 == '0'
+                  "
+                  class="text-uppercase"
+                >
+                  {{ row.item.nama_struktur }}
+                </p>
+                <p
+                  v-if="
+                    row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 !== '0' &&
+                    row.item.nama_struktur_child2 == '0'
+                  "
+                  class="text-uppercase"
+                >
+                  {{ row.item.nama_struktur }}
+                </p>
+                <p
+                  v-if="
+                    row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 !== '0' &&
+                    row.item.nama_struktur_child2 !== '0'
+                  "
+                  class="text-uppercase"
+                >
+                  {{ row.item.nama_struktur_child1 }}
+                </p>
+              </template>
+              <template v-slot:created_at="row">
+                <p>{{ row.item.created_at | convertDate }}</p>
+              </template>
+              <template v-slot:actions="row">
+                <NuxtLink
+                  class="btn btn-sm btn-outline-info"
+                  :to="'edit/' + row.item.id_pengajuan"
+                  :key="'edit' + row.index"
+                  >Detail</NuxtLink
+                >
+              </template>
+            </custom-table>
+          </b-tab>
+          <b-tab title="LPJ Keuangan">
+            <custom-table
+              :items="itemsLPJ"
+              :fields="fields"
+              :html="key"
+              :actions="actions"
+            >
+              <template v-slot:fullname="row">
+                <p>
+                  {{ row.item.fullname | capitalize }} <br />
+                  <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                    >Ditolak: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 1"
+                    variant="warning"
+                    >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 2"
+                    variant="success"
+                    >Diterima: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 3"
+                    variant="success"
+                    >Pencairan: {{ row.item.nama_status }}</b-badge
+                  >
+                </p>
+              </template>
+              <template v-slot:nama_struktur="row">
+                <p
+                  v-if="
+                    row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 == '0' &&
+                    row.item.nama_struktur_child2 == '0'
+                  "
+                  class="text-uppercase"
+                >
+                  {{ row.item.nama_struktur }}
+                </p>
+                <p
+                  v-if="
+                    row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 !== '0' &&
+                    row.item.nama_struktur_child2 == '0'
+                  "
+                  class="text-uppercase"
+                >
+                  {{ row.item.nama_struktur }}
+                </p>
+                <p
+                  v-if="
+                    row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 !== '0' &&
+                    row.item.nama_struktur_child2 !== '0'
+                  "
+                  class="text-uppercase"
+                >
+                  {{ row.item.nama_struktur_child1 }}
+                </p>
+              </template>
+              <template v-slot:created_at="row">
+                <p>{{ row.item.created_at | convertDate }}</p>
+              </template>
+              <template v-slot:actions="row">
+                <NuxtLink
+                  class="btn btn-sm btn-outline-info"
+                  :to="'edit/' + row.item.id_pengajuan"
+                  :key="'edit' + row.index"
+                  >Detail</NuxtLink
+                >
+              </template>
+            </custom-table>
+          </b-tab>
           <b-tab title="Need Approval" active>
             <custom-table
               :items="itemsneed"
@@ -13,7 +163,7 @@
             >
               <template v-slot:fullname="row">
                 <p>
-                  {{ row.item.fullname | capitalize }} <br>
+                  {{ row.item.fullname | capitalize }} <br />
                   <b-badge v-if="row.item.validasi_status == 0" variant="danger"
                     >Ditolak: {{ row.item.nama_status }}</b-badge
                   >
@@ -88,7 +238,7 @@
             >
               <template v-slot:fullname="row">
                 <p>
-                  {{ row.item.fullname | capitalize }} <br>
+                  {{ row.item.fullname | capitalize }} <br />
                   <b-badge v-if="row.item.validasi_status == 0" variant="danger"
                     >Ditolak: {{ row.item.nama_status }}</b-badge
                   >
@@ -199,7 +349,7 @@
             >
               <template v-slot:fullname="row">
                 <p>
-                  {{ row.item.fullname | capitalize }} <br>
+                  {{ row.item.fullname | capitalize }} <br />
                   <b-badge v-if="row.item.validasi_status == 0" variant="danger"
                     >Ditolak: {{ row.item.nama_status }}</b-badge
                   >
@@ -294,6 +444,8 @@ export default {
         "subordinate/pengajuanSelesai",
         store.$auth.$state.user[0].id_user
       ),
+      store.dispatch("subordinate/transfer"),
+      store.dispatch("subordinate/lpj"),
     ]);
     return;
   },
@@ -318,6 +470,8 @@ export default {
       filter2: null,
       itemsSelesai: [],
       itemsCadangan: [],
+      itemsTransfer: [],
+      itemsLPJ: [],
     };
   },
   computed: {
@@ -325,6 +479,8 @@ export default {
       subordinate: (state) => state.subordinate,
       subordinateneed: (state) => state.subordinateneed,
       peng: (state) => state.pengajuanDir,
+      transfer: (state) => state.transfer,
+      lpj: (state) => state.lpj,
     }),
   },
   mounted() {
@@ -334,6 +490,8 @@ export default {
     this.itemsSelesai = this.peng;
     this.itemsCadangan = this.peng;
     this.login = this.$store.state.auth.user[0].id_user;
+    this.itemsTransfer = this.transfer;
+    this.itemsLPJ = this.lpj;
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuan", "pengajuanSelesai"]),

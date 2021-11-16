@@ -14,7 +14,9 @@ export const state = () => ({
   ikuParent: null,
   ikuChild1: null,
   ikuChild2: null,
-  grafik: []
+  grafik: [],
+  transfer: [],
+  lpj: [],
 });
 
 export const mutations = {
@@ -80,6 +82,14 @@ export const mutations = {
 
   SET_GRAFIK(state, payload) {
     state.grafik = payload;
+  },
+
+  SET_TRANSFER(state, payload) {
+    state.transfer = payload;
+  },
+
+  SET_LPJ(state, payload) {
+    state.lpj = payload;
   }
 };
 
@@ -265,6 +275,22 @@ export const actions = {
           commit("SET_SUBORDINATE_GRAFIK", response.data);
           resolve();
         });
+    });
+  },
+  transfer({ commit }) {
+    return new Promise((resolve, reject) => {
+      this.$axios.get("/pengajuan/transfer").then(response => {
+        commit("SET_TRANSFER", response.data);
+        resolve();
+      });
+    });
+  },
+  lpj({ commit }) {
+    return new Promise((resolve, reject) => {
+      this.$axios.get("/pengajuan/lpj").then(response => {
+        commit("SET_LPJ", response.data);
+        resolve();
+      });
     });
   }
 };

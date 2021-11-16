@@ -12,14 +12,12 @@
 - [ok] pengajuan selesai
 - [ok] grafik sub divisi
 - [ok] grafik rkat (detail grafik sub divisi)
-- [progress] perubahan persetujuan pengajuan dibagi dir keuangan dan sekniv
-- - [ok] ubah status pengajuan
-- - [ok] jika keuangan && lpj keuangan !== null maka tampilkan form terima pengajuan || jika sekniv && lpj kegiatan !== null maka tampilkan form terima pengajuan
-- - [next] terima sudah, tetapi bagaimana saat user upload 2 lpj? sedangkan fungsi next hanya menyimpan 1 value saja, mungkin bis buat 2 fields: next_kegiatan dan next_keuangan
-- - - atau buat fungsi sendiri untuk menyimpan 2 value (yg dibutuhkan untuk mengupdate status pengajuan)
+- [ok] perubahan persetujuan pengajuan dibagi dir keuangan dan sekniv
+- [ok] buat user untuk mengupload bukti pencairan
+- [ok] buat user untuk terima/tolak lpj keuangan 
+- - # VALIDASI 2 MENU DIATAS
 
 - print pengajuan dengan format baru
 - - insert image (kop surat)
 - - bagaimana cara membuat format surat?
 - fitur print lengkap dengan semua dokumen pendukung
-- [sudah-termasuk-dalam-menu-need-approval-dir-keuangan] tambah menu pencairan (hanya tampil jika pengajuan akan dicairkan dan format jpg,png,pdf)
