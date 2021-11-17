@@ -807,14 +807,16 @@ export default {
             this.status[index].id_user ==
               this.$store.state.auth.user[0].id_user &&
             this.status[index].status == false &&
-            this.status[index - 1].status !== false
+            this.status[index - 1].status !== false &&
+            this.status[index + 1].id_user !== 1111
           ) {
             this.option = true;
           }
         }
         // jika dir keuangan maka upload pencairan
         if (
-          this.$store.state.auth.user[0].id_user == 24 &&
+          // this.$store.state.auth.user[0].id_user == 24 && // ubah kesini jika keuangan yg lakukan pencairan
+          this.$store.state.auth.user[0].id_user == 120 &&
           this.status[this.status.length - 4].status &&
           this.status[this.status.length - 3].status == false
         ) {
@@ -842,7 +844,8 @@ export default {
         }
         // jika sekniv/dir keuangan maka tampilkan form terima/tolak lpj
         if (
-          (this.$store.state.auth.user[0].id_user == 24 &&
+          // (this.$store.state.auth.user[0].id_user == 24 && // ubah kesini jika keuangan yg lakukan pencairan
+          (this.$store.state.auth.user[0].id_user == 121 && 
             this.forms.lpj_keuangan &&
             this.status[this.status.length - 2].lpj[0].status == false) ||
           (this.$store.state.auth.user[0].id_user == 21 &&
@@ -1042,10 +1045,10 @@ export default {
             status: this.terimaLPJ ? this.terimaLPJ : 2,
             status_pengajuan: "progress",
             id_user: this.form.id_user,
-            id_struktur: this.$store.state.auth.user[0].id_user,
-            nama: this.$store.state.auth.user[0].fullname,
+            id_struktur: this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121 ? 24 : this.$store.state.auth.user[0].id_user,
+            nama: this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121 ? 'Direktur Keuangan' :this.$store.state.auth.user[0].fullname,
             kode_rkat: this.form.kode_rkat,
-            next: this.next,
+            next: this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121 ? 21 : this.next,
           })
             .then(() => {
               this.success("Berhasil terima pengajuan");
@@ -1123,8 +1126,10 @@ export default {
           status: 3,
           status_pengajuan: "progress",
           id_user: this.form.id_user,
-          id_struktur: this.$store.state.auth.user[0].id_user,
-          next: this.$store.state.auth.user[0].id_user,
+          id_struktur: 24,
+          next: 24,
+          // id_struktur: this.$store.state.auth.user[0].id_user,
+          // next: this.$store.state.auth.user[0].id_user,
           kode_rkat: this.form.kode_rkat,
           nama: this.$store.state.auth.user[0].fullname,
           pencairan: this.form.pencairan,
