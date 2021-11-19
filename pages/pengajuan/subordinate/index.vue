@@ -43,6 +43,9 @@
                 <b-badge v-if="row.item.validasi_status == 4" variant="success"
                   >Completed: {{ row.item.nama_status }}</b-badge
                 >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
               </p>
             </template>
             <template v-slot:nama_struktur="row">

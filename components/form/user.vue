@@ -186,6 +186,22 @@
         >
       </b-form-text>
     </b-form-group>
+
+    <b-form-group
+      label-cols="4"
+      label-cols-lg="2"
+      label-size="sm"
+      label="Kop Surat"
+      label-for="kop"
+    >
+      <b-form-file
+        v-model="file"
+        :state="Boolean(file)"
+        placeholder="Choose a file or drop it here..."
+        drop-placeholder="Drop file here..."
+      ></b-form-file>
+      <div class="mt-3">Selected file: {{ form.kop ? form.kop : "" }}</div>
+    </b-form-group>
     <button class="btn btn-sm btn-primary float-right" @click="submit">
       Simpan User
     </button>
@@ -203,7 +219,7 @@ import {
   numeric,
   requiredIf,
 } from "vuelidate/lib/validators";
-import struktur from './struktur.vue';
+import struktur from "./struktur.vue";
 
 export default {
   components: { struktur },
@@ -216,6 +232,7 @@ export default {
         id_struktur_child1: this.userID.id_struktur_child1,
         id_struktur_child2: this.userID.id_struktur_child2,
         nomor_wa: this.userID.nomor_wa,
+        kop: this.userID.kop,
       };
       this.$axios
         .get(`user/getStruktur/${this.userID.id_struktur}`)
@@ -225,12 +242,14 @@ export default {
       this.$axios
         .get(`user/getSub_struktur/${this.userID.id_struktur_child1}`)
         .then((res) => {
-          this.id_struktur_child1 = res.data.data[0].label == "0" ? [] : res.data.data[0];
+          this.id_struktur_child1 =
+            res.data.data[0].label == "0" ? [] : res.data.data[0];
         });
       this.$axios
         .get(`user/getSub_sub_struktur/${this.userID.id_struktur_child2}`)
         .then((res) => {
-          this.id_struktur_child2 = res.data.data[0].label == "0" ? [] : res.data.data[0];
+          this.id_struktur_child2 =
+            res.data.data[0].label == "0" ? [] : res.data.data[0];
         });
     }
   },
@@ -245,6 +264,7 @@ export default {
         id_struktur_child1: 0,
         id_struktur_child2: 0,
         nomor_wa: "",
+        kop: "",
       },
       id_struktur: 0,
       id_struktur_child1: 0,
@@ -254,6 +274,7 @@ export default {
       sub2Options: [],
       types: "password",
       error: false,
+      file: null,
     };
   },
   validations: {
@@ -312,15 +333,17 @@ export default {
   methods: {
     ...mapActions("user", ["getuserID", "storeuser", "updateuser"]),
 
-    submit() {
+    async submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.failed("Pastikan semua fields diisi!");
       } else {
+        await this.uploadFile();
         if (this.$route.name === "user-edit-id") {
           if (this.error == false) {
             this.loader("Saving user data");
             let form = Object.assign({ id: this.$route.params.id }, this.form);
+            console.log(form);
             this.updateuser(form)
               .then(() => {
                 this.success("Data telah disimpan");
@@ -353,6 +376,21 @@ export default {
               this.failed("Pastikan semua fields diisi!");
             });
         }
+      }
+    },
+    async uploadFile() {
+      if (this.file != null) {
+        this.loader("Uploading file");
+        const formData = new FormData();
+        formData.append("file", this.file);
+        await this.$axios
+          .post(`user/upload/${this.$route.params.id}`, formData)
+          .then((res) => {
+            this.form.kop = res.data;
+          })
+          .catch((e) => {
+            this.failed("Whoops tidak dapat mengupload file!");
+          });
       }
     },
     getSub1() {

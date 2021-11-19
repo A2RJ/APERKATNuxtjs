@@ -4,7 +4,10 @@
     <div class="col-xl-12 col-lg-12">
       <b-card no-body>
         <b-tabs card>
-          <b-tab v-if="this.$store.state.auth.user[1].level == 'dirKeuangan'" title="Bukti Transfer">
+          <b-tab
+            v-if="this.$store.state.auth.user[1].level == 'dirKeuangan'"
+            title="Bukti Transfer"
+          >
             <custom-table
               :items="itemsTransfer"
               :fields="fields"
@@ -31,6 +34,16 @@
                     v-if="row.item.validasi_status == 3"
                     variant="success"
                     >Pencairan: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 4"
+                    variant="success"
+                    >Completed: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 5"
+                    variant="success"
+                    >Completed: {{ row.item.nama_status }}</b-badge
                   >
                 </p>
               </template>
@@ -79,7 +92,10 @@
               </template>
             </custom-table>
           </b-tab>
-          <b-tab v-if="this.$store.state.auth.user[1].level == 'dirKeuangan'" title="LPJ Keuangan">
+          <b-tab
+            v-if="this.$store.state.auth.user[1].level == 'dirKeuangan'"
+            title="LPJ Keuangan"
+          >
             <custom-table
               :items="itemsLPJ"
               :fields="fields"
@@ -106,6 +122,16 @@
                     v-if="row.item.validasi_status == 3"
                     variant="success"
                     >Pencairan: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 4"
+                    variant="success"
+                    >Completed: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 5"
+                    variant="success"
+                    >Completed: {{ row.item.nama_status }}</b-badge
                   >
                 </p>
               </template>
@@ -187,6 +213,11 @@
                     variant="success"
                     >Completed: {{ row.item.nama_status }}</b-badge
                   >
+                  <b-badge
+                    v-if="row.item.validasi_status == 5"
+                    variant="success"
+                    >Completed: {{ row.item.nama_status }}</b-badge
+                  >
                 </p>
               </template>
               <template v-slot:nama_struktur="row">
@@ -264,6 +295,11 @@
                   >
                   <b-badge
                     v-if="row.item.validasi_status == 4"
+                    variant="success"
+                    >Completed: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 5"
                     variant="success"
                     >Completed: {{ row.item.nama_status }}</b-badge
                   >
@@ -375,6 +411,11 @@
                   >
                   <b-badge
                     v-if="row.item.validasi_status == 4"
+                    variant="success"
+                    >Completed: {{ row.item.nama_status }}</b-badge
+                  >
+                  <b-badge
+                    v-if="row.item.validasi_status == 5"
                     variant="success"
                     >Completed: {{ row.item.nama_status }}</b-badge
                   >

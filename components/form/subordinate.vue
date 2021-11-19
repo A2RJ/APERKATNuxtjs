@@ -75,11 +75,9 @@
                 id="Pencairan"
                 v-model="pencairan"
                 :state="Boolean(pencairan)"
-                ref="pencairan"
-                @change="onSelectPencairan"
                 placeholder="Choose or drop it here..."
                 drop-placeholder="Drop file here..."
-                accept=".pdf"
+                accept=".pdf, .jpg, .png"
               ></b-form-file>
             </b-form-group>
             <div>
@@ -104,8 +102,6 @@
                   id="LPJKeuangan"
                   v-model="LPJKeuangan"
                   :state="Boolean(LPJKeuangan)"
-                  ref="LPJKeuangan"
-                  @change="onSelectLPJKeuangan"
                   placeholder="Choose or drop it here..."
                   drop-placeholder="Drop file here..."
                   accept=".pdf"
@@ -131,8 +127,6 @@
                   id="LPJKegiatan"
                   v-model="LPJKegiatan"
                   :state="Boolean(LPJKegiatan)"
-                  ref="LPJKegiatan"
-                  @change="onSelectLPJKegiatan"
                   placeholder="Choose or drop it here..."
                   drop-placeholder="Drop file here..."
                   accept=".pdf"
@@ -539,8 +533,6 @@
               id="rab"
               v-model.trim="$v.file.$model"
               :state="Boolean(file)"
-              ref="file"
-              @change="onSelect"
               placeholder="Choose or drop it here..."
               drop-placeholder="Drop file here..."
               accept=".xls, .xlsx"
@@ -845,7 +837,7 @@ export default {
         // jika sekniv/dir keuangan maka tampilkan form terima/tolak lpj
         if (
           // (this.$store.state.auth.user[0].id_user == 24 && // ubah kesini jika keuangan yg lakukan pencairan
-          (this.$store.state.auth.user[0].id_user == 121 && 
+          (this.$store.state.auth.user[0].id_user == 121 &&
             this.forms.lpj_keuangan &&
             this.status[this.status.length - 2].lpj[0].status == false) ||
           (this.$store.state.auth.user[0].id_user == 21 &&
@@ -874,20 +866,6 @@ export default {
     },
     replace() {
       this.form.biaya_program = this.form.biaya_program.replaceAll(".", "");
-    },
-    onSelect() {
-      const file = this.$refs.file.files[0];
-      this.file = file;
-    },
-    onSelectPencairan() {
-      const pencairan = this.$refs.pencairan.files[0];
-      this.pencairan = pencairan;
-    },
-    onSelectLPJKeuangan() {
-      this.LPJKeuangan = this.$refs.LPJKeuangan.files[0];
-    },
-    onSelectLPJKegiatan() {
-      this.LPJKegiatan = this.$refs.LPJKegiatan.files[0];
     },
     getIku1(value) {
       if (value) {
@@ -1045,10 +1023,19 @@ export default {
             status: this.terimaLPJ ? this.terimaLPJ : 2,
             status_pengajuan: "progress",
             id_user: this.form.id_user,
-            id_struktur: this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121 ? 24 : this.$store.state.auth.user[0].id_user,
-            nama: this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121 ? 'Direktur Keuangan' :this.$store.state.auth.user[0].fullname,
+            id_struktur:
+              this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121
+                ? 24
+                : this.$store.state.auth.user[0].id_user,
+            nama:
+              this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121
+                ? "Direktur Keuangan"
+                : this.$store.state.auth.user[0].fullname,
             kode_rkat: this.form.kode_rkat,
-            next: this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121 ? 21 : this.next,
+            next:
+              this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121
+                ? 21
+                : this.next,
           })
             .then(() => {
               this.success("Berhasil terima pengajuan");
@@ -1190,6 +1177,8 @@ export default {
         } catch (e) {
           this.failed("Whoops Server Error");
         }
+      } else {
+        this.failed("Select file");
       }
     },
     uploadLPJKegiatan() {
@@ -1224,6 +1213,8 @@ export default {
         } catch (e) {
           this.failed("Whoops Server Error");
         }
+      } else {
+        this.failed("Select file");
       }
     },
     print() {
