@@ -193,15 +193,40 @@
       label-size="sm"
       label="Kop Surat"
       label-for="kop"
+      :class="{ 'form-group--error': $v.file.$error }"
     >
       <b-form-file
-        v-model="file"
+        v-model.trim="$v.file.$model"
         :state="Boolean(file)"
         placeholder="Choose a file or drop it here..."
         drop-placeholder="Drop file here..."
       ></b-form-file>
+      <b-form-text id="kop" v-if="!$v.file.required">
+        <i class="text-danger">Upload kop surat</i>
+      </b-form-text>
       <div class="mt-3">Selected file: {{ form.kop ? form.kop : "" }}</div>
     </b-form-group>
+
+    <b-form-group
+      label-cols="4"
+      label-cols-lg="2"
+      label-size="sm"
+      label="TTD Surat"
+      label-for="ttd"
+      :class="{ 'form-group--error': $v.file2.$error }"
+    >
+      <b-form-file
+        v-model.trim="$v.file2.$model"
+        :state="Boolean(file2)"
+        placeholder="Choose a file or drop it here..."
+        drop-placeholder="Drop file here..."
+      ></b-form-file>
+      <b-form-text id="ttd" v-if="!$v.file2.required">
+        <i class="text-danger">Upload ttd surat</i>
+      </b-form-text>
+      <div class="mt-3">Selected file: {{ form.ttd ? form.ttd : "" }}</div>
+    </b-form-group>
+
     <button class="btn btn-sm btn-primary float-right" @click="submit">
       Simpan User
     </button>
@@ -233,6 +258,7 @@ export default {
         id_struktur_child2: this.userID.id_struktur_child2,
         nomor_wa: this.userID.nomor_wa,
         kop: this.userID.kop,
+        ttd: this.userID.ttd,
       };
       this.$axios
         .get(`user/getStruktur/${this.userID.id_struktur}`)
@@ -265,6 +291,7 @@ export default {
         id_struktur_child2: 0,
         nomor_wa: "",
         kop: "",
+        ttd: "",
       },
       id_struktur: 0,
       id_struktur_child1: 0,
@@ -275,6 +302,7 @@ export default {
       types: "password",
       error: false,
       file: null,
+      file2: null,
     };
   },
   validations: {
@@ -285,13 +313,13 @@ export default {
       password: {
         minLength: minLength(8),
         required: requiredIf(function () {
-          this.$route.name === "user-add";
+          return this.$route.name === "user-add";
         }),
       },
       repeatPassword: {
         sameAsPassword: sameAs("password"),
         required: requiredIf(function () {
-          this.$route.name === "user-add";
+          return this.$route.name === "user-add";
         }),
       },
       email: {
@@ -306,6 +334,16 @@ export default {
     },
     id_struktur: {
       required,
+    },
+    file: {
+      required: requiredIf(function () {
+        return this.$route.name === "user-add";
+      }),
+    },
+    file2: {
+      required: requiredIf(function () {
+        return this.$route.name === "user-add";
+      }),
     },
   },
   mounted() {
@@ -339,12 +377,13 @@ export default {
         this.failed("Pastikan semua fields diisi!");
       } else {
         await this.uploadFile();
+        await this.uploadTTD();
         if (this.$route.name === "user-edit-id") {
           if (this.error == false) {
             this.loader("Saving user data");
             let form = Object.assign({ id: this.$route.params.id }, this.form);
-            console.log(form);
-            this.updateuser(form)
+            this.$axios
+              .post(`/user/${form.id}`, form)
               .then(() => {
                 this.success("Data telah disimpan");
                 if (
@@ -359,28 +398,33 @@ export default {
                 }
               })
               .catch((e) => {
-                this.failed("Pastikan semua fields diisi!");
+                this.failed(e);
               });
           } else {
             this.failed("Pastikan semua fields diisi!");
           }
         } else {
-          this.loader("Update user data");
-          this.storeuser(this.form)
+          this.loader("Simpan user data");
+          this.$axios
+            .post("/user/", this.form)
             .then(() => {
               this.success("Data telah disimpan");
               this.$router.push("/user");
             })
-            .catch((e) => {
-              console.log(e);
-              this.failed("Pastikan semua fields diisi!");
+            .catch((error) => {
+              if (error.response) {
+                const e = [];
+                Object.keys(error.response.data).forEach((key) => {
+                  e.push(error.response.data[key][0]);
+                });
+                this.failed(e);
+              }
             });
         }
       }
     },
     async uploadFile() {
       if (this.file != null) {
-        this.loader("Uploading file");
         const formData = new FormData();
         formData.append("file", this.file);
         await this.$axios
@@ -390,6 +434,20 @@ export default {
           })
           .catch((e) => {
             this.failed("Whoops tidak dapat mengupload file!");
+          });
+      }
+    },
+    async uploadTTD() {
+      if (this.file2 != null) {
+        const formData = new FormData();
+        formData.append("file", this.file2);
+        await this.$axios
+          .post(`user/upload/${this.$route.params.id}`, formData)
+          .then((res) => {
+            this.form.ttd = res.data;
+          })
+          .catch((e) => {
+            this.failed("Whoops tidak dapat mengupload ttd!");
           });
       }
     },
@@ -453,7 +511,7 @@ export default {
         text: params,
         imageUrl: "/Rocket.gif",
         showConfirmButton: false,
-        allowOutsideClick: false,
+        allowOutsideClick: true,
       });
     },
     cek() {

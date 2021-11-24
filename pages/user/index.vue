@@ -58,7 +58,7 @@
           >
           <button
             class="btn btn-sm btn-outline-danger mt-1"
-            @click="deleteUser(row.item.id_user)"
+            @click="deleteUser(row)"
           >
             Hapus
           </button>
@@ -155,7 +155,8 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.deleteuser(row.item.id_user)
-            .then(() => {
+            .then(async () => {
+              await this.reload();
               this.$swal({
                 width: 300,
                 icon: "success",

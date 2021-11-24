@@ -1219,17 +1219,9 @@ export default {
     },
     print() {
       this.$axios
-        .post("/pengajuan/pdfByUSer", this.$route.params.id, {
-          responseType: "blob",
-        })
-        .then((res) => {
-          const url = window.URL.createObjectURL(new Blob([res.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "Pengajuan.pdf");
-          document.body.appendChild(link);
-          link.click();
-          // this.success("Pengajuan telah didownload!");
+        .post("/pengajuan/pdfByUSer/" + this.$store.state.auth.user[0].id_user, this.$route.params.id)
+        .then(() => {
+          window.open("http://localhost:8000/g/" + btoa(this.$store.state.auth.user[0].id_user));
         });
       // .catch(() => {
       //   this.failed("Whoops periksa koneksi anda");

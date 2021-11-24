@@ -32,3 +32,12 @@ untuk testing 341
 - - insert image (kop surat)
 - - bagaimana cara membuat format surat?
 - fitur print lengkap dengan semua dokumen pendukung
+
+# 24/11/2021
+- tambah fields kop dan ttd di tabel user
+- buat tabel print
+CREATE TABLE `print` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_pengajuan` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

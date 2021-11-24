@@ -261,22 +261,15 @@ export default {
     },
     print(params) {
       this.$axios
-        .post("/pengajuan/pdfByUSer", params, {
-          responseType: "blob",
-        })
-        .then((res) => {
-          const url = window.URL.createObjectURL(new Blob([res.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "RKAT.pdf");
-          document.body.appendChild(link);
-          link.click();
-          this.$swal({
-            width: 300,
-            icon: "success",
-            title: "Congrats!",
-            text: "Pengajuan telah didownload",
-          });
+        .post(
+          "/pengajuan/pdfByUSer/" + this.$store.state.auth.user[0].id_user,
+          params
+        )
+        .then(() => {
+          window.open(
+            "http://localhost:8000/g/" +
+              btoa(this.$store.state.auth.user[0].id_user)
+          );
         });
     },
     deleteRows(params) {
