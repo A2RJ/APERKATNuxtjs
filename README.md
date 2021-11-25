@@ -1,20 +1,4 @@
-# Next updates
-
-- [ok] bug pengajuan
-- [ok] ubah label menjadi RAB
-- [ok] ubah format file rab menjadi exel
-- [ok] bug ubah kode rkat di halaman ubah
-- [ok] (Halaman pengajuan) hanya boleh input 1 pengajuan dengan 1 kode rkat
-- [ok] (Halaman update pengajuan) hanya boleh input 1 pengajuan dengan 1 kode rkat
-- [ok] Bug download pengajuan
-- [ok] validasi nominal pengajuan sesuai dengan nominal yang ada di RKAT
-- [ok] jika sudah pencairan maka pengaju wajib upload lpj dalam waktu 1 minggu dan tidak boleh input pengajuan ketika belum upload 2x lpj
-- [ok] pengajuan selesai
-- [ok] grafik sub divisi
-- [ok] grafik rkat (detail grafik sub divisi)
-- [ok] perubahan persetujuan pengajuan dibagi dir keuangan dan sekniv
-- [ok] buat user untuk mengupload bukti pencairan
-- [ok] buat user untuk terima/tolak lpj keuangan
+# Testing
 
 not fix - aneh 242, 249, 256, 257,
 periksa atasan pasca sarjana
@@ -22,22 +6,17 @@ periksa FEB 352, 353, 354, 355, 356,
 periksa frs 359, 364
 pusat bahasa 369
 teknik mesin 370
-
 untuk testing 341
 
-# Sudah pencairan
+# Next updates
 
-- print pengajuan dengan format baru
-- - tambah field kop di tabel user
-- - insert image (kop surat)
-- - bagaimana cara membuat format surat?
-- fitur print lengkap dengan semua dokumen pendukung
-
-# 24/11/2021
-- tambah fields kop dan ttd di tabel user
-- buat tabel print
-CREATE TABLE `print` (
-  `id` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id_pengajuan` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+- [ok] Bug fixing halaman pengajuan, print pengajuan, pengajuan selesai, grafik sub divisi
+- [ok] Perubahan ubah kode rkat di halaman ubah pengajuan
+- [ok] Perubahan label menjadi RAB dan format file rab menjadi exel
+- [ok] Perubahan hanya boleh input 1 pengajuan per kode rkat (Halaman pengajuan dan update pengajuan)
+- [ok] Perubahan tidak dapat input pengajuan ketika sudah pencairan tetapi belum upload 2x lpj dan pengaju wajib upload lpj dalam waktu 1 minggu
+- [ok] Perubahan persetujuan LPJ: LPJ Keuangan (Dir. Keuangan) dan LPJ Kegiatan (SEKNIV)
+- [ok] Perubahan user Dir. Keuangan terbagi manjadi 3: upload bukti pencairan, periksa LPJ Keuangan dan approval pengajuan.
+- [ok] Perubahan format print pengajuan menadi format TOR
+- [ok] Penambahan validasi nominal biaya program (pengajuan) sesuai atau tidak boleh lebih besar dari nominal anggaran RKAT
+- [ok] Penambahan data kop surat dan scan ttd pada halaman user profil
