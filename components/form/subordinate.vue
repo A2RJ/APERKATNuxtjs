@@ -1224,11 +1224,11 @@ export default {
           this.$route.params.id
         )
         .then(() => {
-          // window.open("http://localhost:8000/g/" + btoa(this.$store.state.auth.user[0].id_user));
-          window.open(
-            "https://aperkat.uts.ac.id/api/g/" +
-              btoa(this.$store.state.auth.user[0].id_user)
-          );
+          window.open("http://localhost:8000/g/" + btoa(this.$store.state.auth.user[0].id_user));
+          // window.open(
+          //   "https://aperkat.uts.ac.id/api/g/" +
+          //     btoa(this.$store.state.auth.user[0].id_user)
+          // );
         });
       // .catch(() => {
       //   this.failed("Whoops periksa koneksi anda");
