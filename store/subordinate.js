@@ -17,11 +17,16 @@ export const state = () => ({
   grafik: [],
   transfer: [],
   lpj: [],
+  pencairan: [],
 });
 
 export const mutations = {
   SET_PENGAJUAN_SELESAI(state, payload) {
     state.pengajuanDir = payload;
+  },
+
+  SET_PENCAIRAN(state, payload) {
+    state.pencairan = payload;
   },
 
   SET_PENGAJUAN_DATA(state, payload) {
@@ -213,6 +218,16 @@ export const actions = {
         .get(`/pengajuan/pengajuanSubordinate/${payload}`)
         .then(response => {
           commit("SET_SUBORDINATE", response.data.data);
+          resolve();
+        });
+    });
+  },
+  pencairan({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      this.$axios
+        .get(`/pencairan/${payload}`)
+        .then(response => {
+          commit("SET_PENCAIRAN", response.data);
           resolve();
         });
     });

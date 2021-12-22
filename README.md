@@ -20,3 +20,20 @@ untuk testing 341
 - [ok] Perubahan format print pengajuan menadi format TOR
 - [ok] Penambahan validasi nominal biaya program (pengajuan) sesuai atau tidak boleh lebih besar dari nominal anggaran RKAT
 - [ok] Penambahan data kop surat dan scan ttd pada halaman user profil
+
+# Next updates
+
+- upload pencairan bertahap lebih dari 1x
+- - DB: buat table pencairan_image, relasi ke tabel pencairan [ok]
+- - API:
+- - - buat endpoint pencairan_image get by id_pencairan [ok]
+- - - looping pencairan_image untuk menampilkan pencairan [ok]
+- - - jika sudah pencairan maka buat 1 li sebelum looping [ok]
+- - - ubah aksi upload pencairan pencairan bertahap [ok]
+- - - buat endpoint pencairan_image post [ok]
+- - - buat post form pencairan [ok]
+- - - buat endpoint pencairan_image delete [ok]
+- - - buat aksi pencairan selesai [ok]
+- - - buat aksi pencairan_image delete
+- hapus button pada pengajuan dashboard
+- pemeliharaan berdiri sendiri
