@@ -35,5 +35,6 @@ untuk testing 341
 - - - buat endpoint pencairan_image delete [ok]
 - - - buat aksi pencairan selesai [ok]
 - - - buat aksi pencairan_image delete
+- - - ubah query select where pencairan !== null tambah pencairan !== "default.jpg"
 - hapus button pada pengajuan dashboard
 - pemeliharaan berdiri sendiri

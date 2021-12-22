@@ -53,17 +53,39 @@
               LPJ Kegiatan
             </button>
           </a>
+          <p v-show="pencairan && pencairan.length > 0">Daftar pencairan:</p>
+
+          <a
+            v-show="form.pencairan !== null && form.pencairan !== 'default.jpg'"
+            class="btn btn-sm btn-outline-success m-1 "
+            :href="'../../../' + form.pencairan"
+            target="_blank"
+          >
+            Bukti Pencairan
+          </a>
+          <a
+            v-for="(pencairan, index) in pencairanImg"
+            :key="index"
+            class="btn btn-sm btn-outline-success m-1 "
+            :href="'../../../' + pencairan.images"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Pencairan {{ index + 1 }} RP. {{ pencairan.nominal | currency }}</a
+          >
           <br />
           <div v-show="formPencairan" class="m-3">
             <!-- input form -->
             <b-form-group
+              label-cols-sm="4"
+              label-cols-lg="2"
+              label-size="sm"
               label="Nominal Pencairan"
               label-for="pencairanNominal"
             >
               <b-form-input
                 id="pencairanNominal"
                 v-model="pencairanNominal"
-                :state="pencairanNominal ? 'success' : 'danger'"
+                :state="pencairanNominal ? true : false"
                 :invalid-feedback="
                   pencairanNominal ? '' : 'Nominal pencairan tidak boleh kosong'
                 "
@@ -74,7 +96,7 @@
             </b-form-group>
 
             <b-form-group
-              label-cols="4"
+              label-cols-sm="4"
               label-cols-lg="2"
               label-size="sm"
               label="Pencairan"
@@ -89,12 +111,19 @@
                 accept=".pdf, .jpg, .png"
               ></b-form-file>
             </b-form-group>
-            <div>
+            <div class="float-right">
               <button
-                class="btn btn-sm btn-outline-success float-right"
+                class="btn btn-sm btn-outline-success mb-3"
                 @click="buktiTF"
               >
                 Upload Bukti Transfer
+              </button>
+
+              <button
+                class="btn btn-sm btn-outline-success mb-3"
+                @click="selesaiUpload"
+              >
+                Upload Bukti Transfer Selesai
               </button>
             </div>
           </div>
@@ -174,34 +203,6 @@
               </div>
             </b-form-group>
           </div>
-        </div>
-        <div class="card-body">
-          <!-- looping pencairan with list ul li -->
-          <p v-show="pencairan && pencairan.length > 0">Daftar pencairan:</p>
-          <ul class="list-group">
-            <li
-              v-show="
-                form.pencairan !== null && form.pencairan !== 'default.jpg'
-              "
-            >
-              <a :href="'../../../' + form.pencairan" target="_blank">
-                Bukti Pencairan
-              </a>
-            </li>
-            <li
-              class="list-group-item"
-              v-for="(pencairan, index) in pencairanImg"
-              :key="index"
-            >
-              <a
-                :href="'/images/' + pencairan.images"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Pencairan {{ index + 1 }} RP.
-                {{ pencairan.nominal | currency }}</a
-              >
-            </li>
-          </ul>
         </div>
       </div>
     </div>
@@ -1147,18 +1148,21 @@ export default {
     async buktiTF() {
       if (this.pencairan.length != 0) {
         await this.uploadBuktiTF();
+        console.log(this.buktiTFImage);
         this.loader("loading...");
         // axios post pencairan image
         this.$axios
-          .post(`/pencairan/${payload}`, {
+          .post(`/pencairan`, {
             pencairan_id: this.$route.params.id,
-            nominal: pencairanNominal.replaceAll(".", ""),
+            nominal: this.pencairanNominal.replaceAll(".", ""),
             images: this.buktiTFImage
           })
           .then(res => {
             this.success("Berhasil upload bukti pencairan");
-            this.option = true;
-            this.$nuxt.refresh();
+            // this.pencairanNominal = "";
+            // this.buktiTFImage = [];
+            // this.$nuxt.refresh();
+            window.location.reload();
           })
           .catch(err => {
             this.failed("Whoops Server Error");
