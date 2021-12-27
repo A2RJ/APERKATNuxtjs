@@ -1146,7 +1146,9 @@ export default {
     },
     // Fungsi upload file pencairan
     async buktiTF() {
-      if (this.pencairan.length != 0) {
+      // check pencairanNominal is not empty
+
+      if (this.pencairan.length !== 0 && this.pencairanNominal !== "" && this.pencairanNominal !== null) {
         await this.uploadBuktiTF();
         console.log(this.buktiTFImage);
         this.loader("loading...");
@@ -1168,7 +1170,7 @@ export default {
             this.failed("Whoops Server Error");
           });
       } else {
-        this.failed("Select file");
+        this.failed("Select file and input nominal");
       }
     },
     async uploadBuktiTF() {

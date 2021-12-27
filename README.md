@@ -38,3 +38,24 @@ untuk testing 341
 - - - ubah query select where pencairan !== null tambah pencairan !== "default.jpg"
 - hapus button pada pengajuan dashboard
 - pemeliharaan berdiri sendiri
+
+# bug 27/12/2021
+# periksa field pencairan dan sesuaikan
+- 168 pencairan
+- 171 pencairan
+- 175 pencairan dan lpj_keuangan
+- 206 pencairan
+- 212 pencairan
+- 215 lpj keuangan
+- 220 pencairan
+- 222 lpj keuangan
+- 224 pencairan dan lpj keuangan
+- 225 pencairan dan lpj keuangan
+- 237 pencairan
+- 238 pencairan
+- 241 pencairan
+- 247 pencairan
+- 250 pencairan
+- 266 pencairan
+- 358 lpj keuangan
+- 389 lpj keuangan
