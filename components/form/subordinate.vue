@@ -1146,8 +1146,6 @@ export default {
     },
     // Fungsi upload file pencairan
     async buktiTF() {
-      // check pencairanNominal is not empty
-
       if (this.pencairan.length !== 0 && this.pencairanNominal !== "" && this.pencairanNominal !== null) {
         await this.uploadBuktiTF();
         console.log(this.buktiTFImage);
@@ -1161,9 +1159,6 @@ export default {
           })
           .then(res => {
             this.success("Berhasil upload bukti pencairan");
-            // this.pencairanNominal = "";
-            // this.buktiTFImage = [];
-            // this.$nuxt.refresh();
             window.location.reload();
           })
           .catch(err => {
@@ -1197,8 +1192,6 @@ export default {
         id_user: this.form.id_user,
         id_struktur: 24,
         next: 24,
-        // id_struktur: this.$store.state.auth.user[0].id_user,
-        // next: this.$store.state.auth.user[0].id_user,
         kode_rkat: this.form.kode_rkat,
         nama: this.$store.state.auth.user[0].fullname,
         pencairan: "default.jpg"
@@ -1207,7 +1200,6 @@ export default {
           this.success("Berhasil upload bukti pencairan");
           this.formPencairan = false;
           this.$nuxt.refresh();
-          // this.$router.push("/pengajuan/supervisor/");
         })
         .catch(() => {
           this.failed("Whoops Server Error");
@@ -1301,9 +1293,6 @@ export default {
           //     btoa(this.$store.state.auth.user[0].id_user)
           // );
         });
-      // .catch(() => {
-      //   this.failed("Whoops periksa koneksi anda");
-      // });
     },
     getDataRKAT(value) {
       if (value) {
