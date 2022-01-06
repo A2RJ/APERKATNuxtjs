@@ -222,12 +222,12 @@ export default {
   computed: {
     ...mapState("nonrkat", {
       subdivisinon: (state) => state.subdivisinon,
-      subdivisineed: (state) => state.subdivisineed,
+      subdivisineedData: (state) => state.subdivisineedNonrkat,
     }),
   },
   mounted() {
     this.items = this.subdivisinon;
-    this.subdivisineed = this.subdivisineed;
+    this.subdivisineed = this.subdivisineedData;
   },
   methods: {
     ...mapActions("nonrkat", ["getSubdivisi"]),

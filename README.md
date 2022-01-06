@@ -63,6 +63,7 @@ untuk testing 341
 - 389 lpj keuangan
 
 # perbaiki pencairan, lpj_kegiatan, lpj_keuangan, validasi_status dan nama_status
+
 - 168 [OK]
 - 171 [OK]
 - 175 [OK]
@@ -81,3 +82,25 @@ untuk testing 341
 - 266 [Manual-upload-tf] pas-04
 - 358 [Reupload-lpj]
 - 389 [Reupload-lpj]
+
+# 04-01-2021
+
+- setting max upload file [OK]
+- set manual upload bukti tf
+- status pengajuan non rkat
+  -- ambil next saat simpan data berdasarkan id dan set next pd simpan [OK]
+  -- khusus dir keuangan langsung ke dir keuangan juga = 24 [OK]
+  -- fungsi show hide aksi terima/tolak jika index-1 !== false [OK]
+  -- upload bukti pencairan bertahap [OK]
+  -- upload lpj keuangan [OK]
+  -- periksa lpj keuangan [OK] - Belum 100%
+  -- upload lpj kegiatan [OK]
+  -- periksa lpj kegiatan [OK] - Belum 100%
+  -- completed [OK]
+  -- print pengajuan
+- fitur on progress, need approval, completed, upload pencairan, periksa lpj keuangan
+- undo aksi tolak/terima pengajuan
+- vue chartjs
+- sesuaikan menu untuk upload pencairan hanya untuk dir keuangan pencairan dan hide menu lainnya
+- sesuaikan menu untuk terima lpj keuangan hanya untuk dir keuangan terima dan hide menu lainnya
+- amankan request url injection dengan cara validasi inputan dengan data user dari database, jika data yg direquest tidak sesuai dengan data user maka return 404

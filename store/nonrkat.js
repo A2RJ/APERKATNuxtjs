@@ -2,7 +2,7 @@ export const state = () => ({
     nonRKAT: [],
     nonRKATById: [],
     subdivisinon: [],
-    subdivisineed: [],
+    subdivisineedNonrkat: [],
     statusnon: [],
     historynon: [],
     errors: [],
@@ -19,7 +19,7 @@ export const mutations = {
         state.subdivisinon = payload
     },
     SET_SUBDIVISINEED(state, payload) {
-        state.subdivisineed = payload
+        state.subdivisineedNonrkat = payload
     },
     SET_STATUSNON(state, payload) {
         state.statusnon = payload

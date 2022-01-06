@@ -207,14 +207,14 @@
           <template v-slot:created_at="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
-          <template v-slot:actions="row">
+          <!-- <template v-slot:actions="row">
             <NuxtLink
               class="btn btn-sm btn-outline-info"
               :to="'/pengajuan/grafik/detail/' + row.item.id_pengajuan"
               :key="'edit' + row.index"
               >Detail</NuxtLink
             >
-          </template>
+          </template> -->
         </custom-table>
       </div>
     </div>
@@ -256,7 +256,7 @@ export default {
         { key: "kode_rkat", label: "Kode RKAT" },
         { key: "biaya_program", label: "Anggaran" },
         { key: "created_at", label: "Waktu Pengajuan" },
-        "actions",
+        // "actions",
       ],
     };
   },
