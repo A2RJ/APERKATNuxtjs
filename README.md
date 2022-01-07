@@ -93,14 +93,22 @@ untuk testing 341
   -- fungsi show hide aksi terima/tolak jika index-1 !== false [OK]
   -- upload bukti pencairan bertahap [OK]
   -- upload lpj keuangan [OK]
-  -- periksa lpj keuangan [OK] - Belum 100%
+  -- periksa lpj keuangan [OK]
   -- upload lpj kegiatan [OK]
-  -- periksa lpj kegiatan [OK] - Belum 100%
+  -- periksa lpj kegiatan [OK]
   -- completed [OK]
   -- print pengajuan
-- fitur on progress, need approval, completed, upload pencairan, periksa lpj keuangan
+- fitur admin
+  -- on progress [ubah-nama]
+  -- need approval [ubah-nama]
+  -- completed [belum]
+  -- list upload pencairan [OK]
+  -- periksa lpj keuangan [OK]
+- optimasi kecepatan
+  -- getNext untuk pengajuan [On-Progress]
+  -- Hapus tabel pengajuan history, jadi langsung tabel pengajuan dan pengajuan validasi [On-progress]
+  -- fixing bug chart dengan vue chartjs
 - undo aksi tolak/terima pengajuan
-- vue chartjs
 - sesuaikan menu untuk upload pencairan hanya untuk dir keuangan pencairan dan hide menu lainnya
 - sesuaikan menu untuk terima lpj keuangan hanya untuk dir keuangan terima dan hide menu lainnya
 - amankan request url injection dengan cara validasi inputan dengan data user dari database, jika data yg direquest tidak sesuai dengan data user maka return 404

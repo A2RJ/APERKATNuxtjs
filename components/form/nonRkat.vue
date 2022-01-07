@@ -195,6 +195,66 @@
               </div>
             </b-form-group>
           </div>
+          <div v-show="aksiLPJKeuangan" class="m-3">
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label-size="sm"
+              label="Pesan"
+              label-for="message"
+            >
+              <b-form-input
+                id="message"
+                size="sm"
+                class="mb-3"
+                v-model="message"
+              ></b-form-input>
+              <div class="float-right">
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  @click="aksiLPJKeuangan('tolak')"
+                >
+                  Tolak LPJ Keuangan
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  @click="aksiLPJKeuangan('terima')"
+                >
+                  Terima LPJ Keuangan
+                </button>
+              </div>
+            </b-form-group>
+          </div>
+          <div v-show="aksiLPJKegiatan" class="m-3">
+            <b-form-group
+              label-cols="4"
+              label-cols-lg="2"
+              label-size="sm"
+              label="Pesan"
+              label-for="message"
+            >
+              <b-form-input
+                id="message"
+                size="sm"
+                class="mb-3"
+                v-model="message"
+              ></b-form-input>
+              <div class="float-right">
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  @click="aksiLPJKegiatan('tolak')"
+                >
+                  Tolak LPJ Kegiatan
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-success"
+                  @click="aksiLPJKegiatan('terima')"
+                >
+                  Terima LPJ Kegiatan
+                </button>
+              </div>
+            </b-form-group>
+          </div>
         </div>
       </div>
     </div>
@@ -725,7 +785,9 @@ export default {
       status: null,
       next: null,
       userLogin: this.$store.state.auth.user[0].id_user,
-      pencairanImg: []
+      pencairanImg: [],
+      aksiLPJKeuangan: false,
+      aksiLPJKegiatan: false
     };
   },
   validations: {
@@ -817,7 +879,6 @@ export default {
         this.status = this.nonRKATById.status;
         this.pencairanImg = this.nonRKATById.pencairan;
 
-        console.log(this.nonRKATById.status);
         // Ketentuan terima/tolak dari atasan
         this.button = false;
         this.option = false;
@@ -831,6 +892,7 @@ export default {
             this.status[index + 1].id_user !== 1111
           ) {
             this.option = true;
+            console.log("Next", this.status[index + 1].id_user);
           }
         }
         // jika dir keuangan maka upload pencairan
@@ -865,15 +927,19 @@ export default {
         // jika sekniv/dir keuangan maka tampilkan form terima/tolak lpj
         // (this.userLogin == 24 && // ubah kesini jika keuangan yg lakukan pencairan
         if (
-          (this.userLogin == 121 &&
-            this.nonRKATById.data.lpj_keuangan &&
-            this.status[this.status.length - 2].lpj[0].status == false) ||
-          (this.userLogin == 21 &&
-            this.nonRKATById.data.lpj_kegiatan &&
-            this.status[this.status.length - 2].lpj[1].status == false)
+          this.userLogin == 121 &&
+          this.nonRKATById.data.lpj_keuangan &&
+          this.status[this.status.length - 2].lpj[0].status == false
         ) {
-          this.terimaLPJ = 4;
-          this.option = true;
+          this.aksiLPJKeuangan = true;
+        }
+
+        if (
+          this.userLogin == 21 &&
+          this.nonRKATById.data.lpj_kegiatan &&
+          this.status[this.status.length - 2].lpj[1].status == false
+        ) {
+          this.aksiLPJKegiatan = true;
         }
         // jika user login == pengaju dan dihalaman suboridnate maka button true
         // if (
@@ -1137,6 +1203,40 @@ export default {
         }
       }
     },
+    aksiLPJKeuangan(params) {
+      // params = terima, tolak
+      this.$swal({
+        title: "Warning!",
+        text: `${params} LPJ Keuangan ini?`,
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+      }).then(result => {
+        if (result.isConfirmed) {
+          this.loader("loading...");
+          this.replace();
+          this.approved({
+            id: this.$route.params.id,
+            next: params == "terima" ? 21 : 24,
+            message: this.message,
+            validasi_status: params == "terima" ? 4 : 0,
+            id_struktur: this.userLogin,
+            nama_status: "Direktur keuangan"
+          })
+            .then(() => {
+              this.success(`Berhasil ${params} pengajuan`);
+              this.option = false;
+              this.$router.push(this.redirects);
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
+        }
+      });
+    },
     uploadLPJKegiatan() {
       if (
         this.LPJKegiatan.length == 0 ||
@@ -1172,6 +1272,40 @@ export default {
           this.failed("Whoops Server Error");
         }
       }
+    },
+    aksiLPJKegiatan(params) {
+      // params = terima, tolak
+      this.$swal({
+        title: "Warning!",
+        text: `${params} LPJ Kegiatan ini?`,
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+      }).then(result => {
+        if (result.isConfirmed) {
+          this.loader("loading...");
+          this.replace();
+          this.approved({
+            id: this.$route.params.id,
+            next: params == "terima" ? 3333 : 21,
+            message: this.message,
+            validasi_status: params == "terima" ? 4 : 0,
+            id_struktur: this.userLogin,
+            nama_status: "Sekniv"
+          })
+            .then(() => {
+              this.success(`Berhasil ${params} pengajuan`);
+              this.option = false;
+              this.$router.push(this.redirects);
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
+        }
+      });
     },
     print() {
       this.$axios
