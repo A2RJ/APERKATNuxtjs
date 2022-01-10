@@ -892,6 +892,7 @@ export default {
             this.status[index + 1].id_user !== 1111
           ) {
             this.option = true;
+            this.next = this.status[index + 1].id_user;
             console.log("Next", this.status[index + 1].id_user);
           }
         }
