@@ -35,9 +35,18 @@
   -- Fitur periksa LPJ Kegiatan (SEKNIV)
   -- Fitur On Progress
   -- Fitur Completed
+  -- periksa fitur next setiap aksi pengajuan, ubah pengajuan hanya jika status ditolak
+  -- fitur list pengajuan
+  -- fitur need approval
+  -- fitur on progress
+  -- fitur pencairan
+  -- fitur lpj keuangan
+  -- fitur lpj kegiatan
+  -- fitur completed
 
 # Next updates
 
+- Default KOP surat dan scan ttd
 - print pengajuan atau multi file non rkat
 - hapus bukti pencairan
 - hapus button pada pengajuan dashboard
@@ -49,25 +58,16 @@
   -- getNext untuk pengajuan
   -- Hapus tabel pengajuan history, jadi langsung tabel pengajuan dan pengajuan validasi
   -- fixing bug chart dengan vue chartjs
+- tambah fitur update note pada halaman dashboard agar semua user dapat mengetahui note terbaru
 - amankan request url injection dengan cara validasi inputan dengan data user dari database, jika data yg direquest tidak sesuai dengan data user maka return 404
 
 # On progress
 
 - Non Rkat
-  -- ubah pengajuan hanya jika status ditolak [Work-in-progress]
-  -- list upload pencairan [fungsi-sudah-selesai]
-  -- periksa lpj keuangan [fungsi-sudah-selesai]
-  -- completed rkat
+  -- list pengajuan completed [getCompleted]
+  -- filter non rkat [working]
 
 # Hari ini development dan testing
 
 - testing pengajuan non rkat
-  -- periksa fitur next setiap aksi pengajuan
-  -- fitur list pengajuan
-  -- fitur need approval
-  -- fitur on progress
-  -- fitur pencairan
-  -- fitur lpj keuangan
-  -- fitur lpj kegiatan
-  -- fitur completed
   -- fitur completed dan filter

@@ -195,7 +195,7 @@
               </div>
             </b-form-group>
           </div>
-          <div v-show="aksiLPJKeuangan" class="m-3">
+          <div v-show="aksiLPJKeuanganBoolean" class="m-3">
             <b-form-group
               label-cols="4"
               label-cols-lg="2"
@@ -225,7 +225,7 @@
               </div>
             </b-form-group>
           </div>
-          <div v-show="aksiLPJKegiatan" class="m-3">
+          <div v-show="aksiLPJKegiatanBoolean" class="m-3">
             <b-form-group
               label-cols="4"
               label-cols-lg="2"
@@ -786,8 +786,8 @@ export default {
       next: null,
       userLogin: this.$store.state.auth.user[0].id_user,
       pencairanImg: [],
-      aksiLPJKeuangan: false,
-      aksiLPJKegiatan: false
+      aksiLPJKeuanganBoolean: false,
+      aksiLPJKegiatanBoolean: false
     };
   },
   validations: {
@@ -882,6 +882,15 @@ export default {
         // Ketentuan terima/tolak dari atasan
         this.button = false;
         this.option = false;
+        // jika user login == pengaju dan dihalaman suboridnate maka button true
+        if (this.status[0].id_user == this.userLogin) {
+          this.$axios
+            .get(`/nonrkat/getLastValidate/${this.$route.params.id}`)
+            .then(res => {
+              this.button = res.data.data;
+              console.log(this.button);
+            });
+        }
         // console.log(this.status[index - 1].status ); // untuk mengecek pengajuan sebelumnya
         // jika user login == atasan && status belum diterima && status sebelumnya diterima maka option true
         for (let index = 1; index < this.status.length; index++) {
@@ -932,7 +941,7 @@ export default {
           this.nonRKATById.data.lpj_keuangan &&
           this.status[this.status.length - 2].lpj[0].status == false
         ) {
-          this.aksiLPJKeuangan = true;
+          this.aksiLPJKeuanganBoolean = true;
         }
 
         if (
@@ -940,23 +949,8 @@ export default {
           this.nonRKATById.data.lpj_kegiatan &&
           this.status[this.status.length - 2].lpj[1].status == false
         ) {
-          this.aksiLPJKegiatan = true;
+          this.aksiLPJKegiatanBoolean = true;
         }
-        // jika user login == pengaju dan dihalaman suboridnate maka button true
-        // if (
-        //   this.status[0].id_user == this.userLogin &&
-        //   this.$route.name == "pengajuan-subordinate-edit-id"
-        // ) {
-        //   this.$axios
-        //     .get(`/pengajuan/validasi/${this.$route.params.id}`)
-        //     .then(res => {
-        //       if (res.data) {
-        //         this.button = false;
-        //       } else {
-        //         this.button = true;
-        //       }
-        //     });
-        // }
       }
     },
     async submit() {
@@ -1224,7 +1218,7 @@ export default {
             next: params == "terima" ? 21 : 24,
             message: this.message,
             validasi_status: params == "terima" ? 4 : 0,
-            id_struktur: this.userLogin,
+            id_struktur: 24,
             nama_status: "Direktur keuangan"
           })
             .then(() => {
