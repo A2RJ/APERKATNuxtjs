@@ -671,7 +671,6 @@ export default {
     if (this.$route.params.id) {
       this.history = this.nonRKATById.history;
       this.status = this.nonRKATById.status;
-      this.showMessage();
       this.doubleIKU(
         this.nonRKATById.data.id_iku_child1,
         this.nonRKATById.data.id_iku_child2
@@ -1328,11 +1327,6 @@ export default {
     },
     pencairanStatusChange() {
       this.pencairanStatus = true;
-    },
-    async showMessage() {
-      this.$axios.get(
-        `pengajuan/showPengajuan/${this.$route.params.id}/${this.userLogin}`
-      );
     },
     success(params) {
       this.$swal({

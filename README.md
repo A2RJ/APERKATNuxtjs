@@ -1,5 +1,6 @@
 # List updates selesai
 
+- administrasi (SSO dan Statistik)
 - [OK] Bug fixing
   -- halaman pengajuan
   -- print per pengajuan atau multi file
@@ -22,52 +23,69 @@
 
 - Penambahan semua fitur pengajuan ke pengajuan non rkat
 - [OK] Pengajuan
+  -- Fitur list pengajuan (Multi delete, multi print) dll
   -- Fitur Need approval
-  -- Fitur Upload bukti pencairan (Bisa 1x dan bertahap)
-  -- Fitur Periksa LPJ Keuangan (Dir. Keuangan)
-  -- Fitur periksa LPJ Kegiatan (SEKNIV)
+  -- Fitur pencairan (Bisa 1x dan bertahap)
+  -- Fitur Periksa LPJ Keuangan
+  -- Fitur periksa LPJ Kegiatan
   -- Fitur On Progress
   -- Fitur Completed
+  -- Optimasi hapus tabel pengajuan history, jadi langsung tabel pengajuan dan pengajuan validasi [OK]
 - [OK] Non RKAT
+  -- Fitur list pengajuan (Multi delete, multi print) dll
   -- Fitur Need approval
-  -- Fitur Upload bukti pencairan (Bisa 1x dan bertahap)
-  -- Fitur Periksa LPJ Keuangan (Dir. Keuangan)
-  -- Fitur periksa LPJ Kegiatan (SEKNIV)
+  -- Fitur Pencairan (Bisa 1x dan bertahap)
+  -- Fitur Periksa LPJ Keuangan
+  -- Fitur periksa belum upload LPJ Keuangan
+  -- Fitur periksa LPJ Kegiatan
+  -- Fitur periksa belum upload LPJ Kegiatan
   -- Fitur On Progress
   -- Fitur Completed
   -- periksa fitur next setiap aksi pengajuan, ubah pengajuan hanya jika status ditolak
-  -- fitur list pengajuan
-  -- fitur need approval
-  -- fitur on progress
-  -- fitur pencairan
-  -- fitur lpj keuangan
-  -- fitur lpj kegiatan
-  -- fitur completed
 
 # Next updates
 
-- Default KOP surat dan scan ttd
-- print pengajuan atau multi file non rkat
-- hapus bukti pencairan
-- hapus button pada pengajuan dashboard
-- pemeliharaan berdiri sendiri
-- fitur custom table
-- set manual upload bukti tf
-- undo aksi tolak/terima pengajuan
-- optimasi kecepatan
-  -- getNext untuk pengajuan
-  -- Hapus tabel pengajuan history, jadi langsung tabel pengajuan dan pengajuan validasi
+- Pengajuan
+  -- hapus bukti pencairan
+
+- Pengajuan Non RKAT
+  -- Perubahan format print pengajuan sesuai format TOR
+  -- print pengajuan atau multi file non rkat
+  -- undo aksi tolak/terima pengajuan
+  -- hapus bukti pencairan
+
+- optimasi
+  -- Gunakan orderBy('created_at', 'DESC')->get() pada semua query pengajuan
   -- fixing bug chart dengan vue chartjs
-- tambah fitur update note pada halaman dashboard agar semua user dapat mengetahui note terbaru
-- amankan request url injection dengan cara validasi inputan dengan data user dari database, jika data yg direquest tidak sesuai dengan data user maka return 404
+  -- tambah fitur update note pada halaman dashboard agar semua user dapat mengetahui note terbaru
+  -- amankan request url injection dengan cara validasi inputan dengan data user dari database, jika data yg direquest tidak sesuai dengan data user maka return 404
 
-# On progress
+- Bug atau manual setting
+  -- Default KOP surat dan scan ttd
+  -- set manual upload bukti tf
+  -- pemeliharaan berdiri sendiri
 
-- Non Rkat
-  -- list pengajuan completed [getCompleted]
-  -- filter non rkat [working]
+# On progress / Sedang dikerjakan
 
 # Hari ini development dan testing
 
-- testing pengajuan non rkat
-  -- fitur completed dan filter
+- Testing semua fungsi pengajuan rkat
+  -- panggil fungsi getNext [OK]
+  -- input pengajuan [OK]
+  -- panggil fungsi auto simpan pengajuan history [OK]
+  -- periksa need approval setiap atasan (next) [ok]
+  -- periksa semua atasan apakah bug/tidak [ok]
+  -- periksa fungsi terima/tolak pengajuan [ok]
+  -- panggil fungsi auto simpan pengajuan history [ok]
+  -- pencairan bertahap [ok]
+  -- panggil fungsi auto simpan pengajuan history [ok]
+  -- periksa LPJ Keuangan [ok]
+  -- periksa belum upload LPJ Keuangan [ok]
+  -- periksa fungsi terima/tolak lpj keuangan [ok]
+  -- panggil fungsi auto simpan pengajuan history [ok]
+  -- periksa LPJ Kegiatan [ok]
+  -- periksa belum upload LPJ Kegiatan [ok]
+  -- periksa fungsi terima/tolak lpj kegiatan [ok]
+  -- panggil fungsi auto simpan pengajuan history [ok]
+  -- periksa completed [ok]
+  -- undo aksi tolak/terima pengajuan [PROGRESS]

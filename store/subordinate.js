@@ -302,7 +302,7 @@ export const actions = {
   },
   lpj({ commit }) {
     return new Promise((resolve, reject) => {
-      this.$axios.get("/pengajuan/lpj").then(response => {
+      this.$axios.get("/pengajuan/lpjKeuangan").then(response => {
         commit("SET_LPJ", response.data);
         resolve();
       });

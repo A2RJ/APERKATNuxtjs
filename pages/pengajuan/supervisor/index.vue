@@ -4,7 +4,7 @@
       <b-tabs content-class="mt-3" v-if="userLogin == 120">
         <b-tab title="Pencairan" active>
           <custom-table
-            :items="itemsTransfer"
+            :items="listPencairan"
             :fields="fields"
             :html="key"
             :actions="actions"
@@ -81,7 +81,82 @@
       <b-tabs content-class="mt-3" v-else-if="userLogin == 121">
         <b-tab title="LPJ Keuangan" active>
           <custom-table
-            :items="itemsLPJ"
+            :items="listLPJKeuangan"
+            :fields="fields"
+            :html="key"
+            :actions="actions"
+          >
+            <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 == '0' &&
+                    row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 !== '0' &&
+                    row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 !== '0' &&
+                    row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
+            <template v-slot:actions="row">
+              <NuxtLink
+                class="btn btn-sm btn-outline-info"
+                :to="'edit/' + row.item.id_pengajuan"
+                :key="'edit' + row.index"
+                >Detail</NuxtLink
+              >
+            </template>
+          </custom-table>
+        </b-tab>
+        <b-tab title="Belum LPJ Keuangan" active>
+          <custom-table
+            :items="belumLPJKeuangan"
             :fields="fields"
             :html="key"
             :actions="actions"
@@ -233,7 +308,86 @@
         >
         <b-tab title="LPJ Kegiatan" v-if="userLogin == 21">
           <custom-table
-            :items="items"
+            :items="listLPJKegiatan"
+            :fields="fields"
+            :html="key"
+            :actions="actions"
+          >
+            <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }}
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 == '0' &&
+                    row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 !== '0' &&
+                    row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                    row.item.nama_struktur_child1 !== '0' &&
+                    row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:validasi_status="row">
+              <p v-if="row.item.validasi_status == 0">
+                <b-badge variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 1">
+                <b-badge variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 2">
+                <b-badge variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+              <p v-if="row.item.validasi_status == 3">
+                <b-badge variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
+            <template v-slot:actions="row">
+              <NuxtLink
+                class="btn btn-sm btn-outline-info"
+                :to="'edit/' + row.item.id_nonrkat"
+                :key="'edit' + row.index"
+                >Detail</NuxtLink
+              >
+            </template>
+          </custom-table>
+        </b-tab>
+        <b-tab title="Belum LPJ Kegiatan" v-if="userLogin == 21">
+          <custom-table
+            :items="belumLPJKegiatan"
             :fields="fields"
             :html="key"
             :actions="actions"
@@ -312,7 +466,7 @@
         </b-tab>
         <b-tab title="On Proggress">
           <custom-table
-            :items="items"
+            :items="listOnProggress"
             :fields="fields"
             :html="key"
             :actions="actions"
@@ -527,21 +681,23 @@ export default {
         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Pelaksana" },
-        // { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions"
       ],
-      items: [],
+      listOnProggress: [],
       itemsneed: [],
 
       data: [],
-      login: null,
+      login: this.$store.state.auth.user[0].id_user,
       filter1: null,
       filter2: null,
       itemsSelesai: [],
       itemsCadangan: [],
-      itemsTransfer: [],
-      itemsLPJ: [],
+      listPencairan: [],
+      listLPJKeuangan: [],
+      belumLPJKeuangan: [],
+      listLPJKegiatan: [],
+      belumLPJKegiatan: [],
       userLogin: this.$store.state.auth.user[0].id_user
     };
   },
@@ -555,14 +711,23 @@ export default {
     })
   },
   mounted() {
-    this.items = this.subordinate;
+    this.listOnProggress = this.subordinate;
     this.itemsneed = this.subordinateneed;
 
     this.itemsSelesai = this.peng;
     this.itemsCadangan = this.peng;
-    this.login = this.$store.state.auth.user[0].id_user;
-    this.itemsTransfer = this.transfer;
-    this.itemsLPJ = this.lpj;
+
+    this.listPencairan = this.transfer;
+
+    if (this.userLogin == 21) {
+      this.getLPJKegiatan();
+      this.getBelumLPJKegiatan();
+    }
+
+    if (this.userLogin == 121) {
+      this.listLPJKeuangan = this.lpj;
+      this.getBelumLPJKeuangan();
+    }
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuan", "pengajuanSelesai"]),
@@ -593,7 +758,32 @@ export default {
       }
     },
     reset() {
-      this.items = this.itemsCadangan;
+      this.listOnProggress = this.itemsCadangan;
+    },
+    async getLPJKegiatan() {
+      this.$axios
+        .get("/pengajuan/lpjKegiatan")
+        .then(response => {
+          this.listLPJKegiatan = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    async getBelumLPJKegiatan() {
+      this.$axios.get("/pengajuan/belumLPJKegiatan").then(response => {
+        this.belumLPJKegiatan = response.data;
+      });
+    },
+    async getBelumLPJKeuangan() {
+      this.$axios
+        .get("/pengajuan/belumLPJKeuangan")
+        .then(response => {
+          this.belumLPJKeuangan = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   watch: {
