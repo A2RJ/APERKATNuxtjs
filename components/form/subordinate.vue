@@ -738,7 +738,8 @@ export default {
       terimaLPJ: null,
       pencairanImg: [],
       buktiTFImage: null,
-      pencairanNominal: null
+      pencairanNominal: null,
+      userLogin: this.$store.state.auth.user[0].id_user
     };
   },
   validations: {
@@ -841,8 +842,7 @@ export default {
         // jika user login == atasan && status belum diterima && status sebelumnya diterima maka option true
         for (let index = 1; index < this.status.length; index++) {
           if (
-            this.status[index].id_user ==
-              this.$store.state.auth.user[0].id_user &&
+            this.status[index].id_user == this.userLogin &&
             this.status[index].status == false &&
             this.status[index - 1].status !== false &&
             this.status[index + 1].id_user !== 1111
@@ -852,8 +852,8 @@ export default {
         }
         // jika dir keuangan maka upload pencairan
         if (
-          // this.$store.state.auth.user[0].id_user == 24 && // ubah kesini jika keuangan yg lakukan pencairan
-          this.$store.state.auth.user[0].id_user == 120 &&
+          // this.userLogin == 24 && // ubah kesini jika keuangan yg lakukan pencairan
+          this.userLogin == 120 &&
           this.status[this.status.length - 4].status &&
           this.status[this.status.length - 3].status == false
         ) {
@@ -863,7 +863,7 @@ export default {
         }
         // jika user login == pengaju && sudah pencairan maka formLPJ true
         if (
-          this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
+          this.status[0].id_user == this.userLogin &&
           this.status[this.status.length - 3].status &&
           this.status[this.status.length - 2].lpj[0].status == false
         ) {
@@ -871,7 +871,7 @@ export default {
           this.option = false;
         }
         if (
-          this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
+          this.status[0].id_user == this.userLogin &&
           this.status[this.status.length - 3].status &&
           this.status[this.status.length - 2].lpj[0].status &&
           this.status[this.status.length - 2].lpj[1].status == false
@@ -881,11 +881,11 @@ export default {
         }
         // jika sekniv/dir keuangan maka tampilkan form terima/tolak lpj
         if (
-          // (this.$store.state.auth.user[0].id_user == 24 && // ubah kesini jika keuangan yg lakukan pencairan
-          (this.$store.state.auth.user[0].id_user == 121 &&
+          // (this.userLogin == 24 && // ubah kesini jika keuangan yg lakukan pencairan
+          (this.userLogin == 121 &&
             this.forms.lpj_keuangan &&
             this.status[this.status.length - 2].lpj[0].status == false) ||
-          (this.$store.state.auth.user[0].id_user == 21 &&
+          (this.userLogin == 21 &&
             this.forms.lpj_kegiatan &&
             this.status[this.status.length - 2].lpj[1].status == false)
         ) {
@@ -894,7 +894,7 @@ export default {
         }
         // jika user login == pengaju dan dihalaman suboridnate maka button true
         if (
-          this.status[0].id_user == this.$store.state.auth.user[0].id_user &&
+          this.status[0].id_user == this.userLogin &&
           this.$route.name == "pengajuan-subordinate-edit-id"
         ) {
           this.$axios
@@ -1004,7 +1004,7 @@ export default {
               "/pengajuan/",
               Object.assign(
                 {
-                  id_struktur: this.$store.state.auth.user[0].id_user,
+                  id_struktur: this.userLogin,
                   status_validasi: 1,
                   message: "Input pengajuan",
                   nama_status: nama_status,
@@ -1039,8 +1039,7 @@ export default {
         if (result.isConfirmed) {
           for (let index = 1; index < this.status.length; index++) {
             if (
-              this.status[index].id_user ==
-                this.$store.state.auth.user[0].id_user &&
+              this.status[index].id_user == this.userLogin &&
               this.status[index - 1].status !== false
             ) {
               this.next = this.status[index + 1].id_user;
@@ -1067,17 +1066,12 @@ export default {
             status_validasi: this.terimaLPJ ? this.terimaLPJ : 2,
             id_user: this.form.id_user,
             id_struktur:
-              this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121
-                ? 24
-                : this.$store.state.auth.user[0].id_user,
+              this.terimaLPJ && this.userLogin == 121 ? 24 : this.userLogin,
             nama_status:
-              this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121
+              this.terimaLPJ && this.userLogin == 121
                 ? "Direktur Keuangan"
                 : this.$store.state.auth.user[0].fullname,
-            next:
-              this.terimaLPJ && this.$store.state.auth.user[0].id_user == 121
-                ? 21
-                : this.next
+            next: this.terimaLPJ && this.userLogin == 121 ? 21 : this.next
           })
             .then(() => {
               this.success("Berhasil terima pengajuan");
@@ -1111,9 +1105,9 @@ export default {
             id: this.$route.params.id,
             message: this.message,
             status_validasi: 0,
-            id_struktur: this.$store.state.auth.user[0].id_user,
+            id_struktur: this.userLogin,
             nama_status: this.$store.state.auth.user[0].fullname,
-            next: this.$store.state.auth.user[0].id_user
+            next: this.userLogin
           })
             .then(() => {
               this.success("Berhasil tolak pengajuan");
@@ -1150,7 +1144,7 @@ export default {
               if (this.buktiTFImage) {
                 this.$axios
                   .post(`/pencairan`, {
-                    pencairan_id: this.$route.params.id,
+                    pengajuan_id: this.$route.params.id,
                     nominal: this.pencairanNominal.replaceAll(".", ""),
                     images: this.buktiTFImage
                   })
@@ -1191,17 +1185,13 @@ export default {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
-          this.updatepengajuan({
+          this.approved({
             id: this.$route.params.id,
-            id_pengajuan: this.$route.params.id,
-            message: "Telah dilakukan pencairan",
-            status: 3,
-            status_pengajuan: "progress",
-            id_user: this.form.id_user,
+            message: "Pencairan selesai",
+            status_validasi: 3,
             id_struktur: 24,
             next: 24,
-            kode_rkat: this.form.kode_rkat,
-            nama: this.$store.state.auth.user[0].fullname,
+            nama_status: "Direktur Keuangan",
             pencairan: "default.jpg"
           })
             .then(() => {
@@ -1228,16 +1218,14 @@ export default {
               this.loader("Uploading...");
               this.replace();
               this.updatepengajuan({
+                next: 24,
+                status_validasi: 1,
+                kode_rkat: this.form.kode_rkat,
                 id: this.$route.params.id,
                 message: "Upload LPJ Keuangan",
-                status: 1,
-                status_pengajuan: "progress",
-                id_user: this.form.id_user,
-                id_struktur: this.$store.state.auth.user[0].id_user,
-                nama: this.$store.state.auth.user[0].fullname,
-                kode_rkat: this.form.kode_rkat,
                 lpj_keuangan: this.form.lpj_keuangan,
-                next: 24
+                id_struktur: this.userLogin,
+                nama_status: this.$store.state.auth.user[0].fullname
               })
                 .then(() => {
                   this.success("Data telah disimpan!");
@@ -1268,16 +1256,14 @@ export default {
               this.loader("Uploading...");
               this.replace();
               this.updatepengajuan({
+                next: 21,
+                status_validasi: 1,
+                kode_rkat: this.form.kode_rkat,
                 id: this.$route.params.id,
                 message: "Upload LPJ Kegiatan",
-                status: 1,
-                status_pengajuan: "progress",
-                id_user: this.form.id_user,
-                id_struktur: this.$store.state.auth.user[0].id_user,
-                nama: this.$store.state.auth.user[0].fullname,
-                kode_rkat: this.form.kode_rkat,
                 lpj_kegiatan: this.form.lpj_kegiatan,
-                next: 21
+                id_struktur: this.userLogin,
+                nama_status: this.$store.state.auth.user[0].fullname
               })
                 .then(() => {
                   this.success("Data telah disimpan!");
@@ -1324,9 +1310,9 @@ export default {
             id: this.$route.params.id,
             message: this.message,
             status_validasi: 0,
-            id_struktur: this.$store.state.auth.user[0].id_user,
+            id_struktur: this.userLogin,
             nama_status: this.$store.state.auth.user[0].fullname,
-            next: this.$store.state.auth.user[0].id_user
+            next: this.userLogin
           })
             .then(() => {
               this.success("Berhasil tolak pengajuan");
@@ -1355,19 +1341,15 @@ export default {
     },
     print() {
       this.$axios
-        .post(
-          "/pengajuan/pdfByUSer/" + this.$store.state.auth.user[0].id_user,
-          this.$route.params.id
-        )
+        .post("/pengajuan/pdfByUSer/" + this.userLogin, this.$route.params.id)
         .then(() => {
           console.log(this.$route);
           // window.open(
           //   "http://localhost:8000/g/" +
-          //     btoa(this.$store.state.auth.user[0].id_user)
+          //     btoa(this.userLogin)
           // );
           window.open(
-            "https://aperkat.uts.ac.id/api/g/" +
-              btoa(this.$store.state.auth.user[0].id_user)
+            "https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin)
           );
         });
     },

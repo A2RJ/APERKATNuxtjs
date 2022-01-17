@@ -154,7 +154,7 @@
             </template>
           </custom-table>
         </b-tab>
-        <b-tab title="Belum LPJ Keuangan" active>
+        <b-tab title="Belum LPJ Keuangan">
           <custom-table
             :items="belumLPJKeuangan"
             :fields="fields"
@@ -378,7 +378,7 @@
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_nonrkat"
+                :to="'edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
@@ -457,7 +457,7 @@
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_nonrkat"
+                :to="'edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
@@ -725,7 +725,7 @@ export default {
     }
 
     if (this.userLogin == 121) {
-      this.listLPJKeuangan = this.lpj;
+      this.listLPJKeuangan = this.lpj.data;
       this.getBelumLPJKeuangan();
     }
   },
@@ -764,7 +764,7 @@ export default {
       this.$axios
         .get("/pengajuan/lpjKegiatan")
         .then(response => {
-          this.listLPJKegiatan = response.data;
+          this.listLPJKegiatan = response.data.data;
         })
         .catch(error => {
           console.log(error);
@@ -772,14 +772,14 @@ export default {
     },
     async getBelumLPJKegiatan() {
       this.$axios.get("/pengajuan/belumLPJKegiatan").then(response => {
-        this.belumLPJKegiatan = response.data;
+        this.belumLPJKegiatan = response.data.data;
       });
     },
     async getBelumLPJKeuangan() {
       this.$axios
         .get("/pengajuan/belumLPJKeuangan")
         .then(response => {
-          this.belumLPJKeuangan = response.data;
+          this.belumLPJKeuangan = response.data.data;
         })
         .catch(error => {
           console.log(error);
