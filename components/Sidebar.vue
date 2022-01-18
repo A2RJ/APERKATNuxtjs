@@ -52,7 +52,6 @@
       >
         <i class="fas fa-fw fa-cog"></i>
         <span>PENGAJUAN</span>
-        <b-badge v-if="total != 0" pill variant="light">{{ total }}</b-badge>
       </a>
       <div
         id="collapseOne"
@@ -66,20 +65,14 @@
         >
           <h6 class="collapse-header">Daftar Pengajuan</h6>
           <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/'"
-            >Pengajuan<b-badge v-if="badgeSelf != 0" pill variant="primary">{{
-              badgeSelf
-            }}</b-badge></NuxtLink
+            >Pengajuan</NuxtLink
           >
           <NuxtLink
             class="collapse-item"
             v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
             :to="'/pengajuan/supervisor/'"
-            >Pengajuan Sub Divisi<b-badge
-              v-if="badge != 0"
-              pill
-              variant="primary"
-              >{{ badge }}</b-badge
-            ></NuxtLink
+            >Pengajuan Sub Divisi
+            </NuxtLink
           >
           <NuxtLink
             class="collapse-item"
@@ -87,12 +80,6 @@
             :to="'/pengajuan/grafik/'"
             >Grafik Sub Divisi</NuxtLink
           >
-          <!-- <NuxtLink
-            class="collapse-item"
-            v-show="dirKeuangan"
-            :to="'/pengajuanSelesai'"
-            >Pengajuan diterima</NuxtLink
-          > -->
         </div>
       </div>
     </li>
@@ -108,7 +95,6 @@
       >
         <i class="fas fa-fw fa-cog"></i>
         <span>NON RKAT</span>
-        <!-- <b-badge v-if="total != 0" pill variant="light">{{ total }}</b-badge> -->
       </a>
       <div
         id="collapseTwo"
@@ -123,40 +109,16 @@
           <h6 class="collapse-header">Daftar Non RKAT</h6>
           <NuxtLink class="collapse-item" :to="'/nonrkat/subordinate/'"
             >Non RKAT
-            <!-- <b-badge v-if="badgeSelf != 0" pill variant="primary">{{
-              badgeSelf
-            }}</b-badge> -->
-            </NuxtLink
-          >
+          </NuxtLink>
           <NuxtLink
             class="collapse-item"
             v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
             :to="'/nonrkat/supervisor/'"
             >Non RKAT Sub Divisi
-            <!-- <b-badge
-              v-if="badge != 0"
-              pill
-              variant="primary"
-              >{{ badge }}
-              </b-badge> -->
-            </NuxtLink
-          >
-          <!-- <NuxtLink
-            class="collapse-item"
-            v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
-            :to="'/nonrkat/grafik/'"
-            >Grafik Sub Divisi</NuxtLink
-          >
-          <NuxtLink
-            class="collapse-item"
-            v-show="dirKeuangan"
-            :to="'/pengajuanSelesai'"
-            >Non RKAT diterima</NuxtLink
-          > -->
+          </NuxtLink>
         </div>
       </div>
     </li>
-
 
     <li class="nav-item" v-show="sekniv">
       <NuxtLink class="nav-link" to="/user">
@@ -164,7 +126,7 @@
         <span>User</span>
       </NuxtLink>
     </li>
-    
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block" />
 
@@ -185,46 +147,11 @@ export default {
       dirKeuangan: false,
       warek: false,
       rektor: false,
-      sekniv: false,
-      badge: 0,
-      badgeSelf: 0,
-      total: 0,
+      sekniv: false
     };
   },
   computed: {},
-  methods: {
-    subMessage() {
-      this.$axios
-        .get(
-          `/pengajuan/countMessage/${this.$store.state.auth.user[0].id_user}`
-        )
-        .then((response) => {
-          this.badge = response.data.data;
-          this.count();
-
-          setTimeout(() => {
-            this.subMessage();
-          }, 1500);
-        });
-    },
-    selfMessage() {
-      this.$axios
-        .get(
-          `/pengajuan/countMessageSelf/${this.$store.state.auth.user[0].id_user}`
-        )
-        .then((response) => {
-          this.badgeSelf = response.data.data;
-          this.count();
-
-          setTimeout(() => {
-            this.selfMessage();
-          }, 1500);
-        });
-    },
-    count() {
-      this.total = parseInt(this.badge) + parseInt(this.badgeSelf);
-    },
-  },
+  methods: {},
   mounted() {
     if (this.$store.state.auth.loggedIn) {
       let data = this.$store.state.auth.user[1].level;
@@ -241,16 +168,9 @@ export default {
       } else if (data == "sekniv") {
         this.sekniv = true;
       }
-      // if (data == "prodi") {
-      //   this.selfMessage();
-      // } else {
-      //   this.selfMessage();
-      //   this.subMessage();
-      // }
     }
-  },
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

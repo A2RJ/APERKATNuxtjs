@@ -1220,7 +1220,6 @@ export default {
               this.updatepengajuan({
                 next: 24,
                 status_validasi: 1,
-                kode_rkat: this.form.kode_rkat,
                 id: this.$route.params.id,
                 message: "Upload LPJ Keuangan",
                 lpj_keuangan: this.form.lpj_keuangan,
@@ -1258,7 +1257,6 @@ export default {
               this.updatepengajuan({
                 next: 21,
                 status_validasi: 1,
-                kode_rkat: this.form.kode_rkat,
                 id: this.$route.params.id,
                 message: "Upload LPJ Kegiatan",
                 lpj_kegiatan: this.form.lpj_kegiatan,

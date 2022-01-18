@@ -70,22 +70,4 @@
 # Hari ini development dan testing
 
 - Testing semua fungsi pengajuan rkat
-  -- panggil fungsi getNext [OK]
-  -- input pengajuan [OK]
-  -- panggil fungsi auto simpan pengajuan history [OK]
-  -- periksa need approval setiap atasan (next) [ok]
-  -- periksa semua atasan apakah bug/tidak [ok]
-  -- periksa fungsi terima/tolak pengajuan [ok]
-  -- panggil fungsi auto simpan pengajuan history [ok]
-  -- pencairan bertahap [ok]
-  -- panggil fungsi auto simpan pengajuan history [ok]
-  -- periksa LPJ Keuangan [ok]
-  -- periksa belum upload LPJ Keuangan [ok]
-  -- periksa fungsi terima/tolak lpj keuangan [ok]
-  -- panggil fungsi auto simpan pengajuan history [ok]
-  -- periksa LPJ Kegiatan [ok]
-  -- periksa belum upload LPJ Kegiatan [ok]
-  -- periksa fungsi terima/tolak lpj kegiatan [ok]
-  -- panggil fungsi auto simpan pengajuan history [ok]
-  -- periksa completed [ok]
   -- undo aksi tolak/terima pengajuan [PROGRESS]

@@ -757,7 +757,6 @@ export default {
         .get("/nonrkat/listPencairan")
         .then(response => {
           this.listPencairan = response.data.data;
-          console.log(this.listPencairan);
         })
         .catch(error => {
           console.log(error);
@@ -768,7 +767,6 @@ export default {
         .get("/nonrkat/listLPJKeuangan")
         .then(response => {
           this.listLPJKeuangan = response.data.data;
-          console.log(this.listLPJKeuangan);
         })
         .catch(error => {
           console.log(error);
@@ -779,7 +777,6 @@ export default {
         .get("/nonrkat/listLPJKegiatan")
         .then(response => {
           this.listLPJKegiatan = response.data.data;
-          console.log(this.listLPJKegiatan);
         })
         .catch(error => {
           console.log(error);
@@ -790,7 +787,6 @@ export default {
         .get("/nonrkat/belumUploadLPJKeuangan")
         .then(response => {
           this.belumUploadLPJKeuangan = response.data.data;
-          console.log(this.belumUploadLPJKeuangan);
         })
         .catch(error => {
           console.log(error);
@@ -801,7 +797,6 @@ export default {
         .get("/nonrkat/belumUploadLPJKegiatan")
         .then(response => {
           this.belumUploadLPJKegiatan = response.data.data;
-          console.log(this.belumUploadLPJKegiatan);
         })
         .catch(error => {
           console.log(error);
@@ -812,7 +807,6 @@ export default {
         .get("/nonrkat/getCompleted")
         .then(response => {
           this.listCompleted = response.data.data;
-          console.log(this.listCompleted);
         })
         .catch(error => {
           console.log(error);

@@ -862,6 +862,7 @@ export default {
   },
   mounted() {
     this.parent = this.ikuParent.data;
+    console.log(this.parent);
     this.load();
   },
   methods: {
@@ -887,10 +888,9 @@ export default {
             .get(`/nonrkat/getLastValidate/${this.$route.params.id}`)
             .then(res => {
               this.button = res.data.data;
-              console.log(this.button);
             });
         }
-        // console.log(this.status[index - 1].status ); // untuk mengecek pengajuan sebelumnya
+        // this.status[index - 1].status // untuk mengecek pengajuan sebelumnya
         // jika user login == atasan && status belum diterima && status sebelumnya diterima maka option true
         for (let index = 1; index < this.status.length; index++) {
           if (
@@ -901,7 +901,6 @@ export default {
           ) {
             this.option = true;
             this.next = this.status[index + 1].id_user;
-            console.log("Next", this.status[index + 1].id_user);
           }
         }
         // jika dir keuangan maka upload pencairan
@@ -1379,7 +1378,6 @@ export default {
           this.child1 = response.data.data;
         });
         // this.getIkuChild1(value.code).then(() => {
-        //   console.log(this.ikuChild1);
         //   // this.child1 = this.ikuChild1.data;
         // });
       } else {
