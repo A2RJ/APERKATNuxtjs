@@ -862,7 +862,6 @@ export default {
   },
   mounted() {
     this.parent = this.ikuParent.data;
-    console.log(this.parent);
     this.load();
   },
   methods: {
@@ -1052,7 +1051,7 @@ export default {
             .then(() => {
               this.success("Berhasil terima pengajuan");
               this.option = false;
-              this.$router.push(this.redirects);
+              window.location.reload();
             })
             .catch(() => {
               this.failed("Whoops Server Error");
@@ -1085,7 +1084,7 @@ export default {
             .then(() => {
               this.success("Berhasil tolak pengajuan");
               this.option = true;
-              this.$router.push(this.redirects);
+              window.location.reload()
             })
             .catch(() => {
               this.failed("Whoops Server Error");
@@ -1147,7 +1146,7 @@ export default {
             message: "Pencairan selesai",
             validasi_status: 3,
             id_struktur: 24,
-            nama_status: this.$store.state.auth.user[0].fullname,
+            nama_status: "Direktur Keuangan",
             pencairan: "selesai"
           })
             .then(() => {
@@ -1163,7 +1162,7 @@ export default {
     uploadLPJKeuangan() {
       if (
         this.LPJKeuangan.length == 0 ||
-        (this.pencairan.length != 0 && this.LPJKeuangan.size > 2097152)
+        (this.pencairan.length > 0 && this.LPJKeuangan.size > 2097152)
       ) {
         this.failed("Ukuran file max 2MB");
       } else {
@@ -1222,7 +1221,7 @@ export default {
             .then(() => {
               this.success(`Berhasil ${params} pengajuan`);
               this.option = false;
-              this.$router.push(this.redirects);
+              window.location.reload();
             })
             .catch(() => {
               this.failed("Whoops Server Error");
@@ -1292,7 +1291,7 @@ export default {
             .then(() => {
               this.success(`Berhasil ${params} pengajuan`);
               this.option = false;
-              this.$router.push(this.redirects);
+              window.location.reload();
             })
             .catch(() => {
               this.failed("Whoops Server Error");

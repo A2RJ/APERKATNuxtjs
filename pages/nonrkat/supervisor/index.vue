@@ -28,68 +28,64 @@
                 :html="key"
                 :actions="actions"
               >
-                <template v-slot:fullname="row">
-                  <p>
-                    {{ row.item.fullname | capitalize }}
-                  </p>
-                </template>
-                <template v-slot:nama_struktur="row">
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 == '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 !== '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur_child1 }}
-                  </p>
-                </template>
-                <template v-slot:validasi_status="row">
-                  <p v-if="row.item.validasi_status == 0">
-                    <b-badge variant="danger"
-                      >Ditolak: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 1">
-                    <b-badge variant="warning"
-                      >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 2">
-                    <b-badge variant="success"
-                      >Diterima: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 3">
-                    <b-badge variant="success"
-                      >Pencairan: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                </template>
-                <template v-slot:created_at="row">
-                  <p>{{ row.item.created_at | convertDate }}</p>
-                </template>
+               <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
                 <template v-slot:actions="row">
                   <NuxtLink
                     class="btn btn-sm btn-outline-info"
@@ -109,68 +105,64 @@
                 :html="key"
                 :actions="actions"
               >
-                <template v-slot:fullname="row">
-                  <p>
-                    {{ row.item.fullname | capitalize }}
-                  </p>
-                </template>
-                <template v-slot:nama_struktur="row">
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 == '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 !== '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur_child1 }}
-                  </p>
-                </template>
-                <template v-slot:validasi_status="row">
-                  <p v-if="row.item.validasi_status == 0">
-                    <b-badge variant="danger"
-                      >Ditolak: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 1">
-                    <b-badge variant="warning"
-                      >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 2">
-                    <b-badge variant="success"
-                      >Diterima: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 3">
-                    <b-badge variant="success"
-                      >Pencairan: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                </template>
-                <template v-slot:created_at="row">
-                  <p>{{ row.item.created_at | convertDate }}</p>
-                </template>
+               <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
                 <template v-slot:actions="row">
                   <NuxtLink
                     class="btn btn-sm btn-outline-info"
@@ -188,68 +180,64 @@
                 :html="key"
                 :actions="actions"
               >
-                <template v-slot:fullname="row">
-                  <p>
-                    {{ row.item.fullname | capitalize }}
-                  </p>
-                </template>
-                <template v-slot:nama_struktur="row">
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 == '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 !== '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur_child1 }}
-                  </p>
-                </template>
-                <template v-slot:validasi_status="row">
-                  <p v-if="row.item.validasi_status == 0">
-                    <b-badge variant="danger"
-                      >Ditolak: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 1">
-                    <b-badge variant="warning"
-                      >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 2">
-                    <b-badge variant="success"
-                      >Diterima: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 3">
-                    <b-badge variant="success"
-                      >Pencairan: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                </template>
-                <template v-slot:created_at="row">
-                  <p>{{ row.item.created_at | convertDate }}</p>
-                </template>
+               <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
                 <template v-slot:actions="row">
                   <NuxtLink
                     class="btn btn-sm btn-outline-info"
@@ -269,68 +257,64 @@
                 :html="key"
                 :actions="actions"
               >
-                <template v-slot:fullname="row">
-                  <p>
-                    {{ row.item.fullname | capitalize }}
-                  </p>
-                </template>
-                <template v-slot:nama_struktur="row">
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 == '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 !== '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur_child1 }}
-                  </p>
-                </template>
-                <template v-slot:validasi_status="row">
-                  <p v-if="row.item.validasi_status == 0">
-                    <b-badge variant="danger"
-                      >Ditolak: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 1">
-                    <b-badge variant="warning"
-                      >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 2">
-                    <b-badge variant="success"
-                      >Diterima: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 3">
-                    <b-badge variant="success"
-                      >Pencairan: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                </template>
-                <template v-slot:created_at="row">
-                  <p>{{ row.item.created_at | convertDate }}</p>
-                </template>
+               <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
                 <template v-slot:actions="row">
                   <NuxtLink
                     class="btn btn-sm btn-outline-info"
@@ -348,68 +332,64 @@
                 :html="key"
                 :actions="actions"
               >
-                <template v-slot:fullname="row">
-                  <p>
-                    {{ row.item.fullname | capitalize }}
-                  </p>
-                </template>
-                <template v-slot:nama_struktur="row">
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 == '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 !== '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur_child1 }}
-                  </p>
-                </template>
-                <template v-slot:validasi_status="row">
-                  <p v-if="row.item.validasi_status == 0">
-                    <b-badge variant="danger"
-                      >Ditolak: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 1">
-                    <b-badge variant="warning"
-                      >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 2">
-                    <b-badge variant="success"
-                      >Diterima: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 3">
-                    <b-badge variant="success"
-                      >Pencairan: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                </template>
-                <template v-slot:created_at="row">
-                  <p>{{ row.item.created_at | convertDate }}</p>
-                </template>
+               <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
                 <template v-slot:actions="row">
                   <NuxtLink
                     class="btn btn-sm btn-outline-info"
@@ -427,68 +407,64 @@
                 :html="key"
                 :actions="actions"
               >
-                <template v-slot:fullname="row">
-                  <p>
-                    {{ row.item.fullname | capitalize }}
-                  </p>
-                </template>
-                <template v-slot:nama_struktur="row">
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 == '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 !== '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur_child1 }}
-                  </p>
-                </template>
-                <template v-slot:validasi_status="row">
-                  <p v-if="row.item.validasi_status == 0">
-                    <b-badge variant="danger"
-                      >Ditolak: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 1">
-                    <b-badge variant="warning"
-                      >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 2">
-                    <b-badge variant="success"
-                      >Diterima: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 3">
-                    <b-badge variant="success"
-                      >Pencairan: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                </template>
-                <template v-slot:created_at="row">
-                  <p>{{ row.item.created_at | convertDate }}</p>
-                </template>
+               <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
                 <template v-slot:actions="row">
                   <NuxtLink
                     class="btn btn-sm btn-outline-info"
@@ -506,68 +482,64 @@
                 :html="key"
                 :actions="actions"
               >
-                <template v-slot:fullname="row">
-                  <p>
-                    {{ row.item.fullname | capitalize }}
-                  </p>
-                </template>
-                <template v-slot:nama_struktur="row">
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 == '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 !== '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur_child1 }}
-                  </p>
-                </template>
-                <template v-slot:validasi_status="row">
-                  <p v-if="row.item.validasi_status == 0">
-                    <b-badge variant="danger"
-                      >Ditolak: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 1">
-                    <b-badge variant="warning"
-                      >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 2">
-                    <b-badge variant="success"
-                      >Diterima: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 3">
-                    <b-badge variant="success"
-                      >Pencairan: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                </template>
-                <template v-slot:created_at="row">
-                  <p>{{ row.item.created_at | convertDate }}</p>
-                </template>
+               <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
                 <template v-slot:actions="row">
                   <NuxtLink
                     class="btn btn-sm btn-outline-info"
@@ -593,68 +565,64 @@
                 :html="key"
                 :actions="actions"
               >
-                <template v-slot:fullname="row">
-                  <p>
-                    {{ row.item.fullname | capitalize }}
-                  </p>
-                </template>
-                <template v-slot:nama_struktur="row">
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 == '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 == '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur }}
-                  </p>
-                  <p
-                    v-if="
-                      row.item.nama_struktur !== '0' &&
-                        row.item.nama_struktur_child1 !== '0' &&
-                        row.item.nama_struktur_child2 !== '0'
-                    "
-                    class="text-uppercase"
-                  >
-                    {{ row.item.nama_struktur_child1 }}
-                  </p>
-                </template>
-                <template v-slot:validasi_status="row">
-                  <p v-if="row.item.validasi_status == 0">
-                    <b-badge variant="danger"
-                      >Ditolak: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 1">
-                    <b-badge variant="warning"
-                      >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 2">
-                    <b-badge variant="success"
-                      >Diterima: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                  <p v-if="row.item.validasi_status == 3">
-                    <b-badge variant="success"
-                      >Pencairan: {{ row.item.nama_status }}</b-badge
-                    >
-                  </p>
-                </template>
-                <template v-slot:created_at="row">
-                  <p>{{ row.item.created_at | convertDate }}</p>
-                </template>
+               <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
                 <template v-slot:actions="row">
                   <NuxtLink
                     class="btn btn-sm btn-outline-info"
@@ -695,9 +663,7 @@ export default {
       actions: [],
       fields: [
         { key: "fullname", label: "User" },
-        { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Pelaksana" },
-        { key: "validasi_status", label: "Status Pengajuan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions"
       ],
