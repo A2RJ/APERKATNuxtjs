@@ -49,3 +49,16 @@ untuk testing 341
 - 266 [Manual-upload-tf] pas-04
 - 358 [Reupload-lpj]
 - 389 [Reupload-lpj]
+
+# Periksa update berdasarkan id pengajuan
+
+- 461 [ok]
+- 460 [ok]
+- 459 [ok]
+- 417 [ok]
+- 420 [ok]
+- 408 [ok]
+- 381 [ok]
+- 376 [ok]
+- 352 [ok]
+- 302 [ok]
