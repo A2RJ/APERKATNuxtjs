@@ -589,21 +589,28 @@
               @click="upload()"
               >Upload
             </b-button>
-            <div></div>
           </b-form-group>
-          <b-table striped small responsive hover :items="itemsHeader">
+          <b-table
+            striped
+            small
+            responsive
+            hover
+            :items="itemsHeader"
+            :fields="fields"
+            v-show="button"
+          >
             <template #cell(jenis_barang)>
               <input
-                v-model="formRAB.jenis_barang"
+                v-model="nama_barang"
                 type="text"
-                name="jenis_barang"
-                id="jenis_barang"
+                name="nama_barang"
+                id="nama_barang"
                 required
               />
             </template>
             <template #cell(harga_satuan)>
               <input
-                v-model="formRAB.harga_satuan"
+                v-model="harga_satuan"
                 type="number"
                 name="satuan"
                 id="satuan"
@@ -611,31 +618,19 @@
               />
             </template>
             <template #cell(qty)>
-              <input
-                v-model="formRAB.qty"
-                type="number"
-                name="qty"
-                id="qty"
-                required
-              />
+              <input v-model="qty" type="number" name="qty" id="qty" required />
             </template>
             <template #cell(total)>
-              {{ (formRAB.qty * formRAB.harga_satuan) | currency }}
+              {{ (qty * harga_satuan) | currency }}
             </template>
             <template #cell(keterangan)>
-              <input
-                v-model="formRAB.ket"
-                type="text"
-                name="qty"
-                id="qty"
-                required
-              />
+              <input v-model="ket" type="text" name="qty" id="qty" required />
             </template>
             <template #cell(action)>
               <button
                 type="button"
                 class="btn btn-sm btn-success"
-                @click="submit()"
+                @click="addRAB()"
               >
                 OK
               </button>
@@ -649,21 +644,21 @@
             :items="items"
             :fields="fields"
           >
-            <template #cell(action)="data">
+            <template #cell(action)="data" >
               <button
                 type="button"
                 class="btn btn-sm btn-danger"
+                v-show="button"
                 @click="hapus(data.item.no)"
               >
                 X
               </button>
             </template>
           </b-table>
-          <button @click="postRAB()">Post RAB</button>
           <button
             class="btn btn-sm btn-primary float-right"
             v-show="button"
-            @click="submit()"
+            @click="submit"
           >
             Simpan Pengajuan
           </button>
@@ -738,6 +733,9 @@ export default {
         validasi_status: this.forms.validasi_status,
         nama_status: this.forms.nama_status,
       };
+
+      // get rab
+      await this.getRAB(this.$route.params.id);
     }
   },
   data() {
@@ -815,29 +813,28 @@ export default {
       buktiTFImage: null,
       pencairanNominal: null,
       userLogin: this.$store.state.auth.user[0].id_user,
-      formRAB: {
-        jenis_barang: "",
-        harga_satuan: "",
-        qty: "",
-        ket: "",
-      },
+      // rab
+      nama_barang: "",
+      harga_satuan: "",
+      qty: "",
+      ket: "",
       fields: [
-        "jenis_barang",
-        "harga_satuan",
-        "qty",
-        "total",
-        "keterangan",
-        "action",
+        { key: "jenis_barang", label: "Jenis Barang" },
+        { key: "harga_satuan", label: "Harga Satuan" },
+        { key: "qty", label: "Qty" },
+        { key: "total", label: "Total" },
+        { key: "keterangan", label: "Keterangan" },
+        { key: "action", label: "Action" },
       ],
       items: [],
       itemsHeader: [
         {
-          jenis_barang: "",
-          harga_satuan: "",
-          qty: "",
-          total: "",
-          keterangan: "",
-          action: "",
+          jenis_barang: "jenis_barang",
+          harga_satuan: "harga_satuan",
+          qty: "qty",
+          total: "total",
+          keterangan: "ket",
+          action: "action",
         },
       ],
       listData: [],
@@ -1069,9 +1066,6 @@ export default {
       } else {
         this.loader("Saving pengajuan");
         if (this.$route.name === "pengajuan-subordinate-edit-id") {
-          if (this.file.length != 0) {
-            await this.upload();
-          }
           this.replace();
           this.form.nama_status = await this.$store.state.auth.user[0].fullname;
           this.form.status_validasi = 1;
@@ -1088,7 +1082,8 @@ export default {
                 this.form
               )
             )
-            .then(() => {
+            .then(async () => {
+              await this.postRAB(this.$route.params.id);
               this.success("Data telah disimpan!");
               this.$nuxt.refresh();
             })
@@ -1098,7 +1093,6 @@ export default {
               }
             });
         } else {
-          await this.upload();
           this.replace();
           let nama_status = await this.$store.state.auth.user[0].fullname;
           this.$axios
@@ -1115,7 +1109,8 @@ export default {
                 this.form
               )
             )
-            .then((response) => {
+            .then(async (response) => {
+              await this.postRAB(response.data.id_pengajuan);
               this.success("Data telah disimpan!");
               this.$router.push(this.redirects);
             })
@@ -1126,19 +1121,6 @@ export default {
             });
         }
       }
-    },
-    async postRAB() {
-      console.log(this.items);
-      this.$axios
-        .post(`/rab/`, this.items)
-        .then((response) => {
-          this.success("Data telah disimpan!");
-        })
-        .catch((error) => {
-          if (error.response) {
-            this.failed(error.response.data.message);
-          }
-        });
     },
     terima() {
       this.$swal({
@@ -1445,7 +1427,6 @@ export default {
       this.$axios
         .post("/pengajuan/pdfByUSer/" + this.userLogin, this.$route.params.id)
         .then(() => {
-          console.log(this.$route);
           window.open("http://localhost:8000/g/" + btoa(this.userLogin));
           // window.open(
           //   "https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin)
@@ -1487,6 +1468,41 @@ export default {
         this.failed("Whoops Server Error");
       }
     },
+    async postRAB(params) {
+      this.items.forEach((item) => {
+        delete item.no;
+        item.pengajuan_id = params
+      });
+      await this.$axios
+        .post(`/rab/`, this.items)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    async getRAB(params) {
+      await this.$axios
+        .get(`/rab/${params}`)
+        .then((res) => {
+          for (let index = 0; index < res.data.length; index++) {
+            this.push({
+              no: Math.floor(Math.random() * 1000),
+              jenis_barang: res.data[index].jenis_barang,
+              harga_satuan: Number(res.data[index].harga_satuan),
+              qty: Number(res.data[index].qty),
+              total:
+                Number(res.data[index].harga_satuan) *
+                Number(res.data[index].qty),
+              keterangan: res.data[index].keterangan,
+            });
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
     sum() {
       let totalSum = 0;
       for (let index = 0; index < this.items.length; index++) {
@@ -1497,7 +1513,6 @@ export default {
       this.total = totalSum;
     },
     push({ no, jenis_barang, harga_satuan, qty, total, keterangan }) {
-      console.log({ no, jenis_barang, harga_satuan, qty, total, keterangan });
       if (jenis_barang && harga_satuan && qty && total) {
         this.items.push({
           no: no,
@@ -1509,22 +1524,21 @@ export default {
         });
       }
     },
-    submit() {
+    addRAB() {
       this.push({
         no: Math.floor(Math.random() * 1000),
-        jenis_barang: this.formRAB.jenis_barang,
-        harga_satuan: this.formRAB.harga_satuan,
-        qty: this.formRAB.qty,
+        jenis_barang: this.nama_barang,
+        harga_satuan: this.harga_satuan,
+        qty: this.qty,
         total: Number(
-          this.formRAB.harga_satuan.replaceAll(".", "") *
-            this.formRAB.qty.replaceAll(".", "")
+          this.harga_satuan.replaceAll(".", "") * this.qty.replaceAll(".", "")
         ),
-        keterangan: this.formRAB.ket,
+        keterangan: this.ket,
       });
-      (this.formRAB.jenis_barang = ""),
-        (this.formRAB.harga_satuan = ""),
-        (this.formRAB.qty = ""),
-        (this.formRAB.ket = "");
+      (this.nama_barang = ""),
+        (this.harga_satuan = ""),
+        (this.qty = ""),
+        (this.ket = "");
       this.sum();
     },
     hapus(params) {

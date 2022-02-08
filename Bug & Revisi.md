@@ -65,18 +65,20 @@ untuk testing 341
 
 # Revisi 04 Februari 2022
 
-- RAB di aplikasi
--- [WIP] post rab ke tabel rab
+- RAB di aplikasi [Validasi-!=-0-Testing-update-data]
 - Print pengajuan tampilkan history pengajuan [OK]
 
 # BUAT LIST PENCAIRAN
-
+- https://www.npmjs.com/package/bootstrap-vue-editable-table
+- https://muhimasri.com/blogs/create-an-editable-dynamic-table-with-bootstrap-vue/
+- Perubahan tampilan (WR2, Rektor, dir keuangan, pencairan dan lpj)
 - Saat approve dir keuangan, input nominal pencairan
-- WR2 tidak lagi terima/tolak tetapi:
   -- Buat periode
   -- list periode
   -- list pencairan by periode (get where pengajuan.periode_id = periode.id)
   -- add pengajuan ke list pencairan (update where pengajuan.periode_id = periode.id)
+- WR2 tidak lagi terima/tolak tetapi:
+  -- List pencairan (approve/revisi)
 - Rektor:
   -- List pencairan (approve/revisi)
 - Default kop surat
@@ -89,4 +91,3 @@ untuk testing 341
 - Perubahan warna untuk item yang sudah terima
 - Tambah kolom catatan di bottom RAB
 - Fields list pencairan WR 2
-- Perubahan tampilan (WR2, Rektor, dir keuangan, pencairan dan lpj)
