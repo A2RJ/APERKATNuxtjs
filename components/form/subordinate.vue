@@ -57,7 +57,7 @@
 
           <a
             v-show="form.pencairan !== null && form.pencairan !== 'default.jpg'"
-            class="btn btn-sm btn-outline-success m-1 "
+            class="btn btn-sm btn-outline-success m-1"
             :href="'../../../' + form.pencairan"
             target="_blank"
           >
@@ -66,7 +66,7 @@
           <a
             v-for="(pencairan, index) in pencairanImg"
             :key="index"
-            class="btn btn-sm btn-outline-success m-1 "
+            class="btn btn-sm btn-outline-success m-1"
             :href="'../../../' + pencairan.images"
             target="_blank"
             rel="noopener noreferrer"
@@ -340,7 +340,7 @@
             label="Bentuk Pelaksanaan Program"
             label-for="bentuk_pelaksanaan_program"
             :class="{
-              'form-group--error': $v.form.bentuk_pelaksanaan_program.$error
+              'form-group--error': $v.form.bentuk_pelaksanaan_program.$error,
             }"
           >
             <b-form-input
@@ -558,12 +558,11 @@
               <i class="text-danger">No.Rekening is numeric</i>
             </b-form-text>
           </b-form-group>
-
           <b-form-group
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="File RAB"
+            label="Import RAB (.XLS/XLSX)"
             label-for="rab"
             :class="{ 'form-group--error': $v.file.$error }"
           >
@@ -577,18 +576,94 @@
               accept=".xls, .xlsx"
             ></b-form-file>
             <b-form-text id="rab" v-if="!$v.file.required">
-              <i class="text-danger">Upload file</i>
+              <i class="text-danger">Upload file </i>
             </b-form-text>
             <div class="mt-3" v-if="rab">
               Current file:
               <a :href="'../../../' + rab" target="_blank">RAB </a>
             </div>
-            <div class="mt-3" v-else>Ekstensi file harus .XLS/XLSX</div>
+            <a href="#">Template RAB</a>
+            <b-button
+              variant="success"
+              class="btn btn-sm float-right my-2"
+              @click="upload()"
+              >Upload
+            </b-button>
+            <div></div>
           </b-form-group>
+          <b-table striped small responsive hover :items="itemsHeader">
+            <template #cell(jenis_barang)>
+              <input
+                v-model="formRAB.jenis_barang"
+                type="text"
+                name="jenis_barang"
+                id="jenis_barang"
+                required
+              />
+            </template>
+            <template #cell(harga_satuan)>
+              <input
+                v-model="formRAB.harga_satuan"
+                type="number"
+                name="satuan"
+                id="satuan"
+                required
+              />
+            </template>
+            <template #cell(qty)>
+              <input
+                v-model="formRAB.qty"
+                type="number"
+                name="qty"
+                id="qty"
+                required
+              />
+            </template>
+            <template #cell(total)>
+              {{ (formRAB.qty * formRAB.harga_satuan) | currency }}
+            </template>
+            <template #cell(keterangan)>
+              <input
+                v-model="formRAB.ket"
+                type="text"
+                name="qty"
+                id="qty"
+                required
+              />
+            </template>
+            <template #cell(action)>
+              <button
+                type="button"
+                class="btn btn-sm btn-success"
+                @click="submit()"
+              >
+                OK
+              </button>
+            </template>
+          </b-table>
+          <b-table
+            striped
+            small
+            responsive
+            hover
+            :items="items"
+            :fields="fields"
+          >
+            <template #cell(action)="data">
+              <button
+                type="button"
+                class="btn btn-sm btn-danger"
+                @click="hapus(data.item.no)"
+              >
+                X
+              </button>
+            </template>
+          </b-table>
+          <button @click="postRAB()">Post RAB</button>
           <button
             class="btn btn-sm btn-primary float-right"
             v-show="button"
-            @click="submit"
+            @click="submit()"
           >
             Simpan Pengajuan
           </button>
@@ -622,7 +697,7 @@ import {
   required,
   numeric,
   maxLength,
-  requiredIf
+  requiredIf,
 } from "vuelidate/lib/validators";
 
 export default {
@@ -633,8 +708,8 @@ export default {
       this.getIku4(this.forms.id_iku_child1);
       this.getIku5(this.forms.id_iku_child2);
       this.ikuParent.data
-        .filter(el => el.code === 3)
-        .forEach(el => (this.id_iku_parent = el.label));
+        .filter((el) => el.code === 3)
+        .forEach((el) => (this.id_iku_parent = el.label));
       this.rab = this.forms.rab;
 
       this.form = {
@@ -661,7 +736,7 @@ export default {
         lpj_keuangan: this.forms.lpj_keuangan,
         lpj_kegiatan: this.forms.lpj_kegiatan,
         validasi_status: this.forms.validasi_status,
-        nama_status: this.forms.nama_status
+        nama_status: this.forms.nama_status,
       };
     }
   },
@@ -691,7 +766,7 @@ export default {
         lpj_keuangan: null,
         lpj_kegiatan: null,
         validasi_status: 0,
-        nama_status: 0
+        nama_status: 0,
       },
       id_iku_parent: [],
       id_iku_child1: [],
@@ -699,7 +774,7 @@ export default {
       kode_rkat: [],
       rkat: {
         nama_kegiatan: null,
-        tujuan: null
+        tujuan: null,
       },
       norek: null,
       button: true,
@@ -712,11 +787,11 @@ export default {
       redirects: "/pengajuan/subordinate/",
       selectChild1: {
         name: "",
-        value: ""
+        value: "",
       },
       selectChild2: {
         name: "",
-        value: ""
+        value: "",
       },
       file: [],
       rab: false,
@@ -731,7 +806,7 @@ export default {
       view: {
         pencairan: false,
         keuangan: false,
-        kegiatan: false
+        kegiatan: false,
       },
       number: null,
       next: null,
@@ -739,83 +814,110 @@ export default {
       pencairanImg: [],
       buktiTFImage: null,
       pencairanNominal: null,
-      userLogin: this.$store.state.auth.user[0].id_user
+      userLogin: this.$store.state.auth.user[0].id_user,
+      formRAB: {
+        jenis_barang: "",
+        harga_satuan: "",
+        qty: "",
+        ket: "",
+      },
+      fields: [
+        "jenis_barang",
+        "harga_satuan",
+        "qty",
+        "total",
+        "keterangan",
+        "action",
+      ],
+      items: [],
+      itemsHeader: [
+        {
+          jenis_barang: "",
+          harga_satuan: "",
+          qty: "",
+          total: "",
+          keterangan: "",
+          action: "",
+        },
+      ],
+      listData: [],
+      total: 0,
     };
   },
   validations: {
     kode_rkat: {
-      required
+      required,
     },
     id_iku_parent: {
-      required
+      required,
     },
     id_iku_child1: {
-      required
+      required,
     },
     id_iku_child2: {
-      required
+      required,
     },
     form: {
       id_user: {
-        required
+        required,
       },
       latar_belakang: {
-        required
+        required,
       },
       sasaran: {
-        required
+        required,
       },
       target_capaian: {
-        required
+        required,
       },
       bentuk_pelaksanaan_program: {
-        required
+        required,
       },
       tempat_program: {
-        required
+        required,
       },
       tanggal: {
-        required
+        required,
       },
       bidang_terkait: {
-        required
+        required,
       },
       biaya_program: {
-        required
+        required,
       },
       bank: {
-        required
+        required,
       },
       atn: {
-        required
+        required,
       },
       no_rek: {
         required,
         numeric,
-        maxLength: maxLength(20)
-      }
+        maxLength: maxLength(20),
+      },
     },
     file: {
-      required: requiredIf(function() {
+      required: requiredIf(function () {
         return this.$route.name == "pengajuan-subordinate-add";
-      })
-    }
+      }),
+    },
   },
   computed: {
     ...mapState("subordinate", {
-      forms: state => state.data,
-      status: state => state.status,
-      history: state => state.history,
-      errors: state => state.errors,
-      kodeRKAT: state => state.kodeRKAT,
-      approve: state => state.approve,
-      decline: state => state.decline,
-      ikuParent: state => state.ikuParent,
-      ikuChild1: state => state.ikuChild1,
-      ikuChild2: state => state.ikuChild2,
-      errors: state => state.errors,
-      pencairanImages: state => state.pencairan
-    })
+      forms: (state) => state.data,
+      status: (state) => state.status,
+      history: (state) => state.history,
+      errors: (state) => state.errors,
+      kodeRKAT: (state) => state.kodeRKAT,
+      approve: (state) => state.approve,
+      decline: (state) => state.decline,
+      ikuParent: (state) => state.ikuParent,
+      ikuChild1: (state) => state.ikuChild1,
+      ikuChild2: (state) => state.ikuChild2,
+      errors: (state) => state.errors,
+      pencairanImages: (state) => state.pencairan,
+    }),
   },
   mounted() {
     this.load();
@@ -832,7 +934,7 @@ export default {
       "declined",
       "getIkuChild1",
       "getIkuChild2",
-      "getstatus"
+      "getstatus",
     ]),
     load() {
       if (this.$route.params.id) {
@@ -899,7 +1001,7 @@ export default {
         ) {
           this.$axios
             .get(`/pengajuan/validasi/${this.$route.params.id}`)
-            .then(res => {
+            .then((res) => {
               if (res.data) {
                 this.button = true;
               } else {
@@ -952,11 +1054,11 @@ export default {
       });
     },
     async doubleIKU(params1, params2) {
-      this.$axios.get(`iku/child1ByID/${params1}`).then(res => {
+      this.$axios.get(`iku/child1ByID/${params1}`).then((res) => {
         this.id_iku_child1 = res.data.data.label;
       });
 
-      this.$axios.get(`iku/child2ByID/${params2}`).then(res => {
+      this.$axios.get(`iku/child2ByID/${params2}`).then((res) => {
         this.id_iku_child2 = res.data.data.label;
       });
     },
@@ -981,7 +1083,7 @@ export default {
                 {
                   id: this.$route.params.id,
                   message: "Update pengajuan",
-                  id_struktur: this.form.id_user
+                  id_struktur: this.form.id_user,
                 },
                 this.form
               )
@@ -990,7 +1092,7 @@ export default {
               this.success("Data telah disimpan!");
               this.$nuxt.refresh();
             })
-            .catch(error => {
+            .catch((error) => {
               if (error.response) {
                 this.failed(error.response.data.message);
               }
@@ -1008,22 +1110,35 @@ export default {
                   status_validasi: 1,
                   message: "Input pengajuan",
                   nama_status: nama_status,
-                  next: null
+                  next: null,
                 },
                 this.form
               )
             )
-            .then(response => {
+            .then((response) => {
               this.success("Data telah disimpan!");
               this.$router.push(this.redirects);
             })
-            .catch(error => {
+            .catch((error) => {
               if (error.response) {
                 this.failed(error.response.data.message);
               }
             });
         }
       }
+    },
+    async postRAB() {
+      console.log(this.items);
+      this.$axios
+        .post(`/rab/`, this.items)
+        .then((response) => {
+          this.success("Data telah disimpan!");
+        })
+        .catch((error) => {
+          if (error.response) {
+            this.failed(error.response.data.message);
+          }
+        });
     },
     terima() {
       this.$swal({
@@ -1034,8 +1149,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           for (let index = 1; index < this.status.length; index++) {
             if (
@@ -1071,7 +1186,7 @@ export default {
               this.terimaLPJ && this.userLogin == 121
                 ? "Direktur Keuangan"
                 : this.$store.state.auth.user[0].fullname,
-            next: this.terimaLPJ && this.userLogin == 121 ? 21 : this.next
+            next: this.terimaLPJ && this.userLogin == 121 ? 21 : this.next,
           })
             .then(() => {
               this.success("Berhasil terima pengajuan");
@@ -1096,8 +1211,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
@@ -1107,7 +1222,7 @@ export default {
             status_validasi: 0,
             id_struktur: this.userLogin,
             nama_status: this.$store.state.auth.user[0].fullname,
-            next: this.userLogin
+            next: this.userLogin,
           })
             .then(() => {
               this.success("Berhasil tolak pengajuan");
@@ -1138,7 +1253,7 @@ export default {
           form.append("file", this.pencairan);
 
           try {
-            await this.$axios.post("/pengajuan/upload", form).then(res => {
+            await this.$axios.post("/pengajuan/upload", form).then((res) => {
               this.buktiTFImage = res.data;
               // axios post pencairan image
               if (this.buktiTFImage) {
@@ -1146,13 +1261,13 @@ export default {
                   .post(`/pencairan`, {
                     pengajuan_id: this.$route.params.id,
                     nominal: this.pencairanNominal.replaceAll(".", ""),
-                    images: this.buktiTFImage
+                    images: this.buktiTFImage,
                   })
-                  .then(res => {
+                  .then((res) => {
                     this.success("Berhasil upload bukti pencairan");
                     window.location.reload();
                   })
-                  .catch(err => {
+                  .catch((err) => {
                     this.failed("Whoops Server Error");
                   });
               } else {
@@ -1180,8 +1295,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
@@ -1192,7 +1307,7 @@ export default {
             id_struktur: 24,
             next: 24,
             nama_status: "Direktur Keuangan",
-            pencairan: "default.jpg"
+            pencairan: "default.jpg",
           })
             .then(() => {
               this.success("Upload bukti pencairan selesai");
@@ -1213,7 +1328,7 @@ export default {
         let status = this.checkFileSize(this.LPJKeuangan.size);
         if (status) {
           try {
-            this.$axios.post("/pengajuan/upload", form).then(res => {
+            this.$axios.post("/pengajuan/upload", form).then((res) => {
               this.form.lpj_keuangan = res.data;
               this.loader("Uploading...");
               this.replace();
@@ -1224,7 +1339,7 @@ export default {
                 message: "Upload LPJ Keuangan",
                 lpj_keuangan: this.form.lpj_keuangan,
                 id_struktur: this.userLogin,
-                nama_status: this.$store.state.auth.user[0].fullname
+                nama_status: this.$store.state.auth.user[0].fullname,
               })
                 .then(() => {
                   this.success("Data telah disimpan!");
@@ -1250,7 +1365,7 @@ export default {
         let status = this.checkFileSize(this.LPJKegiatan.size);
         if (status) {
           try {
-            this.$axios.post("/pengajuan/upload", form).then(res => {
+            this.$axios.post("/pengajuan/upload", form).then((res) => {
               this.form.lpj_kegiatan = res.data;
               this.loader("Uploading...");
               this.replace();
@@ -1261,7 +1376,7 @@ export default {
                 message: "Upload LPJ Kegiatan",
                 lpj_kegiatan: this.form.lpj_kegiatan,
                 id_struktur: this.userLogin,
-                nama_status: this.$store.state.auth.user[0].fullname
+                nama_status: this.$store.state.auth.user[0].fullname,
               })
                 .then(() => {
                   this.success("Data telah disimpan!");
@@ -1279,17 +1394,6 @@ export default {
         this.failed("Select file");
       }
     },
-    async upload() {
-      const form = new FormData();
-      form.append("file", this.file);
-      try {
-        await this.$axios.post("/pengajuan/upload", form).then(res => {
-          this.form.rab = res.data;
-        });
-      } catch (e) {
-        this.failed("Whoops Server Error");
-      }
-    },
     undo() {
       this.$swal({
         title: "Warning!",
@@ -1299,8 +1403,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
@@ -1310,7 +1414,7 @@ export default {
             status_validasi: 0,
             id_struktur: this.userLogin,
             nama_status: this.$store.state.auth.user[0].fullname,
-            next: this.userLogin
+            next: this.userLogin,
           })
             .then(() => {
               this.success("Berhasil tolak pengajuan");
@@ -1342,26 +1446,95 @@ export default {
         .post("/pengajuan/pdfByUSer/" + this.userLogin, this.$route.params.id)
         .then(() => {
           console.log(this.$route);
+          window.open("http://localhost:8000/g/" + btoa(this.userLogin));
           // window.open(
-          //   "http://localhost:8000/g/" +
-          //     btoa(this.userLogin)
+          //   "https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin)
           // );
-          window.open(
-            "https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin)
-          );
         });
     },
     getDataRKAT(value) {
       if (value) {
         this.$axios
           .get(`rkat/byKode/${value.code ? value.code : value}`)
-          .then(res => {
+          .then((res) => {
             this.rkat.nama_kegiatan = res.data.data.nama_program;
             this.rkat.tujuan = res.data.data.tujuan;
             this.form.kode_rkat = res.data.data.id_rkat;
             this.kode_rkat = res.data.data.kode_rkat;
           });
       }
+    },
+    async upload() {
+      const form = new FormData();
+      form.append("file", this.file);
+      try {
+        await this.$axios.post("/pengajuan/importRAB", form).then((res) => {
+          for (let index = 0; index < res.data.data.length; index++) {
+            this.push({
+              no: res.data.data[index].no,
+              jenis_barang: res.data.data[index].jenis_barang,
+              harga_satuan: Number(res.data.data[index].harga_satuan),
+              qty: Number(res.data.data[index].qty),
+              total:
+                Number(res.data.data[index].harga_satuan) *
+                Number(res.data.data[index].qty),
+              keterangan: res.data.data[index].keterangan,
+            });
+          }
+          this.sum();
+        });
+      } catch (e) {
+        this.failed("Whoops Server Error");
+      }
+    },
+    sum() {
+      let totalSum = 0;
+      for (let index = 0; index < this.items.length; index++) {
+        totalSum += Number(
+          this.items[index].qty * this.items[index].harga_satuan
+        );
+      }
+      this.total = totalSum;
+    },
+    push({ no, jenis_barang, harga_satuan, qty, total, keterangan }) {
+      console.log({ no, jenis_barang, harga_satuan, qty, total, keterangan });
+      if (jenis_barang && harga_satuan && qty && total) {
+        this.items.push({
+          no: no,
+          jenis_barang: jenis_barang,
+          harga_satuan: harga_satuan,
+          qty: qty,
+          total: total,
+          keterangan: keterangan,
+        });
+      }
+    },
+    submit() {
+      this.push({
+        no: Math.floor(Math.random() * 1000),
+        jenis_barang: this.formRAB.jenis_barang,
+        harga_satuan: this.formRAB.harga_satuan,
+        qty: this.formRAB.qty,
+        total: Number(
+          this.formRAB.harga_satuan.replaceAll(".", "") *
+            this.formRAB.qty.replaceAll(".", "")
+        ),
+        keterangan: this.formRAB.ket,
+      });
+      (this.formRAB.jenis_barang = ""),
+        (this.formRAB.harga_satuan = ""),
+        (this.formRAB.qty = ""),
+        (this.formRAB.ket = "");
+      this.sum();
+    },
+    hapus(params) {
+      console.log(params);
+      let data = this.items.filter((i) => i.no !== params);
+      this.items = [];
+      for (let index = 0; index < data.length; index++) {
+        this.push(data[index]);
+      }
+      this.sum();
     },
     numberFormatBiayaProgram() {
       this.form.biaya_program = this.$formatRupiah(this.form.biaya_program);
@@ -1374,7 +1547,7 @@ export default {
         width: 300,
         icon: "success",
         title: "Congrats!",
-        text: params
+        text: params,
       });
     },
     failed(params) {
@@ -1382,7 +1555,7 @@ export default {
         width: 300,
         icon: "error",
         title: "Oops...",
-        text: params
+        text: params,
       });
     },
     loader(params) {
@@ -1392,10 +1565,10 @@ export default {
         text: params,
         imageUrl: "/Rocket.gif",
         showConfirmButton: false,
-        allowOutsideClick: true
+        allowOutsideClick: true,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

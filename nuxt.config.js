@@ -37,6 +37,7 @@ export default {
     '@/plugins/axios.js',
     '@/plugins/numeral.js',
     '@/plugins/vuelidate.js',
+    // {src: '~/plugins/vue-list-picker.js', mode: 'client'},
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

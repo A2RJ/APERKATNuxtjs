@@ -62,3 +62,31 @@ untuk testing 341
 - 376 [ok]
 - 352 [ok]
 - 302 [ok]
+
+# Revisi 04 Februari 2022
+
+- RAB di aplikasi
+-- [WIP] post rab ke tabel rab
+- Print pengajuan tampilkan history pengajuan [OK]
+
+# BUAT LIST PENCAIRAN
+
+- Saat approve dir keuangan, input nominal pencairan
+- WR2 tidak lagi terima/tolak tetapi:
+  -- Buat periode
+  -- list periode
+  -- list pencairan by periode (get where pengajuan.periode_id = periode.id)
+  -- add pengajuan ke list pencairan (update where pengajuan.periode_id = periode.id)
+- Rektor:
+  -- List pencairan (approve/revisi)
+- Default kop surat
+- Ubah warna menjadi orange
+- Tambah filter pengajuan berdasarkan status, per tanggal, per bulan, per tahun
+- List notifikasi (baru ditambahkan, revisi, list harus di approve dll)
+
+# 08/02/2022
+- Link refensi satuan harga barang
+- Perubahan warna untuk item yang sudah terima
+- Tambah kolom catatan di bottom RAB
+- Fields list pencairan WR 2
+- Perubahan tampilan (WR2, Rektor, dir keuangan, pencairan dan lpj)

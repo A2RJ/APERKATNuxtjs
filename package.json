@@ -1,6 +1,7 @@
 {
   "name": "submissionnuxtjs",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -20,11 +21,12 @@
     "laravel-vue-pagination": "^2.3.1",
     "node-fetch": "^2.6.1",
     "numeral": "^2.0.6",
-    "nuxt": "^2.15.3",
+    "nuxt": "^2.2.0",
     "nuxt-sweetalert2": "^1.0.0",
     "vue-chartjs": "^3.5.1",
     "vue-file-agent": "^1.7.3",
     "vue-filter-number-format": "^3.0.1",
+    "vue-list-picker": "^0.3.0",
     "vue-select": "^3.12.1",
     "vue-swal": "^1.0.0",
     "vue-sweetalert2": "^3.0.6",
