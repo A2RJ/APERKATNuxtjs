@@ -1,14 +1,27 @@
 <template>
   <div class="row">
     <div class="col-xl-12 col-lg-12 card-body">
+      
       <b-tabs content-class="mt-3" v-if="userLogin == 120">
         <b-tab title="Pencairan" active>
           <custom-table
             :items="listPencairan"
-            :fields="fields"
+            :fields="fieldsPencairan"
             :html="key"
             :actions="actions"
           >
+            <template v-slot:kode_rkat="row">
+              {{ row.item.rkat.kode_rkat }}
+            </template>
+            <template v-slot:rkat="row">
+              {{ row.item.rkat.nama_program }}
+            </template>
+            <template v-slot:biaya_program="row">
+              RP. {{ row.item.biaya_program | currency }}
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              RP. {{ row.item.biaya_disetujui | currency }}
+            </template>
             <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }} <br />
@@ -82,10 +95,22 @@
         <b-tab title="LPJ Keuangan" active>
           <custom-table
             :items="listLPJKeuangan"
-            :fields="fields"
+            :fields="fieldsPencairan"
             :html="key"
             :actions="actions"
           >
+            <template v-slot:kode_rkat="row">
+              {{ row.item.rkat.kode_rkat }}
+            </template>
+            <template v-slot:rkat="row">
+              {{ row.item.rkat.nama_program }}
+            </template>
+            <template v-slot:biaya_program="row">
+              RP. {{ row.item.biaya_program | currency }}
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              RP. {{ row.item.biaya_disetujui | currency }}
+            </template>
             <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }} <br />
@@ -157,10 +182,22 @@
         <b-tab title="Belum LPJ Keuangan">
           <custom-table
             :items="belumLPJKeuangan"
-            :fields="fields"
+            :fields="fieldsPencairan"
             :html="key"
             :actions="actions"
           >
+            <template v-slot:kode_rkat="row">
+              {{ row.item.rkat.kode_rkat }}
+            </template>
+            <template v-slot:rkat="row">
+              {{ row.item.rkat.nama_program }}
+            </template>
+            <template v-slot:biaya_program="row">
+              RP. {{ row.item.biaya_program | currency }}
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              RP. {{ row.item.biaya_disetujui | currency }}
+            </template>
             <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }} <br />
@@ -231,9 +268,102 @@
         </b-tab>
       </b-tabs>
       <b-tabs content-class="mt-3" v-else>
-        <b-tab title="List Pencairan" v-if="userLogin == 24" active>
-          <div class="m-2 row" v-if="userLogin == 24">
-            <div class="col-sm-6">
+                <b-tab title="Need Approval" active>
+          <custom-table
+            :items="itemsneed"
+            :fields="fieldsPencairan"
+            :html="key"
+            :actions="actions"
+          >
+                    <template v-slot:kode_rkat="row">
+                      {{ row.item.rkat.kode_rkat }}
+                    </template>
+                    <template v-slot:rkat="row">
+                      {{ row.item.rkat.nama_program }}
+                    </template>
+                    <template v-slot:biaya_program="row">
+                      RP. {{ row.item.biaya_program | currency }}
+                    </template>
+            <template v-slot:fullname="row">
+              <p>
+                {{ row.item.fullname | capitalize }} <br />
+                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
+                  >Ditolak: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
+                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 2" variant="success"
+                  >Diterima: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 3" variant="success"
+                  >Pencairan: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 4" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+                <b-badge v-if="row.item.validasi_status == 5" variant="success"
+                  >Completed: {{ row.item.nama_status }}</b-badge
+                >
+              </p>
+            </template>
+            <template v-slot:nama_struktur="row">
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 == '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 == '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur }}
+              </p>
+              <p
+                v-if="
+                  row.item.nama_struktur !== '0' &&
+                  row.item.nama_struktur_child1 !== '0' &&
+                  row.item.nama_struktur_child2 !== '0'
+                "
+                class="text-uppercase"
+              >
+                {{ row.item.nama_struktur_child1 }}
+              </p>
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
+            <template v-slot:actions="row">
+              <NuxtLink
+                class="btn btn-sm btn-outline-info"
+                :to="'edit/' + row.item.id_pengajuan"
+                :key="'edit' + row.index"
+                >Detail</NuxtLink
+              >
+            </template>
+          </custom-table></b-tab
+        >
+        <b-tab
+          title="List Pencairan"
+          v-if="
+            userLogin == 21 ||
+            userLogin == 22 ||
+            userLogin == 23 ||
+            userLogin == 24
+          "
+          
+        >
+          <div class="m-2 row">
+            <div class="col-sm-6" v-if="userLogin == 24">
               <form ref="form" @submit.stop.prevent="addPeriod">
                 <b-form-group
                   label="Input Period"
@@ -247,10 +377,36 @@
                     required
                   />
                 </b-form-group>
-                <button class="btn btn-sm btn-outline-success float-right">
+                <button class="btn btn-sm btn-outline-success ml-2">
                   Submit
                 </button>
+                <b-button
+                  class="btn btn-sm btn-outline-success ml-2"
+                  variant="outline-success"
+                  @click="printAll()"
+                  v-if="userLogin == 24"
+                  >Print semua list pencairan</b-button
+                >
               </form>
+            </div>
+            <div
+              class="col-sm-6"
+              v-if="userLogin == 21 || userLogin == 22 || userLogin == 23"
+            >
+              <b-button
+                variant="outline-success"
+                class="btn btn-sm mt-4"
+                @click="approveAll()"
+                v-if="userLogin == 22 || userLogin == 23"
+                >Approve semua list pencairan</b-button
+              >
+              <b-button
+                variant="outline-success"
+                class="btn btn-sm mt-4"
+                @click="printAll()"
+                v-if="userLogin == 22 || userLogin == 23"
+                >Print semua list pencairan</b-button
+              >
             </div>
             <div class="col-sm-6">
               <b-form-group
@@ -265,7 +421,8 @@
                   @change="selectPeriod()"
                 ></b-form-select>
               </b-form-group>
-              <div class="mt-3">
+
+              <div class="mt-3" v-if="userLogin == 24">
                 <b-button
                   v-b-modal.modal-xl
                   variant="outline-success"
@@ -286,10 +443,41 @@
                 >
                   <custom-table
                     :items="itemsneed"
-                    :fields="userLogin == 23 ? fieldsPencairan : fields"
+                    :fields="fieldsPencairan"
                     :html="key"
                     :actions="actions"
                   >
+                    <template v-slot:kode_rkat="row">
+                      {{ row.item.rkat.kode_rkat }}
+                    </template>
+                    <template v-slot:rkat="row">
+                      {{ row.item.rkat.nama_program }}
+                    </template>
+                    <template v-slot:biaya_program="row">
+                      RP. {{ row.item.biaya_program | currency }}
+                    </template>
+                    <template v-slot:biaya_disetujui="row" colspan="2">
+                      <b-form-input
+                        v-if="itemsneed[row.index].isEdit"
+                        v-model="biaya_disetujui_keuangan"
+                        @keypress="editListener"
+                      >
+                      </b-form-input>
+                      <b-form-text
+                        v-if="itemsneed[row.index].isEdit"
+                        id="input-live-help"
+                        style="word-break: break-all"
+                        >RP.{{
+                          biaya_disetujui_keuangan | currency
+                        }}</b-form-text
+                      >
+                      <p style="word-break: break-all" v-else>
+                        RP.{{ row.item.biaya_disetujui | currency }}
+                      </p>
+                    </template>
+                    <template v-slot:no_rek="row">
+                      <p style="word-break: break-all">{{ row.item.no_rek }}</p>
+                    </template>
                     <template v-slot:fullname="row">
                       <p>
                         {{ row.item.fullname | capitalize }} <br />
@@ -361,6 +549,22 @@
                       <p>{{ row.item.created_at | convertDate }}</p>
                     </template>
                     <template v-slot:actions="row">
+                      <b-button
+                        v-if="!itemsneed[row.index].isEdit"
+                        variant="warning"
+                        class="btn btn-sm mb-1 mr-1"
+                        @click="editRowHandler(row)"
+                      >
+                        <span>Edit</span>
+                      </b-button>
+                      <b-button
+                        v-else
+                        variant="success"
+                        class="btn btn-sm mb-1 mr-1"
+                        @click="submitRowHandler(row)"
+                      >
+                        <span>Done</span>
+                      </b-button>
                       <button
                         class="btn btn-sm btn-outline-info mb-1 mr-1"
                         @click="addToList(row.item)"
@@ -385,6 +589,18 @@
             :html="key"
             :actions="actions"
           >
+            <template v-slot:kode_rkat="row">
+              {{ row.item.rkat.kode_rkat }}
+            </template>
+            <template v-slot:rkat="row">
+              {{ row.item.rkat.nama_program }}
+            </template>
+            <template v-slot:biaya_program="row">
+              RP. {{ row.item.biaya_program | currency }}
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              RP. {{ row.item.biaya_disetujui | currency }}
+            </template>
             <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }} <br />
@@ -534,13 +750,26 @@
             </template>
           </custom-table></b-tab
         >
+
         <b-tab title="LPJ Kegiatan" v-if="userLogin == 21">
           <custom-table
             :items="listLPJKegiatan"
-            :fields="fields"
+            :fields="fieldsPencairan"
             :html="key"
             :actions="actions"
           >
+            <template v-slot:kode_rkat="row">
+              {{ row.item.rkat.kode_rkat }}
+            </template>
+            <template v-slot:rkat="row">
+              {{ row.item.rkat.nama_program }}
+            </template>
+            <template v-slot:biaya_program="row">
+              RP. {{ row.item.biaya_program | currency }}
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              RP. {{ row.item.biaya_disetujui | currency }}
+            </template>
             <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }}
@@ -616,10 +845,22 @@
         <b-tab title="Belum LPJ Kegiatan" v-if="userLogin == 21">
           <custom-table
             :items="belumLPJKegiatan"
-            :fields="fields"
+            :fields="fieldsPencairan"
             :html="key"
             :actions="actions"
           >
+            <template v-slot:kode_rkat="row">
+              {{ row.item.rkat.kode_rkat }}
+            </template>
+            <template v-slot:rkat="row">
+              {{ row.item.rkat.nama_program }}
+            </template>
+            <template v-slot:biaya_program="row">
+              RP. {{ row.item.biaya_program | currency }}
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              RP. {{ row.item.biaya_disetujui | currency }}
+            </template>
             <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }}
@@ -913,10 +1154,14 @@ export default {
         "actions",
       ],
       fieldsPencairan: [
-        { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT" },
-        { key: "nama_struktur", label: "Pelaksana" },
-        { key: "created_at", label: "Waktu Pengajuan" },
+        { key: "rkat", label: "Nama Program" },
+        { key: "tanggal", label: "Waktu Pelaksanaan" },
+        { key: "biaya_program", label: "RAB diajukan" },
+        { key: "biaya_disetujui", label: "RAB disetujui" },
+        { key: "bank", label: "Bank" },
+        { key: "no_rek", label: "No Rek" },
+        { key: "atn", label: "Atas Nama" },
         "actions",
       ],
       listOnProggress: [],
@@ -938,6 +1183,7 @@ export default {
       options: [{ value: null, text: "Please select an option" }],
       period: null,
       selectedPeriod: null,
+      biaya_disetujui_keuangan: null,
       userLogin: this.$store.state.auth.user[0].id_user,
     };
   },
@@ -952,7 +1198,14 @@ export default {
   },
   mounted() {
     this.listOnProggress = this.subordinate;
-    this.itemsneed = this.subordinateneed;
+    if (this.userLogin == 24) {
+      this.itemsneed = this.subordinateneed.map((item) => ({
+        ...item,
+        isEdit: false,
+      }));
+    } else {
+      this.itemsneed = this.subordinateneed;
+    }
 
     this.itemsSelesai = this.peng;
     this.itemsCadangan = this.peng;
@@ -969,7 +1222,11 @@ export default {
       this.getBelumLPJKeuangan();
     }
 
-    if (this.userLogin == 24) {
+    if (
+      this.userLogin == 21 ||
+      this.userLogin == 22 ||
+      (this.userLogin == 23) | (this.userLogin == 24)
+    ) {
       this.getPeriod();
     }
   },
@@ -979,6 +1236,36 @@ export default {
       "pengajuanSelesai",
       "approved",
     ]),
+    editListener() {
+      // console.log(this.biaya_disetujui_keuangan);
+      // this.biaya_disetujui_keuangan = this.$formatRupiah(this.biaya_disetujui_keuangan);
+    },
+    editRowHandler(data) {
+      this.itemsneed[data.index].isEdit = !this.itemsneed[data.index].isEdit;
+      this.itemsneed.map((item) => {
+        if (item.id_pengajuan != data.item.id_pengajuan) {
+          item.isEdit = false;
+        }
+      });
+      this.biaya_disetujui_keuangan = null;
+    },
+    submitRowHandler(data) {
+      this.itemsneed[data.index].isEdit = !this.itemsneed[data.index].isEdit;
+      this.$axios
+        .get(
+          `/period/${
+            data.item.id_pengajuan
+          }/${this.biaya_disetujui_keuangan.replace(/[^0-9]/g, "")}`
+        )
+        .then((res) => {
+          this.getNeedApproved();
+
+          console.log("success edit biaya disetujui");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     refresh() {
       this.selectPeriod();
     },
@@ -1007,9 +1294,21 @@ export default {
         });
     },
     selectPeriod() {
-      this.$axios.get("/period/" + this.selectedPeriod).then((res) => {
-        this.listPeriodePencairan = res.data.data;
-      });
+      if (
+        this.userLogin == 21 ||
+        this.userLogin == 22 ||
+        this.userLogin == 23
+      ) {
+        this.$axios
+          .get(`period/getByAtasan/${this.userLogin}/${this.selectedPeriod}`)
+          .then((res) => {
+            this.listPeriodePencairan = res.data.data;
+          });
+      } else {
+        this.$axios.get(`period/${this.selectedPeriod}`).then((res) => {
+          this.listPeriodePencairan = res.data.data;
+        });
+      }
     },
     addToList(params) {
       if (this.selectedPeriod) {
@@ -1019,9 +1318,9 @@ export default {
             id_period: this.selectedPeriod,
             message: "List pencairan",
             status_validasi: 2,
-            id_struktur: 23,
-            nama_status: "Warek II Keuangan",
-            next: 24,
+            id_struktur: 24,
+            nama_status: "Direktorat Keuangan",
+            next: 23,
           })
           .then((res) => {
             if (res.data) {
@@ -1045,30 +1344,97 @@ export default {
         .post(`/period/addList`, {
           id_pengajuan: params,
           id_period: null,
-          message: "List pencairan",
+          message: "List pencairan (Pending)",
           status_validasi: 0,
-          id_struktur: 23,
-          nama_status: "Warek II Keuangan",
-          next: 23,
+          id_struktur: 24,
+          nama_status: "Direktorat Keuangan",
+          next: 24,
         })
         .then((res) => {
           if (res.data) {
-            let list = this.listPeriodePencairan.filter(
-              (i) => i.id_pengajuan !== params
-            );
-            this.listPeriodePencairan = [];
-            for (let index = 0; index < list.length; index++) {
-              this.listPeriodePencairan.push(list[index]);
-            }
-            this.$axios
-              .get(`/pengajuan/pengajuanNeedApproved/23`)
-              .then((response) => {
-                this.itemsneed = response.data.data;
-              });
+            this.getNeedApproved();
+            this.selectPeriod();
           }
         })
         .catch((e) => {
           this.failed("Whoops...");
+        });
+    },
+    approveAll() {
+      this.$swal({
+        title: "Warning!",
+        text: "Setujui list pencairan ini?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this.loader("loading...");
+          let next = this.userLoin;
+          if (this.userLogin == 23) {
+            next = 22;
+          }
+          if (this.userLogin == 22) {
+            next = 24;
+          }
+
+          for (
+            let index = 0;
+            index < this.listPeriodePencairan.length;
+            index++
+          ) {
+            await this.approved({
+              id: this.listPeriodePencairan[index].id_pengajuan,
+              message: this.message,
+              status_validasi: 2,
+              id_struktur: this.userLogin,
+              nama_status: this.$store.state.auth.user[0].fullname,
+              next: next,
+            })
+              .then(() => {
+                this.$nuxt.refresh();
+              })
+              .catch(() => {
+                this.failed("Whoops Server Error");
+              });
+          }
+          this.success("Berhasil terima pengajuan");
+        }
+      });
+    },
+    printAll() {
+      // console.log(this.listPeriodePencairan);
+      let print = [];
+      for (let index = 0; index < this.listPeriodePencairan.length; index++) {
+        print.push(this.listPeriodePencairan[index].id_pengajuan);
+      }
+      this.$axios
+        .post(
+          "/pengajuan/pdfByUSer/" + this.$store.state.auth.user[0].id_user,
+          print
+        )
+        .then(() => {
+          window.open(
+            "http://localhost:8000/g/" +
+              btoa(this.$store.state.auth.user[0].id_user)
+          );
+          // window.open(
+          //   "https://aperkat.uts.ac.id/api/g/" +
+          //     btoa(this.$store.state.auth.user[0].id_user)
+          // );
+        });
+    },
+    getNeedApproved() {
+      this.$axios
+        .get(`/pengajuan/pengajuanNeedApproved/${this.userLogin}`)
+        .then((response) => {
+          this.itemsneed = response.data.data.map((item) => ({
+            ...item,
+            isEdit: false,
+          }));
         });
     },
     rowClass(item, type) {

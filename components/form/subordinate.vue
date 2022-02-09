@@ -644,6 +644,13 @@
             :items="items"
             :fields="fields"
           >
+
+            <template #cell(harga_satuan)="data" >
+              Rp. {{ data.item.harga_satuan | currency}}
+            </template>
+            <template #cell(total)="data" >
+              Rp. {{ data.item.total | currency}}
+            </template>
             <template #cell(action)="data" >
               <button
                 type="button"

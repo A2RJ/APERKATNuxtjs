@@ -69,25 +69,44 @@ untuk testing 341
 - Print pengajuan tampilkan history pengajuan [OK]
 
 # BUAT LIST PENCAIRAN
-- https://www.npmjs.com/package/bootstrap-vue-editable-table
-- https://muhimasri.com/blogs/create-an-editable-dynamic-table-with-bootstrap-vue/
-- Perubahan tampilan (WR2, Rektor, dir keuangan, pencairan dan lpj)
-- Saat approve dir keuangan, input nominal pencairan
+
+- Dir keuangan :
   -- Buat periode
   -- list periode
   -- list pencairan by periode (get where pengajuan.periode_id = periode.id)
+  -- input nominal pencairan
   -- add pengajuan ke list pencairan (update where pengajuan.periode_id = periode.id)
-- WR2 tidak lagi terima/tolak tetapi:
-  -- List pencairan (approve/revisi)
-- Rektor:
-  -- List pencairan (approve/revisi)
+- WR2 : (Tampilkan berdasarkan periode dan next == wr2 di tabel pengajuan)
+  -- Select periode
+  -- List pengajuan by periode
+  -- Aksi OK, untuk banyak data gunakan looping
+- Rektor :
+  -- Select periode
+  -- List pengajuan by periode
+  -- Aksi OK, untuk banyak data gunakan looping
+- Sekniv :
+  -- Select periode
+  -- List pengajuan by periode
+  -- Cek LPJ
+
+# 08/02/2022
+
+- Link refensi satuan harga barang
+- Perubahan warna untuk item yang sudah terima
+- Tambah kolom catatan di bottom RAB
+- Fields list pencairan WR 2
 - Default kop surat
 - Ubah warna menjadi orange
 - Tambah filter pengajuan berdasarkan status, per tanggal, per bulan, per tahun
 - List notifikasi (baru ditambahkan, revisi, list harus di approve dll)
 
-# 08/02/2022
-- Link refensi satuan harga barang
-- Perubahan warna untuk item yang sudah terima
-- Tambah kolom catatan di bottom RAB
-- Fields list pencairan WR 2
+# 09/02/2022
+- Perubahan formaat penamaan file pdf (Nomor rkat-nama-kegiatan-timenow())
+- Print list pencairan (rkat-periode-timenow)
+- Filter otomatis berdasarkan tahun sekarang (dropdown tahun sebelumnya)
+- List pencairan langsung periode terbaru
+- Tambah detail periode diatas table list pencairan dan tanggal pembuatan periode
+- List pencairan langsung tabel per periode
+
+- Tab baru telah dicairkan (Bendahara)
+- Pangkas fields (Bank, Nomor Rekening, Nama Rekening - Sekniv dan dir keuangan lpj)
