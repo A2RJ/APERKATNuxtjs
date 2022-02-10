@@ -110,7 +110,14 @@ untuk testing 341
 - Pencairan langsung dihalaman dashboard [OK]
 - LPJ Keuangan langsung dihalaman dashboard [OK]
 - Preview pencairan, lpj keuangan, lpj kegiatan langsung di table
-
+- Nominal biaya dan nama program gantikan user
+- Nominal biaya disetujui dan diajukan
+- Max 5 pengajuan per user (On progress)
+- Total menjadi biaya program (Input pengajuan)
+- Total di bawah table
+- Form login
+- Tolak pengajuan oleh rektor agar dibuat periode baru
+- Query LPJ Keuangan
 # Fix Menu
 
 - Fixing Menu pengajuan sub divisi [OK]
