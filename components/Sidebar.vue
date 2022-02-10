@@ -27,109 +27,108 @@
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider" />
+    <!-- <div v-if="notUser"> -->
+      <!-- Heading -->
+      <div class="sidebar-heading">Submission</div>
 
-    <!-- Heading -->
-    <div class="sidebar-heading">Submission</div>
+      <!-- Nav Item -->
 
-    <!-- Nav Item -->
+      <li class="nav-item" v-show="sekniv">
+        <NuxtLink class="nav-link" to="/rkat">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>RKAT</span>
+        </NuxtLink>
+      </li>
 
-    <li class="nav-item" v-show="sekniv">
-      <NuxtLink class="nav-link" to="/rkat">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>RKAT</span>
-      </NuxtLink>
-    </li>
-
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-      <a
-        class="nav-link collapsed"
-        href="#"
-        data-toggle="collapse"
-        data-target="#collapseOne"
-        aria-expanded="true"
-        aria-controls="collapseOne"
-      >
-        <i class="fas fa-fw fa-cog"></i>
-        <span>PENGAJUAN</span>
-      </a>
-      <div
-        id="collapseOne"
-        class="collapse"
-        aria-labelledby="headingTwo"
-        data-parent="#accordionSidebar"
-      >
-        <div
-          class="bg-white py-2 collapse-inner rounded"
-          v-if="this.$store.state.auth.user"
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseOne"
+          aria-expanded="true"
+          aria-controls="collapseOne"
         >
-          <h6 class="collapse-header">Daftar Pengajuan</h6>
-          <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/'"
-            >Pengajuan</NuxtLink
-          >
-          <NuxtLink
-            class="collapse-item"
-            v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
-            :to="'/pengajuan/supervisor/'"
-            >Pengajuan Sub Divisi
-            </NuxtLink
-          >
-          <NuxtLink
-            class="collapse-item"
-            v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
-            :to="'/pengajuan/grafik/'"
-            >Grafik Sub Divisi</NuxtLink
-          >
-        </div>
-      </div>
-    </li>
-
-    <li class="nav-item">
-      <a
-        class="nav-link collapsed"
-        href="#"
-        data-toggle="collapse"
-        data-target="#collapseTwo"
-        aria-expanded="true"
-        aria-controls="collapseTwo"
-      >
-        <i class="fas fa-fw fa-cog"></i>
-        <span>NON RKAT</span>
-      </a>
-      <div
-        id="collapseTwo"
-        class="collapse"
-        aria-labelledby="headingTwo"
-        data-parent="#accordionSidebar"
-      >
+          <i class="fas fa-fw fa-cog"></i>
+          <span>PENGAJUAN</span>
+        </a>
         <div
-          class="bg-white py-2 collapse-inner rounded"
-          v-if="this.$store.state.auth.user"
+          id="collapseOne"
+          class="collapse"
+          aria-labelledby="headingTwo"
+          data-parent="#accordionSidebar"
         >
-          <h6 class="collapse-header">Daftar Non RKAT</h6>
-          <NuxtLink class="collapse-item" :to="'/nonrkat/subordinate/'"
-            >Non RKAT
-          </NuxtLink>
-          <NuxtLink
-            class="collapse-item"
-            v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
-            :to="'/nonrkat/supervisor/'"
-            >Non RKAT Sub Divisi
-          </NuxtLink>
+          <div
+            class="bg-white py-2 collapse-inner rounded"
+            v-if="this.$store.state.auth.user"
+          >
+            <h6 class="collapse-header">Daftar Pengajuan</h6>
+            <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/'"
+              >Pengajuan</NuxtLink
+            >
+            <NuxtLink
+              class="collapse-item"
+              v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+              :to="'/pengajuan/supervisor/'"
+              >Pengajuan Sub Divisi
+            </NuxtLink>
+            <NuxtLink
+              class="collapse-item"
+              v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+              :to="'/pengajuan/grafik/'"
+              >Grafik Sub Divisi</NuxtLink
+            >
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
 
-    <li class="nav-item" v-show="sekniv">
-      <NuxtLink class="nav-link" to="/user">
-        <i class="fas fa-fw fa-chart-area"></i>
-        <span>User</span>
-      </NuxtLink>
-    </li>
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseTwo"
+          aria-expanded="true"
+          aria-controls="collapseTwo"
+        >
+          <i class="fas fa-fw fa-cog"></i>
+          <span>NON RKAT</span>
+        </a>
+        <div
+          id="collapseTwo"
+          class="collapse"
+          aria-labelledby="headingTwo"
+          data-parent="#accordionSidebar"
+        >
+          <div
+            class="bg-white py-2 collapse-inner rounded"
+            v-if="this.$store.state.auth.user"
+          >
+            <h6 class="collapse-header">Daftar Non RKAT</h6>
+            <NuxtLink class="collapse-item" :to="'/nonrkat/subordinate/'"
+              >Non RKAT
+            </NuxtLink>
+            <NuxtLink
+              class="collapse-item"
+              v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+              :to="'/nonrkat/supervisor/'"
+              >Non RKAT Sub Divisi
+            </NuxtLink>
+          </div>
+        </div>
+      </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block" />
+      <li class="nav-item" v-show="sekniv">
+        <NuxtLink class="nav-link" to="/user">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>User</span>
+        </NuxtLink>
+      </li>
 
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block" />
+    <!-- </div> -->
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
       <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -147,12 +146,17 @@ export default {
       dirKeuangan: false,
       warek: false,
       rektor: false,
-      sekniv: false
+      sekniv: false,
+      userLogin: this.$store.state.auth.user[0].id_user,
+      notUser: true,
     };
   },
   computed: {},
   methods: {},
   mounted() {
+    if (this.userLogin !== 120 || this.userLogin !== 121) {
+      this.notUser = false;
+    }
     if (this.$store.state.auth.loggedIn) {
       let data = this.$store.state.auth.user[1].level;
       if (data == "prodi") {
@@ -169,7 +173,7 @@ export default {
         this.sekniv = true;
       }
     }
-  }
+  },
 };
 </script>
 

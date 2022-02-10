@@ -63,13 +63,10 @@ untuk testing 341
 - 352 [ok]
 - 302 [ok]
 
-# Revisi 04 Februari 2022
+# Revisi 04 Februari 2022 [OK]
 
 - RAB di aplikasi [Validasi-!=-0-Testing-update-data]
 - Print pengajuan tampilkan history pengajuan [OK]
-
-# BUAT LIST PENCAIRAN
-
 - Dir keuangan :
   -- Buat periode
   -- list periode
@@ -91,16 +88,17 @@ untuk testing 341
 
 # 08/02/2022
 
-- Link refensi satuan harga barang
+- Link refensi satuan harga barang 
 - Perubahan warna untuk item yang sudah terima
 - Tambah kolom catatan di bottom RAB
-- Fields list pencairan WR 2
+- Fields list pencairan WR 2 [OK]
 - Default kop surat
 - Ubah warna menjadi orange
 - Tambah filter pengajuan berdasarkan status, per tanggal, per bulan, per tahun
 - List notifikasi (baru ditambahkan, revisi, list harus di approve dll)
 
 # 09/02/2022
+
 - Perubahan formaat penamaan file pdf (Nomor rkat-nama-kegiatan-timenow())
 - Print list pencairan (rkat-periode-timenow)
 - Filter otomatis berdasarkan tahun sekarang (dropdown tahun sebelumnya)
@@ -109,4 +107,16 @@ untuk testing 341
 - List pencairan langsung tabel per periode
 
 - Tab baru telah dicairkan (Bendahara)
-- Pangkas fields (Bank, Nomor Rekening, Nama Rekening - Sekniv dan dir keuangan lpj)
+- Pangkas fields (Bank, Nomor Rekening, Nama Rekening - Sekniv dan dir keuangan lpj) [OK]
+- Pencairan langsung dihalaman dashboard [OK]
+- LPJ Keuangan langsung dihalaman dashboard [OK]
+
+# Fix Menu
+
+- Fixing Menu pengajuan sub divisi [OK]
+  -- on progress dan completed tetap [ALL] [OK]
+  -- need approval dengan format sebelumnya [!WR2-!WR2bendahara-!WR2lpj] [OK]
+  -- List pencairan [DIRKEU-WR2-REKTOR] [OK]
+  -- Pencairan dan belum pencairan [WR2Bendahara] [OK]
+  -- LPJ Kegiatan dan belum lpj kegiatan [SEKNIV] [OK]
+  -- LPJ Keuangan dan belum lpj keuangan [WR2LPJ] [OK]

@@ -1,10 +1,15 @@
 <template>
-<grafik />
+  <div>
+    <pencairan-lpj-keuangan v-if="userLogin == 120 || userLogin == 121" />
+    <grafik v-else />
+  </div>
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
+import pencairanLpjKeuangan from '../components/pencairanLpjKeuangan.vue';
 
 export default {
+  components: { pencairanLpjKeuangan },
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch(
@@ -16,6 +21,7 @@ export default {
   },
   data() {
     return {
+      userLogin: this.$store.state.auth.user[0].id_user,
       options: {},
       chartData: {},
       keyRKAT: "id_rkat",

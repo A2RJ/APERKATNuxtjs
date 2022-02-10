@@ -1,289 +1,14 @@
 <template>
-  <div class="row">
+  <div class="row card shadow mb-4">
     <div class="col-xl-12 col-lg-12 card-body">
-      
-      <b-tabs content-class="mt-3" v-if="userLogin == 120">
-        <b-tab title="Pencairan" active>
-          <custom-table
-            :items="listPencairan"
-            :fields="fieldsPencairan"
-            :html="key"
-            :actions="actions"
-          >
-            <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
-            </template>
-            <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
-            </template>
-            <template v-slot:biaya_program="row">
-              RP. {{ row.item.biaya_program | currency }}
-            </template>
-            <template v-slot:biaya_disetujui="row">
-              RP. {{ row.item.biaya_disetujui | currency }}
-            </template>
-            <template v-slot:fullname="row">
-              <p>
-                {{ row.item.fullname | capitalize }} <br />
-                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
-                  >Ditolak: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
-                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 2" variant="success"
-                  >Diterima: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 3" variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 4" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 5" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-            </template>
-            <template v-slot:nama_struktur="row">
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 == '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 !== '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur_child1 }}
-              </p>
-            </template>
-            <template v-slot:created_at="row">
-              <p>{{ row.item.created_at | convertDate }}</p>
-            </template>
-            <template v-slot:actions="row">
-              <NuxtLink
-                class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
-                :key="'edit' + row.index"
-                >Detail</NuxtLink
-              >
-            </template>
-          </custom-table>
-        </b-tab>
-      </b-tabs>
-      <b-tabs content-class="mt-3" v-else-if="userLogin == 121">
-        <b-tab title="LPJ Keuangan" active>
-          <custom-table
-            :items="listLPJKeuangan"
-            :fields="fieldsPencairan"
-            :html="key"
-            :actions="actions"
-          >
-            <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
-            </template>
-            <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
-            </template>
-            <template v-slot:biaya_program="row">
-              RP. {{ row.item.biaya_program | currency }}
-            </template>
-            <template v-slot:biaya_disetujui="row">
-              RP. {{ row.item.biaya_disetujui | currency }}
-            </template>
-            <template v-slot:fullname="row">
-              <p>
-                {{ row.item.fullname | capitalize }} <br />
-                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
-                  >Ditolak: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
-                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 2" variant="success"
-                  >Diterima: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 3" variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 4" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 5" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-            </template>
-            <template v-slot:nama_struktur="row">
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 == '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 !== '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur_child1 }}
-              </p>
-            </template>
-            <template v-slot:created_at="row">
-              <p>{{ row.item.created_at | convertDate }}</p>
-            </template>
-            <template v-slot:actions="row">
-              <NuxtLink
-                class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
-                :key="'edit' + row.index"
-                >Detail</NuxtLink
-              >
-            </template>
-          </custom-table>
-        </b-tab>
-        <b-tab title="Belum LPJ Keuangan">
-          <custom-table
-            :items="belumLPJKeuangan"
-            :fields="fieldsPencairan"
-            :html="key"
-            :actions="actions"
-          >
-            <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
-            </template>
-            <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
-            </template>
-            <template v-slot:biaya_program="row">
-              RP. {{ row.item.biaya_program | currency }}
-            </template>
-            <template v-slot:biaya_disetujui="row">
-              RP. {{ row.item.biaya_disetujui | currency }}
-            </template>
-            <template v-slot:fullname="row">
-              <p>
-                {{ row.item.fullname | capitalize }} <br />
-                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
-                  >Ditolak: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
-                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 2" variant="success"
-                  >Diterima: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 3" variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 4" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 5" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-            </template>
-            <template v-slot:nama_struktur="row">
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 == '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 !== '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur_child1 }}
-              </p>
-            </template>
-            <template v-slot:created_at="row">
-              <p>{{ row.item.created_at | convertDate }}</p>
-            </template>
-            <template v-slot:actions="row">
-              <NuxtLink
-                class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
-                :key="'edit' + row.index"
-                >Detail</NuxtLink
-              >
-            </template>
-          </custom-table>
-        </b-tab>
-      </b-tabs>
-      <b-tabs content-class="mt-3" v-else>
-                <b-tab title="Need Approval" active>
+      <b-tabs content-class="mt-3">
+        <b-tab title="Need Approval" active v-if="userLogin !== 23">
           <custom-table
             :items="itemsneed"
-            :fields="fieldsPencairan"
+            :fields="fields"
             :html="key"
             :actions="actions"
           >
-                    <template v-slot:kode_rkat="row">
-                      {{ row.item.rkat.kode_rkat }}
-                    </template>
-                    <template v-slot:rkat="row">
-                      {{ row.item.rkat.nama_program }}
-                    </template>
-                    <template v-slot:biaya_program="row">
-                      RP. {{ row.item.biaya_program | currency }}
-                    </template>
             <template v-slot:fullname="row">
               <p>
                 {{ row.item.fullname | capitalize }} <br />
@@ -354,13 +79,7 @@
         >
         <b-tab
           title="List Pencairan"
-          v-if="
-            userLogin == 21 ||
-            userLogin == 22 ||
-            userLogin == 23 ||
-            userLogin == 24
-          "
-          
+          v-if="userLogin == 22 || userLogin == 23 || userLogin == 24"
         >
           <div class="m-2 row">
             <div class="col-sm-6" v-if="userLogin == 24">
@@ -442,8 +161,8 @@
                   hide-footer
                 >
                   <custom-table
-                    :items="itemsneed"
-                    :fields="fieldsPencairan"
+                    :items="itemsAddListPencairan"
+                    :fields="fieldsListPencairanFormat"
                     :html="key"
                     :actions="actions"
                   >
@@ -458,13 +177,13 @@
                     </template>
                     <template v-slot:biaya_disetujui="row" colspan="2">
                       <b-form-input
-                        v-if="itemsneed[row.index].isEdit"
+                        v-if="itemsAddListPencairan[row.index].isEdit"
                         v-model="biaya_disetujui_keuangan"
                         @keypress="editListener"
                       >
                       </b-form-input>
                       <b-form-text
-                        v-if="itemsneed[row.index].isEdit"
+                        v-if="itemsAddListPencairan[row.index].isEdit"
                         id="input-live-help"
                         style="word-break: break-all"
                         >RP.{{
@@ -550,7 +269,7 @@
                     </template>
                     <template v-slot:actions="row">
                       <b-button
-                        v-if="!itemsneed[row.index].isEdit"
+                        v-if="!itemsAddListPencairan[row.index].isEdit"
                         variant="warning"
                         class="btn btn-sm mb-1 mr-1"
                         @click="editRowHandler(row)"
@@ -585,7 +304,7 @@
           </div>
           <custom-table
             :items="listPeriodePencairan"
-            :fields="fieldsPencairan"
+            :fields="fieldsListPencairanFormat"
             :html="key"
             :actions="actions"
           >
@@ -600,64 +319,6 @@
             </template>
             <template v-slot:biaya_disetujui="row">
               RP. {{ row.item.biaya_disetujui | currency }}
-            </template>
-            <template v-slot:fullname="row">
-              <p>
-                {{ row.item.fullname | capitalize }} <br />
-                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
-                  >Ditolak: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
-                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 2" variant="success"
-                  >Diterima: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 3" variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 4" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 5" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-            </template>
-            <template v-slot:nama_struktur="row">
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 == '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 !== '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur_child1 }}
-              </p>
-            </template>
-            <template v-slot:created_at="row">
-              <p>{{ row.item.created_at | convertDate }}</p>
             </template>
             <template v-slot:actions="row">
               <button
@@ -675,86 +336,10 @@
             </template>
           </custom-table></b-tab
         >
-        <b-tab title="Need Approval" v-else>
-          <custom-table
-            :items="itemsneed"
-            :fields="fields"
-            :html="key"
-            :actions="actions"
-          >
-            <template v-slot:fullname="row">
-              <p>
-                {{ row.item.fullname | capitalize }} <br />
-                <b-badge v-if="row.item.validasi_status == 0" variant="danger"
-                  >Ditolak: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 1" variant="warning"
-                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 2" variant="success"
-                  >Diterima: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 3" variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 4" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-                <b-badge v-if="row.item.validasi_status == 5" variant="success"
-                  >Completed: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-            </template>
-            <template v-slot:nama_struktur="row">
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 == '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 !== '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur_child1 }}
-              </p>
-            </template>
-            <template v-slot:created_at="row">
-              <p>{{ row.item.created_at | convertDate }}</p>
-            </template>
-            <template v-slot:actions="row">
-              <NuxtLink
-                class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
-                :key="'edit' + row.index"
-                >Detail</NuxtLink
-              >
-            </template>
-          </custom-table></b-tab
-        >
-
         <b-tab title="LPJ Kegiatan" v-if="userLogin == 21">
           <custom-table
             :items="listLPJKegiatan"
-            :fields="fieldsPencairan"
+            :fields="fieldsSekniv"
             :html="key"
             :actions="actions"
           >
@@ -770,69 +355,32 @@
             <template v-slot:biaya_disetujui="row">
               RP. {{ row.item.biaya_disetujui | currency }}
             </template>
-            <template v-slot:fullname="row">
-              <p>
-                {{ row.item.fullname | capitalize }}
-              </p>
-            </template>
-            <template v-slot:nama_struktur="row">
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 == '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
+            <template v-slot:pencairan="row">
+              <ul
+                v-for="pencairan in row.item.pencairan"
+                :key="pencairan.index"
               >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 !== '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur_child1 }}
-              </p>
+                <li>
+                  <a :href="pencairan.images"
+                    >Rp. {{ pencairan.nominal | currency }}</a
+                  >
+                </li>
+              </ul>
             </template>
-            <template v-slot:validasi_status="row">
-              <p v-if="row.item.validasi_status == 0">
-                <b-badge variant="danger"
-                  >Ditolak: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 1">
-                <b-badge variant="warning"
-                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 2">
-                <b-badge variant="success"
-                  >Diterima: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 3">
-                <b-badge variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
+            <template v-slot:lpj_keuangan="row">
+              <a v-if="row.item.lpj_keuangan" :href="row.item.lpj_keuangan"
+                >Preview</a
+              >
             </template>
-            <template v-slot:created_at="row">
-              <p>{{ row.item.created_at | convertDate }}</p>
+            <template v-slot:lpj_kegiatan="row">
+              <a v-if="row.item.lpj_kegiatan" :href="row.item.lpj_kegiatan"
+                >Preview</a
+              >
             </template>
             <template v-slot:actions="row">
+              <b-button variant="warning" class="btn btn-sm my-1 mr-1">
+                Approve</b-button
+              >
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
                 :to="'edit/' + row.item.id_pengajuan"
@@ -845,7 +393,7 @@
         <b-tab title="Belum LPJ Kegiatan" v-if="userLogin == 21">
           <custom-table
             :items="belumLPJKegiatan"
-            :fields="fieldsPencairan"
+            :fields="fieldsSekniv"
             :html="key"
             :actions="actions"
           >
@@ -861,67 +409,27 @@
             <template v-slot:biaya_disetujui="row">
               RP. {{ row.item.biaya_disetujui | currency }}
             </template>
-            <template v-slot:fullname="row">
-              <p>
-                {{ row.item.fullname | capitalize }}
-              </p>
-            </template>
-            <template v-slot:nama_struktur="row">
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 == '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
+            <template v-slot:pencairan="row">
+              <ul
+                v-for="pencairan in row.item.pencairan"
+                :key="pencairan.index"
               >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 !== '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur_child1 }}
-              </p>
+                <li>
+                  <a :href="pencairan.images"
+                    >Rp. {{ pencairan.nominal | currency }}</a
+                  >
+                </li>
+              </ul>
             </template>
-            <template v-slot:validasi_status="row">
-              <p v-if="row.item.validasi_status == 0">
-                <b-badge variant="danger"
-                  >Ditolak: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 1">
-                <b-badge variant="warning"
-                  >Input/Revisi: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 2">
-                <b-badge variant="success"
-                  >Diterima: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
-              <p v-if="row.item.validasi_status == 3">
-                <b-badge variant="success"
-                  >Pencairan: {{ row.item.nama_status }}</b-badge
-                >
-              </p>
+            <template v-slot:lpj_keuangan="row">
+              <a v-if="row.item.lpj_keuangan" :href="row.item.lpj_keuangan"
+                >Preview</a
+              >
             </template>
-            <template v-slot:created_at="row">
-              <p>{{ row.item.created_at | convertDate }}</p>
+            <template v-slot:lpj_kegiatan="row">
+              <a v-if="row.item.lpj_kegiatan" :href="row.item.lpj_kegiatan"
+                >Preview</a
+              >
             </template>
             <template v-slot:actions="row">
               <NuxtLink
@@ -1136,9 +644,7 @@ export default {
       store.dispatch(
         "subordinate/pengajuanSelesai",
         store.$auth.$state.user[0].id_user
-      ),
-      store.dispatch("subordinate/transfer"),
-      store.dispatch("subordinate/lpj"),
+      )
     ]);
     return;
   },
@@ -1153,7 +659,18 @@ export default {
         { key: "created_at", label: "Waktu Pengajuan" },
         "actions",
       ],
-      fieldsPencairan: [
+      fieldsSekniv: [
+        { key: "kode_rkat", label: "Kode RKAT" },
+        { key: "rkat", label: "Nama Program" },
+        { key: "tanggal", label: "Waktu Pelaksanaan" },
+        { key: "biaya_program", label: "RAB diajukan" },
+        { key: "biaya_disetujui", label: "RAB disetujui" },
+        { key: "pencairan", label: "Pencairan" },
+        { key: "lpj_keuangan", label: "LPJ Keuangan" },
+        { key: "lpj_kegiatan", label: "LPJ Kegiatan" },
+        "actions",
+      ],
+      fieldsListPencairanFormat: [
         { key: "kode_rkat", label: "Kode RKAT" },
         { key: "rkat", label: "Nama Program" },
         { key: "tanggal", label: "Waktu Pelaksanaan" },
@@ -1166,16 +683,12 @@ export default {
       ],
       listOnProggress: [],
       itemsneed: [],
-
+      itemsAddListPencairan: [],
       data: [],
-      login: this.$store.state.auth.user[0].id_user,
       filter1: null,
       filter2: null,
       itemsSelesai: [],
       itemsCadangan: [],
-      listPencairan: [],
-      listLPJKeuangan: [],
-      belumLPJKeuangan: [],
       listLPJKegiatan: [],
       belumLPJKegiatan: [],
       listPeriodePencairan: [],
@@ -1192,34 +705,32 @@ export default {
       subordinate: (state) => state.subordinate,
       subordinateneed: (state) => state.subordinateneed,
       peng: (state) => state.pengajuanDir,
-      transfer: (state) => state.transfer,
-      lpj: (state) => state.lpj,
     }),
   },
   mounted() {
     this.listOnProggress = this.subordinate;
     if (this.userLogin == 24) {
-      this.itemsneed = this.subordinateneed.map((item) => ({
-        ...item,
-        isEdit: false,
-      }));
-    } else {
-      this.itemsneed = this.subordinateneed;
+      this.$axios
+        .get("/pengajuan/getItemForListPencairan")
+        .then((res) => {
+          if (res.data) {
+            this.itemsAddListPencairan = res.data.map((item) => ({
+              ...item,
+              isEdit: false,
+            }));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-
+    this.itemsneed = this.subordinateneed;
     this.itemsSelesai = this.peng;
     this.itemsCadangan = this.peng;
-
-    this.listPencairan = this.transfer;
 
     if (this.userLogin == 21) {
       this.getLPJKegiatan();
       this.getBelumLPJKegiatan();
-    }
-
-    if (this.userLogin == 121) {
-      this.listLPJKeuangan = this.lpj.data;
-      this.getBelumLPJKeuangan();
     }
 
     if (
@@ -1241,8 +752,9 @@ export default {
       // this.biaya_disetujui_keuangan = this.$formatRupiah(this.biaya_disetujui_keuangan);
     },
     editRowHandler(data) {
-      this.itemsneed[data.index].isEdit = !this.itemsneed[data.index].isEdit;
-      this.itemsneed.map((item) => {
+      this.itemsAddListPencairan[data.index].isEdit =
+        !this.itemsAddListPencairan[data.index].isEdit;
+      this.itemsAddListPencairan.map((item) => {
         if (item.id_pengajuan != data.item.id_pengajuan) {
           item.isEdit = false;
         }
@@ -1250,7 +762,8 @@ export default {
       this.biaya_disetujui_keuangan = null;
     },
     submitRowHandler(data) {
-      this.itemsneed[data.index].isEdit = !this.itemsneed[data.index].isEdit;
+      this.itemsAddListPencairan[data.index].isEdit =
+        !this.itemsAddListPencairan[data.index].isEdit;
       this.$axios
         .get(
           `/period/${
@@ -1267,6 +780,7 @@ export default {
         });
     },
     refresh() {
+      this.$nuxt.refresh();
       this.selectPeriod();
     },
     addPeriod() {
@@ -1480,16 +994,6 @@ export default {
       this.$axios.get("/pengajuan/belumLPJKegiatan").then((response) => {
         this.belumLPJKegiatan = response.data.data;
       });
-    },
-    async getBelumLPJKeuangan() {
-      this.$axios
-        .get("/pengajuan/belumLPJKeuangan")
-        .then((response) => {
-          this.belumLPJKeuangan = response.data.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     },
     success(params) {
       this.$swal({
