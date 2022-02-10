@@ -99,17 +99,17 @@ untuk testing 341
 
 # 09/02/2022
 
-- Perubahan formaat penamaan file pdf (Nomor rkat-nama-kegiatan-timenow())
+- Perubahan formaat penamaan file pdf (Nomor rkat-nama-kegiatan-timenow()) [OK]
 - Print list pencairan (rkat-periode-timenow)
 - Filter otomatis berdasarkan tahun sekarang (dropdown tahun sebelumnya)
-- List pencairan langsung periode terbaru
-- Tambah detail periode diatas table list pencairan dan tanggal pembuatan periode
-- List pencairan langsung tabel per periode
-
-- Tab baru telah dicairkan (Bendahara)
+- List pencairan langsung periode terbaru [OK]
+- Tambah detail periode diatas table list pencairan dan tanggal pembuatan periode [OK]
+- List pencairan langsung tabel per periode [Pertimbangan]
+- Tab baru telah dicairkan (Bendahara) [OK]
 - Pangkas fields (Bank, Nomor Rekening, Nama Rekening - Sekniv dan dir keuangan lpj) [OK]
 - Pencairan langsung dihalaman dashboard [OK]
 - LPJ Keuangan langsung dihalaman dashboard [OK]
+- Preview pencairan, lpj keuangan, lpj kegiatan langsung di table
 
 # Fix Menu
 

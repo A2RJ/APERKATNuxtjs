@@ -4,6 +4,7 @@
     class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
     id="accordionSidebar"
   >
+  <!-- ffa600 -->
     <!-- Sidebar - Brand -->
     <a
       class="sidebar-brand d-flex align-items-center justify-content-center"
@@ -27,7 +28,7 @@
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider" />
-    <!-- <div v-if="notUser"> -->
+    <div v-if="notUser">
       <!-- Heading -->
       <div class="sidebar-heading">Submission</div>
 
@@ -128,7 +129,7 @@
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block" />
-    <!-- </div> -->
+    </div>
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
       <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -154,7 +155,10 @@ export default {
   computed: {},
   methods: {},
   mounted() {
-    if (this.userLogin !== 120 || this.userLogin !== 121) {
+    if (this.userLogin == 120) {
+      this.notUser = false;
+    }
+    if (this.userLogin == 121) {
       this.notUser = false;
     }
     if (this.$store.state.auth.loggedIn) {

@@ -36,7 +36,7 @@
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
+                :to="'/pengajuan/subordinate/edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
@@ -77,7 +77,7 @@
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
+                :to="'/pengajuan/subordinate/edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
@@ -118,12 +118,23 @@
               </ul>
             </template>
             <template v-slot:actions="row">
-              <b-button variant="warning" class="btn btn-sm my-1 mr-1">
-                Approve</b-button
+              <b-button
+                @click="aprroveLPJKeuangan(row.item.id_pengajuan)"
+                variant="warning"
+                class="btn btn-sm mr-1"
+              >
+                Terima</b-button
+              >
+              <b-button
+                @click="declineLPJKeuangan(row.item.id_pengajuan)"
+                variant="danger"
+                class="btn btn-sm my-1 mr-1"
+              >
+                Tolak</b-button
               >
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
+                :to="'/pengajuan/subordinate/edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
@@ -164,7 +175,7 @@
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
-                :to="'edit/' + row.item.id_pengajuan"
+                :to="'/pengajuan/subordinate/edit/' + row.item.id_pengajuan"
                 :key="'edit' + row.index"
                 >Detail</NuxtLink
               >
@@ -234,7 +245,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("subordinate", ["transfer", "lpj"]),
+    ...mapActions("subordinate", ["approved", "declined"]),
     async lpjKeuangan() {
       this.$axios
         .get("/pengajuan/lpjKeuangan")
@@ -278,6 +289,106 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    aprroveLPJKeuangan(params) {
+      this.$swal({
+        title: "Warning!",
+        text: "Terima LPJ Keuangan ?",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off",
+        },
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+        preConfirm: (login) => {},
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this.loader("loading...");
+          this.approved({
+            id: params,
+            message: result.value,
+            status_validasi: 4,
+            id_struktur: 24,
+            nama_status: "Direktorat Keuangan",
+            next: 21,
+          })
+            .then(async () => {
+              this.success("Berhasil terima pengajuan");
+              this.lpjKeuangan();
+              this.getBelumLPJKeuangan();
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
+        }
+      });
+    },
+    declineLPJKeuangan(params) {
+      this.$swal({
+        title: "Warning!",
+        text: "Tolak LPJ Keuangan ?",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off",
+        },
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+        preConfirm: (login) => {},
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this.loader("loading...");
+          this.approved({
+            id: params,
+            message: result.value,
+            status_validasi: 0,
+            id_struktur: 24,
+            nama_status: "Direktorat Keuangan",
+            next: 24,
+          })
+            .then(async () => {
+              this.success("Berhasil terima pengajuan");
+              this.lpjKeuangan();
+              this.getBelumLPJKeuangan();
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
+        }
+      });
+    },
+    success(params) {
+      this.$swal({
+        width: 300,
+        icon: "success",
+        title: "Congrats!",
+        text: params,
+      });
+    },
+    failed(params) {
+      this.$swal({
+        width: 300,
+        icon: "error",
+        title: "Oops...",
+        text: params,
+      });
+    },
+    loader(params) {
+      this.$swal({
+        title: "Please wait",
+        width: 300,
+        text: params,
+        imageUrl: "/Rocket.gif",
+        showConfirmButton: false,
+        allowOutsideClick: true,
+      });
     },
   },
 };

@@ -138,7 +138,13 @@
                   v-model="selectedPeriod"
                   :options="options"
                   @change="selectPeriod()"
-                ></b-form-select>
+                >
+                  <template #first v-if="selected.value == null">
+                    <b-form-select-option :value="selected.value">{{
+                      selected.text
+                    }}</b-form-select-option>
+                  </template>
+                </b-form-select>
               </b-form-group>
 
               <div class="mt-3" v-if="userLogin == 24">
@@ -302,6 +308,9 @@
               </div>
             </div>
           </div>
+          <div class="ml-4">
+              Periode {{ selected.text }}, dibuat pada {{ selected.created_at | convertDate }}
+          </div> 
           <custom-table
             :items="listPeriodePencairan"
             :fields="fieldsListPencairanFormat"
@@ -378,8 +387,19 @@
               >
             </template>
             <template v-slot:actions="row">
-              <b-button variant="warning" class="btn btn-sm my-1 mr-1">
-                Approve</b-button
+              <b-button
+                @click="aprroveLPJKegiatan(row.item.id_pengajuan)"
+                variant="warning"
+                class="btn btn-sm mr-1"
+              >
+                Terima</b-button
+              >
+              <b-button
+                @click="declineLPJKegiatan(row.item.id_pengajuan)"
+                variant="danger"
+                class="btn btn-sm my-1 mr-1"
+              >
+                Tolak</b-button
               >
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
@@ -644,7 +664,7 @@ export default {
       store.dispatch(
         "subordinate/pengajuanSelesai",
         store.$auth.$state.user[0].id_user
-      )
+      ),
     ]);
     return;
   },
@@ -698,6 +718,11 @@ export default {
       selectedPeriod: null,
       biaya_disetujui_keuangan: null,
       userLogin: this.$store.state.auth.user[0].id_user,
+      selected: {
+        value: null,
+        text: null,
+        created_at: null,
+      },
     };
   },
   computed: {
@@ -802,12 +827,28 @@ export default {
           for (let index = 0; index < res.data.data.length; index++) {
             this.options.push(res.data.data[index]);
           }
+          this.selected.text = this.options[this.options.length - 1].text;
+          this.selected.created_at = this.options[this.options.length - 1].created_at;
+          this.$axios
+            .get(
+              `period/getByAtasan/${this.userLogin}/${
+                this.options[this.options.length - 1].value
+              }`
+            )
+            .then((res) => {
+              this.listPeriodePencairan = res.data.data;
+            });
         })
         .catch((err) => {
           console.log(err);
         });
     },
     selectPeriod() {
+      let periodDetail = this.options.filter(
+        (item) => item.value == this.selectedPeriod
+      );
+      this.selected.text = periodDetail[0].text;
+          this.selected.created_at =  periodDetail[0].created_at;
       if (
         this.userLogin == 21 ||
         this.userLogin == 22 ||
@@ -993,6 +1034,78 @@ export default {
     async getBelumLPJKegiatan() {
       this.$axios.get("/pengajuan/belumLPJKegiatan").then((response) => {
         this.belumLPJKegiatan = response.data.data;
+      });
+    },
+    aprroveLPJKegiatan(params) {
+      this.$swal({
+        title: "Warning!",
+        text: "Terima LPJ Kegiatan ?",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off",
+        },
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+        preConfirm: (login) => {},
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this.loader("loading...");
+          this.approved({
+            id: params,
+            message: result.value,
+            status_validasi: 4,
+            id_struktur: 21,
+            nama_status: this.$store.state.auth.user[0].fullname,
+            next: 3333,
+          })
+            .then(async () => {
+              this.success("Berhasil terima pengajuan");
+              this.$nuxt.refresh();
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
+        }
+      });
+    },
+    declineLPJKegiatan(params) {
+      this.$swal({
+        title: "Warning!",
+        text: "Tolak LPJ Kegiatan ?",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off",
+        },
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+        preConfirm: (login) => {},
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          this.loader("loading...");
+          this.approved({
+            id: params,
+            message: result.value,
+            status_validasi: 0,
+            id_struktur: 21,
+            nama_status: this.$store.state.auth.user[0].fullname,
+            next: 21,
+          })
+            .then(async () => {
+              this.success("Berhasil tolak pengajuan");
+              this.$nuxt.refresh();
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
+        }
       });
     },
     success(params) {
