@@ -73,8 +73,7 @@
             >Pencairan {{ index + 1 }} RP. {{ pencairan.nominal | currency }}</a
           >
           <br />
-          <div v-show="formPencairan" class="m-3">
-            <!-- input form -->
+          <!-- <div v-show="formPencairan" class="m-3">
             <b-form-group
               label-cols-sm="4"
               label-cols-lg="2"
@@ -127,7 +126,7 @@
                 Upload Bukti Transfer Selesai
               </button>
             </div>
-          </div>
+          </div> -->
           <div>
             <div v-show="formLPJKeuangan" class="m-3">
               <b-form-group
@@ -484,28 +483,6 @@
             label-cols="4"
             label-cols-lg="2"
             label-size="sm"
-            label="Biaya Program"
-            label-for="biaya_program"
-            :class="{ 'form-group--error': $v.form.biaya_program.$error }"
-          >
-            <b-form-input
-              v-model.trim="$v.form.biaya_program.$model"
-              v-on:keyup="numberFormatBiayaProgram"
-              id="biaya_program"
-              size="sm"
-            ></b-form-input>
-            <b-form-text
-              id="biaya_program"
-              v-if="!$v.form.biaya_program.required"
-            >
-              <i class="text-danger">Biaya program is required</i>
-            </b-form-text>
-          </b-form-group>
-
-          <b-form-group
-            label-cols="4"
-            label-cols-lg="2"
-            label-size="sm"
             label="Bank"
             label-for="bank"
             :class="{ 'form-group--error': $v.form.bank.$error }"
@@ -558,6 +535,31 @@
               <i class="text-danger">No.Rekening is numeric</i>
             </b-form-text>
           </b-form-group>
+
+          <b-form-group
+            label-cols="4"
+            label-cols-lg="2"
+            label-size="sm"
+            label="Biaya Program"
+            label-for="biaya_program"
+            :class="{ 'form-group--error': $v.form.biaya_program.$error }"
+          >
+            <!-- v-model.trim="$v.form.biaya_program.$model" -->
+            <b-form-input
+              :value="$v.form.biaya_program.$model | currency"
+              v-on:keyup="numberFormatBiayaProgram"
+              id="biaya_program"
+              size="sm"
+              readonly
+            ></b-form-input>
+            <b-form-text
+              id="biaya_program"
+              v-if="!$v.form.biaya_program.required"
+            >
+              <i class="text-danger">Biaya program is required</i>
+            </b-form-text>
+          </b-form-group>
+
           <b-form-group
             label-cols="4"
             label-cols-lg="2"
@@ -611,7 +613,8 @@
             <template #cell(harga_satuan)>
               <input
                 v-model="harga_satuan"
-                type="number"
+                @keyup="numberFormatHargaSatuan"
+                type="text"
                 name="satuan"
                 id="satuan"
                 required
@@ -621,7 +624,7 @@
               <input v-model="qty" type="number" name="qty" id="qty" required />
             </template>
             <template #cell(total)>
-              {{ (qty * harga_satuan) | currency }}
+              {{ (qty * harga_satuan.replaceAll(".", "")) | currency }}
             </template>
             <template #cell(keterangan)>
               <input v-model="ket" type="text" name="qty" id="qty" required />
@@ -644,14 +647,13 @@
             :items="items"
             :fields="fields"
           >
-
-            <template #cell(harga_satuan)="data" >
-              Rp. {{ data.item.harga_satuan | currency}}
+            <template #cell(harga_satuan)="data">
+              Rp. {{ data.item.harga_satuan | currency }}
             </template>
-            <template #cell(total)="data" >
-              Rp. {{ data.item.total | currency}}
+            <template #cell(total)="data">
+              Rp. {{ data.item.total | currency }}
             </template>
-            <template #cell(action)="data" >
+            <template #cell(action)="data">
               <button
                 type="button"
                 class="btn btn-sm btn-danger"
@@ -1016,7 +1018,7 @@ export default {
       }
     },
     replace() {
-      this.form.biaya_program = this.form.biaya_program.replaceAll(".", "");
+      // this.form.biaya_program = this.form.biaya_program.replaceAll(".", "");
     },
     getIku1(value) {
       if (value) {
@@ -1100,7 +1102,7 @@ export default {
               }
             });
         } else {
-          this.replace();
+          // this.replace();
           let nama_status = await this.$store.state.auth.user[0].fullname;
           this.$axios
             .post(
@@ -1163,7 +1165,7 @@ export default {
             }
           }
           this.loader("loading...");
-          this.replace();
+          // this.replace();
           this.approved({
             id: this.$route.params.id,
             message: this.message,
@@ -1461,15 +1463,13 @@ export default {
             this.push({
               no: res.data.data[index].no,
               jenis_barang: res.data.data[index].jenis_barang,
-              harga_satuan: Number(res.data.data[index].harga_satuan),
-              qty: Number(res.data.data[index].qty),
+              harga_satuan: res.data.data[index].harga_satuan,
+              qty: res.data.data[index].qty,
               total:
-                Number(res.data.data[index].harga_satuan) *
-                Number(res.data.data[index].qty),
+                res.data.data[index].harga_satuan * res.data.data[index].qty,
               keterangan: res.data.data[index].keterangan,
             });
           }
-          this.sum();
         });
       } catch (e) {
         this.failed("Whoops Server Error");
@@ -1478,7 +1478,7 @@ export default {
     async postRAB(params) {
       this.items.forEach((item) => {
         delete item.no;
-        item.pengajuan_id = params
+        item.pengajuan_id = params;
       });
       await this.$axios
         .post(`/rab/`, this.items)
@@ -1510,6 +1510,9 @@ export default {
           console.log(e);
         });
     },
+    numberFormatHargaSatuan(){
+      this.harga_satuan = this.$formatRupiah(this.harga_satuan);
+    },
     sum() {
       let totalSum = 0;
       for (let index = 0; index < this.items.length; index++) {
@@ -1517,7 +1520,7 @@ export default {
           this.items[index].qty * this.items[index].harga_satuan
         );
       }
-      this.total = totalSum;
+      this.form.biaya_program = totalSum;
     },
     push({ no, jenis_barang, harga_satuan, qty, total, keterangan }) {
       if (jenis_barang && harga_satuan && qty && total) {
@@ -1529,13 +1532,14 @@ export default {
           total: total,
           keterangan: keterangan,
         });
+        this.sum();
       }
     },
     addRAB() {
       this.push({
         no: Math.floor(Math.random() * 1000),
         jenis_barang: this.nama_barang,
-        harga_satuan: this.harga_satuan,
+        harga_satuan: this.harga_satuan.replaceAll(".", ""),
         qty: this.qty,
         total: Number(
           this.harga_satuan.replaceAll(".", "") * this.qty.replaceAll(".", "")
@@ -1546,10 +1550,8 @@ export default {
         (this.harga_satuan = ""),
         (this.qty = ""),
         (this.ket = "");
-      this.sum();
     },
     hapus(params) {
-      console.log(params);
       let data = this.items.filter((i) => i.no !== params);
       this.items = [];
       for (let index = 0; index < data.length; index++) {

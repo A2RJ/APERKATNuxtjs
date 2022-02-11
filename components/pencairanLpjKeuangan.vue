@@ -34,6 +34,18 @@
               </ul>
             </template>
             <template v-slot:actions="row">
+              <b-button
+                class="btn btn-sm my-1 mr-1"
+                variant="outline-warning"
+                v-b-modal.modal-1
+                @click="
+                  uploadPencairan(
+                    row.item.id_pengajuan,
+                    row.item.rkat.kode_rkat
+                  )
+                "
+                >Pencairan</b-button
+              >
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
                 :to="'/pengajuan/subordinate/edit/' + row.item.id_pengajuan"
@@ -42,6 +54,67 @@
               >
             </template>
           </custom-table>
+          <!-- hide button modals -->
+          <b-modal ref="modal" id="modal-1" :title="selectedRKAT" hide-footer>
+            <div class="m-3">
+              <!-- input form -->
+              <b-form-group
+                label-cols-sm="4"
+                label-cols-lg="2"
+                label-size="sm"
+                label="Nominal Pencairan"
+                label-for="pencairanNominal"
+              >
+                <b-form-input
+                  id="pencairanNominal"
+                  v-model="pencairanNominal"
+                  :state="pencairanNominal ? true : false"
+                  :invalid-feedback="
+                    pencairanNominal
+                      ? ''
+                      : 'Nominal pencairan tidak boleh kosong'
+                  "
+                  autocomplete="off"
+                  placeholder="Nominal pencairan"
+                  :required="true"
+                  v-on:keyup="formatPencairanNominal"
+                ></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                label-cols-sm="4"
+                label-cols-lg="2"
+                label-size="sm"
+                label="Pencairan"
+                label-for="Pencairan"
+              >
+                <b-form-file
+                  id="Pencairan"
+                  v-model="pencairan"
+                  :state="Boolean(pencairanStatus)"
+                  v-on:change="pencairanStatusChange()"
+                  placeholder="Choose or drop it here..."
+                  drop-placeholder="Drop file here..."
+                  accept=".pdf"
+                ></b-form-file>
+              </b-form-group>
+              <div class="float-right">
+                <button
+                  class="btn btn-sm btn-outline-success mb-3"
+                  @click="buktiTF"
+                >
+                  Upload Bukti Transfer
+                </button>
+
+                <button
+                  class="btn btn-sm btn-outline-success mb-3"
+                  @click="selesaiUpload"
+                >
+                  Upload Bukti Transfer Selesai
+                </button>
+              </div>
+            </div>
+          </b-modal>
         </b-tab>
         <b-tab title="Sudah Pencairan">
           <custom-table
@@ -225,6 +298,12 @@ export default {
       ],
       listLPJKeuangan: [],
       belumLPJKeuangan: [],
+      selectedRKAT: "",
+      selectedID: "",
+      pencairanNominal: "",
+      pencairan: null,
+      pencairanStatus: false,
+      buktiTFImage: "",
     };
   },
   computed: {
@@ -235,7 +314,7 @@ export default {
   },
   mounted() {
     if (this.userLogin == 120) {
-      this.pencairan();
+      this.getTransfer();
       this.sudahPencairan();
     }
 
@@ -266,7 +345,7 @@ export default {
           console.log(error);
         });
     },
-    async pencairan() {
+    async getTransfer() {
       this.$axios
         .get("/pengajuan/transfer")
         .then((res) => {
@@ -289,6 +368,105 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    formatPencairanNominal() {
+      this.pencairanNominal = this.$formatRupiah(this.pencairanNominal);
+    },
+    async buktiTF() {
+      if (
+        this.pencairan !== null &&
+        this.pencairan.length !== 0 &&
+        this.pencairanNominal !== "" &&
+        this.pencairanNominal !== null
+      ) {
+        const status = this.checkFileSize(this.pencairan.size);
+        if (status) {
+          this.loader("loading...");
+          const form = new FormData();
+          form.append("file", this.pencairan);
+
+          try {
+            await this.$axios.post("/pengajuan/upload", form).then((res) => {
+              this.buktiTFImage = res.data;
+              // axios post pencairan image
+              if (this.buktiTFImage) {
+                this.$axios
+                  .post(`/pencairan`, {
+                    pengajuan_id: this.selectedID,
+                    nominal: this.pencairanNominal.replaceAll(".", ""),
+                    images: this.buktiTFImage,
+                  })
+                  .then((res) => {
+                    this.success("Berhasil upload bukti pencairan");
+                    this.$refs["modal"].hide(); 
+                    window.location.reload();
+                  })
+                  .catch((err) => {
+                    this.failed("Whoops Server Error");
+                  });
+              } else {
+                this.failed("Upload ulang file");
+              }
+            });
+          } catch (e) {
+            console.log("Whoops Server Error");
+          }
+        }
+      } else {
+        this.failed("Pilih file dan input nominal");
+      }
+    },
+    pencairanStatusChange() {
+      this.pencairanStatus = true;
+    },
+    // check file size
+    checkFileSize(size) {
+      let hasil = false;
+      if (size > 2097152) {
+        this.failed("Ukuran file max 2MB");
+        hasil = false;
+      } else {
+        hasil = true;
+      }
+      return hasil;
+    },
+    // Aksi upload file pencairan selesai
+    async selesaiUpload() {
+      this.$swal({
+        title: "Warning!",
+        text: "Upload bukti pencairan selesai?",
+        icon: "warning",
+        width: 300,
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.loader("loading...");
+          this.approved({
+            id: this.selectedID,
+            message: "Pencairan selesai",
+            status_validasi: 3,
+            id_struktur: 24,
+            next: 24,
+            nama_status: "Direktur Keuangan",
+            pencairan: "default.jpg",
+          })
+            .then(() => {
+              this.success("Upload bukti pencairan selesai");
+              this.$refs["modal"].hide();
+              window.location.reload();
+            })
+            .catch(() => {
+              this.failed("Whoops Server Error");
+            });
+        }
+      });
+    },
+    uploadPencairan(params, koderkat) {
+      this.selectedRKAT = koderkat;
+      this.selectedID = params;
     },
     aprroveLPJKeuangan(params) {
       this.$swal({
