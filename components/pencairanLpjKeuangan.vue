@@ -190,6 +190,11 @@
                 </li>
               </ul>
             </template>
+            <template v-slot:lpj_keuangan="row">
+              <a v-if="row.item.lpj_keuangan" :href="row.item.lpj_keuangan"
+                >Preview</a
+              >
+            </template>
             <template v-slot:actions="row">
               <b-button
                 @click="aprroveLPJKeuangan(row.item.id_pengajuan)"
@@ -244,6 +249,11 @@
                   >
                 </li>
               </ul>
+            </template>
+            <template v-slot:lpj_keuangan="row">
+              <a v-if="row.item.lpj_keuangan" :href="row.item.lpj_keuangan"
+                >Preview</a
+              >
             </template>
             <template v-slot:actions="row">
               <NuxtLink

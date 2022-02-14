@@ -580,11 +580,12 @@
             <b-form-text id="rab" v-if="!$v.file.required">
               <i class="text-danger">Upload file </i>
             </b-form-text>
-            <div class="mt-3" v-if="rab">
-              Current file:
-              <a :href="'../../../' + rab" target="_blank">RAB </a>
-            </div>
-            <a href="#">Template RAB</a>
+            <b-button
+              variant="warning"
+              class="btn btn-sm my-2 mr-2"
+              @click="downloadFile()"
+              >Download Template RAB
+            </b-button>
             <b-button
               variant="success"
               class="btn btn-sm float-right my-2"
@@ -1020,6 +1021,9 @@ export default {
     replace() {
       // this.form.biaya_program = this.form.biaya_program.replaceAll(".", "");
     },
+    downloadFile() {
+      window.open("https://aperkat.uts.ac.id/RABTemplate2022.xlsx");
+    },
     getIku1(value) {
       if (value) {
         this.form.id_iku_parent = value.code;
@@ -1436,10 +1440,10 @@ export default {
       this.$axios
         .post("/pengajuan/pdfByUSer/" + this.userLogin, this.$route.params.id)
         .then(() => {
-          window.open("http://localhost:8000/g/" + btoa(this.userLogin));
-          // window.open(
-          //   "https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin)
-          // );
+          // window.open("http://localhost:8000/g/" + btoa(this.userLogin));
+          window.open(
+            "https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin)
+          );
         });
     },
     getDataRKAT(value) {
@@ -1510,7 +1514,7 @@ export default {
           console.log(e);
         });
     },
-    numberFormatHargaSatuan(){
+    numberFormatHargaSatuan() {
       this.harga_satuan = this.$formatRupiah(this.harga_satuan);
     },
     sum() {

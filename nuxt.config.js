@@ -60,14 +60,14 @@ export default {
   // http://localhost:8000
   axios: {
     withCredentials: true,
-    baseURL: 'http://localhost:8000',
-    browserBaseURL: 'http://localhost:8000'
+    baseURL: 'https://aperkat.uts.ac.id/api',
+    browserBaseURL: 'https://aperkat.uts.ac.id/api'
   },
   auth: {
     strategies: {
       'laravelJWT': {
         provider: 'laravel/jwt',
-        url: 'http://localhost:8000',
+        url: 'https://aperkat.uts.ac.id/api',
         endpoints: {
           login: { url: '/api/login', method: 'post' },
           logout: false,
@@ -95,5 +95,8 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+  server: {
+    // port: 3000 // default: 3000
   }
 }

@@ -163,7 +163,7 @@
                 <b-modal
                   id="modal-xl"
                   size="xl"
-                  title="Extra Large Modal"
+                  title="Tambah ke list pencairan"
                   hide-footer
                 >
                   <custom-table
@@ -972,14 +972,14 @@ export default {
           print
         )
         .then(() => {
-          window.open(
-            "http://localhost:8000/g/" +
-              btoa(this.$store.state.auth.user[0].id_user)
-          );
           // window.open(
-          //   "https://aperkat.uts.ac.id/api/g/" +
+          //   "http://localhost:8000/g/" +
           //     btoa(this.$store.state.auth.user[0].id_user)
           // );
+          window.open(
+            "https://aperkat.uts.ac.id/api/g/" +
+              btoa(this.$store.state.auth.user[0].id_user)
+          );
         });
     },
     getNeedApproved() {
