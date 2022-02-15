@@ -36,9 +36,11 @@
                 id="years"
                 v-model="perYear"
                 :options="yearOption"
-                @change="filterYear"
                 size="sm"
-              ></b-form-select>
+              >
+              <!-- selected is the bigger year -->
+
+              </b-form-select>
             </b-form-group>
           </b-col>
           <b-col lg="4" class="my-1">
@@ -174,11 +176,11 @@ export default {
   },
   computed: {
     totalRows() {
+      // return this.items ? this.items.length : 1;
       // if perYear is empty, return totalRows else return perYear
       return this.perYear == ""
         ? this.items.length
         : this.items.filter(item => item.created_at.substring(0, 4) == this.perYear).length;
-      // return this.items ? this.items.length : 1;
     },
     ...mapState("customTable", {
       success: (state) => state.success,
@@ -246,14 +248,6 @@ export default {
           this.$parent.print(this.getAllSelected());
         }
       }
-    },
-    filterYear(){
-      if(this.perYear != ""){
-        // in case functionIndex is called from child to parent component
-        // this.$parent.filterYear(this.perYear);
-        // filter items by year
-        // this.items = this.items.filter(item => item.created_at.substring(0, 4) == this.perYear);
-      }
     }
   },
   watch: {
@@ -265,20 +259,21 @@ export default {
       }
     },
     items: function () {
-      // get year from items
       const year = [];
       for (let index = 0; index < this.items.length; index++) {
-        if (year.indexOf(this.items[index].created_at) === -1) {
+        if (this.items[index].created_at) {
           year.push(this.items[index].created_at.substring(0, 4));
         }
       }
-      // unique year and sort and push to yearOption
       const uniqueYear = [...new Set(year)];
       uniqueYear.sort();
       
       for (let index = 0; index < uniqueYear.length; index++) {
         this.yearOption.push({ value: uniqueYear[index], text: uniqueYear[index] });
       }
+
+      // default value is the biggest year
+      this.perYear = uniqueYear[uniqueYear.length - 1] ? uniqueYear[uniqueYear.length - 1] : "";
     },
   },
 };
