@@ -83,7 +83,7 @@
         >
           <div class="m-2 row">
             <div class="col-sm-6" v-if="userLogin == 24">
-              <form ref="form" @submit.stop.prevent="addPeriod">
+              <form @submit.stop.prevent="addPeriod">
                 <b-form-group
                   label="Input Period"
                   label-for="period"
@@ -148,10 +148,12 @@
               </b-form-group>
 
               <div class="mt-3" v-if="userLogin == 24">
+                <!-- on button click call function in child component  -->
                 <b-button
                   v-b-modal.modal-xl
                   variant="outline-success"
                   class="btn btn-sm float-right"
+                  @click="runYearFilter()"
                   >Add list pencairan</b-button
                 >
                 <b-button
@@ -167,11 +169,13 @@
                   hide-footer
                 >
                   <custom-table
+                    ref="filterYear"
                     :items="itemsAddListPencairan"
                     :fields="fieldsListPencairanFormat"
                     :html="key"
                     :actions="actions"
                   >
+                    <!-- created_at -->
                     <template v-slot:kode_rkat="row">
                       {{ row.item.rkat.kode_rkat }}
                     </template>
@@ -309,8 +313,9 @@
             </div>
           </div>
           <div class="ml-4">
-              Periode {{ selected.text }}, dibuat pada {{ selected.created_at | convertDate }}
-          </div> 
+            Periode {{ selected.text }}, dibuat pada
+            {{ selected.created_at | convertDate }}
+          </div>
           <custom-table
             :items="listPeriodePencairan"
             :fields="fieldsListPencairanFormat"
@@ -676,7 +681,7 @@ export default {
         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },
         { key: "nama_struktur", label: "Pelaksana" },
-        { key: "created_at", label: "Waktu Pengajuan" },
+        { key: "created_at", label: "Tanggal Pengajuan" },
         "actions",
       ],
       fieldsSekniv: [
@@ -688,6 +693,7 @@ export default {
         { key: "pencairan", label: "Pencairan" },
         { key: "lpj_keuangan", label: "LPJ Keuangan" },
         { key: "lpj_kegiatan", label: "LPJ Kegiatan" },
+        { key: "created_at", label: "Tanggal Pengajuan" },
         "actions",
       ],
       fieldsListPencairanFormat: [
@@ -699,6 +705,7 @@ export default {
         { key: "bank", label: "Bank" },
         { key: "no_rek", label: "No Rek" },
         { key: "atn", label: "Atas Nama" },
+        { key: "created_at", label: "Tanggal Pengajuan" },
         "actions",
       ],
       listOnProggress: [],
@@ -735,19 +742,7 @@ export default {
   mounted() {
     this.listOnProggress = this.subordinate;
     if (this.userLogin == 24) {
-      this.$axios
-        .get("/pengajuan/getItemForListPencairan")
-        .then((res) => {
-          if (res.data) {
-            this.itemsAddListPencairan = res.data.map((item) => ({
-              ...item,
-              isEdit: false,
-            }));
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.getItemForListPencairan();
     }
     this.itemsneed = this.subordinateneed;
     this.itemsSelesai = this.peng;
@@ -828,7 +823,8 @@ export default {
             this.options.push(res.data.data[index]);
           }
           this.selected.text = this.options[this.options.length - 1].text;
-          this.selected.created_at = this.options[this.options.length - 1].created_at;
+          this.selected.created_at =
+            this.options[this.options.length - 1].created_at;
           this.$axios
             .get(
               `period/getByAtasan/${this.userLogin}/${
@@ -848,7 +844,7 @@ export default {
         (item) => item.value == this.selectedPeriod
       );
       this.selected.text = periodDetail[0].text;
-          this.selected.created_at =  periodDetail[0].created_at;
+      this.selected.created_at = periodDetail[0].created_at;
       if (
         this.userLogin == 21 ||
         this.userLogin == 22 ||
@@ -992,6 +988,10 @@ export default {
           }));
         });
     },
+    async runYearFilter() {
+      this.itemsAddListPencairan = [];
+      this.getItemForListPencairan()
+    },
     rowClass(item, type) {
       if (!item || type !== "row") return;
       if (item.status_message === 0) return "table-success";
@@ -1020,6 +1020,21 @@ export default {
     },
     reset() {
       this.listOnProggress = this.itemsCadangan;
+    },
+    async getItemForListPencairan() {
+      this.$axios
+        .get("/pengajuan/getItemForListPencairan")
+        .then((res) => {
+          if (res.data) {
+            this.itemsAddListPencairan = res.data.map((item) => ({
+              ...item,
+              isEdit: false,
+            }));
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     async getLPJKegiatan() {
       this.$axios

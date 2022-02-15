@@ -23,7 +23,7 @@
         <b-row>
           <b-col lg="4" class="my-1">
             <b-form-group
-              label="Year"
+              label="Filter"
               label-for="years"
               label-cols-sm="6"
               label-cols-md="4"
@@ -38,8 +38,7 @@
                 :options="yearOption"
                 size="sm"
               >
-              <!-- selected is the bigger year -->
-
+                <!-- @change="filterYear" -->
               </b-form-select>
             </b-form-group>
           </b-col>
@@ -92,7 +91,11 @@
     </b-row>
     <!-- :fixed="true" -->
     <b-table
-      :items="perYear == '' ? items : items.filter(item => item.created_at.substring(0, 4) == perYear)"
+      :items="
+        perYear == ''
+          ? items
+          : items.filter((item) => item.created_at.substring(0, 4) == perYear)
+      "
       :fields="fieldsTable"
       :select-mode="selectMode"
       :current-page="currentPage"
@@ -180,7 +183,9 @@ export default {
       // if perYear is empty, return totalRows else return perYear
       return this.perYear == ""
         ? this.items.length
-        : this.items.filter(item => item.created_at.substring(0, 4) == this.perYear).length;
+        : this.items.filter(
+            (item) => item.created_at.substring(0, 4) == this.perYear
+          ).length;
     },
     ...mapState("customTable", {
       success: (state) => state.success,
@@ -248,7 +253,28 @@ export default {
           this.$parent.print(this.getAllSelected());
         }
       }
-    }
+    },
+    filterYear() {
+      let year = [];
+      for (let index = 0; index < this.items.length; index++) {
+        if (this.items[index].created_at) {
+          year.push(this.items[index].created_at.substring(0, 4));
+        }
+      }
+      let uniqueYear = [...new Set(year)];
+      uniqueYear.sort();
+
+      for (let index = 0; index < uniqueYear.length; index++) {
+        this.yearOption.push({
+          value: uniqueYear[index],
+          text: uniqueYear[index],
+        });
+      }
+
+      this.perYear = uniqueYear[uniqueYear.length - 1]
+        ? uniqueYear[uniqueYear.length - 1]
+        : "";
+    },
   },
   watch: {
     selectAll: function () {
@@ -259,21 +285,7 @@ export default {
       }
     },
     items: function () {
-      const year = [];
-      for (let index = 0; index < this.items.length; index++) {
-        if (this.items[index].created_at) {
-          year.push(this.items[index].created_at.substring(0, 4));
-        }
-      }
-      const uniqueYear = [...new Set(year)];
-      uniqueYear.sort();
-      
-      for (let index = 0; index < uniqueYear.length; index++) {
-        this.yearOption.push({ value: uniqueYear[index], text: uniqueYear[index] });
-      }
-
-      // default value is the biggest year
-      this.perYear = uniqueYear[uniqueYear.length - 1] ? uniqueYear[uniqueYear.length - 1] : "";
+      this.filterYear();
     },
   },
 };
