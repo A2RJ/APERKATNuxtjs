@@ -742,7 +742,7 @@ export default {
   mounted() {
     this.listOnProggress = this.subordinate;
     if (this.userLogin == 24) {
-      this.getItemForListPencairan();
+      // this.getItemForListPencairan();
     }
     this.itemsneed = this.subordinateneed;
     this.itemsSelesai = this.peng;

@@ -580,6 +580,10 @@
             <b-form-text id="rab" v-if="!$v.file.required">
               <i class="text-danger">Upload file </i>
             </b-form-text>
+            <div class="mt-3" v-if="rab">
+              Current file:
+              <a :href="'../../../' + rab" target="_blank">RAB </a>
+            </div>
             <b-button
               variant="warning"
               class="btn btn-sm my-2 mr-2"
