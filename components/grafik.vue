@@ -70,7 +70,8 @@
     <div class="col-lg-12 card mt-2">
       <div class="mt-2 m-1">
         <h4>Data RKAT</h4>
-        <custom-table
+        <custom-table-RKAT
+          :perYearFilterState="true"
           :items="grafik.data.rkat"
           :fields="fields"
           :html="keyRKAT"
@@ -138,11 +139,12 @@
               >Detail</NuxtLink
             >
           </template>
-        </custom-table>
+        </custom-table-RKAT>
       </div>
       <div class="mt-2 m-1">
         <h4>Data Pengajuan</h4>
         <custom-table
+          :perYearFilterState="true"
           :items="grafik.data.pengajuan"
           :fields="pengajuan"
           :html="key"
@@ -207,14 +209,6 @@
           <template v-slot:created_at="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
-          <!-- <template v-slot:actions="row">
-            <NuxtLink
-              class="btn btn-sm btn-outline-info"
-              :to="'/pengajuan/grafik/detail/' + row.item.id_pengajuan"
-              :key="'edit' + row.index"
-              >Detail</NuxtLink
-            >
-          </template> -->
         </custom-table>
       </div>
     </div>
@@ -299,5 +293,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

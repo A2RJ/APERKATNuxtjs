@@ -4,19 +4,54 @@
       <h6 class="m-0 font-weight-bold text-primary">User</h6>
     </div>
     <div class="card-body">
-      <custom-table
+      <b-row>
+        <b-col lg="6" class="my-1 flot-right" />
+
+        <b-col lg="6" class="my-1 flot-right">
+          <b-form-group
+            label="Filter"
+            label-for="filter-input"
+            label-cols-sm="3"
+            label-align-sm="right"
+            label-size="sm"
+            class="mb-0"
+          >
+            <b-input-group size="sm">
+              <b-form-input
+                id="filter-input"
+                v-model="filter"
+                type="search"
+                placeholder="Type to Search"
+              ></b-form-input>
+
+              <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''"
+                  >Clear</b-button
+                >
+              </b-input-group-append>
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+      </b-row>
+
+      <b-table
+        :filter="filter"
+        @filtered="onFiltered"
+        :current-page="currentPage"
+        :per-page="perPage"
+        striped
+        hover
         :items="items"
         :fields="fields"
-        :html="key"
-        :actions="actions"
       >
-        <template v-slot:fullname="row">
+        :items="items" :fields="fields">
+        <template #cell(fullname)="row">
           <p>{{ row.item.fullname | capitalize }}</p>
         </template>
-        <template v-slot:created_at="row">
+        <template #cell(created_at)="row">
           <p>{{ row.item.created_at | convertDate }}</p>
         </template>
-        <template v-slot:nama_struktur="row">
+        <template #cell(nama_struktur)="row">
           <p
             v-if="
               row.item.nama_struktur !== '0' &&
@@ -49,7 +84,7 @@
           </p>
         </template>
 
-        <template v-slot:Action="row">
+        <template #cell(Action)="row">
           <NuxtLink
             class="btn btn-sm btn-outline-info mt-1"
             :to="'user/edit/' + row.item.id_user"
@@ -63,7 +98,19 @@
             Hapus
           </button>
         </template>
-      </custom-table>
+      </b-table>
+      <b-row>
+        <b-col sm="7" md="6" class="my-1">
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            align="fill"
+            size="sm"
+            class="my-0"
+          ></b-pagination>
+        </b-col>
+      </b-row>
     </div>
   </div>
 </template>
@@ -130,6 +177,10 @@ export default {
         "Action",
       ],
       items: [],
+      filter: "",
+      currentPage: 1,
+      perPage: 10,
+      totalRows: 0,
     };
   },
   computed: {
@@ -139,9 +190,15 @@ export default {
   },
   mounted() {
     this.items = this.user;
+    this.totalRows = this.items.length;
   },
   methods: {
     ...mapActions("user", ["getuser", "deleteuser"]),
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      // this.totalRows = filteredItems.length
+      // this.currentPage = 1
+    },
     deleteUser(row) {
       this.$swal({
         title: "Warning!",
@@ -214,5 +271,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

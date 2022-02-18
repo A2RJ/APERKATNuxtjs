@@ -65,3 +65,13 @@
 - Preview pencairan, lpj keuangan, lpj kegiatan langsung di table [BELUM-LINK-TO-PDF]
 - Filter otomatis berdasarkan tahun sekarang (dropdown tahun sebelumnya)
 - List pencairan langsung tabel per periode (Jadi tabel bertumpuk) [Pertimbangan]
+
+# 16/02/2022
+
+- Filter berdasarkan periode rkat
+-- [Lumen] Semua pengajuan with rkat select periode
+-- [Nuxt] Filter berdasarkan rkat.periode
+-- [Nuxt] List year by lowest year in rkat.periode between now year
+-- Hanya bisa pengajuan di periode tahun yang sama
+-- Tambah dropdown periode rkat di input rkat
+- Sebelum deploy apa saja yang perlu diubah

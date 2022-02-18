@@ -62,7 +62,7 @@
           </b-col>
           <b-col lg="4" class="my-1">
             <b-form-group
-              label="Filter"
+              label="Search"
               label-for="filter-input"
               label-cols-sm="3"
               label-align-sm="right"
@@ -90,11 +90,9 @@
     </b-row>
     <!-- :fixed="true" -->
     <b-table
-      :items="
-        perYear == ''
-          ? items
-          : items.filter((item) => item.period.substring(0, 4) == perYear)
-      "
+      :items="perYear == '' ? items : items.filter(
+        (item) => item.period.substring(0, 4) == perYear
+      )"
       :fields="fieldsTable"
       :select-mode="selectMode"
       :current-page="currentPage"
@@ -160,7 +158,6 @@ export default {
     "fields",
     "html",
     "perYearFilterState",
-    "tableName",
     "actions",
   ],
   data() {
@@ -267,7 +264,6 @@ export default {
       }
       this.yearOption = year;
       this.perYear = yearNow;
-      console.log(this.items);
     },
   },
   watch: {

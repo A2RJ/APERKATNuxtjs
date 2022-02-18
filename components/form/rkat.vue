@@ -43,6 +43,26 @@
       </b-form-text>
     </b-form-group>
 
+    <!-- select period year -->
+    <b-form-group
+      label-cols="4"
+      label-cols-lg="2"
+      label-size="sm"
+      label="Periode"
+      label-for="period"
+      :class="{ 'form-group--error': $v.form.period.$error }"
+    >
+      <b-form-select
+        v-model.trim="$v.form.period.$model"
+        id="period"
+        size="sm"
+        :options="periodList"
+      ></b-form-select>
+      <b-form-text id="period" v-if="!$v.form.period.required">
+        <i class="text-danger">Periode is required</i>
+      </b-form-text>
+    </b-form-group>
+
     <b-form-group
       label-cols="4"
       label-cols-lg="2"
@@ -171,16 +191,12 @@
       label-for="mulai_program"
       :class="{ 'form-group--error': $v.form.mulai_program.$error }"
     >
-      <b-form-datepicker
-        id="mulai_program"
+      <b-form-input
         v-model.trim="$v.form.mulai_program.$model"
-        class="mb-2"
+        id="mulai_program"
         size="sm"
-        today-button
-        reset-button
-        close-button
-        locale="IDN"
-      ></b-form-datepicker>
+        class="mb-2"
+      />
       <b-form-text id="mulai_program" v-if="!$v.form.mulai_program.required">
         <i class="text-danger">Mulai program is required</i>
       </b-form-text>
@@ -194,16 +210,12 @@
       label-for="selesai_program"
       :class="{ 'form-group--error': $v.form.selesai_program.$error }"
     >
-      <b-form-datepicker
-        id="selesai_program"
+      <b-form-input
         v-model.trim="$v.form.selesai_program.$model"
-        class="mb-2"
+        id="selesai_program"
         size="sm"
-        today-button
-        reset-button
-        close-button
-        locale="IDN"
-      ></b-form-datepicker>
+        class="mb-2"
+      />
       <b-form-text
         id="selesai_program"
         v-if="!$v.form.selesai_program.required"
@@ -315,6 +327,7 @@ export default {
       this.form = {
         id_user: this.forms.id_user,
         kode_rkat: this.forms.kode_rkat,
+        period: this.forms.period,
         sasaran_strategi: this.forms.sasaran_strategi,
         indikator_sasaran_strategi: this.forms.indikator_sasaran_strategi,
         nama_program: this.forms.nama_program,
@@ -339,6 +352,7 @@ export default {
       form: {
         id_user: "",
         kode_rkat: "",
+        period: "",
         sasaran_strategi: "",
         indikator_sasaran_strategi: "",
         nama_program: "",
@@ -356,6 +370,7 @@ export default {
       selected: [],
       options: [],
       button: true,
+      periodList: [],
     };
   },
   validations: {
@@ -364,6 +379,9 @@ export default {
     },
     form: {
       kode_rkat: {
+        required,
+      },
+      period: {
         required,
       },
       sasaran_strategi: {
@@ -407,6 +425,7 @@ export default {
   mounted() {
     this.options = this.rkatUser;
     this.selected = this.forms.fullname;
+    this.getListYear();
   },
   computed: {
     ...mapState("rkat", {
@@ -508,9 +527,17 @@ export default {
         allowOutsideClick: false,
       });
     },
+    getListYear(){
+      // from 2021 to current year and push to periodList
+      let currentYear = new Date().getFullYear();
+      let listYear = [];
+      for(let i = 2021; i <= currentYear; i++){
+        listYear.push(i);
+      }
+      this.periodList = listYear;
+    }
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

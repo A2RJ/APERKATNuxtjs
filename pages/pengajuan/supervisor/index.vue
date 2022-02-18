@@ -177,10 +177,10 @@
                   >
                     <!-- created_at -->
                     <template v-slot:kode_rkat="row">
-                      {{ row.item.rkat.kode_rkat }}
+                      {{ row.item.kode_rkat }}
                     </template>
                     <template v-slot:rkat="row">
-                      {{ row.item.rkat.nama_program }}
+                      {{ row.item.nama_program }}
                     </template>
                     <template v-slot:biaya_program="row">
                       RP. {{ row.item.biaya_program | currency }}
@@ -323,10 +323,10 @@
             :actions="actions"
           >
             <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
+              {{ row.item.kode_rkat }}
             </template>
             <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
+              {{ row.item.nama_program }}
             </template>
             <template v-slot:biaya_program="row">
               RP. {{ row.item.biaya_program | currency }}
@@ -358,10 +358,10 @@
             :actions="actions"
           >
             <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
+              {{ row.item.kode_rkat }}
             </template>
             <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
+              {{ row.item.nama_program }}
             </template>
             <template v-slot:biaya_program="row">
               RP. {{ row.item.biaya_program | currency }}
@@ -423,10 +423,10 @@
             :actions="actions"
           >
             <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
+              {{ row.item.kode_rkat }}
             </template>
             <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
+              {{ row.item.nama_program }}
             </template>
             <template v-slot:biaya_program="row">
               RP. {{ row.item.biaya_program | currency }}
@@ -792,7 +792,7 @@ export default {
         )
         .then((res) => {
           this.getNeedApproved();
-
+          this.getItemForListPencairan();
           console.log("success edit biaya disetujui");
         })
         .catch((err) => {
@@ -862,7 +862,7 @@ export default {
       }
     },
     addToList(params) {
-      if (this.selectedPeriod) {
+      if (this.selectedPeriod && params.biaya_disetujui) {
         this.$axios
           .post(`/period/addList`, {
             id_pengajuan: params.id_pengajuan,
@@ -879,6 +879,7 @@ export default {
                 (i) => i.id_pengajuan !== params.id_pengajuan
               );
               this.itemsneed = period;
+              this.getItemForListPencairan();
               this.selectPeriod();
             }
           })
@@ -887,7 +888,7 @@ export default {
             this.failed("Whoops...");
           });
       } else {
-        this.failed("Select period");
+        this.failed("Select period dan input biaya disetujui");
       }
     },
     deleteFromList(params) {
@@ -990,7 +991,7 @@ export default {
     },
     async runYearFilter() {
       this.itemsAddListPencairan = [];
-      this.getItemForListPencairan()
+      this.getItemForListPencairan();
     },
     rowClass(item, type) {
       if (!item || type !== "row") return;

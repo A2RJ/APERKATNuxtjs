@@ -10,10 +10,10 @@
             :actions="actions"
           >
             <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
+              {{ row.item.kode_rkat }}
             </template>
             <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
+              {{ row.item.nama_program }}
             </template>
             <template v-slot:biaya_program="row">
               RP. {{ row.item.biaya_program | currency }}
@@ -41,7 +41,7 @@
                 @click="
                   uploadPencairan(
                     row.item.id_pengajuan,
-                    row.item.rkat.kode_rkat
+                    row.item.kode_rkat
                   )
                 "
                 >Pencairan</b-button
@@ -124,10 +124,10 @@
             :actions="actions"
           >
             <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
+              {{ row.item.kode_rkat }}
             </template>
             <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
+              {{ row.item.nama_program }}
             </template>
             <template v-slot:biaya_program="row">
               RP. {{ row.item.biaya_program | currency }}
@@ -167,10 +167,10 @@
             :actions="actions"
           >
             <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
+              {{ row.item.kode_rkat }}
             </template>
             <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
+              {{ row.item.nama_program }}
             </template>
             <template v-slot:biaya_program="row">
               RP. {{ row.item.biaya_program | currency }}
@@ -227,10 +227,10 @@
             :actions="actions"
           >
             <template v-slot:kode_rkat="row">
-              {{ row.item.rkat.kode_rkat }}
+              {{ row.item.kode_rkat }}
             </template>
             <template v-slot:rkat="row">
-              {{ row.item.rkat.nama_program }}
+              {{ row.item.nama_program }}
             </template>
             <template v-slot:biaya_program="row">
               RP. {{ row.item.biaya_program | currency }}

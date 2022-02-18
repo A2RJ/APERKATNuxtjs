@@ -284,8 +284,8 @@ export default {
       form: {
         fullname: "",
         email: "",
-        password: "default",
-        repeatPassword: "default",
+        password: "default123",
+        repeatPassword: "default123",
         id_struktur: 0,
         id_struktur_child1: 0,
         id_struktur_child2: 0,

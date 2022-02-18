@@ -5,22 +5,53 @@
       <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div
-          class="
-            card-header
-            py-3
-            d-flex
-            flex-row
-            align-items-center
-            justify-content-between
-          "
+          class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
         >
           <h6 class="m-0 font-weight-bold text-primary">Grafik Pengajuan</h6>
         </div>
         <!-- Card Body -->
         <div class="card-body">
-          <custom-table :items="items" :fields="fields" :html="key" :actions="actions"
+          <b-row>
+            <b-col lg="6" class="my-1 flot-right" />
+
+            <b-col lg="6" class="my-1 flot-right">
+              <b-form-group
+                label="Filter"
+                label-for="filter-input"
+                label-cols-sm="3"
+                label-align-sm="right"
+                label-size="sm"
+                class="mb-0"
+              >
+                <b-input-group size="sm">
+                  <b-form-input
+                    id="filter-input"
+                    v-model="filter"
+                    type="search"
+                    placeholder="Type to Search"
+                  ></b-form-input>
+
+                  <b-input-group-append>
+                    <b-button :disabled="!filter" @click="filter = ''"
+                      >Clear</b-button
+                    >
+                  </b-input-group-append>
+                </b-input-group>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
+          <b-table
+            :filter="filter"
+            @filtered="onFiltered"
+            :current-page="currentPage"
+            :per-page="perPage"
+            striped
+            hover
+            :items="items"
+            :fields="fields"
           >
-            <template v-slot:nama_struktur="row">
+            <template #cell(nama_struktur)="row">
               <p
                 v-if="
                   row.item.nama_struktur !== '0' &&
@@ -52,16 +83,19 @@
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
-             <template v-slot:rencara_anggaran="row">
+            <template #cell(rencara_anggaran)="row">
               RP. {{ row.item.rencara_anggaran | currency }}
             </template>
-             <template v-slot:biaya_program="row">
+            <template #cell(biaya_program)="row">
               RP. {{ row.item.biaya_program | currency }}
             </template>
-             <template v-slot:persentase="row">
-              {{ (row.item.biaya_program/row.item.rencara_anggaran) * 100 | currency }}%
+            <template #cell(persentase)="row">
+              {{
+                ((row.item.biaya_program / row.item.rencara_anggaran) * 100)
+                  | currency
+              }}%
             </template>
-            <template v-slot:actions="row">
+            <template #cell(actions)="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info"
                 :to="'grafik/' + row.item.id_user"
@@ -69,7 +103,19 @@
                 >Detail</NuxtLink
               >
             </template>
-          </custom-table>
+          </b-table>
+          <b-row>
+        <b-col sm="7" md="6" class="my-1">
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            align="fill"
+            size="sm"
+            class="my-0"
+          ></b-pagination>
+        </b-col>
+      </b-row>
         </div>
       </div>
     </div>
@@ -91,13 +137,6 @@ export default {
   },
   data() {
     return {
-      key: "id_pengajuan",
-      actions: [
-        // { name: "Print", type: "func", func: "print", link: "Print", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Select All", type: "func", func: "selectAll", link: "Select All", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Clear Selected", type: "func", func: "clearSelected", link: "Clear Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-        // { name: "Print Selected", type: "func", func: "printSelected", link: "Print Selected", color: "btn btn-sm btn-outline-primary mt-1 ml-2" },
-      ],
       fields: [
         { key: "fullname", label: "User" },
         { key: "nama_struktur", label: "Pelaksana" },
@@ -107,6 +146,10 @@ export default {
         "actions",
       ],
       items: [],
+      filter: "",
+      currentPage: 1,
+      perPage: 10,
+      totalRows: 0,
     };
   },
   computed: {
@@ -119,12 +162,17 @@ export default {
   },
   mounted() {
     this.items = this.subordinatesGrafik.data;
+    this.totalRows = this.items.length;
   },
   methods: {
     ...mapActions("subordinate", ["getpengajuan"]),
+     onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      // this.totalRows = filteredItems.length
+      // this.currentPage = 1
+    },
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

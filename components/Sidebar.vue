@@ -84,7 +84,7 @@
         </div>
       </li>
 
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a
           class="nav-link collapsed"
           href="#"
@@ -118,7 +118,7 @@
             </NuxtLink>
           </div>
         </div>
-      </li>
+      </li> -->
 
       <li class="nav-item" v-show="sekniv">
         <NuxtLink class="nav-link" to="/user">

@@ -6,14 +6,7 @@
       <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div
-          class="
-            card-header
-            py-3
-            d-flex
-            flex-row
-            align-items-center
-            justify-content-between
-          "
+          class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
         >
           <h6 class="m-0 font-weight-bold text-primary">RKAT</h6>
         </div>
@@ -39,9 +32,7 @@
                       @input="get"
                     ></v-select>
                     <b-form-text id="id_user" v-if="pesan">
-                      <i class="text-danger"
-                        >Pelaksana is required</i
-                      >
+                      <i class="text-danger">Pelaksana is required</i>
                     </b-form-text>
                   </b-form-group>
                   <b-form-file
@@ -109,7 +100,7 @@
                     <td>{{ item.mulai_program }}</td>
                     <td>{{ item.selesai_program }}</td>
                     <td>{{ item.tempat }}</td>
-                    <td>RP. {{ item.total_anggaran }}</td>
+                    <td>RP. {{ item.total_anggaran | currency }}</td>
                   </tr>
                 </table>
                 <div
@@ -139,7 +130,7 @@
           </div>
         </div>
         <div class="card-body">
-          <custom-table
+          <custom-table-RKAT
             :items="items"
             :fields="fields"
             :html="key"
@@ -153,7 +144,10 @@
               RP. {{ data.value | currency }}
             </template>
             <template v-slot:mulai_program="data">
-              {{ data.value | convertDate }}
+              {{ data.value }}
+            </template>
+            <template v-slot:selesai_program="data">
+              {{ data.value }}
             </template>
             <template v-slot:created_at="data">
               {{ data.value | convertDate }}
@@ -175,7 +169,7 @@
                 Hapus
               </button>
             </template>
-          </custom-table>
+          </custom-table-RKAT>
         </div>
       </div>
     </div>
@@ -246,7 +240,8 @@ export default {
         { key: "fullname", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT " },
         "mulai_program",
-        { key: "mulai_program", label: "Waktu Kegiatan" },
+        { key: "mulai_program", label: "Mulai Kegiatan" },
+        { key: "selesai_program", label: "Selesai Kegiatan" },
         { key: "created_at", label: "Waktu Pengajuan" },
         { key: "total_anggaran", label: "Total Anggaran" },
         { key: "anggaran_digunakan", label: "Anggaran dicairkan" },
@@ -480,5 +475,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
