@@ -237,7 +237,7 @@ export default {
         { key: "fullname", label: "User" },
         { key: "nama_struktur", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
-        { key: "created_at", label: "Waktu Pengajuan" },
+        // { key: "created_at", label: "Waktu Pengajuan" },
         { key: "rencara_anggaran", label: "Total Anggaran" },
         { key: "biaya_program", label: "Total Realisasi" },
         "persentase",

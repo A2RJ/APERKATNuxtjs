@@ -75,3 +75,7 @@
 -- Hanya bisa pengajuan di periode tahun yang sama
 -- Tambah dropdown periode rkat di input rkat
 - Sebelum deploy apa saja yang perlu diubah
+
+# 22/02/2022
+- semua data yang tampil berdasarkan periode terbaru misal total anggaran dashboard
+- waktu pengajuan didasboard hapus ganti dengan periode
