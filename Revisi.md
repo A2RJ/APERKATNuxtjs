@@ -79,3 +79,8 @@
 # 22/02/2022
 - semua data yang tampil berdasarkan periode terbaru misal total anggaran dashboard
 - waktu pengajuan didasboard hapus ganti dengan periode
+- Data inputan pengajuan yang diambil dari rkat readonly saja
+
+# 02/03/2022
+- Import nominal tidak bisa kalau ada RP(Kak cana) 
+- [Bug] Keterangan tidak word wrap dan harus setting width:300px tag p untuk tampilkan keterangan

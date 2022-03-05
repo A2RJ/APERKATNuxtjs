@@ -73,60 +73,6 @@
             >Pencairan {{ index + 1 }} RP. {{ pencairan.nominal | currency }}</a
           >
           <br />
-          <!-- <div v-show="formPencairan" class="m-3">
-            <b-form-group
-              label-cols-sm="4"
-              label-cols-lg="2"
-              label-size="sm"
-              label="Nominal Pencairan"
-              label-for="pencairanNominal"
-            >
-              <b-form-input
-                id="pencairanNominal"
-                v-model="pencairanNominal"
-                :state="pencairanNominal ? true : false"
-                :invalid-feedback="
-                  pencairanNominal ? '' : 'Nominal pencairan tidak boleh kosong'
-                "
-                placeholder="Nominal pencairan"
-                :required="true"
-                v-on:keyup="formatPencairanNominal"
-              ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-              label-cols-sm="4"
-              label-cols-lg="2"
-              label-size="sm"
-              label="Pencairan"
-              label-for="Pencairan"
-            >
-              <b-form-file
-                id="Pencairan"
-                v-model="pencairan"
-                :state="Boolean(pencairanStatus)"
-                v-on:change="pencairanStatusChange()"
-                placeholder="Choose or drop it here..."
-                drop-placeholder="Drop file here..."
-                accept=".pdf"
-              ></b-form-file>
-            </b-form-group>
-            <div class="float-right">
-              <button
-                class="btn btn-sm btn-outline-success mb-3"
-                @click="buktiTF"
-              >
-                Upload Bukti Transfer
-              </button>
-
-              <button
-                class="btn btn-sm btn-outline-success mb-3"
-                @click="selesaiUpload"
-              >
-                Upload Bukti Transfer Selesai
-              </button>
-            </div>
-          </div> -->
           <div>
             <div v-show="formLPJKeuangan" class="m-3">
               <b-form-group
@@ -247,6 +193,7 @@
               v-model="rkat.nama_kegiatan"
               id="nama_kegiatan"
               size="sm"
+              readonly
             ></b-form-input>
           </b-form-group>
 
@@ -288,6 +235,7 @@
               placeholder="Enter something..."
               rows="3"
               max-rows="6"
+              readonly
             ></b-form-textarea>
           </b-form-group>
 
@@ -910,7 +858,7 @@ export default {
     },
     file: {
       required: requiredIf(function () {
-        return this.$route.name == "pengajuan-subordinate-add";
+         this.$route.name == "pengajuan-subordinate-add";
       }),
     },
   },
@@ -1102,7 +1050,8 @@ export default {
             .then(async () => {
               await this.postRAB(this.$route.params.id);
               this.success("Data telah disimpan!");
-              this.$nuxt.refresh();
+              // this.$nuxt.refresh();
+              window.location.reload();
             })
             .catch((error) => {
               if (error.response) {

@@ -57,7 +57,9 @@
         id="period"
         size="sm"
         :options="periodList"
+        :value="periodNow"
       ></b-form-select>
+      <small>Selected Periode {{ periodNow }}</small>
       <b-form-text id="period" v-if="!$v.form.period.required">
         <i class="text-danger">Periode is required</i>
       </b-form-text>
@@ -371,6 +373,7 @@ export default {
       options: [],
       button: true,
       periodList: [],
+      periodNow: "",
     };
   },
   validations: {
@@ -426,6 +429,10 @@ export default {
     this.options = this.rkatUser;
     this.selected = this.forms.fullname;
     this.getListYear();
+    if (this.$route.name === "rkat-edit-id") {
+      this.periodNow = this.forms.period.substring(0, 4);
+      console.log(this.periodNow);
+    }
   },
   computed: {
     ...mapState("rkat", {
@@ -527,15 +534,15 @@ export default {
         allowOutsideClick: false,
       });
     },
-    getListYear(){
+    getListYear() {
       // from 2021 to current year and push to periodList
       let currentYear = new Date().getFullYear();
       let listYear = [];
-      for(let i = 2021; i <= currentYear; i++){
+      for (let i = 2021; i <= currentYear; i++) {
         listYear.push(i);
       }
       this.periodList = listYear;
-    }
+    },
   },
 };
 </script>
