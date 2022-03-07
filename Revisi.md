@@ -84,3 +84,5 @@
 # 02/03/2022
 - Import nominal tidak bisa kalau ada RP(Kak cana) 
 - [Bug] Keterangan tidak word wrap dan harus setting width:300px tag p untuk tampilkan keterangan
+
+# Vercel
