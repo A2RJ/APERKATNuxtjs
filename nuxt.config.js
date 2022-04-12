@@ -55,22 +55,19 @@ export default {
     'bootstrap-vue/nuxt',
     'vue-sweetalert2/nuxt'
   ],
-  // https://aperkat.uts.ac.id/api
-  // https://ardiansyah.uts.ac.id/api/
-  // http://localhost:8000
   axios: {
     withCredentials: true,
-    // baseURL: 'https://aperkat.uts.ac.id/api',
-    // browserBaseURL: 'https://aperkat.uts.ac.id/api'
-    baseURL: 'http://localhost:8000',
-    browserBaseURL: 'http://localhost:8000'
+    baseURL: 'https://aperkat.uts.ac.id/api',
+    browserBaseURL: 'https://aperkat.uts.ac.id/api'
+    // baseURL: 'http://127.0.0.1:8000',
+    // browserBaseURL: 'http://127.0.0.1:8000'
   },
   auth: {
     strategies: {
       'laravelJWT': {
         provider: 'laravel/jwt',
-        // url: 'https://aperkat.uts.ac.id/api',
-        url: 'http://localhost:8000',
+        url: 'https://aperkat.uts.ac.id/api',
+        // url: 'http://127.0.0.1:8000',
         endpoints: {
           login: { url: '/api/login', method: 'post' },
           logout: false,

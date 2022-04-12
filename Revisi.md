@@ -8,7 +8,7 @@
   -- LPJ Kegiatan dan belum lpj kegiatan [SEKNIV] [OK]
   -- LPJ Keuangan dan belum lpj keuangan [WR2LPJ] [OK]
 
-# Revisi 04 Februari 2022 [OK]
+## Revisi 04 Februari 2022 [OK]
 
 - RAB di aplikasi [Validasi-!=-0-Testing-update-data]
 - Print pengajuan tampilkan history pengajuan [OK]
@@ -31,14 +31,14 @@
   -- List pengajuan by periode
   -- Cek LPJ
 
-# 08/02/2022
+## 08/02/2022
 
 - Perubahan warna untuk item yang sudah terima [OK]
 - Tambah kolom catatan di bottom RAB [OK]
 - Fields list pencairan WR 2 [OK]
 - Default kop surat [OK]
 
-# 09/02/2022
+## 09/02/2022
 
 - Perubahan formaat penamaan file pdf (Nomor rkat-nama-kegiatan-timenow()) [OK]
 - Print list pencairan (rkat-periode-timenow) [OK]
@@ -56,7 +56,7 @@
 - Form login [OK]
 - Tolak pengajuan oleh rektor agar dibuat periode baru [Belum]
 
-# Work in progress
+## Work in progress
 
 - Tambah filter pengajuan berdasarkan status, per tanggal, per bulan, per tahun [Not-Fix]
 - List notifikasi (baru ditambahkan, revisi, list harus di approve dll)
@@ -66,23 +66,35 @@
 - Filter otomatis berdasarkan tahun sekarang (dropdown tahun sebelumnya)
 - List pencairan langsung tabel per periode (Jadi tabel bertumpuk) [Pertimbangan]
 
-# 16/02/2022
+## 16/02/2022
 
 - Filter berdasarkan periode rkat
--- [Lumen] Semua pengajuan with rkat select periode
--- [Nuxt] Filter berdasarkan rkat.periode
--- [Nuxt] List year by lowest year in rkat.periode between now year
--- Hanya bisa pengajuan di periode tahun yang sama
--- Tambah dropdown periode rkat di input rkat
+  -- [Lumen] Semua pengajuan with rkat select periode
+  -- [Nuxt] Filter berdasarkan rkat.periode
+  -- [Nuxt] List year by lowest year in rkat.periode between now year
+  -- Hanya bisa pengajuan di periode tahun yang sama
+  -- Tambah dropdown periode rkat di input rkat
 - Sebelum deploy apa saja yang perlu diubah
 
-# 22/02/2022
+## 22/02/2022
+
 - semua data yang tampil berdasarkan periode terbaru misal total anggaran dashboard
 - waktu pengajuan didasboard hapus ganti dengan periode
 - Data inputan pengajuan yang diambil dari rkat readonly saja
 
-# 02/03/2022
-- Import nominal tidak bisa kalau ada RP(Kak cana) 
+## 02/03/2022
+
+- Import nominal tidak bisa kalau ada RP(Kak cana)
 - [Bug] Keterangan tidak word wrap dan harus setting width:300px tag p untuk tampilkan keterangan
 
-# Vercel
+## Mba winda
+
+- masing-masing fakultas kadang nanya pengajuan disetujui berapa
+  -- tampilkan nominal disetujui pada tabel fakultas dan divisi diatasnya
+
+## 28/03/2022 (Pak widi)
+
+- Tampilkan nominal rkat pd hal. pengajuan sesuai rkat yg dipilih
+- LPJ pararel
+
+## Vercel

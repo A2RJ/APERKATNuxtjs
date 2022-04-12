@@ -102,7 +102,7 @@ export const actions = {
   getpengajuan({ commit }, payload) {
     return new Promise((resolve, reject) => {
       this.$axios.get(`/pengajuan/byUser/${payload}`).then(response => {
-        commit("SET_PENGAJUAN_DATA", response.data.data.data);
+        commit("SET_PENGAJUAN_DATA", response.data.data);
         resolve();
       });
     });
