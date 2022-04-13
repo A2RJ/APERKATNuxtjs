@@ -152,24 +152,11 @@
           ref="table"
         >
           <template v-slot:fullname="row">
-            <p>
-              {{ row.item.fullname | capitalize }} <br />
-              <b-badge v-if="row.item.validasi_status == 0" variant="danger"
-                >Ditolak: {{ row.item.nama_status }}</b-badge
-              >
-              <b-badge v-if="row.item.validasi_status == 1" variant="warning"
-                >Input/Revisi: {{ row.item.nama_status }}</b-badge
-              >
-              <b-badge v-if="row.item.validasi_status == 2" variant="success"
-                >Diterima: {{ row.item.nama_status }}</b-badge
-              >
-              <b-badge v-if="row.item.validasi_status == 3" variant="success"
-                >Pencairan: {{ row.item.nama_status }}</b-badge
-              >
-              <b-badge v-if="row.item.validasi_status == 4" variant="success"
-                >Completed: {{ row.item.nama_status }}</b-badge
-              >
-            </p>
+            <p>{{ row.item.fullname | capitalize }}</p>
+            <b-badge :variant="row.item.validasi_status | validasiStatus">
+              {{ row.item.validasi_status | validasiDetail }}
+              {{ row.item.nama_status }}
+            </b-badge>
           </template>
           <template v-slot:nama_struktur="row">
             <p
@@ -202,6 +189,18 @@
             >
               {{ row.item.nama_struktur_child1 }}
             </p>
+          </template>
+            <template v-slot:periode_pencairan="row">
+              <p>
+                {{
+                  row.item.periode_pencairan
+                    ? row.item.periode_pencairan.period
+                    : "Sedang diperiksa" | capitalize
+                }}
+              </p>
+            </template>
+          <template v-slot:period="row">
+            <p>{{ row.item.period.period }}</p>
           </template>
           <template v-slot:biaya_program="row">
             <p>RP. {{ row.item.biaya_program | currency }}</p>
@@ -248,6 +247,7 @@ export default {
       pengajuan: [
         { key: "fullname", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
+        { key: "periode_pencairan", label: "Periode" },
         { key: "biaya_program", label: "Anggaran" },
         { key: "created_at", label: "Waktu Pengajuan" },
         // "actions",

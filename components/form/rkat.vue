@@ -431,7 +431,7 @@ export default {
     this.getListYear();
     if (this.$route.name === "rkat-edit-id") {
       this.periodNow = this.forms.period.substring(0, 4);
-      console.log(this.periodNow);
+      // console.log(this.periodNow);
     }
   },
   computed: {

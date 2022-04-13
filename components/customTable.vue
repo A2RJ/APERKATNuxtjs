@@ -267,7 +267,7 @@ export default {
       }
       this.yearOption = year;
       this.perYear = yearNow;
-      console.log(this.items);
+      // console.log(this.items);
     },
   },
   watch: {

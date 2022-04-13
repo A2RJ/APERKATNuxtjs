@@ -31,14 +31,14 @@
   -- List pengajuan by periode
   -- Cek LPJ
 
-## 08/02/2022
+## 08/02/2022 [OK]
 
 - Perubahan warna untuk item yang sudah terima [OK]
 - Tambah kolom catatan di bottom RAB [OK]
 - Fields list pencairan WR 2 [OK]
 - Default kop surat [OK]
 
-## 09/02/2022
+## 09/02/2022 [OK]
 
 - Perubahan formaat penamaan file pdf (Nomor rkat-nama-kegiatan-timenow()) [OK]
 - Print list pencairan (rkat-periode-timenow) [OK]
@@ -56,7 +56,7 @@
 - Form login [OK]
 - Tolak pengajuan oleh rektor agar dibuat periode baru [Belum]
 
-## Work in progress
+## Continue [OK]
 
 - Tambah filter pengajuan berdasarkan status, per tanggal, per bulan, per tahun [Not-Fix]
 - List notifikasi (baru ditambahkan, revisi, list harus di approve dll)
@@ -66,7 +66,7 @@
 - Filter otomatis berdasarkan tahun sekarang (dropdown tahun sebelumnya)
 - List pencairan langsung tabel per periode (Jadi tabel bertumpuk) [Pertimbangan]
 
-## 16/02/2022
+## 16/02/2022 [OK]
 
 - Filter berdasarkan periode rkat
   -- [Lumen] Semua pengajuan with rkat select periode
@@ -76,10 +76,10 @@
   -- Tambah dropdown periode rkat di input rkat
 - Sebelum deploy apa saja yang perlu diubah
 
-## 22/02/2022
+## 22/02/2022 [OK]
 
 - semua data yang tampil berdasarkan periode terbaru misal total anggaran dashboard
-- waktu pengajuan didasboard hapus ganti dengan periode
+- waktu pengajuan didasboard hapus ganti dengan periode [WOP]
 - Data inputan pengajuan yang diambil dari rkat readonly saja
 
 ## 02/03/2022
@@ -96,5 +96,10 @@
 
 - Tampilkan nominal rkat pd hal. pengajuan sesuai rkat yg dipilih
 - LPJ pararel
+
+# 13/04/2022
+
+- Tambah file satuan harga
+- Tambah draf laporan keuangan
 
 ## Vercel

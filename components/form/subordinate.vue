@@ -1440,10 +1440,10 @@ export default {
       await this.$axios
         .post(`/rab/`, this.items)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
         })
         .catch((e) => {
-          console.log(e);
+          // console.log(e);
         });
     },
     async getRAB(params) {
