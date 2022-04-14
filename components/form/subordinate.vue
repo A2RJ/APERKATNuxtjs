@@ -32,6 +32,12 @@
           <h6 class="m-0 font-weight-bold text-primary">Aksi</h6>
         </div>
         <div class="card-body">
+          <button
+            class="btn btn-sm btn-outline-success m-1 mr-2"
+            @click="draftLaporanKeuangan()"
+          >
+            Download template laporan keuangan
+          </button>
           <button class="btn btn-sm btn-outline-success m-1" @click="print">
             Print pengajuan
           </button>
@@ -533,10 +539,14 @@
               <a :href="'../../../' + rab" target="_blank">RAB </a>
             </div>
             <b-button
-              variant="warning"
               class="btn btn-sm my-2 mr-2"
               @click="downloadFile()"
               >Download Template RAB
+            </b-button>
+            <b-button
+              class="btn btn-sm my-2 mr-2"
+              @click="satuanHarga()"
+              >Referensi Satuan Harga
             </b-button>
             <b-button
               variant="success"
@@ -858,7 +868,7 @@ export default {
     },
     file: {
       required: requiredIf(function () {
-         this.$route.name == "pengajuan-subordinate-add";
+        this.$route.name == "pengajuan-subordinate-add";
       }),
     },
   },
@@ -974,7 +984,13 @@ export default {
       // this.form.biaya_program = this.form.biaya_program.replaceAll(".", "");
     },
     downloadFile() {
-      window.open("https://aperkat.uts.ac.id/RABTemplate2022.xlsx");
+      window.open("https://aperkat.uts.ac.id/draftfile/RABTemplate2022.xlsx");
+    },
+    satuanHarga() {
+      window.open(`https://aperkat.uts.ac.id/draftfile/satuan_harga.xlsx`);
+    },
+    draftLaporanKeuangan() {
+      window.open(`https://aperkat.uts.ac.id/draftfile/laporan-keuangan.docx`);
     },
     getIku1(value) {
       if (value) {

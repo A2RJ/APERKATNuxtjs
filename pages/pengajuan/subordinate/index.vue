@@ -19,8 +19,11 @@
             ref="table"
           >
             <template v-slot:fullname="row">
-              <p>{{ row.item.fullname | capitalize }}</p>
-              <b-badge :variant="row.item.validasi_status | validasiStatus">
+              <p class="m-0 p-0">{{ row.item.fullname | capitalize }}</p>
+              <b-badge
+                class="m-0"
+                :variant="row.item.validasi_status | validasiStatus"
+              >
                 {{ row.item.validasi_status | validasiDetail }}
                 {{ row.item.nama_status }}
               </b-badge>
@@ -65,6 +68,12 @@
                     : "Sedang diperiksa" | capitalize
                 }}
               </p>
+            </template>
+            <template v-slot:biaya_program="row">
+              <p>Rp. {{ row.item.biaya_program | currency }}</p>
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              <p>Rp. {{ row.item.biaya_disetujui | currency }}</p>
             </template>
             <template v-slot:created_at="row">
               <p>{{ row.item.created_at | convertDate }}</p>
@@ -153,11 +162,11 @@ export default {
       fields: [
         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT" },
+        { key: "biaya_program", label: "Biaya Program" },
         { key: "periode_pencairan", label: "Periode Pencairan" },
-        // { key: "nama_struktur", label: "Pelaksana" },
-        // { key: "validasi_status", label: "Status Pengajuan" },
-        { key: "created_at", label: "Waktu Pengajuan" },
-        "actions",
+        { key: "biaya_disetujui", label: "Biaya Disetujui" },
+        { key: "created_at", label: "Tanggal Pengajuan" },
+        "Actions",
       ],
       items: [],
     };

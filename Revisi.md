@@ -54,9 +54,9 @@
 - Total menjadi biaya program (Input pengajuan) [OK]
 - Total di bawah table [OK]
 - Form login [OK]
-- Tolak pengajuan oleh rektor agar dibuat periode baru [Belum]
+- Tolak pengajuan oleh rektor agar dibuat periode baru [OK]
 
-## Continue [OK]
+## Continue hasil rapat [OK]
 
 - Tambah filter pengajuan berdasarkan status, per tanggal, per bulan, per tahun [Not-Fix]
 - List notifikasi (baru ditambahkan, revisi, list harus di approve dll)
@@ -78,11 +78,11 @@
 
 ## 22/02/2022 [OK]
 
-- semua data yang tampil berdasarkan periode terbaru misal total anggaran dashboard
-- waktu pengajuan didasboard hapus ganti dengan periode [WOP]
-- Data inputan pengajuan yang diambil dari rkat readonly saja
+- semua data yang tampil berdasarkan periode terbaru misal total anggaran dashboard [OK]
+- waktu pengajuan didasboard hapus ganti dengan periode [OK]
+- Data inputan pengajuan yang diambil dari rkat readonly saja [OK]
 
-## 02/03/2022
+## 02/03/2022 [WOP]
 
 - Import nominal tidak bisa kalau ada RP(Kak cana)
 - [Bug] Keterangan tidak word wrap dan harus setting width:300px tag p untuk tampilkan keterangan
@@ -97,9 +97,18 @@
 - Tampilkan nominal rkat pd hal. pengajuan sesuai rkat yg dipilih
 - LPJ pararel
 
-# 13/04/2022
+## 13/04/2022
 
 - Tambah file satuan harga
 - Tambah draf laporan keuangan
 
-## Vercel
+### Work on progress [Delete-dan-OK-sesuai-item]
+
+- tampilkan periode pencairan [OK]
+  -- Dashboard dan pengajuan sendiri [OK]
+  -- Divisi diatasnya [OK]
+- tampilkan nominal pengajuan dan disetujui pada tabel fakultas dan divisi diatasnya [OK]
+- Tambah file satuan harga [OK]
+- Tambah draf laporan keuangan [OK]
+- Import nominal tidak bisa kalau ada RP(Kak cana)
+- LPJ pararel

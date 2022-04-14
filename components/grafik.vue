@@ -190,21 +190,21 @@
               {{ row.item.nama_struktur_child1 }}
             </p>
           </template>
-            <template v-slot:periode_pencairan="row">
-              <p>
-                {{
-                  row.item.periode_pencairan
-                    ? row.item.periode_pencairan.period
-                    : "Sedang diperiksa" | capitalize
-                }}
-              </p>
-            </template>
-          <template v-slot:period="row">
-            <p>{{ row.item.period.period }}</p>
+          <template v-slot:periode_pencairan="row">
+            <p>
+              {{
+                row.item.periode_pencairan
+                  ? row.item.periode_pencairan.period
+                  : "Sedang diperiksa" | capitalize
+              }}
+            </p>
           </template>
           <template v-slot:biaya_program="row">
-            <p>RP. {{ row.item.biaya_program | currency }}</p>
+            <p>Rp. {{ row.item.biaya_program | currency }}</p>
           </template>
+          <template v-slot:biaya_disetujui="row">
+            <p>Rp. {{ row.item.biaya_disetujui | currency }}</p>
+          </template> 
           <template v-slot:created_at="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
@@ -236,7 +236,6 @@ export default {
         { key: "fullname", label: "User" },
         { key: "nama_struktur", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
-        // { key: "created_at", label: "Waktu Pengajuan" },
         { key: "rencara_anggaran", label: "Total Anggaran" },
         { key: "biaya_program", label: "Total Realisasi" },
         "persentase",
@@ -247,8 +246,9 @@ export default {
       pengajuan: [
         { key: "fullname", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
-        { key: "periode_pencairan", label: "Periode" },
-        { key: "biaya_program", label: "Anggaran" },
+        { key: "biaya_program", label: "Biaya Program" },
+        { key: "periode_pencairan", label: "Periode Pencairan" },
+        { key: "biaya_disetujui", label: "Biaya Disetujui" },
         { key: "created_at", label: "Waktu Pengajuan" },
         // "actions",
       ],

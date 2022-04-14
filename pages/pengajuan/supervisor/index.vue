@@ -57,6 +57,12 @@
                 }}
               </p>
             </template>
+            <template v-slot:biaya_program="row">
+              <p>Rp. {{ row.item.biaya_program | currency }}</p>
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              <p>Rp. {{ row.item.biaya_disetujui | currency }}</p>
+            </template>
             <template v-slot:created_at="row">
               <p>{{ row.item.created_at | convertDate }}</p>
             </template>
@@ -488,6 +494,12 @@
                 }}
               </p>
             </template>
+            <template v-slot:biaya_program="row">
+              <p>Rp. {{ row.item.biaya_program | currency }}</p>
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              <p>Rp. {{ row.item.biaya_disetujui | currency }}</p>
+            </template>
             <template v-slot:created_at="row">
               <p>{{ row.item.created_at | convertDate }}</p>
             </template>
@@ -624,8 +636,10 @@ export default {
       fields: [
         { key: "fullname", label: "User" },
         { key: "kode_rkat", label: "Kode RKAT " },
-        { key: "periode_pencairan", label: "Periode Pencairan" },
         { key: "nama_struktur", label: "Pelaksana" },
+        { key: "biaya_program", label: "Biaya Program" },
+        { key: "periode_pencairan", label: "Periode Pencairan" },
+        { key: "biaya_disetujui", label: "Biaya Disetujui" },
         { key: "created_at", label: "Tanggal Pengajuan" },
         "actions",
       ],
