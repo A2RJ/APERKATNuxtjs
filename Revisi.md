@@ -112,3 +112,9 @@
 - Tambah draf laporan keuangan [OK]
 - Import nominal tidak bisa kalau ada RP(Kak cana)
 - LPJ pararel
+
+### 12/05/2022
+
+- Bug:
+  -- validasi rab tidak bisa kalau ada RP(Kak cana)
+  -- Validasi semua fields RAB dulu setelah itu baru post pengajuan
