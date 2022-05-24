@@ -30,7 +30,7 @@
           </button>
           <a
             :href="
-              'https://aperkat.uts.ac.id/public/file/' + form.pencairan
+              'https://aperkat.uts.ac.id/api/public/file/' + form.pencairan
             "
             target="_blank"
             v-show="form.pencairan"
@@ -42,7 +42,7 @@
           <a
             v-show="form.lpj_keuangan"
             :href="
-              'https://aperkat.uts.ac.id/public/file/' + form.lpj_keuangan
+              'https://aperkat.uts.ac.id/api/public/file/' + form.lpj_keuangan
             "
             target="_blank"
           >
@@ -53,7 +53,7 @@
           <a
             v-show="form.lpj_kegiatan"
             :href="
-              'https://aperkat.uts.ac.id/public/file/' + form.lpj_kegiatan
+              'https://aperkat.uts.ac.id/api/public/file/' + form.lpj_kegiatan
             "
             target="_blank"
           >
@@ -346,7 +346,7 @@
               Current file:
               <a
                 v-if="rab"
-                :href="'https://aperkat.uts.ac.id/public/file/' + rab"
+                :href="'https://aperkat.uts.ac.id/api/public/file/' + rab"
                 target="_blank"
                 >RAB
               </a>

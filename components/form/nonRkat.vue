@@ -41,7 +41,7 @@
             :key="index"
             class="btn btn-sm btn-outline-success m-1"
             :href="
-              'https://aperkat.uts.ac.id/public/file/' + pencairan.images
+              'https://aperkat.uts.ac.id/api/public/file/' + pencairan.images
             "
             target="_blank"
             rel="noopener noreferrer"
@@ -50,7 +50,7 @@
           <a
             v-show="form.lpj_keuangan"
             :href="
-              'https://aperkat.uts.ac.id/public/file/' + form.lpj_keuangan
+              'https://aperkat.uts.ac.id/api/public/file/' + form.lpj_keuangan
             "
             target="_blank"
           >
@@ -61,7 +61,7 @@
           <a
             v-show="form.lpj_kegiatan"
             :href="
-              'https://aperkat.uts.ac.id/public/file/' + form.lpj_kegiatan
+              'https://aperkat.uts.ac.id/api/public/file/' + form.lpj_kegiatan
             "
             target="_blank"
           >
@@ -629,7 +629,7 @@
             <div class="mt-3" v-if="rab">
               Current file:
               <a
-                :href="'https://aperkat.uts.ac.id/public/file/' + rab"
+                :href="'https://aperkat.uts.ac.id/api/public/file/' + rab"
                 target="_blank"
                 >RAB
               </a>

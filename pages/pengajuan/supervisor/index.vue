@@ -350,7 +350,7 @@
                 <li>
                   <a
                     :href="
-                      'https://aperkat.uts.ac.id/public/file/' +
+                      'https://aperkat.uts.ac.id/api/public/file/' +
                       pencairan.images
                     "
                     >Rp. {{ pencairan.nominal | currency }}</a
@@ -362,7 +362,7 @@
               <a
                 v-if="row.item.lpj_keuangan"
                 :href="
-                  'https://aperkat.uts.ac.id/public/file/' +
+                  'https://aperkat.uts.ac.id/api/public/file/' +
                   row.item.lpj_keuangan
                 "
                 >Preview</a
@@ -372,7 +372,7 @@
               <a
                 v-if="row.item.lpj_kegiatan"
                 :href="
-                  'https://aperkat.uts.ac.id/public/file/' +
+                  'https://aperkat.uts.ac.id/api/public/file/' +
                   row.item.lpj_kegiatan
                 "
                 >Preview</a
@@ -429,7 +429,7 @@
                 <li>
                   <a
                     :href="
-                      'https://aperkat.uts.ac.id/public/file/' +
+                      'https://aperkat.uts.ac.id/api/public/file/' +
                       pencairan.images
                     "
                     >Rp. {{ pencairan.nominal | currency }}</a
@@ -441,7 +441,7 @@
               <a
                 v-if="row.item.lpj_keuangan"
                 :href="
-                  'https://aperkat.uts.ac.id/public/file/' +
+                  'https://aperkat.uts.ac.id/api/public/file/' +
                   row.item.lpj_keuangan
                 "
                 >Preview</a
@@ -451,7 +451,7 @@
               <a
                 v-if="row.item.lpj_kegiatan"
                 :href="
-                  'https://aperkat.uts.ac.id/public/file/' +
+                  'https://aperkat.uts.ac.id/api/public/file/' +
                   row.item.lpj_kegiatan
                 "
                 >Preview</a
