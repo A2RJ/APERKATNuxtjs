@@ -29,7 +29,9 @@
             Print pengajuan
           </button>
           <a
-            :href="'../../../' + form.pencairan"
+            :href="
+              'https://aperkat.uts.ac.id/public/file/' + form.pencairan
+            "
             target="_blank"
             v-show="form.pencairan"
           >
@@ -39,7 +41,9 @@
           </a>
           <a
             v-show="form.lpj_keuangan"
-            :href="'../../../' + form.lpj_keuangan"
+            :href="
+              'https://aperkat.uts.ac.id/public/file/' + form.lpj_keuangan
+            "
             target="_blank"
           >
             <button class="btn btn-sm btn-outline-success m-1">
@@ -48,7 +52,9 @@
           </a>
           <a
             v-show="form.lpj_kegiatan"
-            :href="'../../../' + form.lpj_kegiatan"
+            :href="
+              'https://aperkat.uts.ac.id/public/file/' + form.lpj_kegiatan
+            "
             target="_blank"
           >
             <button class="btn btn-sm btn-outline-success m-1">
@@ -338,7 +344,12 @@
           >
             <div class="mt-3">
               Current file:
-              <a v-if="rab" :href="'../../../' + rab" target="_blank">RAB </a>
+              <a
+                v-if="rab"
+                :href="'https://aperkat.uts.ac.id/public/file/' + rab"
+                target="_blank"
+                >RAB
+              </a>
             </div>
           </b-form-group>
         </div>
@@ -371,7 +382,6 @@ import { mapActions, mapState } from "vuex";
 export default {
   created() {
     if (this.$route.params.id) {
-      
       this.$axios
         .get(`iku/child1ByID/${this.forms.id_iku_child1}`)
         .then((res) => {
@@ -477,7 +487,7 @@ export default {
         keuangan: false,
         kegiatan: false,
       },
-      kode: null
+      kode: null,
     };
   },
   computed: {

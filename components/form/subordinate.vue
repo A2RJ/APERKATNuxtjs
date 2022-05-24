@@ -43,7 +43,7 @@
           </button>
           <a
             v-show="form.lpj_keuangan"
-            :href="'../../../' + form.lpj_keuangan"
+            :href="'https://aperkat.uts.ac.id/public/file/' + form.lpj_keuangan"
             target="_blank"
           >
             <button class="btn btn-sm btn-outline-success m-1">
@@ -52,7 +52,7 @@
           </a>
           <a
             v-show="form.lpj_kegiatan"
-            :href="'../../../' + form.lpj_kegiatan"
+            :href="'https://aperkat.uts.ac.id/public/file/' + form.lpj_kegiatan"
             target="_blank"
           >
             <button class="btn btn-sm btn-outline-success m-1">
@@ -64,7 +64,7 @@
           <a
             v-show="form.pencairan !== null && form.pencairan !== 'default.jpg'"
             class="btn btn-sm btn-outline-success m-1"
-            :href="'../../../' + form.pencairan"
+            :href="'https://aperkat.uts.ac.id/public/file/' + form.pencairan"
             target="_blank"
           >
             Bukti Pencairan
@@ -73,7 +73,7 @@
             v-for="(pencairan, index) in pencairanImg"
             :key="index"
             class="btn btn-sm btn-outline-success m-1"
-            :href="'../../../' + pencairan.images"
+            :href="'https://aperkat.uts.ac.id/public/file/' + pencairan.images"
             target="_blank"
             rel="noopener noreferrer"
             >Pencairan {{ index + 1 }} RP. {{ pencairan.nominal | currency }}</a
@@ -536,7 +536,7 @@
             </b-form-text>
             <div class="mt-3" v-if="rab">
               Current file:
-              <a :href="'../../../' + rab" target="_blank">RAB </a>
+              <a :href="'https://aperkat.uts.ac.id/public/file/' + rab" target="_blank">RAB </a>
             </div>
             <b-button
               class="btn btn-sm my-2 mr-2"
@@ -984,13 +984,13 @@ export default {
       // this.form.biaya_program = this.form.biaya_program.replaceAll(".", "");
     },
     downloadFile() {
-      window.open("https://aperkat.uts.ac.id/draftfile/RABTemplate2022.xlsx");
+      window.open("https://aperkat.uts.ac.id/public/draftfile/RABTemplate2022.xlsx");
     },
     satuanHarga() {
-      window.open(`https://aperkat.uts.ac.id/draftfile/satuan_harga.xlsx`);
+      window.open(`https://aperkat.uts.ac.id/public/draftfile/satuan_harga.xlsx`);
     },
     draftLaporanKeuangan() {
-      window.open(`https://aperkat.uts.ac.id/draftfile/laporan-keuangan.docx`);
+      window.open(`https://aperkat.uts.ac.id/public/draftfile/laporan-keuangan.docx`);
     },
     getIku1(value) {
       if (value) {
@@ -1413,6 +1413,7 @@ export default {
           window.open(
             "https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin)
           );
+          
         });
     },
     getDataRKAT(value) {

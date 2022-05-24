@@ -39,15 +39,19 @@
           <a
             v-for="(pencairan, index) in pencairanImg"
             :key="index"
-            class="btn btn-sm btn-outline-success m-1 "
-            :href="'../../../' + pencairan.images"
+            class="btn btn-sm btn-outline-success m-1"
+            :href="
+              'https://aperkat.uts.ac.id/public/file/' + pencairan.images
+            "
             target="_blank"
             rel="noopener noreferrer"
             >Pencairan {{ index + 1 }} RP. {{ pencairan.nominal | currency }}</a
           >
           <a
             v-show="form.lpj_keuangan"
-            :href="'../../../' + form.lpj_keuangan"
+            :href="
+              'https://aperkat.uts.ac.id/public/file/' + form.lpj_keuangan
+            "
             target="_blank"
           >
             <button class="btn btn-sm btn-outline-success m-1">
@@ -56,7 +60,9 @@
           </a>
           <a
             v-show="form.lpj_kegiatan"
-            :href="'../../../' + form.lpj_kegiatan"
+            :href="
+              'https://aperkat.uts.ac.id/public/file/' + form.lpj_kegiatan
+            "
             target="_blank"
           >
             <button class="btn btn-sm btn-outline-success m-1">
@@ -381,7 +387,7 @@
             label="Bentuk Pelaksanaan Program"
             label-for="bentuk_pelaksanaan_program"
             :class="{
-              'form-group--error': $v.form.bentuk_pelaksanaan_program.$error
+              'form-group--error': $v.form.bentuk_pelaksanaan_program.$error,
             }"
           >
             <b-form-input
@@ -622,7 +628,11 @@
             </b-form-text>
             <div class="mt-3" v-if="rab">
               Current file:
-              <a :href="'../../../' + rab" target="_blank">RAB </a>
+              <a
+                :href="'https://aperkat.uts.ac.id/public/file/' + rab"
+                target="_blank"
+                >RAB
+              </a>
             </div>
             <div class="mt-3" v-else>Ekstensi file harus .PDF</div>
           </b-form-group>
@@ -663,7 +673,7 @@ import {
   required,
   numeric,
   maxLength,
-  requiredIf
+  requiredIf,
 } from "vuelidate/lib/validators";
 
 export default {
@@ -678,8 +688,8 @@ export default {
       this.getIku4(this.nonRKATById.data.id_iku_child1);
       this.getIku5(this.nonRKATById.data.id_iku_child2);
       this.ikuParent.data
-        .filter(el => el.code === 3)
-        .forEach(el => (this.id_iku_parent = el.label));
+        .filter((el) => el.code === 3)
+        .forEach((el) => (this.id_iku_parent = el.label));
       this.rab = this.nonRKATById.data.rab;
 
       this.form = {
@@ -689,8 +699,8 @@ export default {
         latar_belakang: this.nonRKATById.data.latar_belakang,
         sasaran: this.nonRKATById.data.sasaran,
         target_capaian: this.nonRKATById.data.target_capaian,
-        bentuk_pelaksanaan_program: this.nonRKATById.data
-          .bentuk_pelaksanaan_program,
+        bentuk_pelaksanaan_program:
+          this.nonRKATById.data.bentuk_pelaksanaan_program,
         tempat_program: this.nonRKATById.data.tempat_program,
         tanggal: this.nonRKATById.data.tanggal,
         bidang_terkait: this.nonRKATById.data.bidang_terkait,
@@ -707,7 +717,7 @@ export default {
         lpj_keuangan: this.nonRKATById.data.lpj_keuangan,
         lpj_kegiatan: this.nonRKATById.data.lpj_kegiatan,
         validasi_status: this.nonRKATById.data.validasi_status,
-        nama_status: this.nonRKATById.data.nama_status
+        nama_status: this.nonRKATById.data.nama_status,
       };
     }
   },
@@ -739,7 +749,7 @@ export default {
         lpj_kegiatan: null,
         validasi_status: null,
         nama_status: null,
-        message: null
+        message: null,
       },
       id_iku_parent: [],
       id_iku_child1: [],
@@ -755,11 +765,11 @@ export default {
       redirects: "/nonrkat/subordinate/",
       selectChild1: {
         name: "",
-        value: ""
+        value: "",
       },
       selectChild2: {
         name: "",
-        value: ""
+        value: "",
       },
       file: [],
       rab: false,
@@ -777,7 +787,7 @@ export default {
       view: {
         pencairan: false,
         keuangan: false,
-        kegiatan: false
+        kegiatan: false,
       },
       number: null,
       message: null,
@@ -786,79 +796,79 @@ export default {
       userLogin: this.$store.state.auth.user[0].id_user,
       pencairanImg: [],
       aksiLPJKeuanganBoolean: false,
-      aksiLPJKegiatanBoolean: false
+      aksiLPJKegiatanBoolean: false,
     };
   },
   validations: {
     id_iku_parent: {
-      required
+      required,
     },
     id_iku_child1: {
-      required
+      required,
     },
     id_iku_child2: {
-      required
+      required,
     },
     form: {
       id_user: {
-        required
+        required,
       },
       nama_kegiatan: {
-        required
+        required,
       },
       latar_belakang: {
-        required
+        required,
       },
       tujuan: {
-        required
+        required,
       },
       sasaran: {
-        required
+        required,
       },
       target_capaian: {
-        required
+        required,
       },
       bentuk_pelaksanaan_program: {
-        required
+        required,
       },
       tempat_program: {
-        required
+        required,
       },
       tanggal: {
-        required
+        required,
       },
       bidang_terkait: {
-        required
+        required,
       },
       biaya_program: {
-        required
+        required,
       },
       bank: {
-        required
+        required,
       },
       atn: {
-        required
+        required,
       },
       no_rek: {
         required,
         numeric,
-        maxLength: maxLength(20)
-      }
+        maxLength: maxLength(20),
+      },
     },
     file: {
-      required: requiredIf(function() {
+      required: requiredIf(function () {
         return this.$route.name == "nonrkat-subordinate-add";
-      })
-    }
+      }),
+    },
   },
   computed: {
     ...mapState("subordinate", {
-      ikuParent: state => state.ikuParent
+      ikuParent: (state) => state.ikuParent,
     }),
     ...mapState("nonrkat", {
-      nonRKATById: state => state.nonRKATById,
-      errors: state => state.errors
-    })
+      nonRKATById: (state) => state.nonRKATById,
+      errors: (state) => state.errors,
+    }),
   },
   mounted() {
     this.parent = this.ikuParent.data;
@@ -870,7 +880,7 @@ export default {
       "storeNonRKAT",
       "updateNonRKAT",
       "approved",
-      "declined"
+      "declined",
     ]),
     load() {
       if (this.$route.params.id) {
@@ -885,7 +895,7 @@ export default {
         if (this.status[0].id_user == this.userLogin) {
           this.$axios
             .get(`/nonrkat/getLastValidate/${this.$route.params.id}`)
-            .then(res => {
+            .then((res) => {
               this.button = res.data.data;
             });
         }
@@ -970,7 +980,7 @@ export default {
             {
               id: this.$route.params.id,
               next: this.nonRKATById.data.next,
-              id_struktur: this.userLogin
+              id_struktur: this.userLogin,
             },
             this.form
           );
@@ -989,7 +999,7 @@ export default {
             const form = new FormData();
             form.append("file", this.file);
             try {
-              await this.$axios.post("/pengajuan/upload", form).then(res => {
+              await this.$axios.post("/pengajuan/upload", form).then((res) => {
                 this.form.rab = res.data;
                 this.form.validasi_status = "1";
                 this.form.nama_status = this.$store.state.auth.user[0].fullname;
@@ -1000,7 +1010,7 @@ export default {
                     this.success("Data telah disimpan!");
                     this.$router.push("/nonrkat/subordinate/");
                   })
-                  .catch(e => {
+                  .catch((e) => {
                     this.failed("Pastikan semua fields diisi!");
                   });
               });
@@ -1018,7 +1028,7 @@ export default {
         const form = new FormData();
         form.append("file", this.file);
         try {
-          await this.$axios.post("/pengajuan/upload", form).then(res => {
+          await this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.form.rab = res.data;
           });
         } catch (e) {
@@ -1035,8 +1045,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
@@ -1046,7 +1056,7 @@ export default {
             message: this.message,
             validasi_status: 2,
             id_struktur: this.userLogin,
-            nama_status: this.$store.state.auth.user[0].fullname
+            nama_status: this.$store.state.auth.user[0].fullname,
           })
             .then(() => {
               this.success("Berhasil terima pengajuan");
@@ -1068,8 +1078,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
@@ -1079,12 +1089,12 @@ export default {
             message: this.message,
             validasi_status: 0,
             id_struktur: this.userLogin,
-            nama_status: this.$store.state.auth.user[0].fullname
+            nama_status: this.$store.state.auth.user[0].fullname,
           })
             .then(() => {
               this.success("Berhasil tolak pengajuan");
               this.option = true;
-              window.location.reload()
+              window.location.reload();
             })
             .catch(() => {
               this.failed("Whoops Server Error");
@@ -1104,13 +1114,13 @@ export default {
         const form = new FormData();
         form.append("file", this.pencairan);
         try {
-          this.$axios.post("/pengajuan/upload", form).then(res => {
+          this.$axios.post("/pengajuan/upload", form).then((res) => {
             // simpan data ke tabel pencairan non rkat
             this.$axios
               .post("/nonrkat/upload", {
                 nonrkat_id: this.$route.params.id,
                 nominal: this.pencairanNominal.replaceAll(".", ""),
-                images: res.data
+                images: res.data,
               })
               .then(() => {
                 this.success("Berhasil upload bukti transfer");
@@ -1134,8 +1144,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
@@ -1147,7 +1157,7 @@ export default {
             validasi_status: 3,
             id_struktur: 24,
             nama_status: "Direktur Keuangan",
-            pencairan: "selesai"
+            pencairan: "selesai",
           })
             .then(() => {
               this.success("Berhasil terima pengajuan");
@@ -1170,7 +1180,7 @@ export default {
         const form = new FormData();
         form.append("file", this.LPJKeuangan);
         try {
-          this.$axios.post("/pengajuan/upload", form).then(res => {
+          this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.replace();
 
             this.approved({
@@ -1180,7 +1190,7 @@ export default {
               validasi_status: 1,
               id_struktur: this.userLogin,
               nama_status: this.$store.state.auth.user[0].fullname,
-              lpj_keuangan: res.data
+              lpj_keuangan: res.data,
             })
               .then(() => {
                 this.success("Berhasil upload LPJ Keuangan");
@@ -1205,8 +1215,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
@@ -1216,7 +1226,7 @@ export default {
             message: this.message,
             validasi_status: params == "terima" ? 4 : 0,
             id_struktur: 24,
-            nama_status: "Direktur keuangan"
+            nama_status: "Direktur keuangan",
           })
             .then(() => {
               this.success(`Berhasil ${params} pengajuan`);
@@ -1240,7 +1250,7 @@ export default {
         const form = new FormData();
         form.append("file", this.LPJKegiatan);
         try {
-          this.$axios.post("/pengajuan/upload", form).then(res => {
+          this.$axios.post("/pengajuan/upload", form).then((res) => {
             this.replace();
 
             this.approved({
@@ -1250,7 +1260,7 @@ export default {
               validasi_status: 1,
               id_struktur: this.userLogin,
               nama_status: this.$store.state.auth.user[0].fullname,
-              lpj_kegiatan: res.data
+              lpj_kegiatan: res.data,
             })
               .then(() => {
                 this.success("Berhasil upload LPJ Kegiatan");
@@ -1275,8 +1285,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "OK"
-      }).then(result => {
+        confirmButtonText: "OK",
+      }).then((result) => {
         if (result.isConfirmed) {
           this.loader("loading...");
           this.replace();
@@ -1286,7 +1296,7 @@ export default {
             message: this.message,
             validasi_status: params == "terima" ? 4 : 0,
             id_struktur: this.userLogin,
-            nama_status: "Sekniv"
+            nama_status: "Sekniv",
           })
             .then(() => {
               this.success(`Berhasil ${params} pengajuan`);
@@ -1302,9 +1312,9 @@ export default {
     print() {
       this.$axios
         .get(`pengajuan/pdf_pengajuan/${this.$route.params.id}`, {
-          responseType: "blob"
+          responseType: "blob",
         })
-        .then(res => {
+        .then((res) => {
           const url = window.URL.createObjectURL(new Blob([res.data]));
           const link = document.createElement("a");
           link.href = url;
@@ -1331,7 +1341,7 @@ export default {
         width: 300,
         icon: "success",
         title: "Congrats!",
-        text: params
+        text: params,
       });
     },
     failed(params) {
@@ -1339,7 +1349,7 @@ export default {
         width: 300,
         icon: "error",
         title: "Oops...",
-        text: params
+        text: params,
       });
     },
     loader(params) {
@@ -1349,7 +1359,7 @@ export default {
         text: params,
         imageUrl: "/Rocket.gif",
         showConfirmButton: false,
-        allowOutsideClick: true
+        allowOutsideClick: true,
       });
     },
 
@@ -1373,7 +1383,7 @@ export default {
     getIku1(value) {
       if (value) {
         this.form.id_iku_parent = value.code;
-        this.$axios.get(`/iku/child1/${value.code}`).then(response => {
+        this.$axios.get(`/iku/child1/${value.code}`).then((response) => {
           this.child1 = response.data.data;
         });
         // this.getIkuChild1(value.code).then(() => {
@@ -1389,7 +1399,7 @@ export default {
     getIku2(value) {
       if (value) {
         this.form.id_iku_child1 = value.code;
-        this.$axios.get(`/iku/child2/${value.code}`).then(response => {
+        this.$axios.get(`/iku/child2/${value.code}`).then((response) => {
           this.child2 = response.data.data;
         });
         // this.getIkuChild2(value.code).then(() => {
@@ -1416,15 +1426,15 @@ export default {
       });
     },
     async doubleIKU(params1, params2) {
-      this.$axios.get(`iku/child1ByID/${params1}`).then(res => {
+      this.$axios.get(`iku/child1ByID/${params1}`).then((res) => {
         this.id_iku_child1 = res.data.data.label;
       });
 
-      this.$axios.get(`iku/child2ByID/${params2}`).then(res => {
+      this.$axios.get(`iku/child2ByID/${params2}`).then((res) => {
         this.id_iku_child2 = res.data.data.label;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

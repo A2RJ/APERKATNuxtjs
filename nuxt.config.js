@@ -1,5 +1,5 @@
 const isDev = false;
-const url = isDev ? "http://127.0.0.1:8000" : "https://aperkat.uts.ac.id";
+const url = isDev ? "http://127.0.0.1:8000" : "https://aperkat.uts.ac.id/api";
 
 export default {
   ssr: true,
@@ -38,6 +38,7 @@ export default {
     "@/plugins/axios.js",
     "@/plugins/numeral.js",
     "@/plugins/vuelidate.js",
+    // "@nuxtjs/proxy",
     // {src: '~/plugins/vue-list-picker.js', mode: 'client'},
   ],
 
@@ -58,7 +59,11 @@ export default {
     withCredentials: true,
     baseURL: url,
     browserBaseURL: url,
+    // proxy: true,
   },
+  // proxy: {
+  //   "/api/": "http://api.aperkat.uts.ac.id",
+  // },
   auth: {
     strategies: {
       laravelJWT: {
