@@ -39,10 +39,7 @@
                 variant="outline-warning"
                 v-b-modal.modal-1
                 @click="
-                  uploadPencairan(
-                    row.item.id_pengajuan,
-                    row.item.kode_rkat
-                  )
+                  uploadPencairan(row.item.id_pengajuan, row.item.kode_rkat)
                 "
                 >Pencairan</b-button
               >
@@ -159,7 +156,53 @@
         </b-tab>
       </b-tabs>
       <b-tabs content-class="mt-3" v-else-if="userLogin == 121">
-        <b-tab title="LPJ Keuangan" active>
+        <b-tab title="Belum LPJ Keuangan" active>
+          <custom-table
+            :items="belumLPJKeuangan"
+            :fields="fieldsWR2LPJ"
+            :html="key"
+            :actions="actions"
+          >
+            <template v-slot:kode_rkat="row">
+              {{ row.item.kode_rkat }}
+            </template>
+            <template v-slot:rkat="row">
+              {{ row.item.nama_program }}
+            </template>
+            <template v-slot:biaya_program="row">
+              RP. {{ row.item.biaya_program | currency }}
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              RP. {{ row.item.biaya_disetujui | currency }}
+            </template>
+            <template v-slot:pencairan="row">
+              <ul
+                v-for="pencairan in row.item.pencairan"
+                :key="pencairan.index"
+              >
+                <li>
+                  <a :href="pencairan.images"
+                    >Rp. {{ pencairan.nominal | currency }}</a
+                  >
+                </li>
+              </ul>
+            </template>
+            <template v-slot:lpj_keuangan="row">
+              <a v-if="row.item.lpj_keuangan" :href="row.item.lpj_keuangan"
+                >Preview</a
+              >
+            </template>
+            <template v-slot:actions="row">
+              <NuxtLink
+                class="btn btn-sm btn-outline-info"
+                :to="'/pengajuan/subordinate/edit/' + row.item.id_pengajuan"
+                :key="'edit' + row.index"
+                >Detail</NuxtLink
+              >
+            </template>
+          </custom-table>
+        </b-tab>
+        <b-tab title="Periksa LPJ Keuangan">
           <custom-table
             :items="listLPJKeuangan"
             :fields="fieldsWR2LPJ"
@@ -219,9 +262,9 @@
             </template>
           </custom-table>
         </b-tab>
-        <b-tab title="Belum LPJ Keuangan">
+        <b-tab title="Sudah LPJ Keuangan">
           <custom-table
-            :items="belumLPJKeuangan"
+            :items="sudahLPJKeuangan"
             :fields="fieldsWR2LPJ"
             :html="key"
             :actions="actions"
@@ -308,6 +351,7 @@ export default {
       ],
       listLPJKeuangan: [],
       belumLPJKeuangan: [],
+      sudahLPJKeuangan: [],
       selectedRKAT: "",
       selectedID: "",
       pencairanNominal: "",
@@ -331,6 +375,7 @@ export default {
     if (this.userLogin == 121) {
       this.lpjKeuangan();
       this.getBelumLPJKeuangan();
+      this.getSudahLPJKeuangan();
     }
   },
   methods: {
@@ -350,6 +395,16 @@ export default {
         .get("/pengajuan/belumLPJKeuangan")
         .then((response) => {
           this.belumLPJKeuangan = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async getSudahLPJKeuangan() {
+      this.$axios
+        .get("/pengajuan/sudahLPJKeuangan")
+        .then((response) => {
+          this.sudahLPJKeuangan = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -408,7 +463,7 @@ export default {
                   })
                   .then((res) => {
                     this.success("Berhasil upload bukti pencairan");
-                    this.$refs["modal"].hide(); 
+                    this.$refs["modal"].hide();
                     window.location.reload();
                   })
                   .catch((err) => {

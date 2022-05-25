@@ -1,4 +1,4 @@
-const isDev = false;
+const isDev = true;
 const url = isDev ? "http://127.0.0.1:8000" : "https://aperkat.uts.ac.id/api";
 
 export default {

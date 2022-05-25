@@ -118,3 +118,10 @@
 - Bug:
   -- validasi rab tidak bisa kalau ada RP(Kak cana)
   -- Validasi semua fields RAB dulu setelah itu baru post pengajuan
+
+### 25/05/2022
+
+- Lisensi cwp pro expired jadi server error (2Hari fixing sampai begadang)
+- 93 halaman rkat untuk perubahan nama
+- penambahan fitur lpj keuangan sudah selesai
+- penambahan fitur summary untuk wr 2 [on-progress]
