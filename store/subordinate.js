@@ -128,7 +128,7 @@ export const actions = {
   storepengajuan({ dispatch, commit }, payload) {
     return new Promise((resolve, reject) => {
       this.$axios
-        .post("/pengajuan/", payload)
+        .post("/pengajuan", payload)
         .then(response => {
           dispatch("getpengajuan");
           resolve();

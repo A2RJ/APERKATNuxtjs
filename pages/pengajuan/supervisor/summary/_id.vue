@@ -1,20 +1,14 @@
 <template lang="">
   <div>
     <h1>Hello world!</h1>
-    <!-- loop  -->
-    <ul v-for="item in data">
-      <li>
-        {{ item.fullname }}
-        <ul v-for="item in item.rkat">
-          <li>
-            <div>
-              {{ item.kode_rkat }}
-              <div v-for="item in item.pengajuan" :key="item.id">
-                {{ item.latar_belakang }}
-              </div>
-            </div>
-          </li>
-        </ul>
+
+    <p>{{ data.fullname }}</p>
+    <p>{{ data.email }}</p>
+    <!-- loop rkat ul li -->
+    <ul>
+      <li v-for="(item, index) in data.rkat">
+        <p>{{ item.kode_rkat }}</p>
+        <p>{{ item.id_pengajuan }}</p>
       </li>
     </ul>
   </div>

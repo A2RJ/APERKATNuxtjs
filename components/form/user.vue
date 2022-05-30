@@ -406,7 +406,7 @@ export default {
         } else {
           this.loader("Simpan user data");
           this.$axios
-            .post("/user/", this.form)
+            .post("/user", this.form)
             .then(() => {
               this.success("Data telah disimpan");
               this.$router.push("/user");

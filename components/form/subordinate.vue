@@ -754,7 +754,7 @@ export default {
       child1: [],
       child2: [],
       option: [],
-      redirects: "/pengajuan/subordinate/",
+      redirects: "/pengajuan/subordinate",
       selectChild1: {
         name: "",
         value: "",
@@ -1079,7 +1079,7 @@ export default {
           let nama_status = await this.$store.state.auth.user[0].fullname;
           this.$axios
             .post(
-              "/pengajuan/",
+              "/pengajuan",
               Object.assign(
                 {
                   id_struktur: this.userLogin,
@@ -1413,7 +1413,6 @@ export default {
           window.open(
             "https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin)
           );
-          
         });
     },
     getDataRKAT(value) {
@@ -1455,7 +1454,7 @@ export default {
         item.pengajuan_id = params;
       });
       await this.$axios
-        .post(`/rab/`, this.items)
+        .post(`/rab`, this.items)
         .then((res) => {
           // console.log(res);
         })

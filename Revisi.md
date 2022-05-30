@@ -125,3 +125,4 @@
 - 93 halaman rkat untuk perubahan nama
 - penambahan fitur lpj keuangan sudah selesai
 - penambahan fitur summary untuk wr 2 [on-progress]
+- ubah nama direktur kuangan (2) menjadi pencairan

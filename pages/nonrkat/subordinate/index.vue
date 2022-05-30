@@ -286,7 +286,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.$axios
-            .post("/nonrkat/delete/", params)
+            .post("/nonrkat/delete", params)
             .then(async () => {
               await this.$swal({
                 width: 300,

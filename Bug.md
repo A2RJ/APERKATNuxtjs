@@ -62,3 +62,7 @@
 - 376 [ok]
 - 352 [ok]
 - 302 [ok]
+
+# BUG
+
+- Akhir endpoint tanpa / ex: api/pengajuan != api/pengajuan/
