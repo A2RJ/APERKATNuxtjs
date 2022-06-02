@@ -76,6 +76,12 @@
             </NuxtLink>
             <NuxtLink
               class="collapse-item"
+              v-show="warek2"
+              :to="'/pengajuan/supervisor/summary'"
+              >Summary
+            </NuxtLink>
+            <NuxtLink
+              class="collapse-item"
               v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
               :to="'/pengajuan/grafik/'"
               >Grafik Sub Divisi</NuxtLink
@@ -146,6 +152,7 @@ export default {
       fakultas: false,
       dirKeuangan: false,
       warek: false,
+      warek2: false,
       rektor: false,
       sekniv: false,
       userLogin: this.$store.state.auth.user[0].id_user,
@@ -176,6 +183,10 @@ export default {
       } else if (data == "sekniv") {
         this.sekniv = true;
       }
+    }
+
+    if (this.userLogin == 23) {
+      this.warek2 = true;
     }
   },
 };

@@ -1,15 +1,29 @@
 <template>
-  <div>
-    <h1>Hello world!</h1>
-    <button @click="onClick">Click me!</button>
-    <!-- loop data with list -->
-    <ul v-for="item in data">
-      <li>
-        <NuxtLink :to="'/pengajuan/supervisor/summary/'+ item.id_user">
-          {{ item.fullname }}
-        </NuxtLink>
-      </li>
-    </ul>
+  <div class="row card shadow mb-4">
+    <div class="col-xl-12 col-lg-12 card-body">
+      <!-- <button @click="onClick">Click me!</button> -->
+      <b-table
+        striped
+        small
+        show-empty
+        responsive
+        hover
+        :fields="fields"
+        :items="data"
+      >
+        <!-- index -->
+        <template #head(index)>No.</template>
+        <template #cell(index)="data">
+          {{ data.index + 1 }}
+        </template>
+        <!-- actions -->
+        <template #cell(actions)="data">
+          <NuxtLink :to="'/pengajuan/supervisor/summary/' + data.item.id">
+            Detail
+          </NuxtLink>
+        </template>
+      </b-table>
+    </div>
   </div>
 </template>
 
@@ -18,6 +32,22 @@ export default {
   data() {
     return {
       data: [],
+      key: "id",
+      actions: [],
+      fields: [
+        {
+          key: "index",
+          label: "ID",
+          width: "10px",
+        },
+        {
+          key: "name",
+          label: "Name",
+          sortable: true,
+          // width: "100px",
+        },
+        "Actions",
+      ],
     };
   },
   mounted() {
@@ -26,7 +56,7 @@ export default {
   methods: {
     getData() {
       this.$axios
-        .get("/user")
+        .get("/user/unit")
         .then((response) => {
           this.data = response.data.data;
         })

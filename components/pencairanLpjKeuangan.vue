@@ -27,7 +27,7 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="pencairan.images"
+                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
@@ -138,7 +138,7 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="pencairan.images"
+                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
@@ -181,14 +181,14 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="pencairan.images"
+                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
               </ul>
             </template>
             <template v-slot:lpj_keuangan="row">
-              <a v-if="row.item.lpj_keuangan" :href="row.item.lpj_keuangan"
+              <a v-if="row.item.lpj_keuangan" :href="'https://aperkat.uts.ac.id/api/public/file/'+ row.item.lpj_keuangan"
                 >Preview</a
               >
             </template>
@@ -227,14 +227,14 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="pencairan.images"
+                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
               </ul>
             </template>
             <template v-slot:lpj_keuangan="row">
-              <a v-if="row.item.lpj_keuangan" :href="row.item.lpj_keuangan"
+              <a v-if="row.item.lpj_keuangan" :href="'https://aperkat.uts.ac.id/api/public/file/'+ row.item.lpj_keuangan"
                 >Preview</a
               >
             </template>
@@ -287,14 +287,14 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="pencairan.images"
+                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
               </ul>
             </template>
             <template v-slot:lpj_keuangan="row">
-              <a v-if="row.item.lpj_keuangan" :href="row.item.lpj_keuangan"
+              <a v-if="row.item.lpj_keuangan" :href="'https://aperkat.uts.ac.id/api/public/file/'+ row.item.lpj_keuangan"
                 >Preview</a
               >
             </template>
