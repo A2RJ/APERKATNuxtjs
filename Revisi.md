@@ -124,5 +124,11 @@
 - Lisensi cwp pro expired jadi server error (2Hari fixing sampai begadang)
 - 93 halaman rkat untuk perubahan nama
 - penambahan fitur lpj keuangan sudah selesai
-- penambahan fitur summary untuk wr 2 [on-progress]
+- penambahan fitur summary untuk wr 2
+- nama program di hal. pengajuan
+- hapus user (yg mengajukan)
+- biaya program tambah dari rkat
+- detail pada halaman summary (total rkat, diajukan, belum diajukan, total anggaran)
+- akses ke bu atun (lpj keuangan)
+- download exel
 - ubah nama direktur kuangan (2) menjadi pencairan
