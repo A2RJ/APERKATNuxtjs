@@ -411,7 +411,7 @@ export default {
       this.file1 = this.$refs.file.files[0];
     },
     downloadFile() {
-      window.open("https://aperkat.uts.ac.id/RKATemplate.xlsx");
+      window.open("https://aperkat.uts.ac.id/api/public/draftfile/RKATemplate.xlsx");
     },
     resetFile() {
       this.file1 = null;
