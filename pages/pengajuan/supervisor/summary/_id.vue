@@ -131,16 +131,13 @@ export default {
     },
     download(){
       let url = ''
-      // url = 'https://aperkat.uts.ac.id/api/public/'
-      url = 'http://localhost:8000'
+      url = 'https://aperkat.uts.ac.id/api/public/'
+      // url = 'http://localhost:8000'
       this.$axios
       .get(`${url}/pengajuan/summaryByUnit/export/${this.$route.params.id}`)
       .then((response) => {
         window.open(`${url}/${response.data.data}`);
         // return this.$axios.get(`${url}/pengajuan/summaryByUnit/delete/${response.data.data}`)
-      })
-      .then((response) => {
-        console.log(response)
       })
       .catch((error) => {
         alert(error.message);
