@@ -269,21 +269,21 @@
       label-cols="4"
       label-cols-lg="2"
       label-size="sm"
-      label="Rencara Anggaran"
-      label-for="rencara_anggaran"
-      :class="{ 'form-group--error': $v.form.rencara_anggaran.$error }"
+      label="Rencana Anggaran"
+      label-for="rencana_anggaran"
+      :class="{ 'form-group--error': $v.form.rencana_anggaran.$error }"
     >
       <b-form-input
-        v-model.trim="$v.form.rencara_anggaran.$model"
+        v-model.trim="$v.form.rencana_anggaran.$model"
         v-on:keyup="numberFormatRencanaAnggaran"
-        id="rencara_anggaran"
+        id="rencana_anggaran"
         size="sm"
       ></b-form-input>
       <b-form-text
-        id="rencara_anggaran"
-        v-if="!$v.form.rencara_anggaran.required"
+        id="rencana_anggaran"
+        v-if="!$v.form.rencana_anggaran.required"
       >
-        <i class="text-danger">Rencara anggaran is required</i>
+        <i class="text-danger">Rencana anggaran is required</i>
       </b-form-text>
     </b-form-group>
 
@@ -340,7 +340,7 @@ export default {
         selesai_program: this.forms.selesai_program,
         tempat: this.forms.tempat,
         sumber_anggaran: this.forms.sumber_anggaran,
-        rencara_anggaran: this.forms.rencara_anggaran,
+        rencana_anggaran: this.forms.rencana_anggaran,
         total_anggaran: this.forms.total_anggaran,
         anggaran_digunakan: this.forms.anggaran_digunakan,
       };
@@ -365,7 +365,7 @@ export default {
         selesai_program: "",
         tempat: "",
         sumber_anggaran: "",
-        rencara_anggaran: "",
+        rencana_anggaran: "",
         total_anggaran: "",
         anggaran_digunakan: 0,
       },
@@ -417,7 +417,7 @@ export default {
       sumber_anggaran: {
         required,
       },
-      rencara_anggaran: {
+      rencana_anggaran: {
         required,
       },
       total_anggaran: {
@@ -448,7 +448,7 @@ export default {
       if (this.$v.$invalid) {
         this.failed("Pastikan semua fields diisi!");
       } else {
-        this.form.rencara_anggaran = this.form.rencara_anggaran.replaceAll(
+        this.form.rencana_anggaran = this.form.rencana_anggaran.replaceAll(
           ".",
           ""
         );
@@ -516,8 +516,8 @@ export default {
         });
     },
     numberFormatRencanaAnggaran() {
-      this.form.rencara_anggaran = this.$formatRupiah(
-        this.form.rencara_anggaran
+      this.form.rencana_anggaran = this.$formatRupiah(
+        this.form.rencana_anggaran
       );
     },
     numberFormatTotalAnggaran() {

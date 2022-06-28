@@ -1,5 +1,8 @@
 <template lang="">
   <div class="row card shadow mb-4">
+    <div>
+      <p @click="download()" class="mt-3 mb-0 mr-3 float-right btn btn-outline-primary">Export Data</p>
+    </div>
     <div class="col-xl-12 col-lg-12 card-body">
       <b-table
         striped
@@ -25,6 +28,9 @@
         <template #cell(status)="data">
           <p>{{ data.item.biaya_program ? "Telah" : "Belum" }} diajukan</p>
         </template>
+        <template #cell(rkat)="data">
+          <p>Rp. {{ data.item.rkat | currency }}</p>
+        </template>
         <template #cell(biaya_disetujui)="data">
           <p>Rp. {{ data.item.biaya_disetujui | currency }}</p>
         </template>
@@ -40,13 +46,13 @@
         </template>
         <template #cell(lpj_keuangan)="data">
           <a v-if="data.item.lpj_keuangan" :href="'https://aperkat.uts.ac.id/api/public/file/'+ data.item.lpj_keuangan"
-                >Preview</a>
-              <p v-else>-</p>
+                >Sudah</a>
+              <p v-else>Belum</p>
         </template>
         <template #cell(lpj_kegiatan)="data">
           <a v-if="data.item.lpj_kegiatan" :href="'https://aperkat.uts.ac.id/api/public/file/'+ data.item.lpj_kegiatan"
-                >Preview</a>
-              <p v-else>-</p>
+                >Sudah</a>
+              <p v-else>Belum</p>
         </template>
       </b-table>
     </div>
@@ -80,8 +86,12 @@ export default {
           label: "Status",
         },
         {
+          key: "rkat",
+          label: "Anggaran RKAT",
+        },
+        {
           key: "biaya_program",
-          label: "Biaya Program",
+          label: "Biaya Diajukan",
         },
         {
           key: "biaya_disetujui",
@@ -93,7 +103,7 @@ export default {
         },
         {
           key: "lpj_keuangan",
-          label: "LPJ Kuangan",
+          label: "LPJ Keuangan",
         },
         {
           key: "lpj_kegiatan",
@@ -119,6 +129,23 @@ export default {
     onClick() {
       this.getData();
     },
+    download(){
+      let url = ''
+      // url = 'https://aperkat.uts.ac.id/api/public/'
+      url = 'http://localhost:8000'
+      this.$axios
+      .get(`${url}/pengajuan/summaryByUnit/export/${this.$route.params.id}`)
+      .then((response) => {
+        window.open(`${url}/${response.data.data}`);
+        // return this.$axios.get(`${url}/pengajuan/summaryByUnit/delete/${response.data.data}`)
+      })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+    }
   },
 };
 </script>

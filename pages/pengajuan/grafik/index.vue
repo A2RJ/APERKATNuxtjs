@@ -83,15 +83,15 @@
                 {{ row.item.nama_struktur_child1 }}
               </p>
             </template>
-            <template #cell(rencara_anggaran)="row">
-              RP. {{ row.item.rencara_anggaran | currency }}
+            <template #cell(rencana_anggaran)="row">
+              RP. {{ row.item.rencana_anggaran | currency }}
             </template>
             <template #cell(biaya_program)="row">
               RP. {{ row.item.biaya_program | currency }}
             </template>
             <template #cell(persentase)="row">
               {{
-                ((row.item.biaya_program / row.item.rencara_anggaran) * 100)
+                ((row.item.biaya_program / row.item.rencana_anggaran) * 100)
                   | currency
               }}%
             </template>
@@ -140,7 +140,7 @@ export default {
       fields: [
         { key: "fullname", label: "User" },
         { key: "nama_struktur", label: "Pelaksana" },
-        { key: "rencara_anggaran", label: "Total Anggaran" },
+        { key: "rencana_anggaran", label: "Total Anggaran" },
         { key: "biaya_program", label: "Total Realisasi" },
         "persentase",
         "actions",

@@ -117,8 +117,8 @@
           <template v-slot:created_at="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
-          <template v-slot:rencara_anggaran="row">
-            <p>RP. {{ row.item.rencara_anggaran | currency }}</p>
+          <template v-slot:rencana_anggaran="row">
+            <p>RP. {{ row.item.rencana_anggaran | currency }}</p>
           </template>
           <template v-slot:biaya_program="row">
             <p>RP. {{ row.item.biaya_program | currency }}</p>
@@ -126,7 +126,7 @@
           <template v-slot:persentase="row">
             <p>
               {{
-                ((row.item.biaya_program / row.item.rencara_anggaran) * 100)
+                ((row.item.biaya_program / row.item.rencana_anggaran) * 100)
                   | currency
               }}%
             </p>
@@ -204,7 +204,7 @@
           </template>
           <template v-slot:biaya_disetujui="row">
             <p>Rp. {{ row.item.biaya_disetujui | currency }}</p>
-          </template> 
+          </template>
           <template v-slot:created_at="row">
             <p>{{ row.item.created_at | convertDate }}</p>
           </template>
@@ -236,7 +236,7 @@ export default {
         { key: "fullname", label: "User" },
         { key: "nama_struktur", label: "Pelaksana" },
         { key: "kode_rkat", label: "Kode RKAT" },
-        { key: "rencara_anggaran", label: "Total Anggaran" },
+        { key: "rencana_anggaran", label: "Total Anggaran" },
         { key: "biaya_program", label: "Total Realisasi" },
         "persentase",
         "actions",
