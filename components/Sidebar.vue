@@ -68,6 +68,9 @@
             <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/'"
               >Pengajuan</NuxtLink
             >
+            <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/summary/' + userLogin"
+              >Summary Pengajuan</NuxtLink
+            >
             <NuxtLink
               class="collapse-item"
               v-show="fakultas || dirKeuangan || warek || rektor || sekniv"

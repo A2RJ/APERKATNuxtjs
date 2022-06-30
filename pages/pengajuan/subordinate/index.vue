@@ -18,8 +18,8 @@
             :actions="actions"
             ref="table"
           >
-            <template v-slot:fullname="row">
-              <p class="m-0 p-0">{{ row.item.fullname | capitalize }}</p>
+            <template v-slot:nama_program="row">
+              <p class="m-0 p-0">{{ row.item.nama_program | capitalize }}</p>
               <b-badge
                 class="m-0"
                 :variant="row.item.validasi_status | validasiStatus"
@@ -27,38 +27,6 @@
                 {{ row.item.validasi_status | validasiDetail }}
                 {{ row.item.nama_status }}
               </b-badge>
-            </template>
-            <template v-slot:nama_struktur="row">
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 == '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 == '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur }}
-              </p>
-              <p
-                v-if="
-                  row.item.nama_struktur !== '0' &&
-                  row.item.nama_struktur_child1 !== '0' &&
-                  row.item.nama_struktur_child2 !== '0'
-                "
-                class="text-uppercase"
-              >
-                {{ row.item.nama_struktur_child1 }}
-              </p>
             </template>
             <template v-slot:periode_pencairan="row">
               <p>
@@ -160,7 +128,7 @@ export default {
         },
       ],
       fields: [
-        { key: "fullname", label: "User" },
+        { key: "nama_program", label: "Nama Program" },
         { key: "kode_rkat", label: "Kode RKAT" },
         { key: "biaya_program", label: "Biaya Program" },
         { key: "periode_pencairan", label: "Periode Pencairan" },

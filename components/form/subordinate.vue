@@ -1445,7 +1445,7 @@ export default {
           }
         });
       } catch (e) {
-        this.failed("Whoops Server Error");
+        this.failed("Whoops! Pastikan file yang diupload sesuai dengan format.");
       }
     },
     async postRAB(params) {
