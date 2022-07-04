@@ -173,7 +173,7 @@ export const actions = {
   getstatus({ commit }, payload) {
     return new Promise((resolve, reject) => {
       this.$axios.get(`/pengajuan/status/${payload}`).then(response => {
-        commit("SET_STATUS", response.data.data);
+        commit("SET_STATUS", response.data);
         resolve();
       });
     });

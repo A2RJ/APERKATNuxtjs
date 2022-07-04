@@ -1,5 +1,4 @@
-const isDev = false;
-const url = isDev ? "http://127.0.0.1:8000" : "https://aperkat.uts.ac.id/api";
+const url = process.env.IS_DEV ? process.env.DEV_URL : process.env.PROD_URL;
 
 export default {
   ssr: true,

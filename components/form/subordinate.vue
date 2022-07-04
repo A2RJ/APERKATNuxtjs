@@ -8,7 +8,7 @@
         <div class="container-timeline pl-3 pt-3">
           <ul>
             <li
-              v-for="(status, index) in status"
+              v-for="(status, index) in status.data"
               :key="index"
               :class="status.status ? 'approve' : 'decline'"
             >
@@ -43,7 +43,9 @@
           </button>
           <a
             v-show="form.lpj_keuangan"
-            :href="'https://aperkat.uts.ac.id/api/public/file/' + form.lpj_keuangan"
+            :href="
+              'https://aperkat.uts.ac.id/api/public/file/' + form.lpj_keuangan
+            "
             target="_blank"
           >
             <button class="btn btn-sm btn-outline-success m-1">
@@ -52,7 +54,9 @@
           </a>
           <a
             v-show="form.lpj_kegiatan"
-            :href="'https://aperkat.uts.ac.id/api/public/file/' + form.lpj_kegiatan"
+            :href="
+              'https://aperkat.uts.ac.id/api/public/file/' + form.lpj_kegiatan
+            "
             target="_blank"
           >
             <button class="btn btn-sm btn-outline-success m-1">
@@ -64,7 +68,9 @@
           <a
             v-show="form.pencairan !== null && form.pencairan !== 'default.jpg'"
             class="btn btn-sm btn-outline-success m-1"
-            :href="'https://aperkat.uts.ac.id/api/public/file/' + form.pencairan"
+            :href="
+              'https://aperkat.uts.ac.id/api/public/file/' + form.pencairan
+            "
             target="_blank"
           >
             Bukti Pencairan
@@ -73,7 +79,9 @@
             v-for="(pencairan, index) in pencairanImg"
             :key="index"
             class="btn btn-sm btn-outline-success m-1"
-            :href="'https://aperkat.uts.ac.id/api/public/file/' + pencairan.images"
+            :href="
+              'https://aperkat.uts.ac.id/api/public/file/' + pencairan.images
+            "
             target="_blank"
             rel="noopener noreferrer"
             >Pencairan {{ index + 1 }} RP. {{ pencairan.nominal | currency }}</a
@@ -536,16 +544,16 @@
             </b-form-text>
             <div class="mt-3" v-if="rab">
               Current file:
-              <a :href="'https://aperkat.uts.ac.id/api/public/file/' + rab" target="_blank">RAB </a>
+              <a
+                :href="'https://aperkat.uts.ac.id/api/public/file/' + rab"
+                target="_blank"
+                >RAB
+              </a>
             </div>
-            <b-button
-              class="btn btn-sm my-2 mr-2"
-              @click="downloadFile()"
+            <b-button class="btn btn-sm my-2 mr-2" @click="downloadFile()"
               >Download Template RAB
             </b-button>
-            <b-button
-              class="btn btn-sm my-2 mr-2"
-              @click="satuanHarga()"
+            <b-button class="btn btn-sm my-2 mr-2" @click="satuanHarga()"
               >Referensi Satuan Harga
             </b-button>
             <b-button
@@ -907,65 +915,72 @@ export default {
     ]),
     load() {
       if (this.$route.params.id) {
-        this.button = false;
-        this.option = false;
-        // console.log(this.status[index - 1].status ); // untuk mengecek pengajuan sebelumnya
-        // jika user login == atasan && status belum diterima && status sebelumnya diterima maka option true
-        for (let index = 1; index < this.status.length; index++) {
+        if (!this.status.isNewFormat) {
+          this.button = false;
+          this.option = false;
+          // console.log(this.status.data[index - 1].status ); // untuk mengecek pengajuan sebelumnya
+          // jika user login == atasan && status belum diterima && status sebelumnya diterima maka option true
+          for (let index = 1; index < this.status.data.length; index++) {
+            if (
+              this.status.data[index].id_user == this.userLogin &&
+              this.status.data[index].status == false &&
+              this.status.data[index - 1].status !== false &&
+              this.status.data[index + 1].id_user !== 1111
+            ) {
+              this.option = true;
+            }
+          }
+          // jika dir keuangan maka upload pencairan
           if (
-            this.status[index].id_user == this.userLogin &&
-            this.status[index].status == false &&
-            this.status[index - 1].status !== false &&
-            this.status[index + 1].id_user !== 1111
+            // this.userLogin == 24 && // ubah kesini jika keuangan yg lakukan pencairan
+            this.userLogin == 120 &&
+            this.status.data[this.status.data.length - 4].status &&
+            this.status.data[this.status.data.length - 3].status == false
           ) {
+            this.form.lpj_keuangan && this.form.lpj_kegiatan
+              ? (this.formPencairan = false)
+              : ((this.formPencairan = true), (this.option = false));
+          }
+          // jika user login == pengaju && sudah pencairan maka formLPJ true
+          if (
+            this.status.data[0].id_user == this.userLogin &&
+            this.status.data[this.status.data.length - 3].status &&
+            this.status.data[this.status.data.length - 2].lpj[0].status == false
+          ) {
+            this.formLPJKeuangan = true;
+            this.option = false;
+          }
+          if (
+            this.status.data[0].id_user == this.userLogin &&
+            this.status.data[this.status.data.length - 3].status &&
+            this.status.data[this.status.data.length - 2].lpj[0].status &&
+            this.status.data[this.status.data.length - 2].lpj[1].status == false
+          ) {
+            this.formLPJKegiatan = true;
+            this.option = false;
+          }
+          // jika sekniv/dir keuangan maka tampilkan form terima/tolak lpj
+          if (
+            // (this.userLogin == 24 && // ubah kesini jika keuangan yg lakukan pencairan
+            (this.userLogin == 121 &&
+              this.forms.lpj_keuangan &&
+              this.status.data[this.status.data.length - 2].lpj[0].status ==
+                false) ||
+            (this.userLogin == 21 &&
+              this.forms.lpj_kegiatan &&
+              this.status.data[this.status.data.length - 2].lpj[1].status ==
+                false)
+          ) {
+            this.terimaLPJ = 4;
             this.option = true;
           }
-        }
-        // jika dir keuangan maka upload pencairan
-        if (
-          // this.userLogin == 24 && // ubah kesini jika keuangan yg lakukan pencairan
-          this.userLogin == 120 &&
-          this.status[this.status.length - 4].status &&
-          this.status[this.status.length - 3].status == false
-        ) {
-          this.form.lpj_keuangan && this.form.lpj_kegiatan
-            ? (this.formPencairan = false)
-            : ((this.formPencairan = true), (this.option = false));
-        }
-        // jika user login == pengaju && sudah pencairan maka formLPJ true
-        if (
-          this.status[0].id_user == this.userLogin &&
-          this.status[this.status.length - 3].status &&
-          this.status[this.status.length - 2].lpj[0].status == false
-        ) {
-          this.formLPJKeuangan = true;
-          this.option = false;
-        }
-        if (
-          this.status[0].id_user == this.userLogin &&
-          this.status[this.status.length - 3].status &&
-          this.status[this.status.length - 2].lpj[0].status &&
-          this.status[this.status.length - 2].lpj[1].status == false
-        ) {
-          this.formLPJKegiatan = true;
-          this.option = false;
-        }
-        // jika sekniv/dir keuangan maka tampilkan form terima/tolak lpj
-        if (
-          // (this.userLogin == 24 && // ubah kesini jika keuangan yg lakukan pencairan
-          (this.userLogin == 121 &&
-            this.forms.lpj_keuangan &&
-            this.status[this.status.length - 2].lpj[0].status == false) ||
-          (this.userLogin == 21 &&
-            this.forms.lpj_kegiatan &&
-            this.status[this.status.length - 2].lpj[1].status == false)
-        ) {
-          this.terimaLPJ = 4;
-          this.option = true;
+          console.log("Format lama");
+        } else {
+          console.log("New format");
         }
         // jika user login == pengaju dan dihalaman suboridnate maka button true
         if (
-          this.status[0].id_user == this.userLogin &&
+          this.status.data[0].id_user == this.userLogin &&
           this.$route.name == "pengajuan-subordinate-edit-id"
         ) {
           this.$axios
@@ -984,13 +999,19 @@ export default {
       // this.form.biaya_program = this.form.biaya_program.replaceAll(".", "");
     },
     downloadFile() {
-      window.open("https://aperkat.uts.ac.id/api/public/draftfile/RABTemplate2022.xlsx");
+      window.open(
+        "https://aperkat.uts.ac.id/api/public/draftfile/RABTemplate2022.xlsx"
+      );
     },
     satuanHarga() {
-      window.open(`https://aperkat.uts.ac.id/api/public/draftfile/satuan_harga.xlsx`);
+      window.open(
+        `https://aperkat.uts.ac.id/api/public/draftfile/satuan_harga.xlsx`
+      );
     },
     draftLaporanKeuangan() {
-      window.open(`https://aperkat.uts.ac.id/api/public/draftfile/laporan-keuangan.docx`);
+      window.open(
+        `https://aperkat.uts.ac.id/api/public/draftfile/laporan-keuangan.docx`
+      );
     },
     getIku1(value) {
       if (value) {
@@ -1116,23 +1137,27 @@ export default {
         confirmButtonText: "OK",
       }).then((result) => {
         if (result.isConfirmed) {
-          for (let index = 1; index < this.status.length; index++) {
+          for (let index = 1; index < this.status.data.length; index++) {
             if (
-              this.status[index].id_user == this.userLogin &&
-              this.status[index - 1].status !== false
+              this.status.data[index].id_user == this.userLogin &&
+              this.status.data[index - 1].status !== false
             ) {
-              this.next = this.status[index + 1].id_user;
+              this.next = this.status.data[index + 1].id_user;
             }
           }
           if (this.terimaLPJ == 4) {
             if (
-              this.status[this.status.length - 2].lpj[0].status == false &&
-              this.status[this.status.length - 2].lpj[1].status == false
+              this.status.data[this.status.data.length - 2].lpj[0].status ==
+                false &&
+              this.status.data[this.status.data.length - 2].lpj[1].status ==
+                false
             ) {
               this.next = 21;
             } else if (
-              this.status[this.status.length - 2].lpj[0].status !== false &&
-              this.status[this.status.length - 2].lpj[1].status == false
+              this.status.data[this.status.data.length - 2].lpj[0].status !==
+                false &&
+              this.status.data[this.status.data.length - 2].lpj[1].status ==
+                false
             ) {
               this.next = 3333;
             }
@@ -1445,7 +1470,9 @@ export default {
           }
         });
       } catch (e) {
-        this.failed("Whoops! Pastikan file yang diupload sesuai dengan format.");
+        this.failed(
+          "Whoops! Pastikan file yang diupload sesuai dengan format."
+        );
       }
     },
     async postRAB(params) {
