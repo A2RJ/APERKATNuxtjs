@@ -27,7 +27,11 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
+                  <a
+                    :href="
+                      'https://aperkat.uts.ac.id/api/public/file/' +
+                      pencairan.images
+                    "
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
@@ -138,7 +142,11 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
+                  <a
+                    :href="
+                      'https://aperkat.uts.ac.id/api/public/file/' +
+                      pencairan.images
+                    "
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
@@ -181,14 +189,23 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
+                  <a
+                    :href="
+                      'https://aperkat.uts.ac.id/api/public/file/' +
+                      pencairan.images
+                    "
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
               </ul>
             </template>
             <template v-slot:lpj_keuangan="row">
-              <a v-if="row.item.lpj_keuangan" :href="'https://aperkat.uts.ac.id/api/public/file/'+ row.item.lpj_keuangan"
+              <a
+                v-if="row.item.lpj_keuangan"
+                :href="
+                  'https://aperkat.uts.ac.id/api/public/file/' +
+                  row.item.lpj_keuangan
+                "
                 >Preview</a
               >
             </template>
@@ -227,14 +244,23 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
+                  <a
+                    :href="
+                      'https://aperkat.uts.ac.id/api/public/file/' +
+                      pencairan.images
+                    "
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
               </ul>
             </template>
             <template v-slot:lpj_keuangan="row">
-              <a v-if="row.item.lpj_keuangan" :href="'https://aperkat.uts.ac.id/api/public/file/'+ row.item.lpj_keuangan"
+              <a
+                v-if="row.item.lpj_keuangan"
+                :href="
+                  'https://aperkat.uts.ac.id/api/public/file/' +
+                  row.item.lpj_keuangan
+                "
                 >Preview</a
               >
             </template>
@@ -287,14 +313,23 @@
                 :key="pencairan.index"
               >
                 <li>
-                  <a :href="'https://aperkat.uts.ac.id/api/public/file/'+ pencairan.images"
+                  <a
+                    :href="
+                      'https://aperkat.uts.ac.id/api/public/file/' +
+                      pencairan.images
+                    "
                     >Rp. {{ pencairan.nominal | currency }}</a
                   >
                 </li>
               </ul>
             </template>
             <template v-slot:lpj_keuangan="row">
-              <a v-if="row.item.lpj_keuangan" :href="'https://aperkat.uts.ac.id/api/public/file/'+ row.item.lpj_keuangan"
+              <a
+                v-if="row.item.lpj_keuangan"
+                :href="
+                  'https://aperkat.uts.ac.id/api/public/file/' +
+                  row.item.lpj_keuangan
+                "
                 >Preview</a
               >
             </template>
@@ -449,30 +484,22 @@ export default {
           this.loader("loading...");
           const form = new FormData();
           form.append("file", this.pencairan);
-
           try {
-            await this.$axios.post("/pengajuan/upload", form).then((res) => {
-              this.buktiTFImage = res.data;
-              // axios post pencairan image
-              if (this.buktiTFImage) {
-                this.$axios
-                  .post(`/pencairan`, {
-                    pengajuan_id: this.selectedID,
-                    nominal: this.pencairanNominal.replaceAll(".", ""),
-                    images: this.buktiTFImage,
-                  })
-                  .then((res) => {
-                    this.success("Berhasil upload bukti pencairan");
-                    this.$refs["modal"].hide();
-                    window.location.reload();
-                  })
-                  .catch((err) => {
-                    this.failed("Whoops Server Error");
-                  });
-              } else {
-                this.failed("Upload ulang file");
-              }
-            });
+            const res = await this.$axios.post("/pengajuan/upload", form);
+            this.buktiTFImage = res.data;
+            if (this.buktiTFImage) {
+              const data = {
+                pengajuan_id: this.selectedID,
+                nominal: this.pencairanNominal.replaceAll(".", ""),
+                images: this.buktiTFImage,
+              };
+              await this.$axios.post(`/pencairan`, data);
+              this.success("Berhasil upload bukti pencairan");
+              this.$refs["modal"].hide();
+              window.location.reload();
+            } else {
+              this.failed("Upload ulang file");
+            }
           } catch (e) {
             console.log("Whoops Server Error");
           }
@@ -506,26 +533,25 @@ export default {
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "OK",
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
-          this.loader("loading...");
-          this.approved({
-            id: this.selectedID,
-            message: "Pencairan selesai",
-            status_validasi: 3,
-            id_struktur: 24,
-            next: 24,
-            nama_status: "Direktur Keuangan",
-            pencairan: "default.jpg",
-          })
-            .then(() => {
-              this.success("Upload bukti pencairan selesai");
-              this.$refs["modal"].hide();
-              window.location.reload();
-            })
-            .catch(() => {
-              this.failed("Whoops Server Error");
+          try {
+            this.loader("loading...");
+            await this.approved({
+              id: this.selectedID,
+              message: "Pencairan selesai",
+              status_validasi: 3,
+              id_struktur: 24,
+              next: 24,
+              nama_status: "Direktur Keuangan",
+              pencairan: "default.jpg",
             });
+            this.success("Upload bukti pencairan selesai");
+            this.$refs["modal"].hide();
+            window.location.reload();
+          } catch (error) {
+            this.failed("Whoops Server Error");
+          }
         }
       });
     },
@@ -533,7 +559,7 @@ export default {
       this.selectedRKAT = koderkat;
       this.selectedID = params;
     },
-    aprroveLPJKeuangan(params) {
+    async aprroveLPJKeuangan(params) {
       this.$swal({
         title: "Warning!",
         text: "Terima LPJ Keuangan ?",
@@ -550,27 +576,27 @@ export default {
         preConfirm: (login) => {},
       }).then(async (result) => {
         if (result.isConfirmed) {
-          this.loader("loading...");
-          this.approved({
-            id: params,
-            message: result.value,
-            status_validasi: 4,
-            id_struktur: 24,
-            nama_status: "Direktorat Keuangan",
-            next: 21,
-          })
-            .then(async () => {
-              this.success("Berhasil terima pengajuan");
-              this.lpjKeuangan();
-              this.getBelumLPJKeuangan();
-            })
-            .catch(() => {
-              this.failed("Whoops Server Error");
-            });
+          try {
+            this.loader("loading...");
+            const data = {
+              id: params,
+              message: result.value,
+              status_validasi: 4,
+              id_struktur: 24,
+              nama_status: "Direktorat Keuangan",
+              next: 21,
+            };
+            await this.approved(data);
+            this.success("Berhasil terima pengajuan");
+            this.lpjKeuangan();
+            this.getBelumLPJKeuangan();
+          } catch (error) {
+            this.failed("Whoops Server Error");
+          }
         }
       });
     },
-    declineLPJKeuangan(params) {
+    async declineLPJKeuangan(params) {
       this.$swal({
         title: "Warning!",
         text: "Tolak LPJ Keuangan ?",
@@ -587,23 +613,23 @@ export default {
         preConfirm: (login) => {},
       }).then(async (result) => {
         if (result.isConfirmed) {
-          this.loader("loading...");
-          this.approved({
-            id: params,
-            message: result.value,
-            status_validasi: 0,
-            id_struktur: 24,
-            nama_status: "Direktorat Keuangan",
-            next: 24,
-          })
-            .then(async () => {
-              this.success("Berhasil terima pengajuan");
-              this.lpjKeuangan();
-              this.getBelumLPJKeuangan();
-            })
-            .catch(() => {
-              this.failed("Whoops Server Error");
-            });
+          try {
+            this.loader("loading...");
+            const data = {
+              id: params,
+              message: result.value,
+              status_validasi: 0,
+              id_struktur: 24,
+              nama_status: "Direktorat Keuangan",
+              next: 24,
+            };
+            await this.approved(data);
+            this.success("Berhasil tolak pengajuan");
+            this.lpjKeuangan();
+            this.getBelumLPJKeuangan();
+          } catch (error) {
+            this.failed("Whoops Server Error");
+          }
         }
       });
     },

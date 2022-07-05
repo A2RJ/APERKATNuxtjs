@@ -199,7 +199,7 @@ export default {
       // this.totalRows = filteredItems.length
       // this.currentPage = 1
     },
-    deleteUser(row) {
+    async deleteUser(row) {
       this.$swal({
         title: "Warning!",
         text: "Yakin menghapus user ini?",
@@ -209,31 +209,30 @@ export default {
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "OK",
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
-          this.deleteuser(row.item.id_user)
-            .then(async () => {
-              await this.reload();
-              this.$swal({
-                width: 300,
-                icon: "success",
-                title: "Congrats!",
-                text: "User data telah dihapus",
-              });
-              this.$nuxt.refresh();
-            })
-            .catch(() => {
-              this.$swal({
-                width: 300,
-                icon: "error",
-                title: "Oops...",
-                text: "Cek server atau koneksi anda",
-              });
+          try {
+            await this.deleteuser(row.item.id_user);
+            await this.reload();
+            this.$swal({
+              width: 300,
+              icon: "success",
+              title: "Congrats!",
+              text: "User data telah dihapus",
             });
+            this.$nuxt.refresh();
+          } catch (error) {
+            this.$swal({
+              width: 300,
+              icon: "error",
+              title: "Oops...",
+              text: "Cek server atau koneksi anda",
+            });
+          }
         }
       });
     },
-    deleteAll() {
+    async deleteAll() {
       this.$swal({
         title: "Warning!",
         text: "Yakin menghapus user ini?",
@@ -243,27 +242,25 @@ export default {
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "OK",
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
-          this.$axios
-            .post("/user/destroy")
-            .then(() => {
-              this.$swal({
-                width: 300,
-                icon: "success",
-                title: "Congrats!",
-                text: "User data telah dihapus",
-              });
-              this.$nuxt.refresh();
-            })
-            .catch(() => {
-              this.$swal({
-                width: 300,
-                icon: "error",
-                title: "Oops...",
-                text: "Cek server atau koneksi anda",
-              });
+          try {
+            await this.$axios.post("/user/destroy");
+            this.$swal({
+              width: 300,
+              icon: "success",
+              title: "Congrats!",
+              text: "User data telah dihapus",
             });
+            this.$nuxt.refresh();
+          } catch (error) {
+            this.$swal({
+              width: 300,
+              icon: "error",
+              title: "Oops...",
+              text: "Cek server atau koneksi anda",
+            });
+          }
         }
       });
     },
