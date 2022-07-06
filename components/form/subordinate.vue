@@ -1116,58 +1116,42 @@ export default {
         this.failed("Pastikan semua fields diisi!");
       } else {
         this.loader("Saving pengajuan");
-        if (this.$route.name === "pengajuan-subordinate-edit-id") {
-          try {
-            this.replace();
-            this.form.nama_status = await this.$store.state.auth.user[0]
-              .fullname;
-            this.form.status_validasi = 1;
+        this.replace();
+
+        try {
+          if (this.$route.name === "pengajuan-subordinate-edit-id") {
             const data = Object.assign(
               {
                 id: this.$route.params.id,
+                status_validasi: 1,
                 message: "Update pengajuan",
                 id_struktur: this.form.id_user,
+                nama_status: this.$store.state.auth.user[0].fullname,
               },
               this.form
             );
-            const res = await this.$axios.post(
-              `/pengajuan/${this.$route.params.id}`,
-              data
-            );
+            await this.$axios.post(`/pengajuan/${this.$route.params.id}`, data);
             await this.postRAB(this.$route.params.id);
             this.success("Data telah disimpan!");
             window.location.reload();
-          } catch (error) {
-            if (error.response) {
-              this.failed(error.response.data.message);
-            }
-          }
-        } else {
-          try {
-            this.replace();
-            this.form.nama_status = await this.$store.state.auth.user[0]
-              .fullname;
-            this.form.status_validasi = 1;
+          } else {
             const data = Object.assign(
               {
-                id: this.$route.params.id,
-                message: "Update pengajuan",
-                id_struktur: this.form.id_user,
+                id_struktur: this.userLogin,
+                status_validasi: 1,
+                message: "Input pengajuan",
+                nama_status: this.$store.state.auth.user[0].fullname,
+                next: null,
               },
               this.form
             );
-            const res = await this.$axios.post(
-              `/pengajuan/${this.$route.params.id}`,
-              data
-            );
+            const res = await this.$axios.post("/pengajuan", data);
             await this.postRAB(res.data.id_pengajuan);
             this.success("Data telah disimpan!");
-            window.location.reload();
-          } catch (error) {
-            if (error.response) {
-              this.failed(error.response.data.message);
-            }
+            this.$router.push(this.redirects);
           }
+        } catch (error) {
+          this.failed("Whoops! gagal menyimpan data");
         }
       }
     },
@@ -1231,7 +1215,7 @@ export default {
               this.formLPJKeuangan = false;
             this.formLPJKegiatan = false;
           } catch (error) {
-            this.failed("Whoops Server Error");
+            this.failed("Whoops! gagal aksi terima pengajuan");
           }
         }
       });
@@ -1270,19 +1254,14 @@ export default {
               this.formLPJKeuangan = false;
             this.formLPJKegiatan = false;
           } catch (error) {
-            this.failed("Whoops Server Error");
+            this.failed("Whoops! gagal aksi revisi pengajuan");
           }
         }
       });
     },
     // Fungsi upload file pencairan
     async buktiTF() {
-      if (
-        this.pencairan !== null &&
-        this.pencairan.length !== 0 &&
-        this.pencairanNominal !== "" &&
-        this.pencairanNominal !== null
-      ) {
+      if (!this.pencairan && !this.pencairanNominal) {
         const status = this.checkFileSize(this.pencairan.size);
         if (status) {
           try {
@@ -1290,8 +1269,8 @@ export default {
             const form = new FormData();
             form.append("file", this.pencairan);
             const res = await this.$axios.post("/pengajuan/upload", form);
-            this.buktiTFImage = res.data;
-            if (this.buktiTFImage) {
+            if (res.data) {
+              this.buktiTFImage = res.data;
               const data = {
                 pengajuan_id: this.$route.params.id,
                 nominal: this.pencairanNominal.replaceAll(".", ""),
@@ -1301,10 +1280,10 @@ export default {
               this.success("Berhasil upload bukti pencairan");
               window.location.reload();
             } else {
-              this.failed("Upload ulang file");
+              this.failed("Whoops! gagal upload bukti pencairan");
             }
           } catch (e) {
-            console.log("Whoops Server Error");
+            console.log("Whoops! gagal upload bukti pencairan");
           }
         } else {
           this.failed("Ukuran file terlalu besar");
@@ -1361,22 +1340,28 @@ export default {
           try {
             this.loader("Uploading...");
             const res = await this.$axios.post("/pengajuan/upload", form);
-            this.form.lpj_keuangan = res.data;
-            this.replace();
-            await this.updatepengajuan({
-              next: 24,
-              status_validasi: 1,
-              id: this.$route.params.id,
-              message: "Upload LPJ (Keuangan dan Kegiatan)",
-              lpj_keuangan: this.form.lpj_keuangan,
-              id_struktur: this.userLogin,
-              nama_status: this.$store.state.auth.user[0].fullname,
-            });
-            this.success("Data telah disimpan!");
-            this.$nuxt.refresh();
+            if (res.data) {
+              this.form.lpj_keuangan = res.data;
+              this.replace();
+              await this.updatepengajuan({
+                next: 24,
+                status_validasi: 1,
+                id: this.$route.params.id,
+                message: "Upload LPJ (Keuangan dan Kegiatan)",
+                lpj_keuangan: this.form.lpj_keuangan,
+                id_struktur: this.userLogin,
+                nama_status: this.$store.state.auth.user[0].fullname,
+              });
+              this.success("Data telah disimpan!");
+              this.$nuxt.refresh();
+            } else {
+              this.failed("Whoops! gagal upload LPJ");
+            }
           } catch (e) {
-            this.failed("Whoops Server Error");
+            this.failed("Whoops! gagal upload LPJ");
           }
+        } else {
+          this.failed("Ukuran file terlalu besar");
         }
       } else {
         this.failed("Select file");
@@ -1392,22 +1377,28 @@ export default {
           try {
             this.loader("Uploading...");
             const res = await this.$axios.post("/pengajuan/upload", form);
-            this.form.lpj_keuangan = res.data;
-            this.replace();
-            await this.updatepengajuan({
-              next: 24,
-              status_validasi: 1,
-              id: this.$route.params.id,
-              message: "Upload LPJ Keuangan",
-              lpj_keuangan: this.form.lpj_keuangan,
-              id_struktur: this.userLogin,
-              nama_status: this.$store.state.auth.user[0].fullname,
-            });
-            this.success("Data telah disimpan!");
-            this.$nuxt.refresh();
+            if (res.data) {
+              this.form.lpj_keuangan = res.data;
+              this.replace();
+              await this.updatepengajuan({
+                next: 24,
+                status_validasi: 1,
+                id: this.$route.params.id,
+                message: "Upload LPJ Keuangan",
+                lpj_keuangan: this.form.lpj_keuangan,
+                id_struktur: this.userLogin,
+                nama_status: this.$store.state.auth.user[0].fullname,
+              });
+              this.success("Data telah disimpan!");
+              this.$nuxt.refresh();
+            } else {
+              this.failed("Whoops! gagal upload LPJ keuangan");
+            }
           } catch (e) {
-            this.failed("Whoops Server Error");
+            this.failed("Whoops! gagal upload LPJ keuangan");
           }
+        } else {
+          this.failed("Ukuran file terlalu besar");
         }
       } else {
         this.failed("Select file");
@@ -1423,25 +1414,31 @@ export default {
           try {
             this.loader("Uploading...");
             const res = await this.$axios.post("/pengajuan/upload", form);
-            this.form.lpj_kegiatan = res.data;
-            this.replace();
-            await this.updatepengajuan({
-              next: 21,
-              status_validasi: 1,
-              id: this.$route.params.id,
-              message: "Upload LPJ Kegiatan",
-              lpj_kegiatan: this.form.lpj_kegiatan,
-              id_struktur: this.userLogin,
-              nama_status: this.$store.state.auth.user[0].fullname,
-            });
-            this.success("Data telah disimpan!");
-            this.$nuxt.refresh();
+            if (res.data) {
+              this.form.lpj_kegiatan = res.data;
+              this.replace();
+              await this.updatepengajuan({
+                next: 21,
+                status_validasi: 1,
+                id: this.$route.params.id,
+                message: "Upload LPJ Kegiatan",
+                lpj_kegiatan: this.form.lpj_kegiatan,
+                id_struktur: this.userLogin,
+                nama_status: this.$store.state.auth.user[0].fullname,
+              });
+              this.success("Data telah disimpan!");
+              this.$nuxt.refresh();
+            } else {
+              this.failed("Whoops! gagal upload LPJ kegiatan");
+            }
           } catch (e) {
-            this.failed("Whoops Server Error");
+            this.failed("Whoops! gagal upload LPJ kegiatan");
           }
+        } else {
+          this.failed("Ukuran file terlalu besar");
         }
       } else {
-        this.failed("Select file");
+        this.failed("Pilih file LPJ Kegiatan");
       }
     },
     async undo() {
@@ -1475,19 +1472,17 @@ export default {
               this.formLPJKegiatan = false;
             }
           } catch (error) {
-            this.failed("Whoops Server Error");
+            this.failed("Whoops! gagal undo aksi");
           }
         }
       });
     },
     // check file size
     checkFileSize(size) {
-      let result = false;
+      let result = true;
       if (size > 2097152) {
         this.failed("Ukuran file max 2MB");
         result = false;
-      } else {
-        result = true;
       }
       return result;
     },
@@ -1499,7 +1494,7 @@ export default {
         );
         window.open("https://aperkat.uts.ac.id/api/g/" + btoa(this.userLogin));
       } catch (error) {
-        this.failed("Whoops Server Error");
+        this.failed("Whoops! gagal unduh dokumen");
       }
     },
     getDataRKAT(value) {
