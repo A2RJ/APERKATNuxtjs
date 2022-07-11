@@ -33,7 +33,7 @@
         </div>
         <div class="card-body">
           <button
-            class="btn btn-sm btn-outline-success m-1 mr-2"
+            class="btn btn-sm btn-outline-warning m-1 mr-2"
             @click="draftLaporanKeuangan()"
           >
             Download template laporan keuangan
@@ -1001,9 +1001,7 @@ export default {
             this.terimaLPJ = 4;
             this.option = true;
           }
-          console.log("Format lama");
         } else {
-          console.log("New format");
           this.button = false;
           this.option = false;
 
@@ -1026,6 +1024,11 @@ export default {
             this.formLPJ1Format = true;
             this.option = false;
           }
+        }
+
+        // jika user adalah dir keuangan maka tidak bisa terima/revisi karena hanya bisa add to list
+        if (+this.userLogin === 24) {
+          this.option = false;
         }
 
         if (

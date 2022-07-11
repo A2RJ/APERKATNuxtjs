@@ -108,7 +108,7 @@
                 </button>
 
                 <button
-                  class="btn btn-sm btn-outline-success mb-3"
+                  class="btn btn-sm btn-outline-warning mb-3"
                   @click="selesaiUpload"
                 >
                   Upload Bukti Transfer Selesai
@@ -414,7 +414,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("subordinate", ["approved", "declined"]),
+    ...mapActions("subordinate", ["approved", "declined", "autoLpjKegiatan"]),
     async lpjKeuangan() {
       this.$axios
         .get("/pengajuan/lpjKeuangan")
@@ -587,6 +587,7 @@ export default {
               next: 21,
             };
             await this.approved(data);
+            await this.autoLpjKegiatan(params);
             this.success("Berhasil terima pengajuan");
             this.lpjKeuangan();
             this.getBelumLPJKeuangan();

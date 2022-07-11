@@ -307,9 +307,12 @@
             <template v-slot:biaya_disetujui="row">
               RP. {{ row.item.biaya_disetujui | currency }}
             </template>
+            <template v-slot:created_at="row">
+              {{ row.item.created_at | convertDate }}
+            </template>
             <template v-slot:actions="row">
               <button
-                class="btn btn-sm btn-outline-info mb-1 mr-1"
+                class="btn btn-sm btn-outline-danger mb-1 mr-1"
                 @click="deleteFromList(row.item.id_pengajuan)"
               >
                 Delete from list
@@ -617,6 +620,21 @@
               >
                 {{ row.item.nama_struktur_child1 }}
               </p>
+            </template>
+            <template v-slot:periode_pencairan="row">
+              <p>
+                {{
+                  row.item.periode_pencairan
+                    ? row.item.periode_pencairan.period
+                    : "Format tanpa periode" | capitalize
+                }}
+              </p>
+            </template>
+            <template v-slot:biaya_program="row">
+              <p>Rp. {{ row.item.biaya_program | currency }}</p>
+            </template>
+            <template v-slot:biaya_disetujui="row">
+              <p>Rp. {{ row.item.biaya_disetujui | currency }}</p>
             </template>
             <template v-slot:created_at="row">
               <p>{{ row.item.created_at | convertDate }}</p>
