@@ -93,11 +93,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isAuth", "ardi", "user"]),
+    ...mapState(["isAuth", "user"]),
   },
   mounted() {},
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
+    ...mapMutations(["SET_IS_AUTH"]),
     toggled() {
       const el = document.getElementById("accordionSidebar");
       el.classList.toggle("toggled");
@@ -106,7 +106,6 @@ export default {
       try {
         await this.$auth.logout();
         // this.SET_IS_AUTH(false);
-        // this.SET_USER_DATA(null);
         // this.$router.push("/login");
         window.location.href = "/login";
       } catch (err) {

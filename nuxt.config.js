@@ -90,11 +90,22 @@ export default {
   },
 
   router: {
-    middleware: ["auth"],
+    middleware: ["auth", "authorized"],
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    analyze: true,
+    collapseBooleanAttributes: true,
+    decodeEntities: true,
+    minifyCSS: true,
+    minifyJS: true,
+    processConditionalComments: true,
+    removeEmptyAttributes: true,
+    removeRedundantAttributes: true,
+    trimCustomFragments: true,
+    useShortDoctype: true,
+  },
   server: {
     // port: 3000 // default: 3000
   },

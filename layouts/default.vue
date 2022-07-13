@@ -49,10 +49,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isAuth", "ardi", "level"]),
+    ...mapState(["isAuth", "level"]),
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA", "SET_LEVEL"]),
+    ...mapMutations(["SET_IS_AUTH", , "SET_LEVEL"]),
   },
   components: {
     Sidebar: Sidebar,
@@ -62,11 +62,9 @@ export default {
   mounted() {
     if (this.$store.state.auth.loggedIn) {
       this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-      this.SET_USER_DATA(this.$store.state.auth.user[0]);
       this.SET_LEVEL(this.$store.state.auth.user[1].level);
     } else {
       // this.SET_IS_AUTH(false);
-      // this.SET_USER_DATA(null);
       // this.SET_LEVEL(null);
       this.$router.push("/login");
     }

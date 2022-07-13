@@ -158,7 +158,7 @@
             <template v-slot:actions="row">
               <NuxtLink
                 class="btn btn-sm btn-outline-info mt-1"
-                :to="'rkat/edit/' + row.item.id_rkat"
+                :to="'/rkat/edit/' + row.item.id_rkat"
                 :key="'edit' + row.index"
                 >Ubah</NuxtLink
               >
@@ -179,6 +179,7 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
+  middleware: ["rkat"],
   async asyncData({ store }) {
     await Promise.all([store.dispatch("rkat/getrkat")]);
     return;
@@ -411,7 +412,9 @@ export default {
       this.file1 = this.$refs.file.files[0];
     },
     downloadFile() {
-      window.open("https://aperkat.uts.ac.id/api/public/draftfile/RKATemplate.xlsx");
+      window.open(
+        "https://aperkat.uts.ac.id/api/public/draftfile/RKATemplate.xlsx"
+      );
     },
     resetFile() {
       this.file1 = null;

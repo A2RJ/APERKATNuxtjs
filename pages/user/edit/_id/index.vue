@@ -22,6 +22,7 @@
 import { mapActions, mapState} from "vuex";
 
 export default {
+  middleware: ["user"],
   async asyncData({ store, params }) {
     await Promise.all([
       store.dispatch("user/getuserID", params.id),
@@ -30,7 +31,7 @@ export default {
   },
   methods: {
     ...mapActions("user", ["getuserID"]),
-  }, 
+  },
   computed: {
     ...mapState("user", {
       userID: (state) => state.userID

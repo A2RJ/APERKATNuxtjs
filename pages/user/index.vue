@@ -119,6 +119,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
+  middleware: ["user"],
   async asyncData({ store }) {
     await Promise.all([store.dispatch("user/getuser")]);
     return;

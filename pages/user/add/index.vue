@@ -20,6 +20,7 @@
 
 <script>
   export default {
+  middleware: ["user"],
   mounted(){},
   methods:{}
 };

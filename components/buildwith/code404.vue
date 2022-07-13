@@ -49,7 +49,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "error-404"
+};
 </script>
 
 <style>
