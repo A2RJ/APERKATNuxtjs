@@ -36,11 +36,9 @@ export default {
     "form-rkat": rkatform,
   },
   mounted() {
-    // this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-    // this.SET_USER_DATA(this.$store.state.auth.user[0]);
   },
   methods: {
-    ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
+    ...mapMutations(["SET_IS_AUTH" ]),
     ...mapActions("rkat", ["getrkatID"]),
   },
 };

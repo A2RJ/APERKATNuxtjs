@@ -37,6 +37,7 @@ export default {
     "@/plugins/axios.js",
     "@/plugins/numeral.js",
     "@/plugins/vuelidate.js",
+    "@/plugins/custom-middleware.js",
     // "@nuxtjs/proxy",
     // {src: '~/plugins/vue-list-picker.js', mode: 'client'},
   ],
@@ -90,7 +91,7 @@ export default {
   },
 
   router: {
-    middleware: ["auth", "authorized"],
+    middleware: ["auth"],
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

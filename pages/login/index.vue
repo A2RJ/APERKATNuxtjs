@@ -181,7 +181,6 @@ export default {
     if (this.$auth.$state.loggedIn) {
       this.$router.push("/");
     } else {
-      // this.SET_IS_AUTH(false);
       this.$router.push("/login");
     }
   },
@@ -189,45 +188,20 @@ export default {
     ...mapMutations(["SET_IS_AUTH", "SET_USER_DATA"]),
     async login() {
       try {
-        await this.$auth
-          .loginWith("laravelJWT", {
-            data: {
-              email: this.auth.email,
-              password: this.auth.password,
-            },
-          })
-          .then(() => {
-            this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-            this.SET_USER_DATA(this.$store.state.auth.user[0]);
-            this.$router.push("/");
-          });
+        await this.$auth.loginWith("laravelJWT", {
+          data: {
+            email: this.auth.email,
+            password: this.auth.password,
+          },
+        });
+        this.$router.push("/");
       } catch (error) {
         this.failed = true;
-        if (error.response.status === 401) {
+        if (error.response && error.response.status === 401) {
           this.message = "Ups! Email dan Password salah";
         } else {
           this.message = "Ups! Server error";
         }
-        // if (error.response) {
-        //     /*
-        //      * The request was made and the server responded with a
-        //      * status code that falls out of the range of 2xx
-        //      */
-        //     console.log(error.response.data);
-        //     console.log(error.response.status);
-        //     console.log(error.response.headers);
-        // } else if (error.request) {
-        //     /*
-        //      * The request was made but no response was received, `error.request`
-        //      * is an instance of XMLHttpRequest in the browser and an instance
-        //      * of http.ClientRequest in Node.js
-        //      */
-        //     console.log(error.request);
-        // } else {
-        //     // Something happened in setting up the request and triggered an Error
-        //     console.log('Error', error.message);
-        // }
-        // console.log(error.config);
       }
     },
   },

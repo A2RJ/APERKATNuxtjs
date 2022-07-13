@@ -31,6 +31,5 @@ export const actions = {
         if (context.app.$auth.strategy.token.status().valid()) {
             commit('SET_IS_AUTH', true);
         }
-
     }
 }
