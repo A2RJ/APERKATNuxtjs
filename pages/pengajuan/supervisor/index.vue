@@ -381,6 +381,9 @@
                 >Preview</a
               >
             </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
+            </template>
             <template v-slot:actions="row">
               <b-button
                 @click="aprroveLPJKegiatan(row.item.id_pengajuan)"
@@ -459,6 +462,9 @@
                 "
                 >Preview</a
               >
+            </template>
+            <template v-slot:created_at="row">
+              <p>{{ row.item.created_at | convertDate }}</p>
             </template>
             <template v-slot:actions="row">
               <NuxtLink

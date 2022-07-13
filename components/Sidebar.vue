@@ -4,7 +4,7 @@
     class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
     id="accordionSidebar"
   >
-  <!-- ffa600 -->
+    <!-- ffa600 -->
     <!-- Sidebar - Brand -->
     <a
       class="sidebar-brand d-flex align-items-center justify-content-center"
@@ -34,7 +34,7 @@
 
       <!-- Nav Item -->
 
-      <li class="nav-item" v-show="sekniv">
+      <li class="nav-item" v-if="sekniv">
         <NuxtLink class="nav-link" to="/rkat">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>RKAT</span>
@@ -65,29 +65,41 @@
             v-if="this.$store.state.auth.user"
           >
             <h6 class="collapse-header">Daftar Pengajuan</h6>
-            <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/'"
+            <NuxtLink
+              class="collapse-item"
+              :to="'/pengajuan/subordinate/'"
+              v-if="prodi || dirKeuangan"
               >Pengajuan</NuxtLink
             >
-            <NuxtLink class="collapse-item" :to="'/pengajuan/subordinate/summary/' + userLogin"
+            <NuxtLink
+              class="collapse-item"
+              :to="'/pengajuan/subordinate/summary/' + userLogin"
+              v-if="prodi || dirKeuangan"
               >Summary Pengajuan</NuxtLink
             >
             <NuxtLink
               class="collapse-item"
-              v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+              v-if="fakultas || dirKeuangan || warek || sekniv || rektor"
               :to="'/pengajuan/supervisor/'"
-              >Pengajuan Sub Divisi
+              >Pengajuan sub divisi
             </NuxtLink>
             <NuxtLink
               class="collapse-item"
-              v-show="warek2"
+              v-if="dirKeuangan || warek2 || sekniv || rektor"
               :to="'/pengajuan/supervisor/summary'"
               >Summary
             </NuxtLink>
             <NuxtLink
               class="collapse-item"
-              v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+              v-if="fakultas || warek"
+              :to="'/pengajuan/supervisor/summary/' + this.userLogin"
+              >Summary sub divisi
+            </NuxtLink>
+            <NuxtLink
+              class="collapse-item"
+              v-if="fakultas || dirKeuangan || warek || sekniv || rektor"
               :to="'/pengajuan/grafik/'"
-              >Grafik Sub Divisi</NuxtLink
+              >Grafik sub divisi</NuxtLink
             >
           </div>
         </div>
@@ -121,15 +133,15 @@
             </NuxtLink>
             <NuxtLink
               class="collapse-item"
-              v-show="fakultas || dirKeuangan || warek || rektor || sekniv"
+              v-if="fakultas || dirKeuangan || warek || rektor || sekniv"
               :to="'/nonrkat/supervisor/'"
-              >Non RKAT Sub Divisi
+              >Non RKAT sub divisi
             </NuxtLink>
           </div>
         </div>
       </li> -->
 
-      <li class="nav-item" v-show="sekniv">
+      <li class="nav-item" v-if="sekniv">
         <NuxtLink class="nav-link" to="/user">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>User</span>

@@ -143,7 +143,7 @@
                 label-cols="4"
                 label-cols-lg="2"
                 label-size="sm"
-                label="LPJ (keuangan dan kegiatan)"
+                label="LPJ (keuangan dan kegiatan disatukan)"
                 label-for="LPJKeuanganKegiatan"
               >
                 <b-form-file
@@ -1154,7 +1154,18 @@ export default {
             this.$router.push(this.redirects);
           }
         } catch (error) {
-          this.failed("Whoops! gagal menyimpan data");
+          let message = "";
+          if (error.response) {
+            message =
+              error.response.data && error.response.data.message
+                ? error.response.data.message
+                : error.response.data;
+          } else if (error.request) {
+            message = error.request;
+          } else {
+            message = error.message;
+          }
+          this.failed(message);
         }
       }
     },
