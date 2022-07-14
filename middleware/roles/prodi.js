@@ -1,5 +1,5 @@
 export default function ({ app, redirect }) {
-  if (!app.$isAuthorized("sekniv")) {
+  if (!app.$isAuthorized("prodi")) {
     return redirect("/");
   }
 }

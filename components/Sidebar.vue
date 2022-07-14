@@ -105,42 +105,6 @@
         </div>
       </li>
 
-      <!-- <li class="nav-item">
-        <a
-          class="nav-link collapsed"
-          href="#"
-          data-toggle="collapse"
-          data-target="#collapseTwo"
-          aria-expanded="true"
-          aria-controls="collapseTwo"
-        >
-          <i class="fas fa-fw fa-cog"></i>
-          <span>NON RKAT</span>
-        </a>
-        <div
-          id="collapseTwo"
-          class="collapse"
-          aria-labelledby="headingTwo"
-          data-parent="#accordionSidebar"
-        >
-          <div
-            class="bg-white py-2 collapse-inner rounded"
-            v-if="this.$store.state.auth.user"
-          >
-            <h6 class="collapse-header">Daftar Non RKAT</h6>
-            <NuxtLink class="collapse-item" :to="'/nonrkat/subordinate/'"
-              >Non RKAT
-            </NuxtLink>
-            <NuxtLink
-              class="collapse-item"
-              v-if="fakultas || dirKeuangan || warek || rektor || sekniv"
-              :to="'/nonrkat/supervisor/'"
-              >Non RKAT sub divisi
-            </NuxtLink>
-          </div>
-        </div>
-      </li> -->
-
       <li class="nav-item" v-if="sekniv">
         <NuxtLink class="nav-link" to="/user">
           <i class="fas fa-fw fa-chart-area"></i>
@@ -170,19 +134,15 @@ export default {
       warek2: false,
       rektor: false,
       sekniv: false,
-      userLogin: this.$store.state.auth.user[0].id_user,
       notUser: true,
+      userLogin: this.$store.state.auth.loggedIn
+        ? this.$store.state.auth.user[0].id_user
+        : [],
     };
   },
   computed: {},
   methods: {},
   mounted() {
-    if (this.userLogin == 120) {
-      this.notUser = false;
-    }
-    if (this.userLogin == 121) {
-      this.notUser = false;
-    }
     if (this.$store.state.auth.loggedIn) {
       let data = this.$store.state.auth.user[1].level;
       if (data == "prodi") {
@@ -198,10 +158,17 @@ export default {
       } else if (data == "sekniv") {
         this.sekniv = true;
       }
-    }
 
-    if (this.userLogin == 23) {
-      this.warek2 = true;
+      if (this.userLogin == 23) {
+        this.warek2 = true;
+      }
+
+      if (this.userLogin == 120) {
+        this.notUser = false;
+      }
+      if (this.userLogin == 121) {
+        this.notUser = false;
+      }
     }
   },
 };

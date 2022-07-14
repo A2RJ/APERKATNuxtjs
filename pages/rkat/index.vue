@@ -179,7 +179,7 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
-  middleware: ["rkat"],
+  middleware: ["roles/sekniv"],
   async asyncData({ store }) {
     await Promise.all([store.dispatch("rkat/getrkat")]);
     return;

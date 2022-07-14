@@ -71,6 +71,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
+  middleware: ["roles/prodi"],
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch(

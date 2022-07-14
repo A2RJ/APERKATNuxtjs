@@ -20,7 +20,7 @@
 
 <script>
   export default {
-  middleware: ["user"],
+  middleware: ["roles/user"],
   mounted(){},
   methods:{}
 };

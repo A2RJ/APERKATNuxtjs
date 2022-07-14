@@ -60,6 +60,7 @@
 </template>
 <script>
 export default {
+  middleware: ["roles/prodi"],
   data() {
     return {
       data: [],

@@ -179,9 +179,11 @@ export default {
   },
   mounted() {
     if (this.$auth.$state.loggedIn) {
-      this.$router.push("/");
+      window.location.href = "/";
     } else {
-      this.$router.push("/login");
+      if (this.$route.path !== "/login") {
+        window.location.href = "/login";
+      }
     }
   },
   methods: {
@@ -194,7 +196,7 @@ export default {
             password: this.auth.password,
           },
         });
-        this.$router.push("/");
+        window.location.href = "/";
       } catch (error) {
         this.failed = true;
         if (error.response && error.response.status === 401) {

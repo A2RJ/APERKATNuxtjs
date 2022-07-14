@@ -9,6 +9,7 @@ import { mapActions, mapMutations } from "vuex";
 import subordinate from "~/components/form/subordinate.vue";
 
 export default {
+  middleware: ["roles/prodi"],
   async asyncData({ store }) {
     await Promise.all([store.dispatch("subordinate/kodeRKAT", store.$auth.$state.user[0].id_user)]);
     await Promise.all([store.dispatch("subordinate/ikuParent")]);

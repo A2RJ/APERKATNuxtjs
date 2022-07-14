@@ -1,7 +1,10 @@
 <template>
   <div>
     <!-- Page Wrapper -->
-    <div id="wrapper" v-if="isAuth">
+    <div v-show="!isLoggedIn">
+      <Nuxt />
+    </div>
+    <div id="wrapper" v-show="isLoggedIn">
       <!-- Sidebar -->
       <Sidebar></Sidebar>
       <!-- Content Wrapper -->
@@ -26,10 +29,6 @@
       </div>
       <!-- End of Content Wrapper -->
     </div>
-
-    <div v-else>
-      <Nuxt />
-    </div>
     <!-- End of Page Wrapper -->
   </div>
 </template>
@@ -45,7 +44,7 @@ export default {
 
   data() {
     return {
-      // isAuth: this.$auth.loggedIn
+      isLoggedIn: this.$store.state.auth.loggedIn,
     };
   },
   computed: {
@@ -60,13 +59,10 @@ export default {
     Footer: Footer,
   },
   mounted() {
-    if (this.$store.state.auth.loggedIn) {
-      this.SET_IS_AUTH(this.$store.state.auth.loggedIn);
-      this.SET_LEVEL(this.$store.state.auth.user[1].level);
-    } else {
-      // this.SET_IS_AUTH(false);
-      // this.SET_LEVEL(null);
-      this.$router.push("/login");
+    if (!this.$store.state.auth.loggedIn) {
+      if (this.$route.path !== "/login") {
+        window.location.href = "/login";
+      }
     }
     !(function (t) {
       "use strict";
