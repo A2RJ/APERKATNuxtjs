@@ -664,6 +664,7 @@
 import { mapActions, mapState } from "vuex";
 
 export default {
+  middleware: ["pages/subdivisi"],
   async asyncData({ store }) {
     await Promise.all([
       store.dispatch(

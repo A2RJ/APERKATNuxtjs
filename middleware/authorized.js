@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export default function ({ app, route, store, redirect }) {
   const auth = store.state.auth;
   const { fullPath } = route;
@@ -10,7 +8,5 @@ export default function ({ app, route, store, redirect }) {
     if (fullPath.includes("/nonrkat") && !app.$isAuthorized("sekniv")) {
       return redirect("/");
     }
-
-    // console.log(app.$user());
   }
 }

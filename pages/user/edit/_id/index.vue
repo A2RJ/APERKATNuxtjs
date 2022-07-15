@@ -22,7 +22,7 @@
 import { mapActions, mapState} from "vuex";
 
 export default {
-  middleware: ["roles/user"],
+  middleware: ["pages/user"],
   async asyncData({ store, params }) {
     await Promise.all([
       store.dispatch("user/getuserID", params.id),

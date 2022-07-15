@@ -60,7 +60,7 @@
 </template>
 <script>
 export default {
-  middleware: ["roles/prodi"],
+  middleware: ["pages/pengajuan"],
   data() {
     return {
       data: [],

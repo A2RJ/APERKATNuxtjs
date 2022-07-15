@@ -59,6 +59,7 @@
 </template>
 <script>
 export default {
+  middleware: ["pages/subdivisi"],
   data() {
     return {
       data: [],

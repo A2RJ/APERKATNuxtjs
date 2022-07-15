@@ -5,7 +5,7 @@
 <script>
 import struktur from "../../../components/form/struktur.vue";
 export default {
-  middleware: ["roles/sekniv"],
+  middleware: ["pages/user"],
   components: { struktur },
 };
 </script>

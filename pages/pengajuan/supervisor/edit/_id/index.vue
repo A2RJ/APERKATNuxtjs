@@ -9,6 +9,7 @@ import { mapActions, mapMutations } from "vuex";
 import subordinate from "~/components/form/subordinate.vue";
 
 export default {
+  middleware: ["pages/subdivisi"],
   async asyncData({ store, params }) {
     await Promise.all([
       store.dispatch("subordinate/getpengajuanID", params.id),

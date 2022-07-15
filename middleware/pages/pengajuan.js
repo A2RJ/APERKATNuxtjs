@@ -1,6 +1,12 @@
 export default async function ({ app, route, redirect }) {
-  const isValid = await app.$isYourSubmission();
-  if (!isValid && !app.$isAuthorized("prodi")) {
+  if (!app.$isAuthorized("prodi")) {
     return redirect("/");
+  }
+
+  if (app.$route().includes("/pengajuan/subordinate/edit")) {
+    const { status } = await app.$isYourSubmission();
+    if (status === "invalid") {
+      return redirect("/");
+    }
   }
 }
